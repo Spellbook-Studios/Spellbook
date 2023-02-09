@@ -4,6 +4,7 @@
 
 plugins {
     id 'dk.sebsa.spellbook.java-library-conventions'
+    id 'maven-publish'
 }
 
 version = '0.0.1-SNAPSHOT'
