@@ -1,0 +1,12 @@
+plugins {
+    id 'dk.sebsa.spellbook.java-application-conventions'
+}
+
+dependencies {
+    implementation project(':spellbook')
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'dk.sebsa.spellbook.Sandbox'
+}
