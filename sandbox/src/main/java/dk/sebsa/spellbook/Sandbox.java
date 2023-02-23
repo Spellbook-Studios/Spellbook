@@ -4,10 +4,28 @@
 package dk.sebsa.spellbook;
 
 import dk.sebsa.Spellbook;
+import dk.sebsa.SpellbookCapabilities;
+import dk.sebsa.spellbook.core.Application;
 
-public class Sandbox {
+public class Sandbox extends Application {
     public static void main(String[] args) {
-        System.out.println("Hello from Sandbox");
-        System.out.println("Running on Spellbook " + Spellbook.VERSION);
+        Spellbook.start(new Sandbox(), SpellbookCapabilities.builder()
+                        .coalDebug(true)
+                        .build());
+    }
+
+    @Override
+    public String name() {
+        return "Sandbox";
+    }
+
+    @Override
+    public String author() {
+        return "Sebsa";
+    }
+
+    @Override
+    public String version() {
+        return "1.0a";
     }
 }
