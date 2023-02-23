@@ -20,5 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'dk.sebsa:mana:1.0-SNAPSHOT'
+    implementation 'dk.sebsa:mana:1.0a'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<logger>
+    <format>[%d] <![CDATA[<%c>]]> (%t) - %s</format>
+
+    <!-- Default -->
+    <warnFormat>WARN: %fi</warnFormat>
+    <errorFormat>ERROR: %fi</errorFormat>
+</logger>
