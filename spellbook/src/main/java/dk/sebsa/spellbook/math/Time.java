@@ -1,5 +1,7 @@
 package dk.sebsa.spellbook.math;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,6 +32,8 @@ public class Time {
 
     private static float deltaTime;
     private static float unscaledDelta;
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     /**
      * Initializes time keeping
@@ -83,6 +87,13 @@ public class Time {
     public static long getTime() {
         rawTime = System.nanoTime();
         return (TimeUnit.MILLISECONDS.convert(rawTime - startTime, TimeUnit.NANOSECONDS));
+    }
+
+    /**
+     * @return The current time of the OS
+     */
+    public static String getNow() {
+        return LocalTime.now().format(dateTimeFormatter);
     }
 
     /**
