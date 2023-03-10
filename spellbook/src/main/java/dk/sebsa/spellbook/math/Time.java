@@ -4,8 +4,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
+import dk.sebsa.mana.Logger;
+
 /**
  * Keeps track of time
+ * 
  * @author sebsn
  * @since 0.0.1
  */
@@ -27,7 +30,7 @@ public class Time {
     private static long fpsCountTime; // Time instant when FPS was last counted
     private static int frames; // Frames since last FPS count
     private static int framesPerSecond;
-    private static double averageFrameLength;	// The average frame length this second. In millis
+    private static double averageFrameLength; // The average frame length this second. In millis
     private static double frameTimeThisSecond;
 
     private static float deltaTime;
@@ -38,42 +41,43 @@ public class Time {
     /**
      * Initializes time keeping
      */
-    public static void init() {
-        // TODO: Add logging here
+    public static void init(final Logger logger) {
+        logger.log("Initializing Time");
         startTime = System.nanoTime();
     }
 
     private static void procsessFrame() {
         rawTime = System.nanoTime();
-        long time = (TimeUnit.MILLISECONDS.convert(rawTime - startTime, TimeUnit.NANOSECONDS));
+        final long time = (TimeUnit.MILLISECONDS.convert(rawTime - startTime, TimeUnit.NANOSECONDS));
 
         // Calculate frame time
         // When this frame started
-        long frameStartTime = rawTime;
+        final long frameStartTime = rawTime;
         // How long the last frame was
-        long framePassedTime = frameStartTime - lastFrameTime;
+        final long framePassedTime = frameStartTime - lastFrameTime;
         lastFrameTime = frameStartTime;
         frameTimeThisSecond = frameTimeThisSecond + framePassedTime;
 
         // Calculate Delta time
-        double rawDelta = framePassedTime / (double) SECOND_NANO;
-        /*if(rawDelta > 0.01f) {
-            deltaTime = (float) (0.01 * timeScale);
-            unscaledDelta = 0.01f;
-        }
-        else {*/
+        final double rawDelta = framePassedTime / (double) SECOND_NANO;
+        /*
+         * if(rawDelta > 0.01f) {
+         * deltaTime = (float) (0.01 * timeScale);
+         * unscaledDelta = 0.01f;
+         * }
+         * else {
+         */
         deltaTime = (float) (rawDelta * timeScale);
         unscaledDelta = (float) rawDelta;
-        //}
+        // }
 
         // FPS Count
-        if(time - fpsCountTime >= 1000) {
+        if (time - fpsCountTime >= 1000) {
             framesPerSecond = frames;
             frames = 0;
             fpsCountTime = time;
 
-
-            averageFrameLength = (frameTimeThisSecond/framesPerSecond/1000000);
+            averageFrameLength = (frameTimeThisSecond / framesPerSecond / 1000000);
             frameTimeThisSecond = 0;
         }
         frames++;
@@ -97,14 +101,16 @@ public class Time {
     }
 
     /**
-     * @return the time between the start of the current frame and the start of the last frame (in millis)
+     * @return the time between the start of the current frame and the start of the
+     *         last frame (in millis)
      */
     public static float getDeltaTime() {
         return deltaTime;
     }
 
     /**
-     * @return the time between the start of the current frame and the start of the last frame (in millis) unscaled
+     * @return the time between the start of the current frame and the start of the
+     *         last frame (in millis) unscaled
      */
     public static float getUnscaledDelta() {
         return unscaledDelta;

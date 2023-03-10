@@ -99,7 +99,7 @@ public class Spellbook {
     }
 
     private void init() {
-        Time.init();
+        Time.init(logger);
         logger.log("Started time at: " + Time.getNow());
 
         logger.log("Creating EventBus");
