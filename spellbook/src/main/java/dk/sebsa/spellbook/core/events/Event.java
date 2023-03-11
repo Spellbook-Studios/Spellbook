@@ -16,7 +16,7 @@ public abstract class Event {
      * @since 0.0.1
      */
     public enum EventType {
-        engineInit, UserKeyPressed
+        engineInit, engineLoad, engineCleanup, UserKeyPressed
     }
 
 }

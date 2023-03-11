@@ -1,6 +1,8 @@
 package dk.sebsa.spellbook.util;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utilities for creating files
@@ -25,5 +27,24 @@ public class FileUtils {
         } catch (Exception e) {
             throw new IOException("FileUtils, can't load file: " + location);
         }
+    }
+
+    /**
+     * Lists alle files within a directory recursively
+     *
+     * @param folder The folder to search within
+     * @return A list of all the files found
+     */
+    public static List<File> listFilesInFolder(final File folder) {
+        List<File> files = new ArrayList<>();
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                files.addAll(listFilesInFolder(fileEntry));
+            } else {
+                files.add(fileEntry);
+            }
+        }
+
+        return files;
     }
 }

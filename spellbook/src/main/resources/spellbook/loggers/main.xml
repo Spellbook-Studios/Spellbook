@@ -4,6 +4,7 @@
     <format>[%d] <![CDATA[<%c>]]> (%t) - %s</format>
 
     <!-- Default -->
-    <warnFormat>WARN: %fi</warnFormat>
-    <errorFormat>ERROR: %fi</errorFormat>
+    <warnFormat>WARN: %fl</warnFormat>
+    <errorFormat>ERROR: %fl</errorFormat>
+    <traceFormat>TRACE: %fl</traceFormat>
 </logger>

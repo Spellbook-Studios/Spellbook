@@ -7,11 +7,15 @@ import java.util.List;
 import dk.sebsa.mana.LogFormatter;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.mana.impl.FormatBuilder;
+import dk.sebsa.spellbook.asset.AssetReference;
+import dk.sebsa.spellbook.asset.TextAsset;
 import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.Core;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.SpellbookLogger;
+import dk.sebsa.spellbook.core.events.EngineCleanupEvent;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
+import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.math.Time;
 import lombok.Getter;
@@ -25,7 +29,7 @@ import lombok.Getter;
 public class Spellbook {
     public static Spellbook instance;
 
-    // Coal Settings and Consts
+    // Spellbook Settings and Consts
     public static final String SPELLBOOK_VERSION = "0.0.1a-SNAPSHOT";
     public final boolean DEBUG;
 
@@ -34,14 +38,14 @@ public class Spellbook {
     private static String graphicsCard = "Toaster"; // Set at runtime
 
     // Runtime stuff
-    @Getter
-    private final Logger logger;
+    @Getter private static Logger logger;
     @Getter
     private final SpellbookCapabilities capabilities;
     @Getter
     private EventBus eventBus;
     @Getter
     private final List<Module> modules = new ArrayList<>();
+    private Core moduleCore;
 
     public void registerModule(Module m) {
         logger.log("Module - " + m.name());
@@ -50,10 +54,10 @@ public class Spellbook {
     }
 
     /**
-     * Create a new Coal instance
+     * Create a new Spellbook instance
      * 
      * @param app  Starts the application
-     * @param caps The new coal instance uses these capabilities
+     * @param caps The new spellbook instance uses these capabilities
      */
     public static void start(Application app, SpellbookCapabilities caps) {
         if (instance != null)
@@ -65,11 +69,11 @@ public class Spellbook {
 
     private Spellbook(Application app, SpellbookCapabilities caps) {
         capabilities = caps;
-        DEBUG = caps.coalDebug;
+        DEBUG = caps.spellbookDebug;
 
         // Logger init
         try {
-            LogFormatter format = new FormatBuilder().buildFromFile("/coal/loggers/main.xml");
+            LogFormatter format = new FormatBuilder().buildFromFile("/spellbook/loggers/main.xml");
             logger = new SpellbookLogger(format);
         } catch (IOException e) {
             throw new RuntimeException("Spellbook failed to start!!! >>> Logger load IOException");
@@ -106,10 +110,14 @@ public class Spellbook {
         eventBus = new EventBus(logger);
 
         logger.log("Registering Modules");
-        registerModule(new Core());
+        moduleCore = new Core();
+        registerModule(moduleCore);
 
         logger.log("Engine Init Event, prepare for trouble!..");
-        eventBus.engine(new EngineInitEvent());
+        eventBus.engine(new EngineInitEvent(logger, capabilities));
+
+        logger.log("Open the gates, Engine Load Event");
+        eventBus.engine(new EngineLoadEvent(capabilities));
 
         logger.log("Initialization done!");
     }
@@ -121,10 +129,15 @@ public class Spellbook {
     }
 
     private void cleanup() {
+        eventBus.engine(new EngineCleanupEvent());
+
         logger.log("Cleanup Modules");
         for (Module m : modules) {
             logger.log("Module - " + m.name());
             m.cleanup();
         }
+    }
+    public void requestShutdown() {
+
     }
 }

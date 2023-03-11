@@ -1,5 +1,10 @@
 package dk.sebsa.spellbook.core.events;
 
 public interface EventHandler {
-    public default void engineInit(Event e) {};
+    @EventListener
+    default void engineInit(EngineInitEvent e) {};
+    @EventListener
+    default void engineLoad(EngineLoadEvent e) {};
+    @EventListener
+    default void engineCleanup(EngineCleanupEvent e) {};
 }

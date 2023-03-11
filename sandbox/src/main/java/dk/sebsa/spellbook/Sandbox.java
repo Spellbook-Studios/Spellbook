@@ -10,7 +10,7 @@ import dk.sebsa.spellbook.core.Application;
 public class Sandbox extends Application {
     public static void main(String[] args) {
         Spellbook.start(new Sandbox(), SpellbookCapabilities.builder()
-                        .coalDebug(true)
+                        .spellbookDebug(true)
                         .build());
     }
 
