@@ -19,6 +19,7 @@ import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.math.Time;
 import lombok.Getter;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * The mother of all Spellbook programs
@@ -34,8 +35,7 @@ public class Spellbook {
     public final boolean DEBUG;
 
     // Sys info
-    @Getter
-    private static String graphicsCard = "Toaster"; // Set at runtime
+    public static String graphicsCard = "Toaster"; // Set at runtime
 
     // Runtime stuff
     @Getter private static Logger logger;
@@ -46,6 +46,7 @@ public class Spellbook {
     @Getter
     private final List<Module> modules = new ArrayList<>();
     private Core moduleCore;
+    private Application application;
 
     public void registerModule(Module m) {
         logger.log("Module - " + m.name());
@@ -68,6 +69,7 @@ public class Spellbook {
     }
 
     private Spellbook(Application app, SpellbookCapabilities caps) {
+        application = app;
         capabilities = caps;
         DEBUG = caps.spellbookDebug;
 
@@ -114,7 +116,7 @@ public class Spellbook {
         registerModule(moduleCore);
 
         logger.log("Engine Init Event, prepare for trouble!..");
-        eventBus.engine(new EngineInitEvent(logger, capabilities));
+        eventBus.engine(new EngineInitEvent(logger, capabilities, application));
 
         logger.log("Open the gates, Engine Load Event");
         eventBus.engine(new EngineLoadEvent(capabilities));
@@ -124,6 +126,11 @@ public class Spellbook {
 
     private void mainLoop() {
         logger.log("Entering mainLoop()");
+
+        while(Time.getTime() < 2*1000) {
+            Time.procsessFrame();
+            moduleCore.getWindow().update();
+        }
 
         logger.log("mainLoop() finished");
     }

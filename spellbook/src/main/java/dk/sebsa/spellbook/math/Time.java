@@ -46,7 +46,7 @@ public class Time {
         startTime = System.nanoTime();
     }
 
-    private static void procsessFrame() {
+    public static void procsessFrame() {
         rawTime = System.nanoTime();
         final long time = (TimeUnit.MILLISECONDS.convert(rawTime - startTime, TimeUnit.NANOSECONDS));
 
