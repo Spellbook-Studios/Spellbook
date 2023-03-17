@@ -4,6 +4,13 @@ import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.core.Application;
 
+/**
+ * Indicates to the engine it is time to setup classes
+ * NO assets can be used yet and windows are not initilized yett.
+ * Use this to do core loading and setup
+ * @author sebs
+ * @since 0.0.1
+ */
 public class EngineInitEvent extends Event {
     public final Logger logger;
     public final SpellbookCapabilities capabilities;

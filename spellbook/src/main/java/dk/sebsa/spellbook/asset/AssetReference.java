@@ -26,10 +26,9 @@ public class AssetReference {
     public <T extends Asset> T get() {
         usages = usages + 1;
         if(asset == null) {
-            Spellbook.getLogger().trace("Create asset: " + asset);
             if(location.endsWith(".txt")) asset = new TextAsset();
             else {
-                Spellbook.instance.getLogger().err("Failed to identify asset: " + name);
+                Spellbook.instance.error("Failed to identify asset: " + name, false);
                 return null;
             }
 
@@ -45,7 +44,6 @@ public class AssetReference {
      * Asset should no longer be used and set to null, if it is cached
      */
     public void unRefrence() {
-        Spellbook.getLogger().trace("Destroy asset: " + asset);
         usages = usages - 1;
         asset.destroy();
         asset = null;

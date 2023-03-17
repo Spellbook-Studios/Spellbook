@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.mana.Logger;
+import dk.sebsa.spellbook.core.ClassLogger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,10 +10,10 @@ import java.util.*;
 public class EventBus {
     private final Queue<Event> userEvents = new PriorityQueue<>();
     private final HashMap<Object, HashMap<String, Method>> listeners = new HashMap<>();
-    private final Logger logger;
+    private final ClassLogger logger;
 
     public EventBus(Logger logger) {
-        this.logger = logger;
+        this.logger = new ClassLogger(this, logger);
     }
 
     /**
@@ -59,8 +60,10 @@ public class EventBus {
         final String type = e.eventType().toString();
         for(Object o : listeners.keySet()) {
             final Map<String, Method> map = listeners.get(o); if(!map.containsKey(type)) continue;
-            try { map.get(type).invoke(o, e); } catch (IllegalAccessException | InvocationTargetException ex) {
-                logger.err("EventBus.engine(e): Failed to invoke method: " + type + " in: " + o.getClass().getName());
+            try { map.get(type).invoke(o, e); } catch (IllegalAccessException ex) {
+                logger.err("IllegalAccessException: Failed to invoke method: " + type + " in: " + o.getClass().getName());
+            } catch (InvocationTargetException ex) {
+                logger.err("Method invoked exception: " + type + " in: " + o.getClass().getName(), logger.stackTrace(ex));
             }
         }
     }

@@ -18,7 +18,7 @@ public class TextAsset implements Asset {
             sb.append(is);
             is.close();
         } catch (IOException e) {
-            Spellbook.instance.getLogger().err("TextAsset: Failed to load file at location: " + reference);
+            Spellbook.instance.error("TextAsset: Failed to load file at location: " + reference, false);
         }
         text = sb.toString();
     }

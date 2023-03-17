@@ -20,8 +20,7 @@ public class FolderAssetProvider extends AssetProvider {
     public FolderAssetProvider(File folder) {
         this.folder = folder;
         if(!folder.isDirectory()) {
-            Spellbook.instance.getLogger().err("Path is not a directory: " + folder.getPath());
-            Spellbook.instance.requestShutdown();
+            Spellbook.instance.error("Path is not a directory: " + folder.getPath(), true);
         }
     }
 

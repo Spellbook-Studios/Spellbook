@@ -38,7 +38,7 @@ public class Spellbook {
     public static String graphicsCard = "Toaster"; // Set at runtime
 
     // Runtime stuff
-    @Getter private static Logger logger;
+    /*@Getter */private static Logger logger;
     @Getter
     private final SpellbookCapabilities capabilities;
     @Getter
@@ -127,7 +127,7 @@ public class Spellbook {
     private void mainLoop() {
         logger.log("Entering mainLoop()");
 
-        while(Time.getTime() < 2*1000) {
+        while(Time.getTime() < 5*1000) {
             Time.procsessFrame();
             moduleCore.getWindow().update();
         }
@@ -144,7 +144,7 @@ public class Spellbook {
             m.cleanup();
         }
     }
-    public void requestShutdown() {
-
+    public void error(String error, boolean shutdown) {
+        logger.err(error);
     }
 }
