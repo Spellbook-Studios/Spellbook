@@ -1,7 +1,5 @@
 package dk.sebsa.spellbook.asset;
 
-import dk.sebsa.Spellbook;
-
 /**
  * Basic representation of lodable object for use in Spellbook
  * @author sebs

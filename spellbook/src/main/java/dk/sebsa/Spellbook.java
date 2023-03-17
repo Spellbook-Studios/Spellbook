@@ -7,19 +7,14 @@ import java.util.List;
 import dk.sebsa.mana.LogFormatter;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.mana.impl.FormatBuilder;
-import dk.sebsa.spellbook.asset.AssetReference;
-import dk.sebsa.spellbook.asset.TextAsset;
-import dk.sebsa.spellbook.core.Application;
-import dk.sebsa.spellbook.core.Core;
+import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.Module;
-import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.core.events.EngineCleanupEvent;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.math.Time;
 import lombok.Getter;
-import org.lwjgl.glfw.GLFW;
 
 /**
  * The mother of all Spellbook programs
@@ -74,11 +69,15 @@ public class Spellbook {
         DEBUG = caps.spellbookDebug;
 
         // Logger init
-        try {
-            LogFormatter format = new FormatBuilder().buildFromFile("/spellbook/loggers/main.xml");
-            logger = new SpellbookLogger(format);
-        } catch (IOException e) {
-            throw new RuntimeException("Spellbook failed to start!!! >>> Logger load IOException");
+        if(DEBUG) {
+            try {
+                LogFormatter format = new FormatBuilder().buildFromFile("/spellbook/loggers/main.xml");
+                logger = new SpellbookLogger(format);
+            } catch (IOException e) {
+                throw new RuntimeException("Spellbook failed to start!!! >>> Logger load IOException");
+            }
+        } else {
+            logger = new DeLogger();
         }
 
         // Log important debug info

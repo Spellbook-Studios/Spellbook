@@ -4,11 +4,14 @@ import dk.sebsa.spellbook.io.GLFWWindow;
 
 public interface EventHandler {
     @EventListener
-    default void engineInit(EngineInitEvent e) {};
+    default void engineInit(EngineInitEvent e) {}
+
     @EventListener
-    default void engineLoad(EngineLoadEvent e) {};
+    default void engineLoad(EngineLoadEvent e) {}
+
     @EventListener
-    default void engineCleanup(EngineCleanupEvent e) {};
+    default void engineCleanup(EngineCleanupEvent e) {}
+
     @EventListener
-    default void windowResized(GLFWWindow.WindowResizedEvent e) {};
+    default void windowResized(GLFWWindow.WindowResizedEvent e) {}
 }

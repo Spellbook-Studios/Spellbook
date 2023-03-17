@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sandbox/Dev.Spellbook.sandbox.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sandbox/Dev.Spellbook.sandbox.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spellbook/Dev.Spellbook.spellbook.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spellbook/Dev.Spellbook.spellbook.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sandbox/Spellbook.sandbox.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sandbox/Spellbook.sandbox.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/spellbook/Spellbook.spellbook.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spellbook/Spellbook.spellbook.main.iml" />
     </modules>

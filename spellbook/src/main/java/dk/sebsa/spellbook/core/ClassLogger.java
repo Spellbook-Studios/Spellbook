@@ -2,7 +2,6 @@ package dk.sebsa.spellbook.core;
 
 import dk.sebsa.mana.Logger;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 

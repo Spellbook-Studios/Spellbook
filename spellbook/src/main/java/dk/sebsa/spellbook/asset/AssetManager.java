@@ -1,8 +1,6 @@
 package dk.sebsa.spellbook.asset;
 
-import dk.sebsa.Spellbook;
 import dk.sebsa.mana.Logger;
-import dk.sebsa.spellbook.core.events.EventListener;
 
 import java.util.HashMap;
 import java.util.List;
