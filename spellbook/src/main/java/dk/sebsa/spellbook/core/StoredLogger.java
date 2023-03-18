@@ -23,7 +23,7 @@ public class StoredLogger extends SpellbookLogger {
     private FileWriter fw;
 
     public StoredLogger(LogFormatter formatterIn, SpellbookCapabilities caps) {
-        super(formatterIn);
+        super(formatterIn, caps);
 
         zipped = caps.logStorageMode.equals(SpellbookCapabilities.LogStorageModes.zipped);
         target = new File(caps.logStoreTarget);
@@ -37,7 +37,7 @@ public class StoredLogger extends SpellbookLogger {
 
             fw = new FileWriter(target, false);
             fw.write("# Logs from SpellbookLogger with Mana\n");
-        } catch (IOException e) { err("Failed to create log file: " + new ClassLogger(this, null).stackTrace(e)); }
+        } catch (IOException e) { super.print("Failed to create log file: " + new ClassLogger(this, null).stackTrace(e)); }
     }
 
     @Override
