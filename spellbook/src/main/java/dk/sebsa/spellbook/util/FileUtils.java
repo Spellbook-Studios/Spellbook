@@ -1,8 +1,11 @@
 package dk.sebsa.spellbook.util;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Utilities for creating files
@@ -79,5 +82,30 @@ public class FileUtils {
         }
 
         return e.toString();
+    }
+
+    /**
+     * Zips a single file into a new zip file
+     * @param source The file to zip
+     * @param zipFileName The name of the zipfile
+     * @throws IOException
+     */
+    public static void zipSingleFile(Path source, String zipFileName) throws IOException {
+        try (
+                ZipOutputStream zos = new ZipOutputStream(
+                        new FileOutputStream(zipFileName));
+                FileInputStream fis = new FileInputStream(source.toFile());
+        ) {
+
+            ZipEntry zipEntry = new ZipEntry(source.getFileName().toString());
+            zos.putNextEntry(zipEntry);
+
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) > 0) {
+                zos.write(buffer, 0, len);
+            }
+            zos.closeEntry();
+        }
     }
 }

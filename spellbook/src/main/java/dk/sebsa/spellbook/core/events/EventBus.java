@@ -8,8 +8,9 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public class EventBus {
+    private record Listener(Object o, Method m) {}
     private final Queue<Event> userEvents = new PriorityQueue<>();
-    private final HashMap<Object, HashMap<String, Method>> listeners = new HashMap<>();
+    private final HashMap<String, List<Listener>> listeners = new HashMap<>();
     private final ClassLogger logger;
 
     public EventBus(Logger logger) {
@@ -28,20 +29,13 @@ public class EventBus {
         final List<Method> methods = new ArrayList<>();
         final Class<?> klass = o.getClass();
         for(final Method method : klass.getDeclaredMethods()) {
-            if(method.isAnnotationPresent(EventListener.class)) methods.add(method);
+            if(method.isAnnotationPresent(EventListener.class)) addMethod(o, method);
         }
-
-        // Final Map
-        final HashMap<String, Method> methodMap = new HashMap<>();
-        for (Method method : methods) {
-            methodMap.put(method.getName(), method);
-        }
-
-        listeners.put(o, methodMap);
     }
 
-    public void unregister(Object o) {
-        listeners.remove(o);
+    private void addMethod(Object o, Method m) {
+        logger.trace("+" + o.getClass().getName() + "." + m.getName());
+        listeners.computeIfAbsent(m.getName(), k -> new ArrayList<>()).add(new Listener(o,m));
     }
 
     /**
@@ -58,12 +52,12 @@ public class EventBus {
      */
     public void engine(Event e) {
         final String type = e.eventType().toString();
-        for(Object o : listeners.keySet()) {
-            final Map<String, Method> map = listeners.get(o); if(!map.containsKey(type)) continue;
-            try { map.get(type).invoke(o, e); } catch (IllegalAccessException ex) {
-                logger.err("IllegalAccessException: Failed to invoke method: " + type + " in: " + o.getClass().getName());
+        if(!listeners.containsKey(type)) return;
+        for(Listener listener : listeners.get(type)) {
+            try { listener.m.invoke(listener.o, e); } catch (IllegalAccessException ex) {
+                logger.err("IllegalAccessException: Failed to invoke method: " + type + " in: " + listener.o.getClass().getName());
             } catch (InvocationTargetException ex) {
-                logger.err("Method invoked exception: " + type + " in: " + o.getClass().getName(), logger.stackTrace(ex));
+                logger.err("Method invoked exception: " + type + " in: " + listener.o.getClass().getName(), logger.stackTrace(ex));
             }
         }
     }

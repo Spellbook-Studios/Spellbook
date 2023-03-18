@@ -11,6 +11,8 @@ public class Sandbox extends Application {
     public static void main(String[] args) {
         Spellbook.start(new Sandbox(), SpellbookCapabilities.builder()
                         .spellbookDebug(true)
+                        .logStoreTarget("../logs/latest.log")
+                        .logDisableASCIIEscapeCharacters(false)
                         .build());
     }
 

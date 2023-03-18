@@ -71,7 +71,10 @@ public class Spellbook {
         if(DEBUG) {
             try {
                 LogFormatter format = new FormatBuilder().buildFromFile("/spellbook/loggers/main.xml");
-                logger = new SpellbookLogger(format);
+
+                // Create logger with storage logic if needed
+                if(caps.logStorageMode.equals(SpellbookCapabilities.LogStorageModes.dont)) logger = new SpellbookLogger(format);
+                else logger = new StoredLogger(format, caps);
             } catch (IOException e) {
                 throw new RuntimeException("Spellbook failed to start!!! >>> Logger load IOException");
             }
