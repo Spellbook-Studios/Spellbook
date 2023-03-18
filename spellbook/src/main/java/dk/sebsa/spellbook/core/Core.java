@@ -28,7 +28,8 @@ public class Core implements Module, EventHandler {
     @EventListener
     public void engineInit(EngineInitEvent e) {
         this.logger = new ClassLogger(this, e.logger);
-        this.window = new GLFWWindow(e.logger, e.application.name(), Color.red, 800, 640);
+        this.window = new GLFWWindow(e.logger, e.application.name(), 800, 640);
+        this.assetManager = new AssetManager();
 
         e.capabilities.getAssetsProviders().add(new ClassPathAssetProvider(e.logger));
     }
@@ -52,17 +53,12 @@ public class Core implements Module, EventHandler {
             }
         }
 
-        assetManager = new AssetManager(assets);
+        assetManager.registerReferences(assets);
 
         log("Asset Providers done");
 
         // Window
         window.init();
-    }
-
-    @EventListener
-    public void engineCleanup(EngineCleanupEvent e) {
-        assetManager.engineCleanup(logger);
     }
 
     @Override
@@ -74,6 +70,21 @@ public class Core implements Module, EventHandler {
     @EventListener
     public void windowResized(GLFWWindow.WindowResizedEvent e) {
         log("Window Reisezed");
+    }
+
+    @EventListener
+    public void engineFrameEarly(EngineFrameEarly e) {
+        window.pollEvents();
+    }
+
+    @EventListener
+    public void engineRender(EngineRenderEvent e) {
+        window.update();
+    }
+
+    @EventListener
+    public void engineFrameDone(EngineFrameDone e) {
+        window.endFrame();
     }
 
     @Override

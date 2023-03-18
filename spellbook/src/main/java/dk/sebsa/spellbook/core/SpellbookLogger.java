@@ -16,8 +16,14 @@ public class SpellbookLogger implements Logger {
     private static final PrintStream out = System.out;
     private final FormatterImpl formatter;
 
-    public SpellbookLogger(LogFormatter formatter) {
-        this.formatter = (FormatterImpl) formatter; // This cast will always work :D
+    public SpellbookLogger(LogFormatter formatterIn) {
+        this.formatter = (FormatterImpl) formatterIn; // This cast will always work :D
+        formatter.formatTrace = formatter.formatTrace;
+
+        formatter.formatTrace = "\u001B[90m " + formatter.formatTrace;
+        formatter.formatLog = "\u001B[32m " + formatter.formatLog;
+        formatter.formatWarn = "\u001B[33m " + formatter.formatWarn;
+        formatter.formatErr = "\u001B[91m" + formatter.formatErr;
     }
 
     private void print(String s) {

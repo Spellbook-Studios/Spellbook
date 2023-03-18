@@ -15,7 +15,11 @@ import java.util.Map;
 public class AssetManager {
     private final Map<String, AssetReference> assets = new HashMap<>();
 
-    public AssetManager(List<AssetReference> references) {
+    /**
+     * Registers asset references directly
+     * @param references A list of new references to register
+     */
+    public void registerReferences(List<AssetReference> references) {
         for(AssetReference ref : references) {
             assets.put(ref.name, ref);
         }

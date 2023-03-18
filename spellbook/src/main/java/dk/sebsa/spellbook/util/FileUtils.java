@@ -47,4 +47,37 @@ public class FileUtils {
 
         return files;
     }
+
+    /**
+     * Add all lines from file to list
+     * @param is An input stream for the file
+     * @return A list of lines, does not end with a line ending charater
+     * @throws IOException If the buffered reader erros
+     */
+    public static List<String> readAllLinesList(InputStream is) throws IOException {
+        List<String> list = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+        String line;
+        while ((line = br.readLine()) != null) {
+            list.add(line);
+        } br.close();
+
+        return list;
+    }
+
+    /**
+     * Get all content from a file / InputStream as a string
+     * @param is An input stream for the file
+     * @return A string representing all the content in the file with line endings
+     * @throws IOException If the buffered reader errors
+     */
+    public static String readAllLines(InputStream is) throws IOException {
+        StringBuilder e = new StringBuilder();
+        for(String line : readAllLinesList(is)) {
+            e.append(line).append("\n");
+        }
+
+        return e.toString();
+    }
 }

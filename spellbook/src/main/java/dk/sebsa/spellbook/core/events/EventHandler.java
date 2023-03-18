@@ -14,4 +14,16 @@ public interface EventHandler {
 
     @EventListener
     default void windowResized(GLFWWindow.WindowResizedEvent e) {}
+
+    @EventListener
+    default void engineFrameEarly(EngineFrameEarly e) {}
+
+    @EventListener
+    default void engineFrameProcess(EngineFrameProcess e) {}
+
+    @EventListener
+    default void engineRender(EngineRenderEvent e) {}
+
+    @EventListener
+    default void engineFrameDone(EngineFrameDone e) {}
 }

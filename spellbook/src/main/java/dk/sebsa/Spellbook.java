@@ -9,11 +9,9 @@ import dk.sebsa.mana.Logger;
 import dk.sebsa.mana.impl.FormatBuilder;
 import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.Module;
-import dk.sebsa.spellbook.core.events.EngineCleanupEvent;
-import dk.sebsa.spellbook.core.events.EngineInitEvent;
-import dk.sebsa.spellbook.core.events.EngineLoadEvent;
-import dk.sebsa.spellbook.core.events.EventBus;
+import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.math.Time;
+import dk.sebsa.spellbook.opengl.OpenGLModule;
 import lombok.Getter;
 
 /**
@@ -33,7 +31,7 @@ public class Spellbook {
     public static String graphicsCard = "Toaster"; // Set at runtime
 
     // Runtime stuff
-    /*@Getter */private static Logger logger;
+    @Getter private static Logger logger;
     @Getter
     private final SpellbookCapabilities capabilities;
     @Getter
@@ -41,7 +39,7 @@ public class Spellbook {
     @Getter
     private final List<Module> modules = new ArrayList<>();
     private Core moduleCore;
-    private Application application;
+    private final Application application;
 
     public void registerModule(Module m) {
         logger.log("Module - " + m.name());
@@ -67,6 +65,7 @@ public class Spellbook {
         application = app;
         capabilities = caps;
         DEBUG = caps.spellbookDebug;
+        instance = this;
 
         // Logger init
         if(DEBUG) {
@@ -113,12 +112,13 @@ public class Spellbook {
         logger.log("Registering Modules");
         moduleCore = new Core();
         registerModule(moduleCore);
+        if(capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl)) registerModule(new OpenGLModule());
 
         logger.log("Engine Init Event, prepare for trouble!..");
         eventBus.engine(new EngineInitEvent(logger, capabilities, application));
 
         logger.log("Open the gates, Engine Load Event");
-        eventBus.engine(new EngineLoadEvent(capabilities));
+        eventBus.engine(new EngineLoadEvent(capabilities, moduleCore.getAssetManager()));
 
         logger.log("Initialization done!");
     }
@@ -127,8 +127,15 @@ public class Spellbook {
         logger.log("Entering mainLoop()");
 
         while(Time.getTime() < 5*1000) {
+            // Process input and prepare for frame
+            eventBus.engine(new EngineFrameEarly());
             Time.procsessFrame();
-            moduleCore.getWindow().update();
+
+            // Render
+            eventBus.engine(new EngineRenderEvent(moduleCore.getWindow()));
+
+            // Cleanup Frame (Mostly just GLFWWindow)
+            eventBus.engine(new EngineFrameDone());
         }
 
         logger.log("mainLoop() finished");
@@ -142,6 +149,9 @@ public class Spellbook {
             logger.log("Module - " + m.name());
             m.cleanup();
         }
+
+        // Cleanup leaked assets
+        moduleCore.getAssetManager().engineCleanup(logger);
     }
     public void error(String error, boolean shutdown) {
         logger.err(error);

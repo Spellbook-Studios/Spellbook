@@ -28,11 +28,10 @@ public class GLFWWindow {
     /**
      * The id as given by OpenGl
      */
-    private long id;
+    @Getter private long id;
 
     // "User" vars
     private String windowTitle;
-    private Color clearColor;
     private final boolean vsync = false;
 
     // Info vars
@@ -56,15 +55,13 @@ public class GLFWWindow {
     /**
      * @param logger The coal logger
      * @param windowTitle The title of the window
-     * @param clearColor The color to use for clearing the OpenGL buffer
      * @param width The starting width of the window
      * @param height The starting height of the window
      */
-    public GLFWWindow(Logger logger, String windowTitle, Color clearColor, int width, int height) {
+    public GLFWWindow(Logger logger, String windowTitle, int width, int height) {
         this.logger = new ClassLogger(this, logger);
 
         this.windowTitle = windowTitle;
-        this.clearColor = clearColor;
         this.width = width;
         this.height = height;
         this.isDirty = true;
@@ -179,6 +176,13 @@ public class GLFWWindow {
     }
 
     /**
+     * Tells the window that the frame is done as resets isDirty
+     */
+    public void endFrame() {
+        isDirty = false;
+    }
+
+    /**
      * Destroys the window and the GLFW context with it
      */
     public void destroy() {
@@ -196,13 +200,16 @@ public class GLFWWindow {
         return "GLFWWindow{" +
                 "id=" + id +
                 ", windowTitle='" + windowTitle + '\'' +
-                ", clearColor=" + clearColor +
                 ", vsync=" + vsync +
                 ", minimized=" + minimized +
                 ", isDirty=" + isDirty +
                 ", isFullscreen=" + isFullscreen +
                 ", rect=" + rect +
                 '}';
+    }
+
+    public void pollEvents() {
+        glfwPollEvents();
     }
 
     public static class WindowResizedEvent extends Event {

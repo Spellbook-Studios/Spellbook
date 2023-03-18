@@ -14,10 +14,16 @@ import java.util.List;
 @Builder
 public class SpellbookCapabilities {
     @Builder.Default public final boolean spellbookDebug = true;
+    @Builder.Default public final Rendering renderingProvider = Rendering.opengl;
     @Getter private final List<AssetProvider> assetsProviders = new ArrayList<>();
 
     public SpellbookCapabilities addAssetProvider(AssetProvider provider) {
         this.assetsProviders.add(provider);
         return this;
+    }
+
+    public enum Rendering {
+        none,
+        opengl
     }
 }

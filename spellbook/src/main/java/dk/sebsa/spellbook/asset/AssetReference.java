@@ -3,6 +3,7 @@ package dk.sebsa.spellbook.asset;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.TextAsset;
+import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import lombok.Getter;
 
 public class AssetReference {
@@ -27,8 +28,9 @@ public class AssetReference {
         usages = usages + 1;
         if(asset == null) {
             if(location.endsWith(".txt")) asset = new TextAsset();
+            else if(location.endsWith(".glsl")) asset = new GLSLShaderProgram();
             else {
-                Spellbook.instance.error("Failed to identify asset: " + name, false);
+                Spellbook.instance.error("Failed to identify asset type: " + name, false);
                 return null;
             }
 
