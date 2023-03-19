@@ -42,4 +42,5 @@ public abstract class RenderStage {
     }
 
     protected abstract void draw(FBO prevFBO);
+    protected abstract void destroy();
 }

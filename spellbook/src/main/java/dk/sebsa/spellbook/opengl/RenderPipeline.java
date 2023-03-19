@@ -8,7 +8,6 @@ import dk.sebsa.spellbook.math.Rect;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -27,7 +26,7 @@ public class RenderPipeline {
         this.logger = new ClassLogger(this, logger);
     }
 
-    private final Rect normalRect = new Rect(0,0,1,1);
+    private final Rect verticalFlippedUV = new Rect(0,0,1,-1);
 
     public void render(GLFWWindow window) {
         if(!hasPrintedDebugMessage) {
@@ -49,7 +48,7 @@ public class RenderPipeline {
 
         // Render the final FBO
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-        FBO.renderFBO(prevFBO, window.rect, normalRect);
+        FBO.renderFBO(prevFBO, window.rect, verticalFlippedUV);
     }
 
     public static class RenderPipelineBuilder {
@@ -62,6 +61,12 @@ public class RenderPipeline {
             stages = new ArrayList<>();
 
             return pipeline;
+        }
+    }
+
+    public void destroy() {
+        for(RenderStage stage : stages) {
+            stage.destroy();
         }
     }
 }

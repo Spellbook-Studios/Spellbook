@@ -1,5 +1,8 @@
 package dk.sebsa.spellbook.core;
 
+import dk.sebsa.spellbook.core.events.EngineLoadEvent;
+import dk.sebsa.spellbook.opengl.RenderPipeline;
+
 /**
  * A Spellbook Application
  * @author sebsn
@@ -18,4 +21,6 @@ public abstract class Application {
                 ", version=" + version() +
                 '}';
     }
+
+    public abstract RenderPipeline renderingPipeline(EngineLoadEvent e);
 }

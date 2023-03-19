@@ -121,7 +121,7 @@ public class Spellbook {
         eventBus.engine(new EngineInitEvent(logger, capabilities, application));
 
         logger.log("Open the gates, Engine Load Event");
-        eventBus.engine(new EngineLoadEvent(capabilities, moduleCore.getAssetManager(), moduleCore));
+        eventBus.engine(new EngineLoadEvent(capabilities, moduleCore.getAssetManager(), application, moduleCore, (SpellbookLogger) logger));
 
         logger.log("Initialization done!");
     }

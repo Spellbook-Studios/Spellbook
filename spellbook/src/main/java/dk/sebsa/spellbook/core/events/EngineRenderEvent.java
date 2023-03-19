@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.spellbook.io.GLFWWindow;
+import dk.sebsa.spellbook.opengl.RenderPipeline;
 
 /**
  *  Now render the frame

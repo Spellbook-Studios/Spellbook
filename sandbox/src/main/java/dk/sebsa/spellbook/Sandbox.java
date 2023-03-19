@@ -6,6 +6,9 @@ package dk.sebsa.spellbook;
 import dk.sebsa.Spellbook;
 import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.core.Application;
+import dk.sebsa.spellbook.core.events.EngineLoadEvent;
+import dk.sebsa.spellbook.opengl.RenderPipeline;
+import dk.sebsa.spellbook.opengl.TestStage;
 
 public class Sandbox extends Application {
     public static void main(String[] args) {
@@ -29,5 +32,12 @@ public class Sandbox extends Application {
     @Override
     public String version() {
         return "1.0a";
+    }
+
+    @Override
+    public RenderPipeline renderingPipeline(EngineLoadEvent e) {
+        return new RenderPipeline.RenderPipelineBuilder()
+                .appendStage(new TestStage(e.assetManager, e.moduleCore.getWindow()))
+                .build(e.logger);
     }
 }
