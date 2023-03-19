@@ -5,9 +5,13 @@ import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.core.ClassLogger;
+import dk.sebsa.spellbook.math.Color;
+import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.util.FileUtils;
+import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +22,7 @@ public class GLSLShaderProgram implements Asset {
     private int vertexShaderId, fragmentShaderId;
     private final Map<String, Integer> uniforms = new HashMap<>();
     private final ClassLogger logger;
+    public boolean initFor2D = false;
 
     public GLSLShaderProgram() {
         logger = new ClassLogger(this, Spellbook.getLogger());
@@ -107,4 +112,44 @@ public class GLSLShaderProgram implements Asset {
      * Unbinds shaders from the GL rendering pipeline
      */
     public void unbind() { glUseProgram(0); }
+
+    /**
+     * Creates a uniform
+     * @param uniformName The uniform as written in the shader
+     * @throws Exception
+     */
+    public void createUniform(String uniformName, Logger logger) throws Exception {
+        logger.trace(" - Creating uniform named - " + uniformName);
+        if(uniforms.containsKey(uniformName)) return;
+        int uniformLocation = glGetUniformLocation(programId,
+                uniformName);
+        if (uniformLocation < 0) logger.warn("Failed to find uniform - " + uniformName);
+        uniforms.put(uniformName, uniformLocation);
+    }
+
+    public void setUniform(String uniformName, float x, float y, float z, float w) {
+        glUniform4f(uniforms.get(uniformName), x, y, z, w);
+    }
+
+    public void setUniform(String uniformName, float x, float y) {
+        glUniform2f(uniforms.get(uniformName), x, y);
+    }
+
+    public void setUniform(String uniformName, Color value) {
+        glUniform4f(uniforms.get(uniformName), value.r, value.g, value.b, value.a);
+    }
+
+    public void setUniform(String uniformName, int value) {
+        glUniform1i(uniforms.get(uniformName), value);
+    }
+
+    public void setUniform(String name, Matrix4x4f value) {
+        int location = uniforms.get(name);
+
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+        value.getBuffer(buffer);
+
+        if(location != -1) glUniformMatrix4fv(location, false, buffer);
+        buffer.flip();
+    }
 }
