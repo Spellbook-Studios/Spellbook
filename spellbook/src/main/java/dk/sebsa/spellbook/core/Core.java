@@ -6,6 +6,7 @@ import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.asset.loading.AssetProvider;
 import dk.sebsa.spellbook.asset.loading.ClassPathAssetProvider;
 import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Color;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.util.List;
 public class Core implements Module, EventHandler {
     private Logger logger;
     @Getter private GLFWWindow window;
+    @Getter private GLFWInput input;
 
     private void log(Object... o) { logger.log(o); }
     @Getter private AssetManager assetManager;
@@ -29,6 +31,7 @@ public class Core implements Module, EventHandler {
     public void engineInit(EngineInitEvent e) {
         this.logger = new ClassLogger(this, e.logger);
         this.window = new GLFWWindow(e.logger, e.application.name(), 800, 640);
+        this.input = new GLFWInput(e, window);
         this.assetManager = new AssetManager();
 
         e.capabilities.getAssetsProviders().add(new ClassPathAssetProvider(e.logger));
@@ -46,24 +49,24 @@ public class Core implements Module, EventHandler {
             assets.addAll(provider.getAssets());
         }
 
-        if(e.capabilities.spellbookDebug) {
-            logger.trace("Loaded Assets: ");
-            for(AssetReference asset : assets) {
-                logger.trace(" " + asset);
-            }
+        logger.trace("Loaded Assets: ");
+        for(AssetReference asset : assets) {
+            logger.trace(" " + asset);
         }
 
         assetManager.registerReferences(assets);
 
         log("Asset Providers done");
 
-        // Window
+        // Window & Input
         window.init();
+        input.addCallbacks();
     }
 
     @Override
     public void cleanup() {
         log("Core Cleanup");
+        input.cleanup();
         window.destroy();
     }
 

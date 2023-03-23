@@ -13,6 +13,7 @@ import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.OpenGLModule;
 import lombok.Getter;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * The mother of all Spellbook programs
@@ -129,7 +130,7 @@ public class Spellbook {
     private void mainLoop() {
         logger.log("Entering mainLoop()");
 
-        while(Time.getTime() < 5*1000) {
+        while (!GLFW.glfwWindowShouldClose(moduleCore.getWindow().getId())) {
             // Process input and prepare for frame
             eventBus.engine(new EngineFrameEarly());
             Time.procsessFrame();

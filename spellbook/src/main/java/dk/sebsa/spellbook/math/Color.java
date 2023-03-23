@@ -32,7 +32,7 @@ public class Color {
      * @param r Red Value
      * @param g Green Value
      * @param b Blue Value
-     * @return
+     * @return The color matching the specified values
      */
     public static Color color(float r, float g, float b) {
         return color(r,g,b,1);
@@ -44,7 +44,7 @@ public class Color {
      * @param g Green Value
      * @param b Blue Value
      * @param a Alpha Value
-     * @return
+     * @return The color matching the specified values
      */
     public static Color color(float r, float g, float b, float a) {
         return colorPool.getPut(a,r,g,b, () -> new Color(r,g,b,a));
@@ -83,5 +83,6 @@ public class Color {
     public static final Color cyan =  color(0, 1, 1);
     public static final Color magenta =  color(1, 0, 1);
     public static final Color transparent =  color(0, 0, 0, 0);
+    public static final Color neonOrange = color(1, 0.6470588f, 0.0f);
     // Defaults
 }

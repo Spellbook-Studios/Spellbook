@@ -12,7 +12,7 @@ import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.opengl.GL11.*;
 
 public class OpenGLModule implements Module {
-    private final Color clearColor = Color.red;
+    private final Color clearColor = Color.neonOrange;
     private RenderPipeline pipeline;
     @Override
     public void init(EventBus eventBus) {
