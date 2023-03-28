@@ -1,6 +1,8 @@
 package dk.sebsa.spellbook.core;
 
+import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
+import dk.sebsa.spellbook.core.events.LayerStack;
 import dk.sebsa.spellbook.opengl.RenderPipeline;
 
 /**
@@ -23,4 +25,5 @@ public abstract class Application {
     }
 
     public abstract RenderPipeline renderingPipeline(EngineLoadEvent e);
+    public abstract LayerStack layerStack(EngineInitEvent e);
 }

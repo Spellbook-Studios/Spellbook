@@ -135,6 +135,9 @@ public class Spellbook {
             eventBus.engine(new EngineFrameEarly());
             Time.procsessFrame();
 
+            // Main frame, handle events
+            eventBus.engine(new EngineFrameProcess());
+
             // Render
             eventBus.engine(new EngineRenderEvent(moduleCore.getWindow()));
 

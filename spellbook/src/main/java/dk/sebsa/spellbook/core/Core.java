@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.core;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
@@ -8,7 +9,6 @@ import dk.sebsa.spellbook.asset.loading.ClassPathAssetProvider;
 import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.io.GLFWWindow;
-import dk.sebsa.spellbook.math.Color;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ public class Core implements Module, EventHandler {
     private Logger logger;
     @Getter private GLFWWindow window;
     @Getter private GLFWInput input;
+    @Getter private LayerStack stack;
 
     private void log(Object... o) { logger.log(o); }
     @Getter private AssetManager assetManager;
@@ -35,6 +36,8 @@ public class Core implements Module, EventHandler {
         this.assetManager = new AssetManager();
 
         e.capabilities.getAssetsProviders().add(new ClassPathAssetProvider(e.logger));
+
+        this.stack = e.application.layerStack(e);
     }
 
     @EventListener
@@ -81,6 +84,11 @@ public class Core implements Module, EventHandler {
     }
 
     @EventListener
+    public void engineFrameProcess(EngineFrameProcess e) {
+        stack.handleEvents(Spellbook.instance.getEventBus().userEvents);
+    }
+
+    @EventListener
     public void engineRender(EngineRenderEvent e) {
         window.update();
     }
@@ -88,6 +96,7 @@ public class Core implements Module, EventHandler {
     @EventListener
     public void engineFrameDone(EngineFrameDone e) {
         window.endFrame();
+        input.endFrame();
     }
 
     @Override

@@ -1,10 +1,18 @@
 package dk.sebsa.spellbook.io;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
+import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.math.Vector2f;
 import org.lwjgl.glfw.*;
 
+/**
+ * Gathers input form the user from a GLFWWindow
+ *
+ * @author sebs
+ * @since 0.0.1
+ */
 public class GLFWInput {
     // Input Data
     private byte[] keys;
@@ -26,10 +34,12 @@ public class GLFWInput {
     private final GLFWCharCallback charCallback; // For text input
 
     private final ClassLogger logger;
+    private final EventBus eventBus;
 
     public GLFWInput(EngineInitEvent e, GLFWWindow window) {
         this.logger = new ClassLogger(this, e.logger);
         this.window = window;
+        this.eventBus = Spellbook.instance.getEventBus();
         resetInputData(true);
 
         logger.log("Init input");
@@ -42,17 +52,13 @@ public class GLFWInput {
                 if (action == 1) {
                     buttonsPressed[button] = 1;
 
-                    //ButtonPressedEvent e = new ButtonPressedEvent();
-                    //e.mouse = mousePos;
-                    //e.button = button;
-                    //app.stack.event(e);
+                    ButtonPressedEvent e = new ButtonPressedEvent(button);
+                    eventBus.user(e);
                 } else if (action == 0) {
                     buttonsReleased[button] = 1;
 
-                    //ButtonReleasedEvent e = new ButtonReleasedEvent();
-                    //e.mouse = mousePos;
-                    //e.button = button;
-                    //app.stack.event(e);
+                    ButtonReleasedEvent e = new ButtonReleasedEvent(button);
+                    eventBus.user(e);
                 }
             }
         };
@@ -63,16 +69,14 @@ public class GLFWInput {
                     keys[key] = (byte) (action != GLFW.GLFW_RELEASE ? 1 : 0);
                     if (action == 1) {
                         keysPressed[key] = 1;
-//
-//                        KeyPressedEvent e = new KeyPressedEvent();
-//                        e.key = key;
-//                        app.stack.event(e);
+
+                        KeyPressedEvent e = new KeyPressedEvent(key);
+                        eventBus.user(e);
                     }
                     if (action == 0) {
                         keysReleased[key] = 1;
-//                        KeyReleasedEvent e = new KeyReleasedEvent();
-//                        e.key = key;
-//                        app.stack.event(e);
+                        KeyReleasedEvent e = new KeyReleasedEvent(key);
+                        eventBus.user(e);
                     }
                 }
             }
@@ -81,33 +85,27 @@ public class GLFWInput {
         charCallback = new GLFWCharCallback() {
             @Override
             public void invoke(long window, int codepoint) {
-//                CharEvent e = new CharEvent();
-//                e.codePoint = codepoint;
-//                app.stack.event(e);
+                CharEvent e = new CharEvent(codepoint);
+                eventBus.user(e);
             }
         };
 
         cursorCallback = new GLFWCursorPosCallback() {
             public void invoke(long window, double xpos, double ypos) {
                 // Create Event
-//                MouseMoveEvent e = new MouseMoveEvent();
-//                e.mousePosX[0] = (int) xpos;
-//                e.mousePosY[0] = (int) ypos;
-//                e.offsetMousePosX[0] = (int) (mouseX-xpos);
-//                e.offsetMousePosY[0] = (int) (mouseY-ypos);
-//                app.stack.event(e);
+                MouseMoveEvent e = new MouseMoveEvent((float) xpos, (float) ypos,
+                        mousePos.x-((float) xpos), mousePos.y-((float) ypos));
+                eventBus.user(e);
 
-                // Save Mousepos
+                // Save mouse position
                 mousePos.set((float) xpos, (float) ypos);
             }
         };
 
         scrollCallback = new GLFWScrollCallback() {
             public void invoke(long window, double offsetx, double offsety) {
-//                MouseScrollEvent e = new MouseScrollEvent();
-//                e.offsetX = offsetx;
-//                e.offsetY = offsety;
-//                app.stack.event(e);
+                MouseScrollEvent e = new MouseScrollEvent(offsetx, offsety);
+                eventBus.user(e);
 
                 scrollX += offsetx;
                 scrollY += offsety;

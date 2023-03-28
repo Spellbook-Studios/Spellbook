@@ -26,6 +26,20 @@ public abstract class Event {
 
         engineCleanup, // The engine should destroy itself leaving no traces in memory :D
         windowResized, // Tells the engine that the window was resized
+
+        ioKeyPressed, // Tells the engine that a user has pressed a keyboard key
+        ioKeyReleased, // Tells the engine that a user has released a keyboard key
+        ioChar, // Tells the engine that the keyboard is sending a char event
+        ioButtonPressed, // Tells the engine that a user has pressed a mouse button
+        ioButtonReleased, // Tells the engine that a user has released a mouse button
+        ioMouseMove, // Tells the engine that the mouse has moved
+        ioMouseScroll, // Tells the engine that the mouse scrolled
     }
 
+    @Override
+    public String toString() {
+        return "Event{" +
+                "type=" + eventType() +
+                '}';
+    }
 }

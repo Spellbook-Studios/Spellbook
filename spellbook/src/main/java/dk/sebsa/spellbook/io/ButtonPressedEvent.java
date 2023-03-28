@@ -1,0 +1,21 @@
+package dk.sebsa.spellbook.io;
+
+import dk.sebsa.spellbook.core.events.UserEvent;
+
+/**
+ * Tells the engine that a user has pressed a mouse button
+ * @author sebsn
+ * @since 0.0.1
+ */
+public class ButtonPressedEvent extends UserEvent {
+    public final int button;
+
+    public ButtonPressedEvent(int button) {
+        this.button = button;
+    }
+
+    @Override
+    protected EventType eventType() {
+        return EventType.ioButtonPressed;
+    }
+}

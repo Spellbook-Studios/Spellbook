@@ -7,21 +7,21 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
+/**
+ * Handles engine events and sends notifications to subscribers
+ * Also collects user events for layerstacks to then later process
+ *
+ * @author sebs
+ * @since 0.0.1
+ */
 public class EventBus {
     private record Listener(Object o, Method m) {}
-    private final Queue<Event> userEvents = new PriorityQueue<>();
+    public final Queue<UserEvent> userEvents = new PriorityQueue<>();
     private final HashMap<String, List<Listener>> listeners = new HashMap<>();
     private final ClassLogger logger;
 
     public EventBus(Logger logger) {
         this.logger = new ClassLogger(this, logger);
-    }
-
-    /**
-     * Dispatches all generated user events to the layerstack
-     */
-    public void dispatchEvents() {
-
     }
 
     public void registerListeners(Object o) {
@@ -39,11 +39,11 @@ public class EventBus {
     }
 
     /**
-     * Adds a user event to the event queues
+     * Adds a user event to the event queue
      * @param e The event
      */
-    public void user(Event e) {
-        userEvents.add(e);
+    public void user(UserEvent e) {
+        userEvents.offer(e);
     }
 
     /**
