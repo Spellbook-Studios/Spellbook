@@ -16,7 +16,7 @@ public class MouseScrollEvent extends UserEvent {
     }
 
     @Override
-    protected EventType eventType() {
+    public EventType eventType() {
         return EventType.ioMouseScroll;
     }
 }

@@ -25,7 +25,6 @@ public class OpenGLModule implements Module {
 
         pipeline = e.app.renderingPipeline(e);
         GL2D.init(e.moduleCore.getWindow(), e.assetManager.getAsset("/spellbook/shaders/Spellbook2d.glsl"));
-
     }
 
     @Override

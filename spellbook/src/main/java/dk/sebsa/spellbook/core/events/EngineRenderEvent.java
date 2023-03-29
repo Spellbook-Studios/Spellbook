@@ -16,7 +16,7 @@ public class EngineRenderEvent extends Event {
     }
 
     @Override
-    protected EventType eventType() {
+    public EventType eventType() {
         return EventType.engineRender;
     }
 }

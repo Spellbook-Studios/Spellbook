@@ -3,6 +3,7 @@ package dk.sebsa.spellbook.opengl;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.io.GLFWWindow;
+import dk.sebsa.spellbook.math.Rect;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -48,7 +49,7 @@ public class TestStage extends RenderStage {
     }
 
     @Override
-    protected void draw(FBO prevFBO) {
+    protected void draw(FBO prevFBO, Rect r) {
         shader.bind();
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);

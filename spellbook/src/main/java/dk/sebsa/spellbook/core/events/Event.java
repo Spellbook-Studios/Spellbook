@@ -8,7 +8,7 @@ package dk.sebsa.spellbook.core.events;
  * @since 0.0.1
  */
 public abstract class Event {
-    protected abstract EventType eventType();
+    public abstract EventType eventType();
 
     /**
      * A enum denoting what triggered an event

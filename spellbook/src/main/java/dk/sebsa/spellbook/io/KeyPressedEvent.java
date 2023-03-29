@@ -15,7 +15,7 @@ public class KeyPressedEvent extends UserEvent {
     }
 
     @Override
-    protected EventType eventType() {
+    public EventType eventType() {
         return EventType.ioKeyPressed;
     }
 }

@@ -20,7 +20,7 @@ public class MouseMoveEvent extends UserEvent {
     }
 
     @Override
-    protected EventType eventType() {
+    public EventType eventType() {
         return EventType.ioMouseMove;
     }
 }

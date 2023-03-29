@@ -10,6 +10,7 @@ import dk.sebsa.mana.impl.FormatBuilder;
 import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.OpenGLModule;
 import lombok.Getter;
@@ -117,9 +118,10 @@ public class Spellbook {
         moduleCore = new Core();
         registerModule(moduleCore);
         if(capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl)) registerModule(new OpenGLModule());
+        if(capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
 
         logger.log("Engine Init Event, prepare for trouble!..");
-        eventBus.engine(new EngineInitEvent(logger, capabilities, application));
+        eventBus.engine(new EngineInitEvent((SpellbookLogger) logger, capabilities, application));
 
         logger.log("Open the gates, Engine Load Event");
         eventBus.engine(new EngineLoadEvent(capabilities, moduleCore.getAssetManager(), application, moduleCore, (SpellbookLogger) logger));

@@ -220,7 +220,7 @@ public class GLFWWindow {
         }
 
         @Override
-        protected EventType eventType() {
+        public EventType eventType() {
             return EventType.windowResized;
         }
     }

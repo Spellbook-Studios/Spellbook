@@ -15,7 +15,7 @@ public class KeyReleasedEvent extends UserEvent {
     }
 
     @Override
-    protected EventType eventType() {
+    public EventType eventType() {
         return EventType.ioKeyReleased;
     }
 }

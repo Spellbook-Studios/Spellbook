@@ -27,7 +27,7 @@ public class EngineLoadEvent extends Event {
     }
 
     @Override
-    protected EventType eventType() {
+    public EventType eventType() {
         return EventType.engineLoad;
     }
 }

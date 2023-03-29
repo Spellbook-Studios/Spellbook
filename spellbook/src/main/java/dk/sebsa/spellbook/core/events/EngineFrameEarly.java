@@ -8,7 +8,7 @@ package dk.sebsa.spellbook.core.events;
  */
 public class EngineFrameEarly extends Event {
     @Override
-    protected EventType eventType() {
+    public EventType eventType() {
         return EventType.engineFrameEarly;
     }
 }

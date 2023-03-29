@@ -18,6 +18,15 @@ public class SpellbookCapabilities {
      * This should not be enabled in production unless the user requests it
      */
     @Builder.Default public final boolean spellbookDebug = true;
+
+    /**
+     * Weather IMGUI rendering for debug menus should be enabled, and added to the layer stack
+     * Should not be used in production
+     * Should not be used in production
+     * Should not be used in production
+     */
+    @Builder.Default public final boolean debugIMGUI = false;
+
     /**
      * What rendering framework Spellbook uses
      */

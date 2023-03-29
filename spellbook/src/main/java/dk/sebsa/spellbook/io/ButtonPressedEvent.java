@@ -15,7 +15,7 @@ public class ButtonPressedEvent extends UserEvent {
     }
 
     @Override
-    protected EventType eventType() {
+    public EventType eventType() {
         return EventType.ioButtonPressed;
     }
 }

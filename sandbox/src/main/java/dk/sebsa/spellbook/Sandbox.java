@@ -12,6 +12,7 @@ import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.LayerStack;
 import dk.sebsa.spellbook.opengl.RenderPipeline;
 import dk.sebsa.spellbook.opengl.TestStage;
+import dk.sebsa.spellbook.opengl.UIStage;
 
 public class Sandbox extends Application {
     public static void main(String[] args) {
@@ -19,6 +20,7 @@ public class Sandbox extends Application {
                         .spellbookDebug(true)
                         .logStoreTarget("../logs/latest.log")
                         .logDisableASCIIEscapeCharacters(false)
+                        .debugIMGUI(true)
                         .build());
     }
 
@@ -40,14 +42,16 @@ public class Sandbox extends Application {
     @Override
     public RenderPipeline renderingPipeline(EngineLoadEvent e) {
         return new RenderPipeline.RenderPipelineBuilder()
-                .appendStage(new TestStage(e.assetManager, e.moduleCore.getWindow()))
+                //.appendStage(new TestStage(e.assetManager, e.moduleCore.getWindow()))
+                .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
                 .build(e.logger);
     }
 
     @Override
     public LayerStack layerStack(EngineInitEvent e) {
         return new LayerStack.LayerStackBuilder()
-                .appendLayer(new TestLayer((SpellbookLogger) e.logger))
+                .appendLayer(new TestLayer(e.logger))
+                .appendLayer(new DebugLayer(e.logger))
                 .build();
     }
 }

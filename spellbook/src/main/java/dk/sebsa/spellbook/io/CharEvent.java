@@ -15,7 +15,7 @@ public class CharEvent extends UserEvent {
     }
 
     @Override
-    protected EventType eventType() {
+    public EventType eventType() {
         return EventType.ioChar;
     }
 }

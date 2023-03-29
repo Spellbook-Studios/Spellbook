@@ -2,6 +2,7 @@ package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.SpellbookLogger;
+import dk.sebsa.spellbook.math.Rect;
 
 /**
  * Handles UI user events, and can also subscribe to engine events
@@ -17,7 +18,7 @@ public abstract class Layer implements EventHandler {
      */
     public boolean enabled = true;
     protected final ClassLogger logger;
-    protected void log(Object o) { logger.log(o.toString(), this.getClass().getSimpleName()); }
+    protected void log(Object o) { logger.log(o.toString()); }
 
     public Layer(SpellbookLogger logger) {
         this.logger = new ClassLogger(this, logger);
@@ -31,4 +32,9 @@ public abstract class Layer implements EventHandler {
      * @param event The userEvent
      */
     protected abstract void userEvent(UserEvent event);
+
+    /**
+     * Render the UI to the current framebuffer
+     */
+    public abstract void render(Rect r);
 }

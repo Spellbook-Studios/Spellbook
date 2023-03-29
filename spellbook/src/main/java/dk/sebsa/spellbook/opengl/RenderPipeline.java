@@ -31,9 +31,10 @@ public class RenderPipeline {
     public void render(GLFWWindow window) {
         if(!hasPrintedDebugMessage) {
             hasPrintedDebugMessage = true;
-            logger.trace("Rendering Pipeline: ", getClass().getSimpleName());
+            logger.trace("Rendering Pipeline: ");
+
             for (RenderStage stage : stages) {
-                logger.trace(" - " + stage.getName(), getClass().getSimpleName());
+                logger.trace(" - " + stage.getName());
             }
         }
 
