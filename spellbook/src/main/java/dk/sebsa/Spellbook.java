@@ -117,8 +117,10 @@ public class Spellbook {
         logger.log("Registering Modules");
         moduleCore = new Core();
         registerModule(moduleCore);
+
+        // Add Non Core Modules
         if(capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl)) registerModule(new OpenGLModule());
-        if(capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
+        if(DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
 
         logger.log("Engine Init Event, prepare for trouble!..");
         eventBus.engine(new EngineInitEvent((SpellbookLogger) logger, capabilities, application));

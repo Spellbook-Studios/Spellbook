@@ -15,6 +15,8 @@ import dk.sebsa.spellbook.opengl.TestStage;
 import dk.sebsa.spellbook.opengl.UIStage;
 
 public class Sandbox extends Application {
+    public DebugLayer debugLayer;
+
     public static void main(String[] args) {
         Spellbook.start(new Sandbox(), SpellbookCapabilities.builder()
                         .spellbookDebug(true)
@@ -42,16 +44,18 @@ public class Sandbox extends Application {
     @Override
     public RenderPipeline renderingPipeline(EngineLoadEvent e) {
         return new RenderPipeline.RenderPipelineBuilder()
-                //.appendStage(new TestStage(e.assetManager, e.moduleCore.getWindow()))
+                .appendStage(new TestStage(e.assetManager, e.moduleCore.getWindow()))
                 .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
                 .build(e.logger);
     }
 
     @Override
     public LayerStack layerStack(EngineInitEvent e) {
+        debugLayer = new DebugLayer(e.logger);
+
         return new LayerStack.LayerStackBuilder()
-                .appendLayer(new TestLayer(e.logger))
-                .appendLayer(new DebugLayer(e.logger))
+                .appendLayer(new TestLayer(e.logger, debugLayer))
+                .appendLayer(debugLayer)
                 .build();
     }
 }

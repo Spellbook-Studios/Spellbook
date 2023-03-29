@@ -3,6 +3,7 @@ package dk.sebsa.spellbook.core.events;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.math.Rect;
+import lombok.Getter;
 
 /**
  * Handles UI user events, and can also subscribe to engine events
@@ -33,8 +34,16 @@ public abstract class Layer implements EventHandler {
      */
     protected abstract void userEvent(UserEvent event);
 
+
+    /**
+     * Renders this layer to the current FBO (if the layer is enabled)
+     */
+    public void ensureRender(Rect r) { // TODO: I hate this if check
+        if(enabled) render(r);
+    }
+
     /**
      * Render the UI to the current framebuffer
      */
-    public abstract void render(Rect r);
+    protected abstract void render(Rect r);
 }
