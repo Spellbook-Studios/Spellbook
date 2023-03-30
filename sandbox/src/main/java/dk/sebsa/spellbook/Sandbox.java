@@ -6,13 +6,13 @@ package dk.sebsa.spellbook;
 import dk.sebsa.Spellbook;
 import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.core.Application;
-import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.LayerStack;
 import dk.sebsa.spellbook.opengl.RenderPipeline;
 import dk.sebsa.spellbook.opengl.TestStage;
-import dk.sebsa.spellbook.opengl.UIStage;
+import dk.sebsa.spellbook.opengl.stages.SpriteStage;
+import dk.sebsa.spellbook.opengl.stages.UIStage;
 
 public class Sandbox extends Application {
     public DebugLayer debugLayer;
@@ -44,7 +44,7 @@ public class Sandbox extends Application {
     @Override
     public RenderPipeline renderingPipeline(EngineLoadEvent e) {
         return new RenderPipeline.RenderPipelineBuilder()
-                .appendStage(new TestStage(e.assetManager, e.moduleCore.getWindow()))
+                .appendStage(new SpriteStage(e.moduleCore.getWindow()))
                 .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
                 .build(e.logger);
     }

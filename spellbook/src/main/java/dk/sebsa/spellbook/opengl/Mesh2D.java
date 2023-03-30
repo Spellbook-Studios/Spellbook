@@ -37,6 +37,13 @@ public class Mesh2D {
         return new Mesh2D(square, square);
     }
 
+    private static Mesh2D render;
+    public static Mesh2D getRenderMesh() {
+        if(render != null) return render;
+
+        return new Mesh2D(square, uv);
+    }
+
     public Mesh2D(float[] vertices, float[] uvs) {
         this.vertices = vertices;
         this.uvs = uvs;

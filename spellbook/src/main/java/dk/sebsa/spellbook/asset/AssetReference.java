@@ -4,6 +4,9 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.TextAsset;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
+import dk.sebsa.spellbook.opengl.Material;
+import dk.sebsa.spellbook.opengl.Sprite;
+import dk.sebsa.spellbook.opengl.Texture;
 import lombok.Getter;
 
 public class AssetReference {
@@ -29,6 +32,9 @@ public class AssetReference {
         if(asset == null) {
             if(location.endsWith(".txt")) asset = new TextAsset();
             else if(location.endsWith(".glsl")) asset = new GLSLShaderProgram();
+            else if(location.endsWith(".png")) asset = new Texture();
+            else if(location.endsWith(".mat")) asset = new Material();
+            else if(location.endsWith(".spr")) asset = new Sprite();
             else {
                 Spellbook.instance.error("Failed to identify asset type: " + name, false);
                 return null;

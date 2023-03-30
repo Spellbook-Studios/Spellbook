@@ -14,6 +14,8 @@ import static org.lwjgl.opengl.GL11.*;
 public class OpenGLModule implements Module {
     private final Color clearColor = Color.neonOrange;
     private RenderPipeline pipeline;
+    private boolean capRender2D;
+
     @Override
     public void init(EventBus eventBus) {
         eventBus.registerListeners(this);
@@ -25,12 +27,21 @@ public class OpenGLModule implements Module {
 
         pipeline = e.app.renderingPipeline(e);
         GL2D.init(e.moduleCore.getWindow(), e.assetManager.getAsset("/spellbook/shaders/Spellbook2d.glsl"));
+
+        capRender2D = e.capabilities.render2D;
+        if(capRender2D) {
+            Sprite2D.init(e);
+        }
     }
 
     @Override
     public void cleanup() {
         GL2D.cleanup();
         pipeline.destroy();
+
+        if(capRender2D) {
+            Sprite2D.destroy();
+        }
     }
 
     private static final Rect invertedUV = new Rect(0,0,1,-1);

@@ -9,7 +9,7 @@ public abstract class RenderStage {
     public abstract String getName();
     private boolean init = false;
     private FBO fbo;
-    private final GLFWWindow window;
+    protected final GLFWWindow window;
 
     public RenderStage(GLFWWindow window) {
         this.window = window;

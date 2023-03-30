@@ -7,6 +7,7 @@ import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Matrix4x4f;
+import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.util.FileUtils;
 import org.lwjgl.BufferUtils;
 
@@ -151,5 +152,9 @@ public class GLSLShaderProgram implements Asset {
 
         if(location != -1) glUniformMatrix4fv(location, false, buffer);
         buffer.flip();
+    }
+
+    public void setUniform(String uniformName, Vector2f v) {
+        glUniform2f(uniforms.get(uniformName), v.x, v.y);
     }
 }

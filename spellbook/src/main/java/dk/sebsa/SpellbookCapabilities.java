@@ -1,6 +1,7 @@
 package dk.sebsa;
 
 import dk.sebsa.spellbook.asset.loading.AssetProvider;
+import dk.sebsa.spellbook.math.Rect;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -31,6 +32,16 @@ public class SpellbookCapabilities {
      * What rendering framework Spellbook uses
      */
     @Builder.Default public final Rendering renderingProvider = Rendering.opengl;
+
+    /**
+     * Enables / disables rendering of 2d sprites
+     */
+    @Builder.Default public final boolean render2D = true;
+
+    /**
+     * Render Resolution
+     */
+    @Builder.Default public final Rect renderResolution = new Rect(0,0,100,100);
 
     /**
      * A list of locations to load assets from.

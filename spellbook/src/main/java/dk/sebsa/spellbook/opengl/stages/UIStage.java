@@ -1,9 +1,11 @@
-package dk.sebsa.spellbook.opengl;
+package dk.sebsa.spellbook.opengl.stages;
 
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.LayerStack;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
+import dk.sebsa.spellbook.opengl.FBO;
+import dk.sebsa.spellbook.opengl.RenderStage;
 
 public class UIStage extends RenderStage {
     private final LayerStack stack;

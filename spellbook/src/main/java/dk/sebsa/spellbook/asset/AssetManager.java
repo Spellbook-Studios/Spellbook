@@ -14,6 +14,11 @@ import java.util.Map;
  **/
 public class AssetManager {
     private final Map<String, AssetReference> assets = new HashMap<>();
+    private static AssetManager instance;
+
+    public AssetManager() {
+        instance = this;
+    }
 
     /**
      * Registers asset references directly
@@ -32,6 +37,16 @@ public class AssetManager {
      */
     public AssetReference getAsset(String name) {
         return assets.get(name);
+    }
+
+
+    /**
+     * Gets an asset refrence from assetmanagers registry
+     * @param name The name of the asset
+     * @return The asset
+     */
+    public static AssetReference getAssetS(String name) {
+        return instance.getAsset(name);
     }
 
     /**
