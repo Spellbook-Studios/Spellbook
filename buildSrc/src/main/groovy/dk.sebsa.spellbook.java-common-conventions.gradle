@@ -26,17 +26,10 @@ switch (OperatingSystem.current()) {
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
-    maven {
-        url = uri("https://maven.pkg.github.com/Spellbook-Studios/Mana")
-        credentials {
-            username = System.getenv("GITHUB_ACTOR") ?: GHP_USERNAME
-            password = System.getenv("GITHUB_TOKEN") ?: GHP_TOKEN
-        }
-    }
 }
 
 dependencies {
-    implementation 'dk.sebsa:mana:1.0a'
+    implementation 'dk.sebsa:mana:1.0b'
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
