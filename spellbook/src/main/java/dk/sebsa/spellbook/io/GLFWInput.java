@@ -36,6 +36,10 @@ public class GLFWInput {
     private final ClassLogger logger;
     private final EventBus eventBus;
 
+    /**
+     * @param e The event used for loading loggers
+     * @param window The window to bind to
+     */
     public GLFWInput(EngineInitEvent e, GLFWWindow window) {
         this.logger = new ClassLogger(this, e.logger);
         this.window = window;
@@ -230,6 +234,7 @@ public class GLFWInput {
 
     /**
      * Get horizontal scroll value, this is equal to all scroll offsets of entire program lifetime
+     * @return The offset this frame
      */
     public double getScrollX() {
         return scrollX;
@@ -237,6 +242,7 @@ public class GLFWInput {
 
     /**
      * Get vertical scroll value, this is equal to all scroll offsets of entire program lifetime
+     * @return The offset this frame
      */
     public double getScrollY() {
         return scrollY;

@@ -47,7 +47,10 @@ public class GLFWWindow {
     private final int[] posX = new int[1]; // The position of the window on the screen
     private final int[] posY = new int[1];  // The position of the window on the screen
 
-    public final Rect rect = new Rect(); // A rect representing the window, with pos always equal to 0,0
+    /**
+     * A rect representing the window, with pos always equal to 0,0
+     */
+    public final Rect rect = new Rect();
 
     private final Logger logger;
     private void log(Object... o) { logger.log(o); }
@@ -208,13 +211,23 @@ public class GLFWWindow {
                 '}';
     }
 
+    /**
+     * Polls input events
+     */
     public void pollEvents() {
         glfwPollEvents();
     }
 
     public static class WindowResizedEvent extends Event {
+        /**
+         * A rect representing the resized window
+         */
         public final Rect window;
 
+        /**
+         * Event caused when the user or the program resizes the window
+         * @param window The new rect representing the window
+         */
         public WindowResizedEvent(Rect window) {
             this.window = window;
         }

@@ -8,9 +8,9 @@ package dk.sebsa.spellbook.math;
 public class Mathf {
     /**
      * Wraps a value to be within the min and max values
-     * @param val
-     * @param min
-     * @param max
+     * @param val Value to wrap
+     * @param min Minimum value
+     * @param max Max value
      * @return The wrapped value
      */
     public static float wrap(float val, float min, float max) {
@@ -20,9 +20,9 @@ public class Mathf {
 
     /**
      * Clamps a value to be within the min and max values
-     * @param val
-     * @param min
-     * @param max
+     * @param val Value to clamp
+     * @param min Minimum value
+     * @param max Max value
      * @return The clamped value
      */
     public static float clamp(float val, float min, float max) {

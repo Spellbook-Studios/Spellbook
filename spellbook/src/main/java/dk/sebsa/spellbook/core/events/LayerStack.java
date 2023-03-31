@@ -13,12 +13,21 @@ import java.util.Queue;
  * @since 1.0.0
  */
 public class LayerStack {
+    /**
+     * The actual layerstack
+     * Element 0 is at the bottom
+     * and element stack.size()-1 is the top
+     */
     public final List<Layer> stack;
 
     private LayerStack(List<Layer> stack) {
         this.stack = stack;
     }
 
+    /**
+     * Polls events from event queue and handles them through layerstack
+     * @param events Events to process
+     */
     public void handleEvents(Queue<UserEvent> events) {
         while(!events.isEmpty()) {
             UserEvent e = events.poll();
@@ -31,11 +40,25 @@ public class LayerStack {
         }
     }
 
+    /**
+     * Builds layerstacks
+     * @author sebsn
+     * @since 0.0.1
+     */
     public static class LayerStackBuilder {
         private List<Layer> stack = new ArrayList<>();
 
+        /**
+         * Appends layer to top of layerstack
+         * @param layer Layer to append
+         * @return this
+         */
         public LayerStack.LayerStackBuilder appendLayer(Layer layer) { stack.add(layer); return this; }
 
+        /**
+         * Assembles the final layerstack with the layers append in appendLayer(Layer layer)
+         * @return The final layerstack
+         */
         public LayerStack build() {
             LayerStack layerStack = new LayerStack(stack);
             stack = new ArrayList<>();

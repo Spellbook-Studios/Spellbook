@@ -8,8 +8,14 @@ import dk.sebsa.spellbook.core.events.UserEvent;
  * @since 0.0.1
  */
 public class KeyReleasedEvent extends UserEvent {
+    /**
+     * The key pressed
+     */
     public final int key;
 
+    /**
+     * @param key The key pressed
+     */
     public KeyReleasedEvent(int key) {
         this.key = key;
     }

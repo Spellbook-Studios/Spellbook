@@ -24,12 +24,26 @@ public class FBO {
     private final int depthBufferID;
     private final Texture texture;
     private final Material material;
+
+    /**
+     * Width of framebuffer
+     */
     public final int width;
+
+    /**
+     * Height of frameBuffer
+     */
     public final int height;
+
     private final GLFWWindow window;
 
     private void trace(Object o) { Spellbook.getLogger().trace(o); }
 
+    /**
+     * @param w Width of buffer
+     * @param h Height of buffer
+     * @param window Window of program
+     */
     public FBO(int w, int h, GLFWWindow window) {
         this.width = w;
         this.height = h;
@@ -44,6 +58,10 @@ public class FBO {
         unBind();
     }
 
+    /**
+     * Binds the GL_RENDERBUFFER and GL_GRAMEBUFFER
+     * Resets glViewPort
+     */
     public void bindFrameBuffer() {
         GL11.glBindTexture(GL_TEXTURE_2D, 0);
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, depthBufferID);
@@ -51,6 +69,10 @@ public class FBO {
         glViewport(0,0,width,height);
     }
 
+    /**
+     * Unbinds the GL_RENDERBUFFER and GL_GRAMEBUFFER
+     * Resets glViewPort
+     */
     public void unBind() {
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, 0);
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);

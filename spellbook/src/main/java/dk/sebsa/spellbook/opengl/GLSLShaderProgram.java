@@ -23,8 +23,14 @@ public class GLSLShaderProgram implements Asset {
     private int vertexShaderId, fragmentShaderId;
     private final Map<String, Integer> uniforms = new HashMap<>();
     private final ClassLogger logger;
+    /**
+     * Weather the shader has been prepared by GL2D
+     */
     public boolean initFor2D = false;
 
+    /**
+     * GLSLShaderprogram with Spellbook logger
+     */
     public GLSLShaderProgram() {
         logger = new ClassLogger(this, Spellbook.getLogger());
     }
@@ -128,24 +134,53 @@ public class GLSLShaderProgram implements Asset {
         uniforms.put(uniformName, uniformLocation);
     }
 
+    /**
+     * Sets shader uniform (vec4)
+     * @param uniformName Name to set
+     * @param x Value 1
+     * @param y Value 2
+     * @param z Value 3
+     * @param w Value 4
+     */
     public void setUniform(String uniformName, float x, float y, float z, float w) {
         glUniform4f(uniforms.get(uniformName), x, y, z, w);
     }
 
+    /**
+     * Sets shader uniform (vec2)
+     * @param uniformName Name to set
+     * @param x Vector x
+     * @param y Vector y
+     */
     public void setUniform(String uniformName, float x, float y) {
         glUniform2f(uniforms.get(uniformName), x, y);
     }
 
+    /**
+     * Sets shader uniform (vec4)
+     * @param uniformName Name to set
+     * @param value Value to set
+     */
     public void setUniform(String uniformName, Color value) {
         glUniform4f(uniforms.get(uniformName), value.r, value.g, value.b, value.a);
     }
 
+    /**
+     * Sets shader uniform (int)
+     * @param uniformName Name to set
+     * @param value Value to set
+     */
     public void setUniform(String uniformName, int value) {
         glUniform1i(uniforms.get(uniformName), value);
     }
 
-    public void setUniform(String name, Matrix4x4f value) {
-        int location = uniforms.get(name);
+    /**
+     * Sets shader uniform (Matrix4x4)
+     * @param uniformName Name to set
+     * @param value Value to set
+     */
+    public void setUniform(String uniformName, Matrix4x4f value) {
+        int location = uniforms.get(uniformName);
 
         FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
         value.getBuffer(buffer);
@@ -154,6 +189,11 @@ public class GLSLShaderProgram implements Asset {
         buffer.flip();
     }
 
+    /**
+     * Sets shader uniform (vec2)
+     * @param uniformName Name to set
+     * @param v Value to set
+     */
     public void setUniform(String uniformName, Vector2f v) {
         glUniform2f(uniforms.get(uniformName), v.x, v.y);
     }

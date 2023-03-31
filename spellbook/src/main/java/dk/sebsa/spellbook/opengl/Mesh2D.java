@@ -31,6 +31,11 @@ public class Mesh2D {
     };
 
     private static Mesh2D quad;
+
+    /**
+     * Gets the instance of the simple quad mesh
+     * @return The instance of the simple quad mesh
+     */
     public static Mesh2D getQuad() {
         if(quad != null) return quad;
 
@@ -38,12 +43,20 @@ public class Mesh2D {
     }
 
     private static Mesh2D render;
+    /**
+     * Gets the instance of the simple render mesh
+     * @return The instance of the simple render mesh
+     */
     public static Mesh2D getRenderMesh() {
         if(render != null) return render;
 
         return new Mesh2D(square, uv);
     }
 
+    /**
+     * @param vertices The vertices of the 2d mesh
+     * @param uvs The uvs of the 2d mesh
+     */
     public Mesh2D(float[] vertices, float[] uvs) {
         this.vertices = vertices;
         this.uvs = uvs;
@@ -51,6 +64,9 @@ public class Mesh2D {
         load();
     }
 
+    /**
+     * Create the actual buffers of the opengl mesh
+     */
     protected void load() {
         vao = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vao);
@@ -67,6 +83,9 @@ public class Mesh2D {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 
+    /**
+     * Binds the buffers to the opengl context
+     */
     public void bind() {
         GL30.glBindVertexArray(vao);
         GL30.glEnableVertexAttribArray(0);
@@ -79,6 +98,9 @@ public class Mesh2D {
         GL30.glVertexAttribPointer(1, 2, GL30.GL_FLOAT, false, 0, 0);
     }
 
+    /**
+     * Unbinds the buffers
+     */
     public void unbind() {
         GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, 0);
         GL30.glDisableVertexAttribArray(0);
@@ -86,6 +108,11 @@ public class Mesh2D {
         GL30.glBindVertexArray(0);
     }
 
+    /**
+     * Creates a float buffer from a float array
+     * @param data The data of the buffer
+     * @return The FloatBuffer
+     */
     public FloatBuffer createBuffer(float[] data) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
         buffer.put(data);
@@ -93,6 +120,9 @@ public class Mesh2D {
         return buffer;
     }
 
+    /**
+     * Destroys the OpenGL buffers
+     */
     public void destroy() {
         GL30.glDeleteVertexArrays(vao);
         GL15.glDeleteBuffers(v_id);

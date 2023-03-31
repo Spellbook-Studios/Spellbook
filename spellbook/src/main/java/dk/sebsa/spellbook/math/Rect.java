@@ -2,6 +2,8 @@ package dk.sebsa.spellbook.math;
 
 /**
  * A representation of a 2 dimensional square
+ * @author sebs
+ * @since 0.0.1
  */
 public class Rect {
     /**
@@ -14,14 +16,28 @@ public class Rect {
      */
     public float width, height;
 
+    /**
+     * A rect equal to (0,0,0,0)
+     */
     public Rect() {
         this(0,0,0,0);
     }
 
+    /**
+     * Creates a rect with the info (pos.x, pos.y, size.x, size.y)
+     * @param pos The x and y values of the rect
+     * @param size The width and height values of the rect
+     */
     public Rect(Vector2f pos, Vector2f size) {
         this(pos.x, pos.y, size.x, size.y);
     }
 
+    /**
+     * @param x The x position of the rect
+     * @param y The y position of the rect
+     * @param width The width of the rect
+     * @param height The height of the rect
+     */
     public Rect(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
@@ -29,6 +45,11 @@ public class Rect {
         this.height = height;
     }
 
+    /**
+     * A new rect with the same data as another
+     * (r.x,r.y,r.width,r.height)
+     * @param r The rect to copy from
+     */
     public Rect(Rect r) {
         this(r.x,r.y,r.width,r.height);
     }
@@ -104,6 +125,10 @@ public class Rect {
 
     /**
      * Adds the variables to this rects variables
+     * @param x X value to add
+     * @param y Y value to add
+     * @param w W value to add
+     * @param h H value to add
      * @return this with added variables
      */
     public Rect add(float x, float y, float w, float h) {
@@ -115,6 +140,7 @@ public class Rect {
     }
     /**
      * Adds a rects variables to this rects variables
+     * @param r The rect to add to this recr
      * @return this with added variables
      */
     public Rect add(Rect r) {
@@ -135,6 +161,10 @@ public class Rect {
                 '}';
     }
 
+    /**
+     * Weather the rect is equal to (0,0,0,0)
+     * @return True if equal to zero, false otherwise
+     */
     public boolean isZero() {
         return x == 0 && y == 0 && width == 0 && height == 0;
     }

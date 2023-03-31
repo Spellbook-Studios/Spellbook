@@ -17,6 +17,9 @@ import java.util.List;
 public class FolderAssetProvider extends AssetProvider {
     private final File folder;
 
+    /**
+     * @param folder The folder to search files from (searches recursively)
+     */
     public FolderAssetProvider(File folder) {
         this.folder = folder;
         if(!folder.isDirectory()) {

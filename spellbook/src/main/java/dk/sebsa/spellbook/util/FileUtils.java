@@ -88,7 +88,7 @@ public class FileUtils {
      * Zips a single file into a new zip file
      * @param source The file to zip
      * @param zipFileName The name of the zipfile
-     * @throws IOException
+     * @throws IOException If the file fails to load or write
      */
     public static void zipSingleFile(Path source, String zipFileName) throws IOException {
         try (

@@ -9,9 +9,23 @@ import dk.sebsa.spellbook.math.Vector2f;
  * @since 0.0.1
  */
 public class MouseMoveEvent extends UserEvent {
+    /**
+     * The current position of the mouse
+     */
     public final float mouseX, mouseY;
+
+    /**
+     * The offset from the position of the mouse last frame
+     */
     public final float offsetX, offsetY;
 
+    /**
+     *
+     * @param mouseX The current mouse position x
+     * @param mouseY The current mouse position y
+     * @param offsetX The offset from the position of the mouse last frame X
+     * @param offsetY The offset from the position of the mouse last frame Y
+     */
     public MouseMoveEvent(float mouseX, float mouseY, float offsetX, float offsetY) {
         this.mouseX = mouseX;
         this.mouseY = mouseY;

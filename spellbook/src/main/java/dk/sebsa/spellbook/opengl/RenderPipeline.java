@@ -21,6 +21,11 @@ public class RenderPipeline {
     private final ClassLogger logger;
     private boolean hasPrintedDebugMessage = !Spellbook.instance.DEBUG;
 
+    /**
+     * A RenderPipeline with the stages provides
+     * @param stages The stages of this RenderPipeline
+     * @param logger The logger used for debug logging
+     */
     private RenderPipeline(List<RenderStage> stages, SpellbookLogger logger) {
         this.stages = stages;
         this.logger = new ClassLogger(this, logger);
@@ -28,6 +33,10 @@ public class RenderPipeline {
 
     private final Rect verticalFlippedUV = new Rect(0,0,1,-1);
 
+    /**
+     * Renders all the stages to a final buffer which is rendered to the screen
+     * @param window The window to render to
+     */
     public void render(GLFWWindow window) {
         if(!hasPrintedDebugMessage) {
             hasPrintedDebugMessage = true;
@@ -52,11 +61,26 @@ public class RenderPipeline {
         FBO.renderFBO(prevFBO, window.rect, verticalFlippedUV);
     }
 
+    /**
+     * Builds RenderPipelines
+     * @author sebs
+     * @since 0.0.1
+     */
     public static class RenderPipelineBuilder {
         private List<RenderStage> stages = new ArrayList<>();
 
+        /**
+         * Appends a stage to the end of a pipeline
+         * @param stage The stage to append
+         * @return This
+         */
         public RenderPipelineBuilder appendStage(RenderStage stage) { stages.add(stage); return this; }
 
+        /**
+         * Builds the final RenderPipeline with the stages provided.
+         * @param logger The main Spellbook logger
+         * @return this
+         */
         public RenderPipeline build(SpellbookLogger logger) {
             RenderPipeline pipeline = new RenderPipeline(stages, logger);
             stages = new ArrayList<>();
@@ -65,6 +89,9 @@ public class RenderPipeline {
         }
     }
 
+    /**
+     * Runs cleanup/destroy methods on all stages
+     */
     public void destroy() {
         for(RenderStage stage : stages) {
             stage.destroy();

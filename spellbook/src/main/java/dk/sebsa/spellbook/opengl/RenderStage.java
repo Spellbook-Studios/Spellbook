@@ -5,6 +5,9 @@ import dk.sebsa.spellbook.math.Rect;
 
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * A seperate stage in rendering which renders it's contents to
+ */
 public abstract class RenderStage {
     public abstract String getName();
     private boolean init = false;

@@ -44,6 +44,10 @@ public class GL2D {
         logger.log("GL2D loaded");
     }
 
+    /**
+     * Prepares a shader for 2d rendering
+     * @param shaderProgram The shader to prepare
+     */
     public static void prepareShader(GLSLShaderProgram shaderProgram) {
         logger.log("Prepare shader for 2D rendering " + shaderR.name);
         try {
@@ -63,7 +67,16 @@ public class GL2D {
         currentColor = c;
     }
 
+    /**
+     * Prepares GL2D for rendering
+     * Uses the default shader(Spellbook2d.glsl)
+     */
     public static void prepare() { prepare(defaultShader); }
+
+    /**
+     * Prepares GL2D for rendering
+     * @param shader The shader to prepare for
+     */
     public static void prepare(GLSLShaderProgram shader) {
         if(!shader.initFor2D) prepareShader(shader);
 
@@ -79,6 +92,9 @@ public class GL2D {
         guiMesh.bind();
     }
 
+    /**
+     * Unbinds assets used for rendering with GL2D
+     */
     public static void unprepare() {
         // Enable 3d
         glEnable(GL_DEPTH_TEST);
@@ -89,12 +105,32 @@ public class GL2D {
 
     private static final Rect fullUV = new Rect(0,0,1,1);
 
+    /**
+     * Draws a texture with(out) texture coordinates (0,0,1,1)
+     * @param mat Material to draw
+     * @param drawRect Where to draw
+     */
     public static void drawTextureWithTextCords(Material mat, Rect drawRect) { drawTextureWithTextCords(mat, drawRect, fullUV, guiMesh); }
+
+    /**
+     * Draws a texture with texture coordinates
+     * @param mat Material to draw
+     * @param drawRect Where to draw
+     * @param uvRect Texture coords
+     */
     public static void drawTextureWithTextCords(Material mat, Rect drawRect, Rect uvRect) { drawTextureWithTextCords(mat, drawRect, uvRect, guiMesh); }
 
     private static final Rect u = new Rect(0,0,0,0);
     private static final Rect r = new Rect(0,0,0,0);
     private static final Rect r2 = new Rect(0,0,0,0);
+
+    /**
+     * Draws a texture with texture coordinates
+     * @param mat Material to draw
+     * @param drawRect Where to draw
+     * @param uvRect Texture coords
+     * @param mesh Mesh to draw to
+     */
     public static void drawTextureWithTextCords(Material mat, Rect drawRect, Rect uvRect, Mesh2D mesh) {
         window.rect.getIntersection(r2.set(drawRect.x, drawRect.y, drawRect.width, drawRect.height), r);
 
@@ -116,6 +152,9 @@ public class GL2D {
         if(mat.getTexture() != null) mat.getTexture().unbind();
     }
 
+    /**
+     * Unreferences assets uses by GL2d
+     */
     public static void cleanup() {
         guiMesh.destroy();
         defaultShader = null;

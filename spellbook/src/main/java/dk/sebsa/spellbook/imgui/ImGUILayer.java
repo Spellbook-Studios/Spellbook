@@ -19,6 +19,9 @@ import java.text.DecimalFormat;
  * @since 0.0.1
  */
 public abstract class ImGUILayer extends Layer {
+    /**
+     * @param logger (Not used, currently)
+     */
     public ImGUILayer(SpellbookLogger logger) {
         super(logger);
     }
