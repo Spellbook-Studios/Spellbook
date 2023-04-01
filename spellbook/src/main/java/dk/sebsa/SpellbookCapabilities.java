@@ -53,6 +53,9 @@ public class SpellbookCapabilities {
      * If logStorageMode is not "dont" where should the logs be stored
      */
     @Builder.Default public final String logStoreTarget = "./logs/latest.log";
+    /**
+     * Denotes how logs are storeed
+     */
     @Builder.Default public final LogStorageModes logStorageMode = LogStorageModes.zipped;
     /**
      * Weather to disable the functionality that appends ASCIIEscapeCharacters to all log messages
@@ -72,14 +75,36 @@ public class SpellbookCapabilities {
         return this;
     }
 
+    /**
+     * Denotes which rendering library is used
+     */
     public enum Rendering {
+        /**
+         * Doesn't render?????
+         */
         none,
+        /**
+         * Uses OpenGL for rendering
+         */
         opengl
     }
 
+    /**
+     * Denotes how logs are stored on disk
+     */
     public enum LogStorageModes {
+        /**
+         * Doesn't store log on disc
+         */
         dont,
+        /**
+         * Writes the log to latest.log
+         * Overwriting previous logs
+         */
         txt,
+        /**
+         * Zips the log file into a zip in the log directory
+         */
         zipped,
     }
 }

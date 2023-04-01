@@ -218,6 +218,9 @@ public class GLFWWindow {
         glfwPollEvents();
     }
 
+    /**
+     * Event thrown if the window is resized in anyway
+     */
     public static class WindowResizedEvent extends Event {
         /**
          * A rect representing the resized window

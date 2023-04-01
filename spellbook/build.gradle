@@ -12,12 +12,12 @@ version = '0.0.1a-SNAPSHOT'
 group = 'dk.sebsa'
 archivesBaseName = 'spellbook'
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     from sourceSets.main.allJava
     archiveClassifier.set("sources")
 }
 
-task javadocJar(type: Jar) {
+tasks.register('javadocJar', Jar) {
     from javadoc
     archiveClassifier.set("javadoc")
 }
@@ -25,6 +25,7 @@ task javadocJar(type: Jar) {
 artifacts {
     archives javadocJar, sourcesJar
 }
+
 if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
     // Publishing
     publishing {

@@ -23,13 +23,25 @@ import org.lwjgl.glfw.GLFW;
  * @since 0.0.1
  */
 public class Spellbook {
+    /**
+     * The one and only instance of the Spellbook engine
+     */
     public static Spellbook instance;
 
     // Spellbook Settings and Consts
+    /**
+     * The version of Spellbook as denoted in the gradle module
+     */
     public static final String SPELLBOOK_VERSION = "0.0.1a-SNAPSHOT";
+    /**
+     * Weather the capabilities.debug is true
+     */
     public final boolean DEBUG;
 
     // Sys info
+    /**
+     * The graphics card that is used by OpenGL
+     */
     public static String graphicsCard = "Toaster"; // Set at runtime
 
     // Runtime stuff
@@ -43,6 +55,10 @@ public class Spellbook {
     private Core moduleCore;
     private final Application application;
 
+    /**
+     * Loads and initializes a module
+     * @param m Module to load
+     */
     public void registerModule(Module m) {
         logger.log("Module - " + m.name());
         modules.add(m);
@@ -164,6 +180,12 @@ public class Spellbook {
         // Cleanup leaked assets
         moduleCore.getAssetManager().engineCleanup(logger);
     }
+
+    /**
+     * Use this to report errors even when you don't have a logger
+     * @param error The error message
+     * @param shutdown If true the program will shut down
+     */
     public void error(String error, boolean shutdown) {
         logger.err(error);
     }

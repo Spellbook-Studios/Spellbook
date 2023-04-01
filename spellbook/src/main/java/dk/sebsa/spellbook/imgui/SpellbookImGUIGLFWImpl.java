@@ -26,6 +26,7 @@ import static org.lwjgl.glfw.GLFW.*;
  * @author sebs
  * @since 0.0.1
  */
+@SuppressWarnings("MissingJavadoc")
 public class SpellbookImGUIGLFWImpl {
     private static final String OS = System.getProperty("os.name", "generic").toLowerCase();
     protected static final boolean IS_WINDOWS = OS.contains("win");

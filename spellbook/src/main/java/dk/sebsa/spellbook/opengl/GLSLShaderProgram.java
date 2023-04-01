@@ -18,6 +18,11 @@ import java.util.Map;
 
 import static org.lwjgl.opengl.GL20.*;
 
+/**
+ * A GLSL shader program
+ * @author sebs
+ * @since 0.0.1
+ */
 public class GLSLShaderProgram implements Asset {
     private int programId;
     private int vertexShaderId, fragmentShaderId;
@@ -123,9 +128,9 @@ public class GLSLShaderProgram implements Asset {
     /**
      * Creates a uniform
      * @param uniformName The uniform as written in the shader
-     * @throws Exception
+     * @param logger Logger to log warnings to
      */
-    public void createUniform(String uniformName, Logger logger) throws Exception {
+    public void createUniform(String uniformName, Logger logger) {
         logger.trace(" - Creating uniform named - " + uniformName);
         if(uniforms.containsKey(uniformName)) return;
         int uniformLocation = glGetUniformLocation(programId,

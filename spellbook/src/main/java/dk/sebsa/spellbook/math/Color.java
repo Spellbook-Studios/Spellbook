@@ -68,21 +68,84 @@ public class Color {
     }
 
     // Defaults
+    /**
+     * Color
+     * R=0, G=0, B=0, A=255
+     */
     public static final Color black = color(0, 0, 0);
+    /**
+     * Color
+     * R=255, G=255, B=255, A=255
+     */
     public static final Color white = color(1, 1, 1);
+    /**
+     * Color
+     * R=255, G=0, B=0, A=255
+     */
     public static final Color red =  color(1, 0, 0);
+    /**
+     * Color
+     * R=0, G=255, B=0, A=255
+     */
     public static final Color green =  color(0, 1, 0);
+    /**
+     * Color
+     * R=0, G=0, B=255, A=255
+     */
     public static final Color blue =  color(0, 0, 1);
+    /**
+     * Color
+     * R=127, G=127, B=127, A=255
+     */
     public static final Color grey =  color(0.5f, 0.5f, 0.5f);
+    /**
+     * Color
+     * R=89, G=89, B=89, A=255
+     */
     public static final Color dimGrey =  color(0.35f, 0.35f, 0.35f);
+    /**
+     * Color
+     * R=76, G=76, B=76, A=255
+     */
     public static final Color darkGrey =  color(0.3f, 0.3f, 0.3f);
+    /**
+     * Color
+     * R=127, G=0, B=0, A=255
+     */
     public static final Color wine =  color(0.5f, 0, 0);
+    /**
+     * Color
+     * R=0, G=127, B=0, A=255
+     */
     public static final Color forest =  color(0, 0.5f, 0);
+    /**
+     * Color
+     * R=0, G=0, B=127, A=255
+     */
     public static final Color marine =  color(0, 0, 0.5f);
+    /**
+     * Color
+     * R=255, G=255, B=0, A=255
+     */
     public static final Color yellow =  color(1, 1, 0);
+    /**
+     * Color
+     * R=0, G=255, B=255, A=255
+     */
     public static final Color cyan =  color(0, 1, 1);
+    /**
+     * Color
+     * R=255, G=0, B=255, A=255
+     */
     public static final Color magenta =  color(1, 0, 1);
+    /**
+     * Color
+     * R=0, G=0, B=0, A=0
+     */
     public static final Color transparent =  color(0, 0, 0, 0);
+    /**
+     * Color
+     * R=255, G=160, B=0, A=255
+     */
     public static final Color neonOrange = color(1, 0.6470588f, 0.0f);
-    // Defaults
 }
