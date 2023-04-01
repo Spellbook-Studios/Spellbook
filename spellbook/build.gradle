@@ -25,63 +25,64 @@ task javadocJar(type: Jar) {
 artifacts {
     archives javadocJar, sourcesJar
 }
+if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
+    // Publishing
+    publishing {
+        repositories {
+            maven {
+                name = "OSSRH"
+                def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
 
-// Publishing
-publishing {
-    repositories {
-        maven {
-            name = "OSSRH"
-            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                credentials {
+                    username = ossrhUsername
+                    password = ossrhPassword
+                }
+            }
+        }
 
-            credentials {
-                username = ossrhUsername
-                password = ossrhPassword
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                artifact javadocJar
+                artifact sourcesJar
+
+                pom {
+                    artifactId 'spellbook'
+                    packaging 'jar'
+                    name = "Spellbook"
+                    description = "Cross platform JVM application & game development framework"
+                    url = "https://github.com/Spellbook-Studios/Spellbook"
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'https://raw.githubusercontent.com/Spellbook-Studios/Spellbook/main/LICENSE'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'sebs'
+                            name = 'Sebastian August Snoer'
+                            email = 'ssnoer@proton.me'
+                        }
+                    }
+
+                    scm {
+                        connection = 'scm:git:git://github.com/Spellbook-Studios/Spellbook.git'
+                        developerConnection = 'scm:git:ssh://github.com/Spellbook-Studios/Spellbook.git'
+                        url = 'https://github.com/Spellbook-Studios/Spellbook'
+                    }
+                }
             }
         }
     }
 
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact javadocJar
-            artifact sourcesJar
-
-            pom {
-                artifactId 'spellbook'
-                packaging 'jar'
-                name = "Spellbook"
-                description = "Cross platform JVM application & game development framework"
-                url = "https://github.com/Spellbook-Studios/Spellbook"
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'https://raw.githubusercontent.com/Spellbook-Studios/Spellbook/main/LICENSE'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'sebs'
-                        name = 'Sebastian August Snoer'
-                        email = 'ssnoer@proton.me'
-                    }
-                }
-
-                scm {
-                    connection = 'scm:git:git://github.com/Spellbook-Studios/Spellbook.git'
-                    developerConnection = 'scm:git:ssh://github.com/Spellbook-Studios/Spellbook.git'
-                    url = 'https://github.com/Spellbook-Studios/Spellbook'
-                }
-            }
+    if (!version.endsWith("SNAPSHOT")) {
+        signing {
+            sign publishing.publications.mavenJava
         }
+    } else {
+        signing.required = false
     }
-}
-
-if (!version.endsWith("SNAPSHOT")) {
-    signing {
-        sign publishing.publications.mavenJava
-    }
-} else {
-    signing.required = false
 }
