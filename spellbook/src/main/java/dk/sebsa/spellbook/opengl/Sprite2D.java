@@ -30,7 +30,7 @@ public class Sprite2D {
 
         // Prepare shader
         try {
-            //shader.createUniform("transformMatrix", e.logger);
+            shader.createUniform("transformMatrix", e.logger);
             shader.createUniform("pixelScale", e.logger);
             shader.createUniform("objectScale", e.logger);
             shader.createUniform("anchor", e.logger);

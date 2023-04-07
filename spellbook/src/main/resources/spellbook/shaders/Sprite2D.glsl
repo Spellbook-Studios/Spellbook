@@ -12,7 +12,7 @@ uniform vec4 matColor;
 uniform vec4 offset;
 
 uniform vec2 pixelScale;
-//uniform mat4 transformMatrix;
+uniform mat4 transformMatrix;
 uniform vec2 anchor;
 uniform vec2 objectScale;
 
@@ -20,8 +20,7 @@ void main()
 {
     color = matColor;
 
-    //vec4 worldPosition = vec4((position - anchor) * (pixelScale * objectScale), 0, 1) * transformMatrix;
-    vec4 worldPosition = vec4((position - anchor) * (pixelScale * objectScale), 0, 1);
+    vec4 worldPosition = vec4((position - anchor) * (pixelScale * objectScale), 0, 1) * transformMatrix;
     gl_Position = projection * worldPosition;
     uvCoords = (textureCords * offset.zw) + offset.xy;
 }

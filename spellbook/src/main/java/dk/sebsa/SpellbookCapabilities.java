@@ -41,7 +41,7 @@ public class SpellbookCapabilities {
     /**
      * Render Resolution
      */
-    @Builder.Default public final Rect renderResolution = new Rect(0,0,100,100);
+    @Builder.Default public final Rect renderResolution = new Rect(0,0,960,540);
 
     /**
      * A list of locations to load assets from.

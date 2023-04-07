@@ -44,7 +44,7 @@ public class Sandbox extends Application {
     @Override
     public RenderPipeline renderingPipeline(EngineLoadEvent e) {
         return new RenderPipeline.RenderPipelineBuilder()
-                .appendStage(new SpriteStage(e.moduleCore.getWindow()))
+                .appendStage(new SpriteStage(e))
                 .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
                 .build(e.logger);
     }

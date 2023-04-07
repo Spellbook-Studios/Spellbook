@@ -31,7 +31,7 @@ public class Core implements Module, EventHandler {
     @EventListener
     public void engineInit(EngineInitEvent e) {
         this.logger = new ClassLogger(this, e.logger);
-        this.window = new GLFWWindow(e.logger, e.application.name(), 800, 640);
+        this.window = new GLFWWindow(e.logger, e.application.name(), 960, 540);
         this.input = new GLFWInput(e, window);
         this.assetManager = new AssetManager();
 

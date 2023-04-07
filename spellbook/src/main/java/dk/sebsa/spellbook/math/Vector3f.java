@@ -101,4 +101,16 @@ public class Vector3f {
                 ", z=" + z +
                 '}';
     }
+
+    /**
+     * Adds values of a vector to this vector
+     * @param v Vector to add to this
+     * @return this
+     */
+    public Vector3f add(Vector3f v) {
+        this.x += v.x;
+        this.y += v.y;
+        this.z += v.z;
+        return this;
+    }
 }
