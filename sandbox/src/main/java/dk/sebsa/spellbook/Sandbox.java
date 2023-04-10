@@ -10,7 +10,6 @@ import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.LayerStack;
 import dk.sebsa.spellbook.opengl.RenderPipeline;
-import dk.sebsa.spellbook.opengl.TestStage;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
 import dk.sebsa.spellbook.opengl.stages.UIStage;
 
@@ -54,7 +53,7 @@ public class Sandbox extends Application {
         debugLayer = new DebugLayer(e.logger);
 
         return new LayerStack.LayerStackBuilder()
-                .appendLayer(new TestLayer(e.logger, debugLayer))
+                .appendLayer(new TestLayer(e, debugLayer))
                 .appendLayer(debugLayer)
                 .build();
     }
