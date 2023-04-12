@@ -98,7 +98,7 @@ public class Vector2f {
      */
     public Vector2f add(Vector2f v) { return new Vector2f(x + v.x, y + v.y); }
     /**
-     * Returns a new vector equal to (x/this.x, y/this.y)
+     * Returns a new vector equal to (x + this.x, y + this.y)
      * @param x x value to add to
      * @param y y value to add to
      * @return New Vector

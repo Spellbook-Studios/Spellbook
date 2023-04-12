@@ -84,12 +84,4 @@ public class Transform {
             transformMatrix.setTransformation(pos2D.set(position.x, position.y), 0, Vector2f.VECTOR2F_ONE);
         }
     }
-
-    /**
-     * Changes the position by a delta position
-     * @param v The delta position
-     */
-    public void move(Vector3f v) {
-        setPosition(position.add(v));
-    }
 }

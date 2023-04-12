@@ -102,15 +102,88 @@ public class Vector3f {
                 '}';
     }
 
+    
     /**
-     * Adds values of a vector to this vector
-     * @param v Vector to add to this
-     * @return this
+     * Returns a new vector equal to (this.x + v, this.y + v, this.z + v)
+     * @param v Value to add to
+     * @return New Vector
      */
-    public Vector3f add(Vector3f v) {
-        this.x += v.x;
-        this.y += v.y;
-        this.z += v.z;
-        return this;
-    }
+    public Vector3f add(float v) { return new Vector3f(x + v, y + v, z + v); }
+    /**
+     * Returns a new vector equal to (this.x + v.x, this.y + v.y, this.z + v.z)
+     * @param v Vector to add to
+     * @return New Vector
+     */
+    public Vector3f add(Vector3f v) { return new Vector3f(x + v.x, y + v.y, z + v.z); }
+    /**
+     * Returns a new vector equal to (x + this.x, y + this.y, z + this.z)
+     * @param x x value to add to
+     * @param y y value to add to
+     * @param z z value to add to
+     * @return New Vector
+     */
+    public Vector3f add(float x, float y, float z) { return new Vector3f(x + this.x, y + this.y, z + this.z); }
+    
+    /**
+     * Returns a new vector equal to (this.x - v, this.y - v, this.z - v)
+     * @param v Value to subtract by
+     * @return New Vector
+     */
+    public Vector3f sub(float v) { return new Vector3f(x - v, y - v, z - v); }
+    /**
+     * Returns a new vector equal to (this.x - v.x, this.y - v.y, this.z - v.z)
+     * @param v Vector to subtract by
+     * @return New Vector
+     */
+    public Vector3f sub(Vector3f v) { return new Vector3f(x - v.x, y - v.y, z - v.z); }
+    /**
+     * Returns a new vector equal to (this.x - x , this.y - y, this.z - z)
+     * @param x x value to subtract by
+     * @param y y value to subtract by
+     * @param z z value to subtract by
+     * @return New Vector
+     */
+    public Vector3f sub(float x, float y, float z) { return new Vector3f(this.x - x, this.y - y, this.z - z); }
+
+    /**
+     * Returns a new vector equal to (this.x/v, this.y/v, this.z/v)
+     * @param v Value to divide by
+     * @return New Vector
+     */
+    public Vector3f div(float v) { return new Vector3f(x / v, y / v, z / v); }
+    /**
+     * Returns a new vector equal to (this.x/v.x, this.y/v.y, this.z/v.z)
+     * @param v Vector to divide by
+     * @return New Vector
+     */
+    public Vector3f div(Vector3f v) { return new Vector3f(x / v.x, y / v.y, z / v.z); }
+    /**
+     * Returns a new vector equal to (this.x/x, this.y/y, this.z/z)
+     * @param x x value to divide by
+     * @param y y value to divide by
+     * @param z z value to divide by
+     * @return New Vector
+     */
+    public Vector3f div(float x, float y, float z) { return new Vector3f(this.x / x, this.y / y, this.z / z); }
+
+    /**
+     * Returns a new vector equal to (this.x*v, this.y*v, this.z*v)
+     * @param v Value to multiply with
+     * @return New Vector
+     */
+    public Vector3f mul(float v) { return new Vector3f(x * v, y * v, z * v); }
+    /**
+     * Returns a new vector equal to (this.x*v.x, this.y*v.y, this.z*v.z)
+     * @param v Vector to multiply with
+     * @return New Vector
+     */
+    public Vector3f mul(Vector3f v) { return new Vector3f(x * v.x, y * v.y, z * v.z); }
+    /**
+     * Returns a new vector equal to (this.x*x, this.y*y, this.z*z)
+     * @param x x value to multiply with
+     * @param y y value to multiply with
+     * @param z z value to multiply with
+     * @return New Vector
+     */
+    public Vector3f mul(float x, float y, float z) { return new Vector3f(x * this.x, y * this.y, z * this.z); }
 }
