@@ -40,7 +40,7 @@ dependencies {
     // LWJGL
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
-    ['', '-glfw', '-opengl', '-stb'].each {
+    ['', '-glfw', '-opengl', '-stb', '-openal'].each {
         implementation "org.lwjgl:lwjgl$it:$lwjglVersion"
         implementation "org.lwjgl:lwjgl$it::$lwjglNatives"
     }

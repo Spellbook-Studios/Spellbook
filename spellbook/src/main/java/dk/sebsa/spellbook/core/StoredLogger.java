@@ -46,7 +46,6 @@ public class StoredLogger extends SpellbookLogger {
 
         try {
             fw.append(s).append("\n");
-            fw.flush();
         } catch (IOException e) {  /* There's nothing we can do to log this, and nothing we can do to fix this */ }
     }
 

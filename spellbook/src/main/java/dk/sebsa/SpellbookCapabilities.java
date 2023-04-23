@@ -39,6 +39,11 @@ public class SpellbookCapabilities {
     @Builder.Default public final boolean render2D = true;
 
     /**
+     * Weather the OpenAL audioModule should be enabled;
+     */
+    @Builder.Default public final boolean audio = true;
+
+    /**
      * Render Resolution
      */
     @Builder.Default public final Rect renderResolution = new Rect(0,0,960,540);
