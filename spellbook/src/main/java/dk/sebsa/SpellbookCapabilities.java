@@ -39,6 +39,7 @@ public class SpellbookCapabilities {
     @Builder.Default public final boolean render2D = true;
 
     /**
+<<<<<<< HEAD
      * Must be > 0
      * The amount of layers to prepare for placing spriterenderes when rendering 2d sprites
      */
@@ -48,6 +49,11 @@ public class SpellbookCapabilities {
      * Weather to enable ECS updates
      */
     @Builder.Default public final boolean ecs = true;
+
+    /**
+     * Weather the OpenAL audioModule should be enabled;
+     */
+    @Builder.Default public final boolean audio = true;
 
     /**
      * Render Resolution
