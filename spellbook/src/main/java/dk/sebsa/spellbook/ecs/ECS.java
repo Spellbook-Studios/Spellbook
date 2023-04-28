@@ -3,8 +3,6 @@ package dk.sebsa.spellbook.ecs;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.*;
 
-import java.util.List;
-
 /**
  * Handles the execution of component updates
  * @author sebsn
@@ -36,7 +34,7 @@ public class ECS implements Module {
     @EventListener
     public void engineFrameProcess(EngineFrameProcess e) {
         for(Component c : e.frameData.components) {
-            c.update();
+            c.update(e.frameData);
         }
     }
 

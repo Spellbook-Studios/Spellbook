@@ -157,7 +157,7 @@ public class Spellbook {
 
         while (!GLFW.glfwWindowShouldClose(moduleCore.getWindow().getId())) {
             // Process input and prepare for frame
-            FRAME_DATA = new FrameData(capabilities.spriteMaxLayer);
+            FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer);
             eventBus.engine(new EngineFrameEarly(FRAME_DATA));
             Time.procsessFrame();
 

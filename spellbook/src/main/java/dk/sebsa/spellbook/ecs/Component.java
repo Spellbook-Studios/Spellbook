@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.ecs;
 
+import dk.sebsa.spellbook.FrameData;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,8 +27,9 @@ public abstract class Component {
 
     /**
      * Called once a frame during EventTypes.engineFrameProcess
+     * @param frameData Data from current frame. Contains input etc.
      */
-    protected abstract void update();
+    protected abstract void update(FrameData frameData);
 
     /**
      * Called once a frame during EventTypes.engineRender

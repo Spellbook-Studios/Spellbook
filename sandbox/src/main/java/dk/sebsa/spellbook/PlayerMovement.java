@@ -16,8 +16,9 @@ public class PlayerMovement extends Component {
     }
 
     @Override
-    protected void update() {
-        GLFWInput input = ((Core) Spellbook.instance.getModules().get(0)).getInput();
+    protected void update(FrameData frameData) {
+        GLFWInput input = frameData.input;
+
         if(input.isKeyDown(GLFW.GLFW_KEY_W)) {
             entity.transform.setPosition(entity.transform.getLocalPosition().x, entity.transform.getLocalPosition().y+10, 0);
         } else if(input.isKeyDown(GLFW.GLFW_KEY_D)) {

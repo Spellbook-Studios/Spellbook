@@ -1,9 +1,9 @@
 package dk.sebsa.spellbook.opengl.components;
 
 import dk.sebsa.Spellbook;
+import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.ecs.Component;
-import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
@@ -82,7 +82,7 @@ public class SpriteRenderer extends Component {
     }
 
     @Override
-    protected void update() {
+    protected void update(FrameData frameData) {
 
     }
 

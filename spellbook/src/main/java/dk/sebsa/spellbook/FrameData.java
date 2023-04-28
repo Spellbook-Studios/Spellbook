@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook;
 
 import dk.sebsa.spellbook.ecs.Component;
+import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.Sprite;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
@@ -19,11 +20,14 @@ public class FrameData {
      * Sorted in sprites to make it easier on the renderer
      */
     @Getter private final Map<Sprite, Collection<SpriteRenderer>>[] renderSprite;
+    public final GLFWInput input;
 
     /**
+     * @param input The input. Used from Component.update
      * @param renderSpriteMaxLayers The maximum amount of layers to preapre for sprite rendering
      */
-    public FrameData(int renderSpriteMaxLayers) {
+    public FrameData(GLFWInput input, int renderSpriteMaxLayers) {
+        this.input = input;
         renderSprite = new HashMap[renderSpriteMaxLayers];
 
         for(int i = 0; i < renderSpriteMaxLayers; i++) {
