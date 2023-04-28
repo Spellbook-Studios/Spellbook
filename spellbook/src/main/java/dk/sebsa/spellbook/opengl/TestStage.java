@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.opengl;
 
+import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.io.GLFWWindow;
@@ -49,7 +50,7 @@ public class TestStage extends RenderStage {
     }
 
     @Override
-    protected void draw(FBO prevFBO, Rect r) {
+    protected void draw(FBO prevFBO, Rect r, FrameData frameData) {
         shader.bind();
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);

@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.opengl;
 
+import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
 
@@ -48,15 +49,17 @@ public abstract class RenderStage {
 
     /**
      * Renders the stage to it's FBO
-     * @param prevFBO The fbo of the previous stage
+     *
+     * @param prevFBO   The fbo of the previous stage
+     * @param frameData
      * @return FBO with rendered content
      */
-    protected FBO render(FBO prevFBO) {
+    protected FBO render(FBO prevFBO, FrameData frameData) {
         if(!init || window.isDirty()) init();
         fbo.bindFrameBuffer();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        draw(prevFBO, window.rect);
+        draw(prevFBO, window.rect, frameData);
 
         fbo.unBind();
         return fbo;
@@ -74,10 +77,12 @@ public abstract class RenderStage {
 
     /**
      * Draw the render stage
-     * @param prevFBO The previous FBO, always render this before rendering on top
-     * @param r The place to draw to
+     *
+     * @param prevFBO   The previous FBO, always render this before rendering on top
+     * @param r         The place to draw to
+     * @param frameData
      */
-    protected abstract void draw(FBO prevFBO, Rect r);
+    protected abstract void draw(FBO prevFBO, Rect r, FrameData frameData);
 
     /**
      * Cleanup after yourselves

@@ -1,7 +1,7 @@
 package dk.sebsa.spellbook.core.events;
 
+import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.io.GLFWWindow;
-import dk.sebsa.spellbook.opengl.RenderPipeline;
 
 /**
  *  Now render the frame
@@ -9,10 +9,23 @@ import dk.sebsa.spellbook.opengl.RenderPipeline;
  * @author sebs
  */
 public class EngineRenderEvent extends Event {
+    /**
+     * Current window to render to
+     */
     public final GLFWWindow window;
 
-    public EngineRenderEvent(GLFWWindow window) {
+    /**
+     * Framedata for this frame
+     */
+    public final FrameData frameData;
+
+    /**
+     * @param frameData Framedata for this frame
+     * @param window Window to render to
+     */
+    public EngineRenderEvent(FrameData frameData, GLFWWindow window) {
         this.window = window;
+        this.frameData = frameData;
     }
 
     @Override

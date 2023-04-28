@@ -53,6 +53,7 @@ public class AssetReference {
      */
     public void unRefrence() {
         usages = usages - 1;
+        if(usages > 0) return;
         asset.destroy();
         asset = null;
     }

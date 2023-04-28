@@ -39,6 +39,17 @@ public class SpellbookCapabilities {
     @Builder.Default public final boolean render2D = true;
 
     /**
+     * Must be > 0
+     * The amount of layers to prepare for placing spriterenderes when rendering 2d sprites
+     */
+    @Builder.Default public final int spriteMaxLayer = 3;
+
+    /**
+     * Weather to enable ECS updates
+     */
+    @Builder.Default public final boolean ecs = true;
+
+    /**
      * Render Resolution
      */
     @Builder.Default public final Rect renderResolution = new Rect(0,0,960,540);

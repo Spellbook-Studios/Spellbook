@@ -3,7 +3,7 @@ package dk.sebsa.spellbook.opengl;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.SpellbookLogger;
-import dk.sebsa.spellbook.io.GLFWWindow;
+import dk.sebsa.spellbook.core.events.EngineRenderEvent;
 import dk.sebsa.spellbook.math.Rect;
 
 import java.util.ArrayList;
@@ -35,9 +35,9 @@ public class RenderPipeline {
 
     /**
      * Renders all the stages to a final buffer which is rendered to the screen
-     * @param window The window to render to
+     * @param e Render event
      */
-    public void render(GLFWWindow window) {
+    public void render(EngineRenderEvent e) {
         if(!hasPrintedDebugMessage) {
             hasPrintedDebugMessage = true;
             logger.trace("Rendering Pipeline: ");
@@ -50,15 +50,15 @@ public class RenderPipeline {
         FBO prevFBO = null;
         for(RenderStage stage : stages) {
             try {
-                prevFBO = stage.render(prevFBO);
-            } catch (Exception e) {
-                Spellbook.instance.error("Render stage: " + stage.getName() + ", failed to run. Error: " + e.getMessage() + "\nStacktrace: " + logger.stackTrace(e), false);
+                prevFBO = stage.render(prevFBO, e.frameData);
+            } catch (Exception ex) {
+                Spellbook.instance.error("Render stage: " + stage.getName() + ", failed to run. Error: " + ex.getMessage() + "\nStacktrace: " + logger.stackTrace(ex), false);
             }
         }
 
         // Render the final FBO
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-        FBO.renderFBO(prevFBO, window.rect, verticalFlippedUV);
+        FBO.renderFBO(prevFBO, e.window.rect, verticalFlippedUV);
     }
 
     /**

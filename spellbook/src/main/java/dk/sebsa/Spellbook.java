@@ -7,9 +7,11 @@ import java.util.List;
 import dk.sebsa.mana.LogFormatter;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.mana.impl.FormatBuilder;
+import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.OpenGLModule;
@@ -54,6 +56,8 @@ public class Spellbook {
     private final List<Module> modules = new ArrayList<>();
     private Core moduleCore;
     private final Application application;
+
+    public static FrameData FRAME_DATA;
 
     /**
      * Loads and initializes a module
@@ -135,6 +139,7 @@ public class Spellbook {
         registerModule(moduleCore);
 
         // Add Non Core Modules
+        if(capabilities.ecs) registerModule(new ECS());
         if(capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl)) registerModule(new OpenGLModule());
         if(DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
 
@@ -152,17 +157,18 @@ public class Spellbook {
 
         while (!GLFW.glfwWindowShouldClose(moduleCore.getWindow().getId())) {
             // Process input and prepare for frame
-            eventBus.engine(new EngineFrameEarly());
+            FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer);
+            eventBus.engine(new EngineFrameEarly(FRAME_DATA));
             Time.procsessFrame();
 
             // Main frame, handle events
-            eventBus.engine(new EngineFrameProcess());
+            eventBus.engine(new EngineFrameProcess(FRAME_DATA));
 
             // Render
-            eventBus.engine(new EngineRenderEvent(moduleCore.getWindow()));
+            eventBus.engine(new EngineRenderEvent(FRAME_DATA, moduleCore.getWindow()));
 
             // Cleanup Frame (Mostly just GLFWWindow)
-            eventBus.engine(new EngineFrameDone());
+            eventBus.engine(new EngineFrameDone(FRAME_DATA));
         }
 
         logger.log("mainLoop() finished");
