@@ -14,6 +14,13 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Core module of Spellbook
+ * Always present
+ * Always craeted first, and updated first
+ * @author sebsn
+ * @since 1.0.0
+ */
 public class Core implements Module, EventHandler {
     private Logger logger;
     @Getter private GLFWWindow window;

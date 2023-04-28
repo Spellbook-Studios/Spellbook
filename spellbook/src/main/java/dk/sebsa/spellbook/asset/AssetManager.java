@@ -56,7 +56,7 @@ public class AssetManager {
         logger.log("AssetManger cleanup, let's see the leaks");
 
         for(AssetReference asset : assets.values()) {
-            if(asset.getUsages() > 0) logger.warn("Asset was still refrenced at cleanup, possible leak? " + asset);
+            if(asset.getUsages() > 0) logger.warn("Asset was still referenced at cleanup, possible leak? " + asset);
             try {
                 asset.forceDestroy();
             } catch (Exception e) { logger.err("Failed to destroy asset: " + asset); }

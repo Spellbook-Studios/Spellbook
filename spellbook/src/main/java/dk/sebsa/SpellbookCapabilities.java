@@ -39,6 +39,11 @@ public class SpellbookCapabilities {
     @Builder.Default public final boolean render2D = true;
 
     /**
+     * Weather to enable ECS updates
+     */
+    @Builder.Default public final boolean ecs = true;
+
+    /**
      * Render Resolution
      */
     @Builder.Default public final Rect renderResolution = new Rect(0,0,960,540);

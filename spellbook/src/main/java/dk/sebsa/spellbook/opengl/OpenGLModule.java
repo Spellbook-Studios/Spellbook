@@ -11,6 +11,11 @@ import dk.sebsa.spellbook.math.Rect;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * Renders with OpenGL
+ * @author sebsn
+ * @since 1.0.0
+ */
 public class OpenGLModule implements Module {
     private final Color clearColor = Color.neonOrange;
     private RenderPipeline pipeline;
@@ -50,7 +55,7 @@ public class OpenGLModule implements Module {
     public void engineRender(EngineRenderEvent e) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the framebuffer
 
-        pipeline.render(e.window);
+        pipeline.render(e);
 
         glfwSwapBuffers(e.window.getId());
     }

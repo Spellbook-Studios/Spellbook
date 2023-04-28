@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.opengl.stages;
 
+import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.LayerStack;
 import dk.sebsa.spellbook.io.GLFWWindow;
@@ -20,7 +21,7 @@ public class UIStage extends RenderStage {
     }
 
     @Override
-    protected void draw(FBO prevFBO, Rect r) {
+    protected void draw(FBO prevFBO, Rect r, FrameData frameData) {
         drawPreviousFBO(prevFBO);
         for(int i = stack.stack.size()-1; i >= 0; i--) {
             Layer l = stack.stack.get(i);
