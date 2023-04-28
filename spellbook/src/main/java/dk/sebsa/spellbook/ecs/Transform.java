@@ -81,7 +81,7 @@ public class Transform {
     public void clean() {
         if(isDirty) {
             isDirty = false;
-            transformMatrix.setTransformation(pos2D.set(position.x, position.y), 0, Vector2f.VECTOR2F_ONE);
+            transformMatrix.setTransformation(pos2D.set(position.x, -position.y), 0, Vector2f.VECTOR2F_ONE);
         }
     }
 }
