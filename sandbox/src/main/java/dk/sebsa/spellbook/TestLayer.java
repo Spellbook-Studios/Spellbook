@@ -49,6 +49,7 @@ public class TestLayer extends Layer {
                     entity.addComponent(new PlayerMovement());
 
                     spriteRenderer.scale = 2;
+                    spriteRenderer.layer = 1;
                 }
             }
         }

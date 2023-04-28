@@ -38,6 +38,13 @@ public class SpriteRenderer extends Component {
     public float scale = 1.0f;
 
     /**
+     * The layer to render to
+     * Higher is render later, and therefore appear to be on top
+     * Layer must be between 0 and SpellbookCapabilities.maxSpriteLayers-1;
+     */
+    public int layer = 0;
+
+    /**
      * A spriterenderer without a sprite
      * Set the sprite with this.sprite = ??
      */

@@ -13,7 +13,9 @@ import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import org.lwjgl.opengl.GL30;
 
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -67,16 +69,19 @@ public class Sprite2D {
         mainMesh.bind();
         shader.bind();
         shader.setUniform("projection", projection);
-        for (Sprite s : frameData.getRenderSprite().keySet()) {
-            s.getMaterial().bind(shader);
+        for(int i = 0; i < frameData.getRenderSprite().length; i++ ){
+            Map<Sprite, Collection<SpriteRenderer>> layer = frameData.getRenderSprite()[i];
+            for (Sprite s : layer.keySet()) {
+                s.getMaterial().bind(shader);
 
-            for(SpriteRenderer sr : frameData.getRenderSprite().get(s)) {
-                // Render
-                sr.setUniforms(shader);
-                GL30.glDrawArrays(GL_TRIANGLES, 0, 6);
+                for(SpriteRenderer sr : layer.get(s)) {
+                    // Render
+                    sr.setUniforms(shader);
+                    GL30.glDrawArrays(GL_TRIANGLES, 0, 6);
+                }
+
+                s.getMaterial().unbind();
             }
-
-            s.getMaterial().unbind();
         }
 
         // Restore
