@@ -1,6 +1,11 @@
 package dk.sebsa.spellbook.util;
 
+import org.lwjgl.BufferUtils;
+
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,5 +112,37 @@ public class FileUtils {
             }
             zos.closeEntry();
         }
+    }
+
+    /**
+     * Reads an inputstream and stores the contents in a bytebuffer
+     * @param is The input stream
+     * @param bufferSize Buffer size
+     * @return The buffer with the data
+     * @throws IOException If the RBC fails to read from the input stream
+     */
+    public static ByteBuffer isToBB(InputStream is, int bufferSize) throws IOException {
+        ReadableByteChannel rbc = Channels.newChannel(is);
+        ByteBuffer buffer = BufferUtils.createByteBuffer(bufferSize);
+
+        while (true) {
+            int bytes = rbc.read(buffer);
+            if (bytes == -1) {
+                break;
+            }
+            if (buffer.remaining() == 0) {
+                buffer = resizeBuffer(buffer, buffer.capacity() * 2);
+            }
+        }
+        buffer.flip();
+
+        return buffer;
+    }
+
+    private static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
+        ByteBuffer newBuffer = BufferUtils.createByteBuffer(newCapacity);
+        buffer.flip();
+        newBuffer.put(buffer);
+        return newBuffer;
     }
 }

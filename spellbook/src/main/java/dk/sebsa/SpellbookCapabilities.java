@@ -50,6 +50,11 @@ public class SpellbookCapabilities {
     @Builder.Default public final boolean ecs = true;
 
     /**
+     * Weather the OpenAL audioModule should be enabled;
+     */
+    @Builder.Default public final boolean audio = true;
+
+    /**
      * Render Resolution
      */
     @Builder.Default public final Rect renderResolution = new Rect(0,0,960,540);
@@ -65,7 +70,7 @@ public class SpellbookCapabilities {
      */
     @Builder.Default public final String logStoreTarget = "./logs/latest.log";
     /**
-     * Denotes how logs are storeed
+     * Denotes how logs are stored
      */
     @Builder.Default public final LogStorageModes logStorageMode = LogStorageModes.zipped;
     /**

@@ -4,6 +4,7 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.ecs.Component;
+import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
@@ -15,7 +16,9 @@ import dk.sebsa.spellbook.opengl.Sprite;
  * @author sebs
  * @since 0.0.1
  */
-public class SpriteRenderer extends Component {
+public class SpriteRenderer implements Component {
+    private Entity entity;
+
     /**
      * The sprite that this spriterender renders
      */
@@ -77,22 +80,18 @@ public class SpriteRenderer extends Component {
     }
 
     @Override
-    protected void onEnable() {
+    public void onEnable(Entity e) {
+        this.entity = e;
         if(spriteR != null) sprite = spriteR.get();
     }
 
     @Override
-    protected void update(FrameData frameData) {
-
-    }
-
-    @Override
-    protected void render() {
+    public void render() {
         Spellbook.FRAME_DATA.addRenderSprite(this);
     }
 
     @Override
-    protected void onDisable() {
+    public void onDisable() {
         if(spriteR != null) { sprite = null; spriteR.unRefrence(); }
     }
 }

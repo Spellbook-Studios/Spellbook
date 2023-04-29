@@ -5,6 +5,7 @@ package dk.sebsa.spellbook;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.SpellbookCapabilities;
+import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
 import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
@@ -12,6 +13,8 @@ import dk.sebsa.spellbook.core.events.LayerStack;
 import dk.sebsa.spellbook.opengl.RenderPipeline;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
 import dk.sebsa.spellbook.opengl.stages.UIStage;
+
+import java.io.File;
 
 public class Sandbox extends Application {
     public DebugLayer debugLayer;
@@ -22,7 +25,9 @@ public class Sandbox extends Application {
                         .logStoreTarget("../logs/latest.log")
                         .logDisableASCIIEscapeCharacters(false)
                         .debugIMGUI(true)
-                        .build());
+                        .build()
+                .addAssetProvider(new FolderAssetProvider(new File("assets/")))
+        );
     }
 
     @Override

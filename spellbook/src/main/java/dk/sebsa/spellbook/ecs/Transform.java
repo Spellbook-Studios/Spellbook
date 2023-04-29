@@ -11,7 +11,7 @@ import lombok.Getter;
  * @since 0.0.1
  */
 public class Transform {
-    @Getter private boolean isDirty = true;
+    @Getter protected boolean isDirty = true;
     protected final Entity entity;
     private final Matrix4x4f transformMatrix = new Matrix4x4f();
     private Transform parent;
@@ -28,11 +28,19 @@ public class Transform {
      * The global position of the entity
      * Equal to the localPosition of this, and all it's parents localPosition
      */
-    @Getter private final Vector3f position = new Vector3f();
+    @Getter protected final Vector3f position = new Vector3f();
     /**
      * The position of the entity under it's parent
      */
-    @Getter private final Vector3f localPosition = new Vector3f();
+    @Getter protected final Vector3f localPosition = new Vector3f();
+
+    /**
+     * The rotation of the object
+     * x roll
+     * y pitch
+     * z yaw
+     */
+    @Getter protected final Vector3f rotation = new Vector3f();
 
     // Setters
     /**
@@ -83,5 +91,17 @@ public class Transform {
             isDirty = false;
             transformMatrix.setTransformation(pos2D.set(position.x, -position.y), 0, Vector2f.VECTOR2F_ONE);
         }
+    }
+
+    /**
+     * Rotates by an offset
+     * @param offsetX Offset X
+     * @param offsetY Offset Y
+     * @param offsetZ Offset Z
+     */
+    public void moveRotation(float offsetX, float offsetY, float offsetZ) {
+        rotation.x += offsetX;
+        rotation.y += offsetY;
+        rotation.z += offsetZ;
     }
 }

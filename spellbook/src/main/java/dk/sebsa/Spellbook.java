@@ -8,6 +8,7 @@ import dk.sebsa.mana.LogFormatter;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.mana.impl.FormatBuilder;
 import dk.sebsa.spellbook.FrameData;
+import dk.sebsa.spellbook.audio.OpenALModule;
 import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.*;
@@ -142,6 +143,7 @@ public class Spellbook {
         if(capabilities.ecs) registerModule(new ECS());
         if(capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl)) registerModule(new OpenGLModule());
         if(DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
+        if(capabilities.audio) registerModule(new OpenALModule());
 
         logger.log("Engine Init Event, prepare for trouble!..");
         eventBus.engine(new EngineInitEvent((SpellbookLogger) logger, capabilities, application));

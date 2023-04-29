@@ -10,8 +10,9 @@ plugins {
 }
 
 ext {
-    lwjglVersion = "3.3.1"
+    lwjglVersion = "3.3.2"
     imguiVersion = "1.86.10"
+    jomlVersion = "1.10.5"
 }
 
 switch (OperatingSystem.current()) {
@@ -37,10 +38,12 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
+    implementation "org.joml:joml:${jomlVersion}"
+
     // LWJGL
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
-    ['', '-glfw', '-opengl', '-stb'].each {
+    ['', '-glfw', '-opengl', '-stb', '-openal'].each {
         implementation "org.lwjgl:lwjgl$it:$lwjglVersion"
         implementation "org.lwjgl:lwjgl$it::$lwjglNatives"
     }

@@ -32,7 +32,7 @@ public class Scene extends Entity{
     private void getAllComponents(Entity e) {
         for(Entity e2 : e.getChildren()) {
             for(Component component : e2.getComponents()) {
-                if(component.isEnabled())
+                if(component.enabled)
                     components.add(component);
             }
 

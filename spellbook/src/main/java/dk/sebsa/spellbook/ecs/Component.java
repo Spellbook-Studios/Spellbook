@@ -1,54 +1,49 @@
 package dk.sebsa.spellbook.ecs;
 
 import dk.sebsa.spellbook.FrameData;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Represents a reusable functionality that can be applied to entities
  * @author sebsn
  * @since 1.0.0
  */
-public abstract class Component {
-    @Getter @Setter
-    private boolean enabled = true;
-
+public interface Component {
     /**
-     * The entity that holds this component
-     * Should not be changed at all
+     * Weather the component is enabled, i.e. the logic should be run
      */
-    protected Entity entity;
+    boolean enabled = true;
 
     /**
      * Called when the component is attached to the entity
      * And when enabled after being disabled
+     * @param entity Entity, should be stored by the component
      */
-    protected abstract void onEnable();
+    void onEnable(Entity entity);
 
     /**
      * Called once a frame during EventTypes.engineFrameProcess
      * @param frameData Data from current frame. Contains input etc.
      */
-    protected abstract void update(FrameData frameData);
+    default void update(FrameData frameData) {}
 
     /**
      * Called once a frame during EventTypes.engineRender
      */
-    protected abstract void render();
+    default void render() {}
 
     /**
      * Called once a component is removed from an entity
      * And when disabled
      */
-    protected abstract void onDisable();
+    default void onDisable() {}
 
     /**
      * Creates a new enabled component
      * Components should only be instantiated when immedietly added to an entity
+     * @param e The entity to attach to
      */
-    void init(Entity e) {
-        this.entity = e;
-        if(!entity.components.contains(this)) entity.components.add(this);
-        onEnable();
+    default void init(Entity e) {
+        if(!e.components.contains(this)) e.components.add(this);
+        onEnable(e);
     }
 }

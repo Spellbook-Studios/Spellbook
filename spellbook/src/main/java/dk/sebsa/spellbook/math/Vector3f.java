@@ -186,4 +186,12 @@ public class Vector3f {
      * @return New Vector
      */
     public Vector3f mul(float x, float y, float z) { return new Vector3f(x * this.x, y * this.y, z * this.z); }
+
+    /**
+     * Weather all values are 0
+     * @return True if all values equal 0.0f, false otherwise
+     */
+    public boolean isZero() {
+        return x == 0 && y == 0 && z == 0;
+    }
 }
