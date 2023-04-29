@@ -8,7 +8,7 @@ import java.io.StringWriter;
 /**
  * Logs to a SpellbookLogger with a classes classname
  * This should not be passed between clases
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class ClassLogger implements Logger {

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Marks to the eventbus that a method wants to listen for a method
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

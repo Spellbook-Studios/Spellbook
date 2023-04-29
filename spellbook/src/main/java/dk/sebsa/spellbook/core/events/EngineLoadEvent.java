@@ -9,7 +9,7 @@ import dk.sebsa.spellbook.core.SpellbookLogger;
 /**
  * Signifies to engine modules that they should load assets and prepare for the first frame
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class EngineLoadEvent extends Event {
     public final SpellbookCapabilities capabilities;

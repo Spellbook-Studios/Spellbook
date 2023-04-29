@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Functions for generating pseudo random values in a thread safe way
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Random {
     /**

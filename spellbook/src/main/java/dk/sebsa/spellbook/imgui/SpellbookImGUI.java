@@ -16,7 +16,7 @@ import lombok.Getter;
  * Enabled via SpellbookCapabilities.debugIMGUI
  *
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class SpellbookImGUI implements Module {
     private ClassLogger logger;

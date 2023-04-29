@@ -24,7 +24,7 @@ import static org.lwjgl.glfw.GLFW.*;
  * Copied from default spair.imgui implementation
  * Just cut down to what we need
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 @SuppressWarnings("MissingJavadoc")
 public class SpellbookImGUIGLFWImpl {

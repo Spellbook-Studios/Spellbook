@@ -3,7 +3,7 @@ package dk.sebsa.spellbook.math;
 /**
  * A representation of a 2 dimensional square
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Rect {
     /**

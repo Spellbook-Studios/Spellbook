@@ -3,7 +3,7 @@ package dk.sebsa.spellbook.asset;
 /**
  * Basic representation of lodable object for use in Spellbook
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public interface Asset {
     /**

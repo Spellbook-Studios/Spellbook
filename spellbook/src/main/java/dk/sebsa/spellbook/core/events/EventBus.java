@@ -12,7 +12,7 @@ import java.util.*;
  * Also collects user events for layerstacks to then later process
  *
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class EventBus {
     private record Listener(Object o, Method m) {}

@@ -10,7 +10,7 @@ import dk.sebsa.spellbook.opengl.Sprite2D;
 
 /**
  * A stage that renders all SpriteRenderer components
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class SpriteStage extends RenderStage {

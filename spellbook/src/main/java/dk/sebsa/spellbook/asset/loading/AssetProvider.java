@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Provides a list of asset refrences to the assetmanager at runtime
  *
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  **/
 public abstract class AssetProvider {

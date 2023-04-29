@@ -22,7 +22,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 /**
  * A representation of a GLFW window with OpenGL rendering supported
  * 
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class GLFWWindow {

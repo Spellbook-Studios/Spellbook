@@ -16,7 +16,7 @@ import java.text.DecimalFormat;
 /**
  * A UI layer rendered using ImGUI
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public abstract class ImGUILayer extends Layer {
     /**

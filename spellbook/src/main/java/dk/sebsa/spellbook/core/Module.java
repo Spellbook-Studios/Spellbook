@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.core.events.EventHandler;
 
 /**
  * A module of the Spellbook engine
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public interface Module extends EventHandler {

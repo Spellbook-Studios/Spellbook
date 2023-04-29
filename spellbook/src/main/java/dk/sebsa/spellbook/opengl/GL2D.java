@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * A renderer for rendering 2D sprites
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class GL2D {
     private static ClassLogger logger;

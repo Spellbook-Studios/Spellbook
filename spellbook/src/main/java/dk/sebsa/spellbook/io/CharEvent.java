@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.core.events.UserEvent;
 /**
  * Tells the engine that the keyboard is sending a char event
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class CharEvent extends UserEvent {
     public final int codePoint;

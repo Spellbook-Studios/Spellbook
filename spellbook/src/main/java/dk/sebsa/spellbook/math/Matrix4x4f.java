@@ -5,7 +5,7 @@ import java.nio.FloatBuffer;
 /**
  * a 4 x 4 matrix with floats
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Matrix4x4f {
     private final float[][] m = new float[4][4];

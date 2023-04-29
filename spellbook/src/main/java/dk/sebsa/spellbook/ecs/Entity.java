@@ -8,7 +8,7 @@ import java.util.UUID;
 
 /**
  * An object within the game world.
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class Entity {

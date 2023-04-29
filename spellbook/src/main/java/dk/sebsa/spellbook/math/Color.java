@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.util.FourKeyHashMap;
 /**
  * A representation of an RGBA color
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Color {
     /**

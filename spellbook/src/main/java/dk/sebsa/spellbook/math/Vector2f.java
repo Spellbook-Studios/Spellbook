@@ -3,7 +3,7 @@ package dk.sebsa.spellbook.math;
 /**
  * A vector of 2 floats
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Vector2f {
     /**

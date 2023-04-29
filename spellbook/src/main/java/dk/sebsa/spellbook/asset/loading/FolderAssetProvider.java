@@ -12,7 +12,7 @@ import java.util.List;
  * Loads assets from a folder
  *
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class FolderAssetProvider extends AssetProvider {
     private final File folder;

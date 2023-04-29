@@ -15,7 +15,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * Utilities for creating files
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class FileUtils {
     /**

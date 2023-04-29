@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.FrameData;
 /**
  * The hasppens before the frame happens
  * used eg. polling glfw events
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class EngineFrameEarly extends Event {

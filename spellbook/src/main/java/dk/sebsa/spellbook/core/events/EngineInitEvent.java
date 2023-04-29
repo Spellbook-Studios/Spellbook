@@ -10,7 +10,7 @@ import dk.sebsa.spellbook.core.SpellbookLogger;
  * NO assets can be used yet and windows are not initilized yett.
  * Use this to do core loading and setup
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class EngineInitEvent extends Event {
     public final SpellbookLogger logger;

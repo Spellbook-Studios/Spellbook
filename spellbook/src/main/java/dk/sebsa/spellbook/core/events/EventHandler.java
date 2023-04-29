@@ -6,7 +6,7 @@ import dk.sebsa.spellbook.io.GLFWWindow;
  * Has functions for all engine events
  * To use register object with eventbus and annotate with @EventListener
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public interface EventHandler {
     /**

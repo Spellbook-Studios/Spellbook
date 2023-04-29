@@ -8,7 +8,7 @@ import lombok.Getter;
 /**
  * Represents the absouloute and relative position and rotation of an entity
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Transform {
     /**

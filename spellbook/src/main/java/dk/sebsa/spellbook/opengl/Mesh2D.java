@@ -11,7 +11,7 @@ import java.nio.FloatBuffer;
 /**
  * A representation of a OpenGL mesh
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Mesh2D {
     private int v_id;

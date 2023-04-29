@@ -9,7 +9,7 @@ import dk.sebsa.spellbook.opengl.RenderPipeline;
 /**
  * A Spellbook Application
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public abstract class Application {
     /**

@@ -23,7 +23,7 @@ import org.lwjgl.glfw.GLFW;
  * The mother of all Spellbook programs
  * 
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Spellbook {
     /**
@@ -35,7 +35,7 @@ public class Spellbook {
     /**
      * The version of Spellbook as denoted in the gradle module
      */
-    public static final String SPELLBOOK_VERSION = "0.0.1a-SNAPSHOT";
+    public static final String SPELLBOOK_VERSION = "1.0.0a-SNAPSHOT";
     /**
      * Weather the capabilities.debug is true
      */

@@ -43,7 +43,7 @@ public class LayerStack {
     /**
      * Builds layerstacks
      * @author sebsn
-     * @since 0.0.1
+     * @since 1.0.0
      */
     public static class LayerStackBuilder {
         private List<Layer> stack = new ArrayList<>();

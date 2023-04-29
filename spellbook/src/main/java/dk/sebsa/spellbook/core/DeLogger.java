@@ -5,7 +5,7 @@ import dk.sebsa.mana.Logger;
 /**
  * An empty logger used when debug mode is disabled
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class DeLogger implements Logger {
     @Override

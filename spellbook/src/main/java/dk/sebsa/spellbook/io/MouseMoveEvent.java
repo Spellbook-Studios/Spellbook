@@ -6,7 +6,7 @@ import dk.sebsa.spellbook.math.Vector2f;
 /**
  * Tells the engine that the mouse has moved
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class MouseMoveEvent extends UserEvent {
     /**

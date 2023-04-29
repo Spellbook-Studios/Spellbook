@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Loads and manages assets at runtime
  * 
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  **/
 public class AssetManager {

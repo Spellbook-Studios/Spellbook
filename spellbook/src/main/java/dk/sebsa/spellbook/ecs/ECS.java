@@ -8,7 +8,7 @@ import dk.sebsa.spellbook.core.events.*;
 /**
  * Handles the execution of component updates
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class ECS implements Module {
     /**

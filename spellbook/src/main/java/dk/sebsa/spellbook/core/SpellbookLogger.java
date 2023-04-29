@@ -10,7 +10,7 @@ import java.io.PrintStream;
 /**
  * Central log collector for all Coal Loggers
  *
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class SpellbookLogger implements Logger {

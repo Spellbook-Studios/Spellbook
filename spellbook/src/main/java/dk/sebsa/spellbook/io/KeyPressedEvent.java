@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.core.events.UserEvent;
 /**
  * Tells the engine that a user has pressed a keyboard key
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class KeyPressedEvent extends UserEvent {
     /**

@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * A collection of rendering stages
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class RenderPipeline {
     private final List<RenderStage> stages;
@@ -64,7 +64,7 @@ public class RenderPipeline {
     /**
      * Builds RenderPipelines
      * @author sebs
-     * @since 0.0.1
+     * @since 1.0.0
      */
     public static class RenderPipelineBuilder {
         private List<RenderStage> stages = new ArrayList<>();

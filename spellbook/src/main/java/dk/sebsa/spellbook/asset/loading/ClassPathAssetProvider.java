@@ -19,7 +19,7 @@ import java.util.jar.JarFile;
 /**
  * Loads assets from within the jar located under spellbook/
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class ClassPathAssetProvider extends AssetProvider {
     private final Logger logger;

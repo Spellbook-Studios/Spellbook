@@ -10,7 +10,7 @@ import dk.sebsa.mana.Logger;
  * Keeps track of time
  * 
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Time {
     // Constant

@@ -14,7 +14,7 @@ import dk.sebsa.spellbook.opengl.Sprite;
  * Handles the rendering of a sprite
  * This is meant to represent a sprite to be rendered
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class SpriteRenderer implements Component {
     private Entity entity;

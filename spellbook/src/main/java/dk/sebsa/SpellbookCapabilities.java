@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Builder
 public class SpellbookCapabilities {

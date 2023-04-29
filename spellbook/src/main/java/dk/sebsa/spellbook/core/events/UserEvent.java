@@ -4,7 +4,7 @@ import lombok.Getter;
 
 /**
  * Represents an event that the user caused, and that should be handled by UI layers
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public abstract class UserEvent extends Event implements Comparable<UserEvent> {

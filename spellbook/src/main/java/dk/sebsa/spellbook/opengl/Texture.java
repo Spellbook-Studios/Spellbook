@@ -21,7 +21,7 @@ import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 /**
  * Representation of a texutere, this includes as assets but also ones created dynamically (e.g. fbos)
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Texture implements Asset {
     private int id;

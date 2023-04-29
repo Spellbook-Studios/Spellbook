@@ -24,7 +24,7 @@ import static org.lwjgl.opengl.GL20.*;
 /**
  * A GLSL shader program
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class GLSLShaderProgram implements Asset {
     private int programId;

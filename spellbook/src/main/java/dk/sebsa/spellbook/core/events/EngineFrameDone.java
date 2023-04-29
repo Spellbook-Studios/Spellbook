@@ -4,7 +4,7 @@ import dk.sebsa.spellbook.FrameData;
 
 /**
  * The frame has been rendered, cleanup and wait til next frame
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class EngineFrameDone extends Event {

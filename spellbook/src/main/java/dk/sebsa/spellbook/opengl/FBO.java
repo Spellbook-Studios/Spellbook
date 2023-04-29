@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Frame Buffer Object
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class FBO {

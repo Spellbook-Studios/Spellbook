@@ -3,7 +3,7 @@ package dk.sebsa.spellbook.math;
 /**
  * Utils for doing math with floats
  * @author sebsn
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Mathf {
     /**

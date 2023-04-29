@@ -4,7 +4,7 @@ import dk.sebsa.spellbook.FrameData;
 
 /**
  * Now process input, and do main logical actions eg. entities locic
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class EngineFrameProcess extends Event {

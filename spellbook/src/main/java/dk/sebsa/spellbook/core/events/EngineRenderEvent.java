@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.io.GLFWWindow;
 
 /**
  *  Now render the frame
- * @since 0.0.1
+ * @since 1.0.0
  * @author sebs
  */
 public class EngineRenderEvent extends Event {

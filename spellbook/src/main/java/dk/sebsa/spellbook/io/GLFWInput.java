@@ -11,7 +11,7 @@ import org.lwjgl.glfw.*;
  * Gathers input form the user from a GLFWWindow
  *
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class GLFWInput {
     // Input Data

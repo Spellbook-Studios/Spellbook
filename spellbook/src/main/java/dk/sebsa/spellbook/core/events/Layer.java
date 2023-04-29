@@ -11,7 +11,7 @@ import lombok.Getter;
  * Engine Events can be subscribed to by annotating with @EventListener
  *
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public abstract class Layer implements EventHandler {
     /**
