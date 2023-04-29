@@ -8,8 +8,18 @@ import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.FBO;
 import dk.sebsa.spellbook.opengl.RenderStage;
 
+/**
+ * Renders a layerstack to the screen
+ * @since 1.0.0
+ * @author sebs
+ */
 public class UIStage extends RenderStage {
     private final LayerStack stack;
+
+    /**
+     * @param window The window to render to
+     * @param stack Layerstack to render
+     */
     public UIStage(GLFWWindow window, LayerStack stack) {
         super(window);
         this.stack = stack;

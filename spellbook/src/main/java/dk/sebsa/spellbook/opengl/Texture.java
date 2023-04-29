@@ -40,6 +40,7 @@ public class Texture implements Asset {
     /**
      * Sets the values of this texture the one of the texture info
      * @param ti The texture info to load from
+     * @return This texture
      */
     public Texture set(TextureInfo ti) {
         this.width = ti.width;

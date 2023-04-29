@@ -7,6 +7,11 @@ import lombok.Getter;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Text loaded from a file
+ * @since 1.0.0
+ * @author sebs
+ */
 public class TextAsset implements Asset {
     @Getter private String text;
 

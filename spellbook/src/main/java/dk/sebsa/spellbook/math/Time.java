@@ -14,6 +14,9 @@ import dk.sebsa.mana.Logger;
  */
 public class Time {
     // Constant
+    /**
+     * One second in nano seconds
+     */
     public static final long SECOND_NANO = 1000000000L;
 
     // Settings
@@ -40,12 +43,16 @@ public class Time {
 
     /**
      * Initializes time keeping
+     * @param logger Main logger
      */
     public static void init(final Logger logger) {
         logger.log("Initializing Time");
         startTime = System.nanoTime();
     }
 
+    /**
+     * Processes time and calculates stuff like deltaTime
+     */
     public static void procsessFrame() {
         rawTime = System.nanoTime();
         final long time = (TimeUnit.MILLISECONDS.convert(rawTime - startTime, TimeUnit.NANOSECONDS));

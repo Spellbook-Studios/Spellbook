@@ -11,8 +11,15 @@ import lombok.Getter;
  * @since 0.0.1
  */
 public class Transform {
+    /**
+     * Weather the transform has been modified within the last frame
+     */
     @Getter protected boolean isDirty = true;
+    /**
+     * The entity that this transform belongs to
+     */
     protected final Entity entity;
+
     private final Matrix4x4f transformMatrix = new Matrix4x4f();
     private Transform parent;
 
