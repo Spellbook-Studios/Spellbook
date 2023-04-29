@@ -6,10 +6,12 @@ import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
+import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL30;
 
 
@@ -38,6 +40,7 @@ public class Sprite2D {
             shader.createUniform("transformMatrix", e.logger);
             shader.createUniform("pixelScale", e.logger);
             shader.createUniform("objectScale", e.logger);
+            shader.createUniform("viewMatrix", e.logger);
             shader.createUniform("anchor", e.logger);
             shader.createUniform("offset", e.logger);
             shader.createUniform("projection", e.logger);
@@ -63,12 +66,14 @@ public class Sprite2D {
         float halfW = w * 0.5f;
         float halfH = h * 0.5f;
 
-        Matrix4x4f projection = Matrix4x4f.ortho(-halfW, halfW, halfH, -halfH, -1, 1);
+        Matrix4f projection = new Matrix4f().ortho(-halfW, halfW, halfH, -halfH, -1, 1);
 
         // Bind
         mainMesh.bind();
         shader.bind();
         shader.setUniform("projection", projection);
+        shader.setUniform("viewMatrix", Camera.activeCamera.getViewMatrix());
+
         for(int i = 0; i < frameData.getRenderSprite().length; i++ ){
             Map<Sprite, Collection<SpriteRenderer>> layer = frameData.getRenderSprite()[i];
             for (Sprite s : layer.keySet()) {

@@ -7,6 +7,7 @@ import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
+import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.io.KeyReleasedEvent;
@@ -42,13 +43,15 @@ public class TestLayer extends Layer {
                 entity.addComponent(new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr")));
                 entity.transform.setPosition(Random.getFloat(-430, 430), Random.getFloat(-200, 200), 0);
             } else if(keyEvent.key == GLFW.GLFW_KEY_G) {
-                Entity entity = new Entity(ECS.ROOT);
+                Entity entity = new Camera(ECS.ROOT);
                 SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
                 entity.addComponent(spriteRenderer);
                 entity.addComponent(new PlayerMovement());
 
                 spriteRenderer.scale = 2;
                 spriteRenderer.layer = 1;
+
+                new Camera(entity);
             }
         }
    }

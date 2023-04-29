@@ -50,11 +50,14 @@ public class Entity {
         if(tag.equals("SPELLBOOK-SCENE")) { // Logic to run if this should be a root node
             transform = new LockedTransform(this);
             return;
+        } else if(tag.equals("SPELLBOOK-CAM")) {
+            transform = new CameraTransform(this);
+        } else {
+            transform = new Transform(this);
         }
 
         this.parent = parent;
         this.parent.children.add(this);
-        transform = new Transform(this);
     }
 
     /**
