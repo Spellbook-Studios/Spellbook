@@ -89,7 +89,6 @@ public class Entity {
      */
     public void removeComponent(Component c) {
         components.remove(c);
-        c.entity = null;
         c.onDisable();
     }
 

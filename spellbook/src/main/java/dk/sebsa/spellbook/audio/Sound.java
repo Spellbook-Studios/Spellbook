@@ -13,12 +13,14 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
+import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.stb.STBVorbis.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -37,6 +39,7 @@ public class Sound implements Asset {
         // Load vorbis file in PCM format
         try (STBVorbisInfo info = STBVorbisInfo.malloc()) {
             ShortBuffer pcm = readVorbis(location, info);
+            alBufferData(soundBufferId, info.channels() == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, pcm, info.sample_rate());
         } catch (IOException e) {
             Spellbook.instance.error("Failed to load Sound, IOException: " + location, false);
         }
@@ -48,24 +51,12 @@ public class Sound implements Asset {
     }
 
     private ShortBuffer readVorbis(AssetReference file, STBVorbisInfo info) throws IOException {
-        // Load texture from stream
-        InputStream is = FileUtils.loadFile(file.location);
-        byte[] bytes = new byte[8000];
-        int curByte;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        while((curByte = is.read(bytes)) != -1) { bos.write(bytes, 0, curByte);}
-        is.close();
-
-        bytes = bos.toByteArray();
-        ByteBuffer buffer = BufferUtils.createByteBuffer(bytes.length);
-        buffer.put(bytes).flip();
-
         // Load file into memory
         try (MemoryStack stack = MemoryStack.stackPush()) {
+            ByteBuffer vorbis = FileUtils.isToBB(FileUtils.loadFile(file.location), 32 * 1024);
             IntBuffer error = stack.mallocInt(1);
+            long decoder = stb_vorbis_open_memory(vorbis, error, null);
 
-            long decoder = stb_vorbis_open_memory(buffer, error, null);
             if (decoder == NULL) {
                 throw new RuntimeException("Failed to open Ogg Vorbis file. Error: " + error.get(0));
             }
@@ -76,12 +67,12 @@ public class Sound implements Asset {
 
             int lengthSamples = stb_vorbis_stream_length_in_samples(decoder);
 
-            ShortBuffer result = MemoryUtil.memAllocShort(lengthSamples * channels);
+            ShortBuffer pcm = MemoryUtil.memAllocShort(lengthSamples);
 
-            result.limit(stb_vorbis_get_samples_short_interleaved(decoder, channels, result) * channels);
+            pcm.limit(stb_vorbis_get_samples_short_interleaved(decoder, channels, pcm) * channels);
             stb_vorbis_close(decoder);
 
-            return result;
+            return pcm;
         }
     }
 }

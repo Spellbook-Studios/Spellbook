@@ -1,5 +1,8 @@
 package dk.sebsa.spellbook.audio;
 
+import dk.sebsa.spellbook.FrameData;
+import dk.sebsa.spellbook.ecs.Component;
+import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Vector3f;
 
 import static org.lwjgl.openal.AL10.*;
@@ -9,7 +12,7 @@ import static org.lwjgl.openal.AL10.*;
  * @author sebs
  * @since 1.0.0
  */
-public class SoundListener {
+public class SoundListener implements Component {
     /**
      * A soundlistener placed at 0,0,0
      */
@@ -56,5 +59,20 @@ public class SoundListener {
         data[4] = up.y;
         data[5] = up.z;
         alListenerfv(AL_ORIENTATION, data);
+    }
+
+    // COMPONENT
+    private Entity entity;
+
+    @Override
+    public void onEnable(Entity entity) {
+        this.entity = entity;
+        setPosition(entity.transform.getPosition());
+        setSpeed(new Vector3f(0,0,0));
+    }
+
+    @Override
+    public void update(FrameData frameData) {
+        setPosition(entity.transform.getPosition());
     }
 }
