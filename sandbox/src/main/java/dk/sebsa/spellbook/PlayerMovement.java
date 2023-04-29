@@ -4,6 +4,9 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.Core;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.io.GLFWInput;
+import dk.sebsa.spellbook.math.Time;
+import dk.sebsa.spellbook.math.Vector2f;
+import dk.sebsa.spellbook.math.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -15,19 +18,24 @@ public class PlayerMovement extends Component {
 
     }
 
+    private final Vector3f deltaMovement = new Vector3f();
+    public final float speed = 30;
+
     @Override
     protected void update(FrameData frameData) {
         GLFWInput input = frameData.input;
+        deltaMovement.zero();
 
         if(input.isKeyDown(GLFW.GLFW_KEY_W)) {
-            entity.transform.setPosition(entity.transform.getLocalPosition().x, entity.transform.getLocalPosition().y+10, 0);
-        } else if(input.isKeyDown(GLFW.GLFW_KEY_D)) {
-            entity.transform.setPosition(entity.transform.getLocalPosition().x+10, entity.transform.getLocalPosition().y, 0);
-        } else if(input.isKeyDown(GLFW.GLFW_KEY_S)) {
-            entity.transform.setPosition(entity.transform.getLocalPosition().x, entity.transform.getLocalPosition().y-10, 0);
-        } else if(input.isKeyDown(GLFW.GLFW_KEY_A)) {
-            entity.transform.setPosition(entity.transform.getLocalPosition().x-10, entity.transform.getLocalPosition().y, 0);
+            deltaMovement.y += speed * 10;
+        } if(input.isKeyDown(GLFW.GLFW_KEY_D)) {
+            deltaMovement.x += speed * 10;
+        } if(input.isKeyDown(GLFW.GLFW_KEY_S)) {
+            deltaMovement.y -= speed * 10;
+        } if(input.isKeyDown(GLFW.GLFW_KEY_A)) {
+            deltaMovement.x -= speed * 10;
         }
+        entity.transform.setPosition(entity.transform.getLocalPosition().add(deltaMovement.mul(Time.getDeltaTime())));
     }
 
     @Override

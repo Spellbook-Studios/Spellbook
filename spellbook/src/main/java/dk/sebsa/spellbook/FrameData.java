@@ -20,6 +20,9 @@ public class FrameData {
      * Sorted in sprites to make it easier on the renderer
      */
     @Getter private final Map<Sprite, Collection<SpriteRenderer>>[] renderSprite;
+    /**
+     * Reference to the GLFWInput from the current window
+     */
     public final GLFWInput input;
 
     /**
