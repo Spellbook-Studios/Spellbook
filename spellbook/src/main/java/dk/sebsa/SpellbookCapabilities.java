@@ -39,7 +39,6 @@ public class SpellbookCapabilities {
     @Builder.Default public final boolean render2D = true;
 
     /**
-<<<<<<< HEAD
      * Must be > 0
      * The amount of layers to prepare for placing spriterenderes when rendering 2d sprites
      */
@@ -51,6 +50,8 @@ public class SpellbookCapabilities {
     @Builder.Default public final boolean ecs = true;
 
     /**
+=======
+>>>>>>> c2e737bfed3861dc22ebd83d9eab9f60bcd36a51
      * Weather the OpenAL audioModule should be enabled;
      */
     @Builder.Default public final boolean audio = true;
