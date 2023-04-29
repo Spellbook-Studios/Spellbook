@@ -24,7 +24,7 @@ public class AssetReference {
         this.location = location;
         this.locationType = locationType;
 
-        this.name = location;
+        this.name = location.replace('\\', '/'); // For windows xD
     }
 
     public <T extends Asset> T get() {
