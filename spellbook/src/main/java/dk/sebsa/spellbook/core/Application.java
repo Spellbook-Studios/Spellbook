@@ -3,6 +3,7 @@ package dk.sebsa.spellbook.core;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.LayerStack;
+import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.opengl.RenderPipeline;
 
 /**
@@ -48,4 +49,10 @@ public abstract class Application {
      * @return The final layerstack that should be used
      */
     public abstract LayerStack layerStack(EngineInitEvent e);
+
+    /**
+     * Tells the program that it can safely initilize the first scene
+     * @param e The ECS.ROOT entity
+     */
+    public abstract void createInitialScene(Entity e);
 }

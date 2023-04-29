@@ -44,17 +44,6 @@ public class TestLayer extends Layer {
                 Entity entity = new Entity(ECS.ROOT);
                 entity.addComponent(new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr")));
                 entity.transform.setPosition(Random.getFloat(-430, 430), Random.getFloat(-200, 200), 0);
-            } else if(keyEvent.key == GLFW.GLFW_KEY_G) {
-                Entity entity = new Camera(ECS.ROOT);
-                SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
-                entity.addComponent(spriteRenderer);
-                entity.addComponent(new PlayerMovement());
-                entity.addComponent(new SoundListener());
-
-                spriteRenderer.scale = 2;
-                spriteRenderer.layer = 1;
-
-                new Camera(entity);
             } else if(keyEvent.key == GLFW.GLFW_KEY_J) {
                 Entity entity = new Entity(ECS.ROOT);
                 entity.addComponent(new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr")));

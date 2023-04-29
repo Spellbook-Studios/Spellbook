@@ -156,6 +156,7 @@ public class Spellbook {
 
     private void mainLoop() {
         logger.log("Entering mainLoop()");
+        eventBus.engine(new EngineFirstFrameEvent(application));
 
         while (!GLFW.glfwWindowShouldClose(moduleCore.getWindow().getId())) {
             // Process input and prepare for frame

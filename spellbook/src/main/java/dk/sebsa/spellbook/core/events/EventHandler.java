@@ -24,6 +24,14 @@ public interface EventHandler {
     default void engineLoad(EngineLoadEvent e) {}
 
     /**
+     * Everything is initilized and all resources are ready
+     * The engine can now create and prepare stuff for the first frame
+     * @param e The event
+     */
+    @EventListener
+    default void engineFirstFrame(EngineFirstFrameEvent e) {}
+
+    /**
      *
      * @param e The event
      */

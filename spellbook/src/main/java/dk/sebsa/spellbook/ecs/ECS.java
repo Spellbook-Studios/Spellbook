@@ -1,5 +1,7 @@
 package dk.sebsa.spellbook.ecs;
 
+import dk.sebsa.mana.Logger;
+import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.*;
 
@@ -17,6 +19,13 @@ public class ECS implements Module {
     @Override
     public void init(EventBus eventBus) {
         eventBus.registerListeners(this);
+    }
+
+    private Logger logger;
+
+    @EventListener
+    public void engineInit(EngineInitEvent e) {
+        this.logger = new ClassLogger(this, e.logger);
     }
 
     @Override
@@ -43,6 +52,13 @@ public class ECS implements Module {
         for(Component c : e.frameData.components) {
             c.render();
         }
+    }
+
+    @EventListener
+    public void engineFirstFrame(EngineFirstFrameEvent e) {
+        e.application.createInitialScene(ROOT);
+        if(Camera.activeCamera == null) logger.warn("Initial scene doesn't contain a camera!");
+
     }
 
     @Override

@@ -22,9 +22,15 @@ public abstract class Event {
         engineInit,
 
         /**
-         * The engine should now begin to load in resources and prepare for first frame
+         * The engine should now begin to load in resources
          */
         engineLoad,
+
+        /**
+         * Everything is initilized and all resources are ready
+         * The engine can now create and prepare stuff for the first frame
+         */
+        engineFirstFrame,
 
         /**
          * The engine should just prepare for the frame, eg. get input

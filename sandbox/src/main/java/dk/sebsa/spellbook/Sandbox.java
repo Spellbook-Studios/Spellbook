@@ -5,12 +5,18 @@ package dk.sebsa.spellbook;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.SpellbookCapabilities;
+import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
+import dk.sebsa.spellbook.audio.SoundListener;
 import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.LayerStack;
+import dk.sebsa.spellbook.ecs.Camera;
+import dk.sebsa.spellbook.ecs.ECS;
+import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.opengl.RenderPipeline;
+import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
 import dk.sebsa.spellbook.opengl.stages.UIStage;
 
@@ -61,5 +67,17 @@ public class Sandbox extends Application {
                 .appendLayer(new TestLayer(e, debugLayer))
                 .appendLayer(debugLayer)
                 .build();
+    }
+
+    @Override
+    public void createInitialScene(Entity e) {
+        Entity entity = new Camera(e);
+        SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
+        entity.addComponent(spriteRenderer);
+        entity.addComponent(new PlayerMovement());
+        entity.addComponent(new SoundListener());
+
+        spriteRenderer.scale = 2;
+        spriteRenderer.layer = 1;
     }
 }

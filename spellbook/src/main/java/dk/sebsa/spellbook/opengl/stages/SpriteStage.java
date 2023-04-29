@@ -2,6 +2,7 @@ package dk.sebsa.spellbook.opengl.stages;
 
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
+import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.FBO;
 import dk.sebsa.spellbook.opengl.RenderStage;
@@ -31,6 +32,7 @@ public class SpriteStage extends RenderStage {
     @Override
     protected void draw(FBO prevFBO, Rect r, FrameData frameData) {
         drawPreviousFBO(prevFBO);
+        if(Camera.activeCamera == null) return;
         Sprite2D.renderSprites(window, renderResolution, frameData);
     }
 
