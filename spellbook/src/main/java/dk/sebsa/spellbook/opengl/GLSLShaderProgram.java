@@ -8,8 +8,11 @@ import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Vector2f;
+import dk.sebsa.spellbook.math.Vector3f;
 import dk.sebsa.spellbook.util.FileUtils;
+import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryStack;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -195,11 +198,31 @@ public class GLSLShaderProgram implements Asset {
     }
 
     /**
+     * Sets shader uniform (Matrix4x4)
+     * @param uniformName Name to set
+     * @param value Value to set
+     */
+    public void setUniform(String uniformName, Matrix4f value) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            glUniformMatrix4fv(uniforms.get(uniformName), false, value.get(stack.mallocFloat(16)));
+        }
+    }
+
+    /**
      * Sets shader uniform (vec2)
      * @param uniformName Name to set
      * @param v Value to set
      */
     public void setUniform(String uniformName, Vector2f v) {
         glUniform2f(uniforms.get(uniformName), v.x, v.y);
+    }
+
+    /**
+     * Sets shader uniform (vec3)
+     * @param uniformName Name to set
+     * @param v Value to set
+     */
+    public void setUniform(String uniformName, Vector3f v) {
+        glUniform3f(uniforms.get(uniformName), v.x, v.y, v.z);
     }
 }
