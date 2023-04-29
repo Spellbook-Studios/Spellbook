@@ -3,6 +3,7 @@ package dk.sebsa.spellbook.asset;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.TextAsset;
+import dk.sebsa.spellbook.audio.Sound;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.Material;
 import dk.sebsa.spellbook.opengl.Sprite;
@@ -35,6 +36,7 @@ public class AssetReference {
             else if(location.endsWith(".png")) asset = new Texture();
             else if(location.endsWith(".mat")) asset = new Material();
             else if(location.endsWith(".spr")) asset = new Sprite();
+            else if(location.endsWith(".ogg")) asset = new Sound();
             else {
                 Spellbook.instance.error("Failed to identify asset type: " + name, false);
                 return null;
