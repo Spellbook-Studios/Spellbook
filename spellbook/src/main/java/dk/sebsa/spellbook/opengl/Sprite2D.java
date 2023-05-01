@@ -40,10 +40,9 @@ public class Sprite2D {
             shader.createUniform("transformMatrix", e.logger);
             shader.createUniform("pixelScale", e.logger);
             shader.createUniform("objectScale", e.logger);
-            shader.createUniform("viewMatrix", e.logger);
             shader.createUniform("anchor", e.logger);
             shader.createUniform("offset", e.logger);
-            shader.createUniform("projection", e.logger);
+            shader.createUniform("projectionViewMatrix", e.logger);
 
             shader.createUniform("matColor", e.logger);
         } catch (Exception ex) {
@@ -71,8 +70,7 @@ public class Sprite2D {
         // Bind
         mainMesh.bind();
         shader.bind();
-        shader.setUniform("projection", projection);
-        shader.setUniform("viewMatrix", Camera.activeCamera.getViewMatrix());
+        shader.setUniform("projectionViewMatrix", projection.mul(Camera.activeCamera.getViewMatrix()));
 
         for(int i = 0; i < frameData.getRenderSprite().length; i++ ){
             Map<Sprite, Collection<SpriteRenderer>> layer = frameData.getRenderSprite()[i];

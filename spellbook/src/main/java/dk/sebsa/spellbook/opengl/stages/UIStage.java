@@ -27,7 +27,7 @@ public class UIStage extends RenderStage {
 
     @Override
     public String getName() {
-        return "UIStage";
+        return "UI";
     }
 
     @Override
