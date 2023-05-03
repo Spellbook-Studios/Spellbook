@@ -16,6 +16,7 @@ import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.OpenGLModule;
+import dk.sebsa.spellbook.phys.Newton2D;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
 
@@ -144,6 +145,7 @@ public class Spellbook {
         if(capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl)) registerModule(new OpenGLModule());
         if(DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
         if(capabilities.audio) registerModule(new OpenALModule());
+        if(capabilities.newton2D) registerModule(new Newton2D());
 
         logger.log("Engine Init Event, prepare for trouble!..");
         eventBus.engine(new EngineInitEvent((SpellbookLogger) logger, capabilities, application));

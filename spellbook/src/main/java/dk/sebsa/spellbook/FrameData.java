@@ -5,6 +5,7 @@ import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.Sprite;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.phys.components.Collider2D;
 import lombok.Getter;
 
 import java.util.*;
@@ -50,4 +51,14 @@ public class FrameData {
      * Components under ECS.ROOT
      */
     public List<Component> components;
+
+    /**
+     * List of colliders in the Newton2D system that has not moved this frame
+     */
+    public HashSet<Collider2D> newton2DSolids = new HashSet<>();
+
+    /**
+     * List of colliders in the Newton2D system that has moved this frame
+     */
+    public HashSet<Collider2D> newton2DMovers = new HashSet<>();
 }
