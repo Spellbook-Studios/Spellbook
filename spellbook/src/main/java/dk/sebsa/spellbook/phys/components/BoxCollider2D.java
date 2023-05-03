@@ -39,16 +39,14 @@ public class BoxCollider2D extends Collider2D {
     public void collides(BoxCollider2D collider) {
         colliderRect.set(collider.getWorldPositionRect());
 
-        if(getWorldPositionRect().intersects(colliderRect)) {
-            worldPositionRect.getIntersection(colliderRect, intersect);
-            System.out.println(intersect);
+        if(getWorldPositionRect().getOverlap(colliderRect, intersect)) {
             // Pushes the collider out
             if (intersect.width < intersect.height) {
                 if (colliderRect.x < intersect.x) collider.getEntity().transform.move(new Vector3f(-intersect.width, 0, 0));
                 else collider.getEntity().transform.move(new Vector3f(intersect.width, 0, 0));
             } else {
-                if (colliderRect.y < intersect.y) collider.getEntity().transform.move(new Vector3f(0, -intersect.height, 0));
-                else collider.getEntity().transform.move(new Vector3f(0, intersect.height, 0));
+                if (colliderRect.y > intersect.y) collider.getEntity().transform.move(new Vector3f(0, intersect.height, 0));
+                else collider.getEntity().transform.move(new Vector3f(0, -intersect.height, 0));
             }
         }
     }
