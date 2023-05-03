@@ -1,12 +1,9 @@
 package dk.sebsa.spellbook;
 
-import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.core.Core;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.math.Time;
-import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.math.Vector3f;
 import org.lwjgl.glfw.GLFW;
 

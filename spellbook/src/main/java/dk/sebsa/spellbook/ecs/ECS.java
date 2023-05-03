@@ -45,6 +45,19 @@ public class ECS implements Module {
         for(Component c : e.frameData.components) {
             c.update(e.frameData);
         }
+
+        for(Component c : e.frameData.components) {
+            c.lateUpdate(e.frameData);
+        }
+
+        noDirt(ROOT);
+    }
+
+    private static void noDirt(Entity e) {
+        for(Entity c : e.getChildren()) {
+            c.transform.cleanDirt();
+            noDirt(c);
+        }
     }
 
     @EventListener

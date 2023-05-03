@@ -162,6 +162,18 @@ public class Rect {
     }
 
     /**
+     * Returns a vector with the values equal to the pos of this rect
+     * @return a new vector equal to v2f(this.x, this.y)
+     */
+    public Vector2f getPos() {return new Vector2f(x, y);}
+
+    /**
+     * Returns a vector with the values equal to the size of this rect
+     * @return a new vector equal to v2f(this.width, this.height)
+     */
+    public Vector2f getSize() {return new Vector2f(width, height);}
+
+    /**
      * Weather the rect is equal to (0,0,0,0)
      * @return True if equal to zero, false otherwise
      */

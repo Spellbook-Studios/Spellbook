@@ -27,6 +27,12 @@ public interface Component {
     default void update(FrameData frameData) {}
 
     /**
+     * Called once a frame during EventTypes.engineFrameProcess after component.update
+     * @param frameData Data from current frame. Contains input etc.
+     */
+    default void lateUpdate(FrameData frameData) {}
+
+    /**
      * Called once a frame during EventTypes.engineRender
      */
     default void render() {}
