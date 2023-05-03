@@ -67,12 +67,12 @@ public class SoundListener implements Component {
     @Override
     public void onEnable(Entity entity) {
         this.entity = entity;
-        setPosition(entity.transform.getPosition());
+        setPosition(entity.transform.getGlobalPosition());
         setSpeed(new Vector3f(0,0,0));
     }
 
     @Override
     public void update(FrameData frameData) {
-        setPosition(entity.transform.getPosition());
+        setPosition(entity.transform.getGlobalPosition());
     }
 }
