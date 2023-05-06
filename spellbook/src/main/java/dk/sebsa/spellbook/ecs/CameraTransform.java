@@ -1,9 +1,7 @@
 package dk.sebsa.spellbook.ecs;
 
-import dk.sebsa.spellbook.math.Matrix4x4f;
 import lombok.Getter;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 /**
  * A transform for use by cameras
@@ -41,9 +39,9 @@ public class CameraTransform extends Transform {
 
     @Override
     public void clean() {
-        if(isDirty) {
+        if(matrixDirty) {
             viewMatrix.identity()
-                    .translate(-position.x, position.y, -position.z);
+                    .translate(-globalPosition.x, -globalPosition.y, -globalPosition.z);
         }
 
         super.clean();

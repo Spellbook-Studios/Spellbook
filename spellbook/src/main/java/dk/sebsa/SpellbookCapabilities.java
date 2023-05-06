@@ -66,6 +66,11 @@ public class SpellbookCapabilities {
     @Getter private final List<AssetProvider> assetsProviders = new ArrayList<>();
 
     /**
+     * Enable / Disable the 2d physics system
+     */
+    public final boolean newton2D = true;
+
+    /**
      * If logStorageMode is not "dont" where should the logs be stored
      */
     @Builder.Default public final String logStoreTarget = "./logs/latest.log";

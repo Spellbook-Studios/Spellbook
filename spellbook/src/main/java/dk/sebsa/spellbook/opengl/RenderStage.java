@@ -65,7 +65,7 @@ public abstract class RenderStage {
         return fbo;
     }
 
-    private final Rect verticalFlippedUV = new Rect(0,0,1,-1);
+    private final Rect verticalFlippedUV = new Rect(0,0,1,1);
 
     /**
      * Draws the previous FBO the current one
@@ -73,6 +73,7 @@ public abstract class RenderStage {
      */
     protected void drawPreviousFBO(FBO prevFBO) {
         FBO.renderFBO(prevFBO, window.rect, verticalFlippedUV);
+        fbo.bindFrameBuffer();
     }
 
     /**

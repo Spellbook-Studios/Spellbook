@@ -6,14 +6,13 @@ in vec2 textureCords;
 out vec4 color;
 out vec2 uvCoords;
 
-uniform mat4 projection;
+uniform mat4 projectionViewMatrix;
 
 uniform vec4 matColor;
 uniform vec4 offset;
 
 uniform vec2 pixelScale;
 uniform mat4 transformMatrix;
-uniform mat4 viewMatrix;
 uniform vec2 anchor;
 uniform vec2 objectScale;
 
@@ -22,7 +21,7 @@ void main()
     color = matColor;
 
     vec4 worldPosition = vec4((position - anchor) * (pixelScale * objectScale), 0, 1) * transformMatrix;
-    gl_Position = projection * viewMatrix * worldPosition;
+    gl_Position = projectionViewMatrix * worldPosition;
     uvCoords = (textureCords * offset.zw) + offset.xy;
 }
 // SPELLBOOK END VERTEX SHADER //

@@ -11,10 +11,13 @@ import lombok.Getter;
  * @since 1.0.0
  */
 public class Transform {
+    protected boolean matrixDirty = true;
     /**
      * Weather the transform has been modified within the last frame
+     * Resets after Component.lateUpdate
      */
     @Getter protected boolean isDirty = true;
+
     /**
      * The entity that this transform belongs to
      */
@@ -35,7 +38,7 @@ public class Transform {
      * The global position of the entity
      * Equal to the localPosition of this, and all it's parents localPosition
      */
-    @Getter protected final Vector3f position = new Vector3f();
+    @Getter protected final Vector3f globalPosition = new Vector3f();
     /**
      * The position of the entity under it's parent
      */
@@ -54,28 +57,28 @@ public class Transform {
      * Sets the localPosition of this entity, and recalculates it's global pos afterwards
      * @param pos The new local position of the entity
      */
-    public void setPosition(Vector3f pos) { this.localPosition.set(pos); isDirty = true; recalculateGlobalTransformations(); }
+    public void setPosition(Vector3f pos) { this.localPosition.set(pos); matrixDirty = true; isDirty = true; recalculateGlobalTransformations(); }
     /**
      * Sets the localPosition of this entity, and recalculates it's global pos afterwards
      * @param x The x pos of the entity
      * @param y The y pos of the entity
      * @param z The z pos of the entity
      */
-    public void setPosition(float x, float y, float z) { this.localPosition.set(x, y, x); isDirty = true; recalculateGlobalTransformations(); }
+    public void setPosition(float x, float y, float z) { this.localPosition.set(x, y, x); matrixDirty = true; isDirty = true; recalculateGlobalTransformations(); }
 
 
     protected void recalculateLocalTransformation() {
         parent = entity.getParent().transform;
-        isDirty = true;
-        localPosition.set(parent.position.x - position.x, parent.position.y - position.y, parent.position.z - position.z);
+        matrixDirty = true; isDirty = true;
+        localPosition.set(parent.globalPosition.x - globalPosition.x, parent.globalPosition.y - globalPosition.y, parent.globalPosition.z - globalPosition.z);
 
         for(int i = 0; i < entity.getChildren().size(); i++) entity.getChildren().get(i).transform.recalculateGlobalTransformations();
     }
 
     protected void recalculateGlobalTransformations() {
         parent = entity.getParent().transform;
-        isDirty = true;
-        position.set(parent.position.x + localPosition.x, parent.position.y + localPosition.y, parent.position.z + localPosition.z);
+        matrixDirty = true; isDirty = true;
+        globalPosition.set(parent.globalPosition.x + localPosition.x, parent.globalPosition.y + localPosition.y, parent.globalPosition.z + localPosition.z);
 
         for(int i = 0; i < entity.getChildren().size(); i++) entity.getChildren().get(i).transform.recalculateGlobalTransformations();
     }
@@ -94,9 +97,9 @@ public class Transform {
      * If the entity has moved, it recalculates it's transform matrix
      */
     public void clean() {
-        if(isDirty) {
-            isDirty = false;
-            transformMatrix.setTransformation(pos2D.set(position.x, -position.y), 0, Vector2f.VECTOR2F_ONE);
+        if(matrixDirty) {
+            matrixDirty = false;
+            transformMatrix.setTransformation(pos2D.set(globalPosition.x, globalPosition.y), 0, Vector2f.VECTOR2F_ONE);
         }
     }
 
@@ -110,5 +113,20 @@ public class Transform {
         rotation.x += offsetX;
         rotation.y += offsetY;
         rotation.z += offsetZ;
+    }
+
+    /**
+     * Moves the transform by an offset
+     * @param v Offset position
+     */
+    public void move(Vector3f v) {
+        setPosition(localPosition.add(v));
+    }
+
+    /**
+     * Resets the dirty boolean
+     */
+    public void cleanDirt() {
+        isDirty = false;
     }
 }

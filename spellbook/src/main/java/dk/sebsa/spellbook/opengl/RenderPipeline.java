@@ -31,7 +31,7 @@ public class RenderPipeline {
         this.logger = new ClassLogger(this, logger);
     }
 
-    private final Rect verticalFlippedUV = new Rect(0,0,1,-1);
+    private final Rect verticalFlippedUV = new Rect(0,0,1,1);
 
     /**
      * Renders all the stages to a final buffer which is rendered to the screen

@@ -183,4 +183,13 @@ public class Vector2f {
                 ", y=" + y +
                 '}';
     }
+
+    /**
+     * Normalizes this vector and returns it in a new vector
+     * @return Another vector equal to this normalized
+     */
+    public Vector2f normalize() {
+        float invLength =  1.0f / (float) java.lang.Math.sqrt(x * x + y * y);
+        return new Vector2f(x * invLength, y * invLength);
+    }
 }

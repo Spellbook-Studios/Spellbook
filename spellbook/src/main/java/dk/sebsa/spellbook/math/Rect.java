@@ -85,6 +85,36 @@ public class Rect {
     }
 
     /**
+     * Weather a rect intersects / has any overlap with this rect
+     * // Assuming (x, y) is top left corner and (x+w, y-h) is bottom right
+     * @param r The rect testing against
+     * @return True of r intersects, false if otherwise
+     */
+    public boolean overlap(Rect r) {
+        if (y < r.y-r.height || y-height > r.y) return false;
+        if (x+width < r.x || x > r.x + r.width) return false;
+        return true;
+    }
+
+    /**
+     * Tests weather to rects overlap
+     * If they do gets the overlap of the rects
+     * @param r The rect testing up against
+     * @param output This rect will be equal to the overkap of the two rects.
+     * @return true if the overlap
+     */
+    public boolean getOverlap(Rect r, Rect output) {
+        if(!overlap(r)) return false;
+
+        output.x = Math.max(x, r.x);
+        output.y = Math.min(y, r.y);
+        output.width = Math.min(x + width, r.x + r.width) - output.x;
+        output.height = Math.min(y, r.y) - Math.max(y - height, r.y - r.height);
+
+        return true;
+    }
+
+    /**
      * Sets this rect to be equal the variables given
      * @param x The topleft corners x position
      * @param y The topleft corners y position
@@ -160,6 +190,18 @@ public class Rect {
                 ", height=" + height +
                 '}';
     }
+
+    /**
+     * Returns a vector with the values equal to the pos of this rect
+     * @return a new vector equal to v2f(this.x, this.y)
+     */
+    public Vector2f getPos() {return new Vector2f(x, y);}
+
+    /**
+     * Returns a vector with the values equal to the size of this rect
+     * @return a new vector equal to v2f(this.width, this.height)
+     */
+    public Vector2f getSize() {return new Vector2f(width, height);}
 
     /**
      * Weather the rect is equal to (0,0,0,0)

@@ -12,6 +12,7 @@ import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.LayerStack;
+import dk.sebsa.spellbook.debug.DebugRenderStage;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
@@ -19,6 +20,9 @@ import dk.sebsa.spellbook.opengl.RenderPipeline;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
 import dk.sebsa.spellbook.opengl.stages.UIStage;
+import dk.sebsa.spellbook.phys.components.BoxCollider2D;
+import dk.sebsa.spellbook.phys.components.CircleCollider2D;
+import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 
 import java.io.File;
 
@@ -56,6 +60,8 @@ public class Sandbox extends Application {
         return new RenderPipeline.RenderPipelineBuilder()
                 .appendStage(new SpriteStage(e))
                 .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
+
+                .appendStage(new DebugRenderStage(e))
                 .build(e.logger);
     }
 
@@ -73,11 +79,16 @@ public class Sandbox extends Application {
     public void createInitialScene(Entity e) {
         Entity entity = new Camera(e);
         SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
-        entity.addComponent(spriteRenderer);
-        entity.addComponent(new PlayerMovement());
-        entity.addComponent(new SoundListener());
 
         spriteRenderer.scale = 2;
         spriteRenderer.layer = 1;
+
+        entity.addComponent(spriteRenderer);
+        entity.addComponent(new PlayerMovement());
+        entity.addComponent(new SoundListener());
+        //entity.addComponent(new SpriteCollider2D(spriteRenderer));
+        CircleCollider2D c = new CircleCollider2D();
+        c.radius = 32;
+        entity.addComponent(c);
     }
 }
