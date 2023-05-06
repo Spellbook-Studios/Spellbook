@@ -34,7 +34,7 @@ public class Sandbox extends Application {
                         .spellbookDebug(true)
                         .logStoreTarget("../logs/latest.log")
                         .logDisableASCIIEscapeCharacters(false)
-                        .debugIMGUI(true)
+                        .debugIMGUI(false)
                         .build()
                 .addAssetProvider(new FolderAssetProvider(new File("assets/")))
         );
@@ -58,7 +58,7 @@ public class Sandbox extends Application {
     @Override
     public RenderPipeline renderingPipeline(EngineLoadEvent e) {
         return new RenderPipeline.RenderPipelineBuilder()
-                .appendStage(new SpriteStage(e))
+                //.appendStage(new SpriteStage(e))
                 .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
 
                 .appendStage(new DebugRenderStage(e))

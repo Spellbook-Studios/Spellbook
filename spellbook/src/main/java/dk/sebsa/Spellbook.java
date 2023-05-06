@@ -59,6 +59,9 @@ public class Spellbook {
     private Core moduleCore;
     private final Application application;
 
+    /**
+     * The FRAME_DATA for the current frame
+     */
     public static FrameData FRAME_DATA;
 
     /**

@@ -38,11 +38,11 @@ public class Transform {
      * The global position of the entity
      * Equal to the localPosition of this, and all it's parents localPosition
      */
-    @Getter protected final Vector3f globalPosition = new Vector3f();
+    @Getter protected final Vector3f globalPosition = new Vector3f(0,0,0);
     /**
      * The position of the entity under it's parent
      */
-    @Getter protected final Vector3f localPosition = new Vector3f();
+    @Getter protected final Vector3f localPosition = new Vector3f(0,0,0);
 
     /**
      * The rotation of the object
@@ -50,7 +50,7 @@ public class Transform {
      * y pitch
      * z yaw
      */
-    @Getter protected final Vector3f rotation = new Vector3f();
+    @Getter protected final Vector3f rotation = new Vector3f(0,0,0);
 
     // Setters
     /**
@@ -64,7 +64,7 @@ public class Transform {
      * @param y The y pos of the entity
      * @param z The z pos of the entity
      */
-    public void setPosition(float x, float y, float z) { this.localPosition.set(x, y, x); matrixDirty = true; isDirty = true; recalculateGlobalTransformations(); }
+    public void setPosition(float x, float y, float z) { this.localPosition.set(x, y, z); matrixDirty = true; isDirty = true; recalculateGlobalTransformations(); }
 
 
     protected void recalculateLocalTransformation() {

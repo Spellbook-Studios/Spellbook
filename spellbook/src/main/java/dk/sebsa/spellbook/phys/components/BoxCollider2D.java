@@ -75,11 +75,9 @@ public class BoxCollider2D extends Collider2D {
         // In mos cases this doesn't happen, because most cases are caught by the other code
         System.out.println("CHECK");
         Vector2f normalized = (collider.getCenter().sub(getCenter())) .normalize();
-        outerPoint = collider.getCenter().sub(normalized.mul(collider.radius));
+        Vector2f outerPoint = collider.getCenter().sub(normalized.mul(collider.radius));
         if(worldPositionRect.inRect(outerPoint)) moveCircleOut(collider);
     }
-
-    public static Vector2f outerPoint = new Vector2f();
 
     private void moveCircleOut(CircleCollider2D collider) {
         System.out.println("COLLIDE");

@@ -131,7 +131,6 @@ public class DebugRenderStage extends RenderStage {
 
         drawRectList(rects);
         shader.setUniform("color", Color.red);
-        points.add(BoxCollider2D.outerPoint);
         drawPointList(points);
     }
 

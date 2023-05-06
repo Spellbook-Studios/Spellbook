@@ -39,6 +39,7 @@ public abstract class ImGUILayer extends Layer {
 
     @Override
     protected void userEvent(UserEvent e) {
+        if(!Spellbook.instance.getCapabilities().debugIMGUI) return;
         final ImGuiIO io = ImGui.getIO();
         if(e.eventType() == Event.EventType.ioMouseMove) {
             MouseMoveEvent e2 = (MouseMoveEvent) e;
@@ -68,6 +69,7 @@ public abstract class ImGUILayer extends Layer {
 
     @Override
     public void render(Rect r) {
+        if(!Spellbook.instance.getCapabilities().debugIMGUI) return;
         // Starts the imgui frame
         ImGui.newFrame();
 

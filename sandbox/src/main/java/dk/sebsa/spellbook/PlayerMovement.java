@@ -35,6 +35,6 @@ public class PlayerMovement implements Component {
         } if(input.isKeyDown(GLFW.GLFW_KEY_A)) {
             deltaMovement.x -= speed * 10;
         }
-        if(!deltaMovement.isZero()) entity.transform.setPosition(entity.transform.getLocalPosition().add(deltaMovement.mul(Time.getDeltaTime())));
+        if(!deltaMovement.isZero()) entity.transform.move(deltaMovement.mul(Time.getDeltaTime()));
     }
 }

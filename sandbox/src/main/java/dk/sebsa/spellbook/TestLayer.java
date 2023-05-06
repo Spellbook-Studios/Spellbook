@@ -15,6 +15,7 @@ import dk.sebsa.spellbook.io.KeyPressedEvent;
 import dk.sebsa.spellbook.io.KeyReleasedEvent;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 import dk.sebsa.spellbook.util.Random;
 import org.lwjgl.glfw.GLFW;
@@ -49,7 +50,7 @@ public class TestLayer extends Layer {
                 Entity entity = new Entity(ECS.ROOT);
                 SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
                 entity.addComponent(spriteRenderer);
-                entity.addComponent(new SpriteCollider2D(spriteRenderer));
+                entity.addComponent(new CircleCollider2D());
 
                 SoundPlayer sound = new SoundPlayer();
                 sound.sound = AssetManager.getAssetS("assets/fantasymphony-wcb.ogg");
