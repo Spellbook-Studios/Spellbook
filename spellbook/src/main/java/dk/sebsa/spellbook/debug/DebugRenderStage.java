@@ -7,19 +7,23 @@ import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
+import dk.sebsa.spellbook.math.Vector2f;
+import dk.sebsa.spellbook.math.Vector3f;
 import dk.sebsa.spellbook.opengl.FBO;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.RenderStage;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
+import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.Collider2D;
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Renders debug objects to the screen, such as colliders
@@ -36,6 +40,7 @@ public class DebugRenderStage extends RenderStage {
             -10,    0.0f,
     };
     private final DebugVAO linesVAO = new DebugVAO(testPos, 2);
+    private final DebugVAO pointsVAO = new DebugVAO(testPos, 2);
 
     enum DebugRenderMode {
         ModeScreenSpace(1),
@@ -89,21 +94,45 @@ public class DebugRenderStage extends RenderStage {
 
         // Render
         drawColliders(frameData);
+        shader.setUniform("mode", DebugRenderMode.ModeWorldCamera.value);
 
         // Unbind
         shader.unbind();
     }
 
+    private static final float CIRCLE_DETAIL = 32;
+    private static final float PI = (float) Math.PI;
+    private void drawCircle(Vector2f point, float radius) {
+        GL11.glBegin(GL_LINE_LOOP);
+        for(int i = 0; i < CIRCLE_DETAIL; i++) {
+            float z = i / CIRCLE_DETAIL * 360;
+            float x = radius * (float) Math.cos(Math.toRadians(z));
+            float y = radius * (float) Math.sin(Math.toRadians(z));
+
+            glVertex2f(x + point.x, y + point.y);
+        }
+        GL11.glEnd();
+    }
+
     private void drawColliders(FrameData frameData) {
         HashSet<Rect> rects = new HashSet<>();
+        HashSet<Vector2f> points = new HashSet<>();
+        shader.setUniform("mode", DebugRenderMode.ModeWorldCamera.value);
+        shader.setUniform("color", Color.yellow);
 
         for(Collider2D collider2D : frameData.newton2DSolids) {
             if(collider2D instanceof BoxCollider2D) rects.add(((BoxCollider2D) collider2D).getWorldPositionRect());
+            else if(collider2D instanceof CircleCollider2D) {
+                drawCircle(collider2D.getCenter(), ((CircleCollider2D) collider2D).radius);
+            }
+
+            points.add(collider2D.getCenter());
         }
 
-        shader.setUniform("mode", DebugRenderMode.ModeWorldCamera.value);
-        shader.setUniform("color", Color.yellow);
         drawRectList(rects);
+        shader.setUniform("color", Color.red);
+        points.add(BoxCollider2D.outerPoint);
+        drawPointList(points);
     }
 
     private void drawRectList(Set<Rect> rectSet) {
@@ -136,9 +165,23 @@ public class DebugRenderStage extends RenderStage {
         linesVAO.draw(GL_LINES);
     }
 
+    private void drawPointList(Set<Vector2f> points) {
+        float[] vertices = new float[2*points.size()];
+        int i = 0;
+        for(Vector2f v : points) {
+            vertices[i*2] = v.x; vertices[i*2+1] = v.y;
+            i++;
+        }
+
+        pointsVAO.put(vertices);
+        pointsVAO.draw(GL_POINTS);
+    }
+
     @Override
     protected void destroy() {
         shaderReference.unRefrence();
+        linesVAO.destroy();
+        pointsVAO.destroy();
         shader = null;
     }
 }

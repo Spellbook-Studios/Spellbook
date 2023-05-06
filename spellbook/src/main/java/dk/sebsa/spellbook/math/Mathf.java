@@ -28,4 +28,16 @@ public class Mathf {
     public static float clamp(float val, float min, float max) {
         return Math.max(min, Math.min(max, val));
     }
+
+    /**
+     * Returns the square distance between 2 points in 2d space
+     * @param a Point a
+     * @param b Point B
+     * @return The distance between the points squared
+     */
+    public static float sqDistance(Vector2f a, Vector2f b) {
+        float x = a.x - b.x;
+        float y = a.y - b.y;
+        return x * x + y * y;
+    }
 }

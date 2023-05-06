@@ -21,6 +21,7 @@ import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
 import dk.sebsa.spellbook.opengl.stages.UIStage;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
+import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 
 import java.io.File;
@@ -85,6 +86,9 @@ public class Sandbox extends Application {
         entity.addComponent(spriteRenderer);
         entity.addComponent(new PlayerMovement());
         entity.addComponent(new SoundListener());
-        entity.addComponent(new SpriteCollider2D(spriteRenderer));
+        //entity.addComponent(new SpriteCollider2D(spriteRenderer));
+        CircleCollider2D c = new CircleCollider2D();
+        c.radius = 32;
+        entity.addComponent(c);
     }
 }

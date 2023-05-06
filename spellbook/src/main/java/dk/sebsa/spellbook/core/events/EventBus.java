@@ -16,6 +16,11 @@ import java.util.*;
  */
 public class EventBus {
     private record Listener(Object o, Method m) {}
+
+    /**
+     * Queue of events that happend in user space
+     * Will be disptached though layerstack
+     */
     public final Queue<UserEvent> userEvents = new PriorityQueue<>();
     private final HashMap<String, List<Listener>> listeners = new HashMap<>();
     private final ClassLogger logger;
