@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.core;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.mana.Logger;
 
 /**
@@ -25,7 +26,7 @@ public class DeLogger implements Logger {
 
     @Override
     public void err(Object... objects) {
-
+        Spellbook.errorCount++;
     }
 
     @Override

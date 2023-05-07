@@ -31,8 +31,7 @@ public class UIStage extends RenderStage {
     }
 
     @Override
-    protected void draw(FBO prevFBO, Rect r, FrameData frameData) {
-        drawPreviousFBO(prevFBO);
+    protected void draw(Rect r, FrameData frameData) {
         for(int i = stack.stack.size()-1; i >= 0; i--) {
             Layer l = stack.stack.get(i);
             l.ensureRender(r);

@@ -21,6 +21,11 @@ public class SpellbookCapabilities {
     @Builder.Default public final boolean spellbookDebug = true;
 
     /**
+     * The maximum amount of errors that can occur before spellbook shutdowns
+     */
+    @Builder.Default public final int spellbookShutdown = 10;
+
+    /**
      * Weather IMGUI rendering for debug menus should be enabled, and added to the layer stack
      * Should not be used in production
      * Should not be used in production

@@ -17,17 +17,17 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 1.0.0
  */
 public class RenderPipeline {
-    private final List<RenderStage> stages;
+    private final List<RenderStage> renderStages;
     private final ClassLogger logger;
     private boolean hasPrintedDebugMessage = !Spellbook.instance.DEBUG;
 
     /**
      * A RenderPipeline with the stages provides
-     * @param stages The stages of this RenderPipeline
+     * @param renderStages The stages of this RenderPipeline
      * @param logger The logger used for debug logging
      */
-    private RenderPipeline(List<RenderStage> stages, SpellbookLogger logger) {
-        this.stages = stages;
+    private RenderPipeline(List<RenderStage> renderStages, SpellbookLogger logger) {
+        this.renderStages = renderStages;
         this.logger = new ClassLogger(this, logger);
     }
 
@@ -38,27 +38,31 @@ public class RenderPipeline {
      * @param e Render event
      */
     public void render(EngineRenderEvent e) {
+        glClearColor(1, 1, 1, 0);
+
         if(!hasPrintedDebugMessage) {
             hasPrintedDebugMessage = true;
             logger.trace("Rendering Pipeline: ");
 
-            for (RenderStage stage : stages) {
+            for (RenderStage stage : renderStages) {
                 logger.trace(" - " + stage.getName());
             }
         }
 
         FBO prevFBO = null;
-        for(RenderStage stage : stages) {
+        List<FBO> fbos = new ArrayList<>(renderStages.size());
+        for(RenderStage stage : renderStages) {
             try {
                 prevFBO = stage.render(prevFBO, e.frameData);
+                fbos.add(prevFBO);
             } catch (Exception ex) {
                 Spellbook.instance.error("Render stage: " + stage.getName() + ", failed to run. Error: " + ex.getMessage() + "\nStacktrace: " + logger.stackTrace(ex), false);
             }
         }
 
-        // Render the final FBO
+        // Render the stage to the screen
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-        FBO.renderFBO(prevFBO, e.window.rect, verticalFlippedUV);
+        for(FBO fbo : fbos) { FBO.renderFBO(fbo, e.window.rect, verticalFlippedUV); }
     }
 
     /**
@@ -67,14 +71,14 @@ public class RenderPipeline {
      * @since 1.0.0
      */
     public static class RenderPipelineBuilder {
-        private List<RenderStage> stages = new ArrayList<>();
+        private List<RenderStage> renderStages = new ArrayList<>();
 
         /**
          * Appends a stage to the end of a pipeline
          * @param stage The stage to append
          * @return This
          */
-        public RenderPipelineBuilder appendStage(RenderStage stage) { stages.add(stage); return this; }
+        public RenderPipelineBuilder appendStage(RenderStage stage) { renderStages.add(stage); return this; }
 
         /**
          * Builds the final RenderPipeline with the stages provided.
@@ -82,8 +86,8 @@ public class RenderPipeline {
          * @return this
          */
         public RenderPipeline build(SpellbookLogger logger) {
-            RenderPipeline pipeline = new RenderPipeline(stages, logger);
-            stages = new ArrayList<>();
+            RenderPipeline pipeline = new RenderPipeline(renderStages, logger);
+            renderStages = new ArrayList<>();
 
             return pipeline;
         }
@@ -93,7 +97,7 @@ public class RenderPipeline {
      * Runs cleanup/destroy methods on all stages
      */
     public void destroy() {
-        for(RenderStage stage : stages) {
+        for(RenderStage stage : renderStages) {
             stage.destroy();
         }
     }

@@ -77,9 +77,7 @@ public class DebugRenderStage extends RenderStage {
     public String getName() { return "Debug"; }
 
     @Override
-    protected void draw(FBO prevFBO, Rect r, FrameData frameData) {
-        drawPreviousFBO(prevFBO);
-
+    protected void draw(Rect r, FrameData frameData) {
         // Projection matrix
         float w = r.width;
         float h = r.height;

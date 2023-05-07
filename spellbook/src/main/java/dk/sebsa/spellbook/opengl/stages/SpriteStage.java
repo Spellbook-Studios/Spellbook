@@ -30,8 +30,7 @@ public class SpriteStage extends RenderStage {
     }
 
     @Override
-    protected void draw(FBO prevFBO, Rect r, FrameData frameData) {
-        drawPreviousFBO(prevFBO);
+    protected void draw(Rect r, FrameData frameData) {
         if(Camera.activeCamera == null) return;
         Sprite2D.renderSprites(window, renderResolution, frameData);
     }

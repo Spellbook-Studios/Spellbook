@@ -23,7 +23,7 @@ public class FBO {
     private final int frameBufferID;
     private final int depthBufferID;
     private final Texture texture;
-    private final Material material;
+    final Material material;
 
     /**
      * Width of framebuffer

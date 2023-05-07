@@ -28,8 +28,6 @@ public class OpenGLModule implements Module {
 
     @EventListener
     public void engineLoad(EngineLoadEvent e) {
-        glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
-
         pipeline = e.app.renderingPipeline(e);
         GL2D.init(e.moduleCore.getWindow(), e.assetManager.getAsset("/spellbook/shaders/Spellbook2d.glsl"));
 
@@ -53,6 +51,7 @@ public class OpenGLModule implements Module {
 
     @EventListener
     public void engineRender(EngineRenderEvent e) {
+        glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the framebuffer
 
         pipeline.render(e);

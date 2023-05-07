@@ -50,8 +50,8 @@ public abstract class RenderStage {
     /**
      * Renders the stage to it's FBO
      *
-     * @param prevFBO   The fbo of the previous stage
-     * @param frameData
+     * @param prevFBO The FBO of the previous stage
+     * @param frameData Active FrameData
      * @return FBO with rendered content
      */
     protected FBO render(FBO prevFBO, FrameData frameData) {
@@ -59,31 +59,19 @@ public abstract class RenderStage {
         fbo.bindFrameBuffer();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        draw(prevFBO, window.rect, frameData);
+        draw(window.rect, frameData);
 
         fbo.unBind();
         return fbo;
     }
 
-    private final Rect verticalFlippedUV = new Rect(0,0,1,1);
-
-    /**
-     * Draws the previous FBO the current one
-     * @param prevFBO The previous FBO
-     */
-    protected void drawPreviousFBO(FBO prevFBO) {
-        FBO.renderFBO(prevFBO, window.rect, verticalFlippedUV);
-        fbo.bindFrameBuffer();
-    }
-
     /**
      * Draw the render stage
      *
-     * @param prevFBO   The previous FBO, always render this before rendering on top
      * @param r         The place to draw to
-     * @param frameData
+     * @param frameData Active FrameData
      */
-    protected abstract void draw(FBO prevFBO, Rect r, FrameData frameData);
+    protected abstract void draw(Rect r, FrameData frameData);
 
     /**
      * Cleanup after yourselves

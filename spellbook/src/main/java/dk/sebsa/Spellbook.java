@@ -163,7 +163,7 @@ public class Spellbook {
         logger.log("Entering mainLoop()");
         eventBus.engine(new EngineFirstFrameEvent(application));
 
-        while (!GLFW.glfwWindowShouldClose(moduleCore.getWindow().getId())) {
+        while (!GLFW.glfwWindowShouldClose(moduleCore.getWindow().getId()) && errorCount < capabilities.spellbookShutdown && !shutdown) {
             // Process input and prepare for frame
             FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer);
             eventBus.engine(new EngineFrameEarly(FRAME_DATA));
@@ -195,6 +195,17 @@ public class Spellbook {
         moduleCore.getAssetManager().engineCleanup(logger);
     }
 
+    private boolean shutdown;
+
+    /**
+     * Count of the warning logs that has occurred in this programs lifetime
+     */
+    public static int warnCount;
+    /**
+     * Count of the error logs that has occurred in this programs lifetime
+     */
+    public static int errorCount;
+
     /**
      * Use this to report errors even when you don't have a logger
      * @param error The error message
@@ -202,5 +213,6 @@ public class Spellbook {
      */
     public void error(String error, boolean shutdown) {
         logger.err(error);
+        if(shutdown) this.shutdown = true;
     }
 }
