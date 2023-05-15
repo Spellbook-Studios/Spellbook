@@ -133,4 +133,23 @@ public class SpellbookCapabilities {
          */
         zipped,
     }
+
+    @Override
+    public String toString() {
+        return "SpellbookCapabilities{" +
+                "spellbookDebug=" + spellbookDebug +
+                ", spellbookShutdown=" + spellbookShutdown +
+                ", debugIMGUI=" + debugIMGUI +
+                ", renderingProvider=" + renderingProvider +
+                ", render2D=" + render2D +
+                ", spriteMaxLayer=" + spriteMaxLayer +
+                ", ecs=" + ecs +
+                ", audio=" + audio +
+                ", renderResolution=" + renderResolution +
+                ", newton2D=" + newton2D +
+                ", logStoreTarget='" + logStoreTarget + '\'' +
+                ", logStorageMode=" + logStorageMode +
+                ", logDisableASCIIEscapeCharacters=" + logDisableASCIIEscapeCharacters +
+                '}';
+    }
 }

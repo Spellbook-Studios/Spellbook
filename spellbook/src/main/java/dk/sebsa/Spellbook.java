@@ -111,6 +111,7 @@ public class Spellbook {
 
         // Log important debug info
         logger.log("Running Spellbook: " + SPELLBOOK_VERSION);
+        logger.log(capabilities);
         logger.log(app);
         Mana.logSystemInfo(logger);
 
