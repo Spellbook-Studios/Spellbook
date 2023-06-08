@@ -4,8 +4,10 @@ import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.LayerStack;
 import dk.sebsa.spellbook.io.GLFWWindow;
+import dk.sebsa.spellbook.marble.MarbleIM;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.FBO;
+import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.RenderStage;
 
 /**
@@ -36,6 +38,14 @@ public class UIStage extends RenderStage {
             Layer l = stack.stack.get(i);
             l.ensureRender(r);
         }
+    }
+
+    @Override
+    public void renderFBO(Rect windowRect) {
+        // I HATE THAT THIS EXIST
+        // IF YOU NEED TO KNOW WHY THIS EXISTS
+        // read the giant ass motherfucker comment at the end of RenderPipeline.render(EngineRenderEvent e)
+        GL2D.drawTextureWithTextCords(fbo.material, windowRect, Rect.verticalFlippedUV);
     }
 
     @Override

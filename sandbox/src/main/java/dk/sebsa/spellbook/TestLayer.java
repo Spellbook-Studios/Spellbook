@@ -13,6 +13,7 @@ import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.io.KeyPressedEvent;
 import dk.sebsa.spellbook.io.KeyReleasedEvent;
+import dk.sebsa.spellbook.marble.MarbleIM;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.phys.components.CircleCollider2D;
@@ -65,6 +66,8 @@ public class TestLayer extends Layer {
 
     @Override
     public void render(Rect r) {
-
+        MarbleIM.prepare();
+        MarbleIM.label("Hello World!", 5, 0);
+        MarbleIM.unprepare();
     }
 }

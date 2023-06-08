@@ -23,7 +23,7 @@ public class FBO {
     private final int frameBufferID;
     private final int depthBufferID;
     private final Texture texture;
-    final Material material;
+    public final Material material;
 
     /**
      * Width of framebuffer
@@ -127,6 +127,19 @@ public class FBO {
         if(fbo == null) return;
         GL2D.prepare();
         GL2D.drawTextureWithTextCords(fbo.material, r, t);
+        GL2D.unprepare();
+    }
+
+    /**
+     * Render a list of FBO, with element 0 being first
+     * @param fbos The fbo to render
+     * @param r Where to render it
+     * @param t Texture coords (most often (0,0,1,1);
+     */
+    public static void renderFBOS(List<FBO> fbos, Rect r, Rect t) {
+        if(fbos == null || fbos.isEmpty()) return;
+        GL2D.prepare();
+        for(FBO fbo : fbos) GL2D.drawTextureWithTextCords(fbo.material, r, t);
         GL2D.unprepare();
     }
 }

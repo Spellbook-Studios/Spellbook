@@ -7,6 +7,17 @@ package dk.sebsa.spellbook.math;
  */
 public class Rect {
     /**
+     * A vertically flipped UV Rect
+     * (0,0,1,-1)
+     */
+    public static final Rect verticalFlippedUV = new Rect(0,0,1,-1);
+    /**
+     * A vertically simple UV Rect
+     * (0,0,1,1)
+     */
+    public static final Rect UV = new Rect(0,0,1,1);
+
+    /**
      * The location of the rects top-left corner within a 2d space
      */
     public float x, y;

@@ -31,8 +31,6 @@ public class RenderPipeline {
         this.logger = new ClassLogger(this, logger);
     }
 
-    private final Rect verticalFlippedUV = new Rect(0,0,1,1);
-
     /**
      * Renders all the stages to a final buffer which is rendered to the screen
      * @param e Render event
@@ -62,7 +60,18 @@ public class RenderPipeline {
 
         // Render the stage to the screen
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-        for(FBO fbo : fbos) { FBO.renderFBO(fbo, e.window.rect, verticalFlippedUV); }
+        // FBO.renderFBOS(fbos, e.window.rect, Rect.UV);
+        // This didn't work why???? The UIStage keeps drawing its stuff cucking inverted
+        // Like IDK why, but LWJGL likes having a wierd coordinate system
+        // In previous versions of this engine all fbo's were rendered upside down
+        // So using Rect.verticallyFlippedUV would have work and all stages whould be rendered equally
+        // But for some reason everything now works... except for UIStage
+        // Instead we do this shit
+        GL2D.prepare();
+        for(RenderStage stage : renderStages) {
+            stage.renderFBO(e.window.rect);
+        }
+        GL2D.unprepare();
     }
 
     /**

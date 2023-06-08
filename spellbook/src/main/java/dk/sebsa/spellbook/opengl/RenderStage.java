@@ -18,7 +18,7 @@ public abstract class RenderStage {
      */
     public abstract String getName();
     private boolean init = false;
-    private FBO fbo;
+    protected FBO fbo;
     /**
      * The main window that the stage draws to
      */
@@ -77,4 +77,17 @@ public abstract class RenderStage {
      * Cleanup after yourselves
      */
     protected abstract void destroy();
+
+    /**
+     * Draws the FBO
+     * Note: GL2D must be prepared before calling this method
+     * Why does this stupid method exist you might ask???
+     * This exits literraly beacuse of a bug
+     * This allows a very specific stage to draw itself inverted
+     * For more context read the giant ass motherfucker comment at the end of RenderPipeline.render(EngineRenderEvent e)
+     * @param windowRect The rect of the window drawing to
+     */
+    public void renderFBO(Rect windowRect) {
+        GL2D.drawTextureWithTextCords(fbo.material, windowRect, Rect.UV);
+    }
 }

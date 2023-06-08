@@ -103,14 +103,12 @@ public class GL2D {
         guiMesh.unbind();
     }
 
-    private static final Rect fullUV = new Rect(0,0,1,1);
-
     /**
      * Draws a texture with(out) texture coordinates (0,0,1,1)
      * @param mat Material to draw
      * @param drawRect Where to draw
      */
-    public static void drawTextureWithTextCords(Material mat, Rect drawRect) { drawTextureWithTextCords(mat, drawRect, fullUV, guiMesh); }
+    public static void drawTextureWithTextCords(Material mat, Rect drawRect) { drawTextureWithTextCords(mat, drawRect, Rect.UV, guiMesh); }
 
     /**
      * Draws a texture with texture coordinates
