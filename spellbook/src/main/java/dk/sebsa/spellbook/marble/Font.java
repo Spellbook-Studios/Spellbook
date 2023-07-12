@@ -9,10 +9,7 @@ import lombok.Getter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -69,12 +66,12 @@ public class Font {
         graphics2d.setFont(font);
         graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        drawCharaters(graphics2d);
+        drawCharacters(graphics2d);
         return createBuffer();
     }
 
     private static final String ISO_8559_1 = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïððòóôõö÷øùúûüýþÿ";
-    private void drawCharaters(Graphics2D graphics2d) {
+    private void drawCharacters(Graphics2D graphics2d) {
         int tempX = 0;
         int tempY = 0;
         Charset charset = Charset.forName("ISO_8859_1");
