@@ -30,7 +30,7 @@ public class StoredLogger extends SpellbookLogger {
 
         // Create log targets
         try {
-            if(!target.mkdirs() && !target.createNewFile()) { // If file exits
+            if(!target.getParentFile().mkdirs() && !target.createNewFile()) { // If file exits
                 target.delete();
                 target.createNewFile();
             }
