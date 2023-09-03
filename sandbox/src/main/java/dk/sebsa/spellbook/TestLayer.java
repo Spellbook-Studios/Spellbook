@@ -67,7 +67,7 @@ public class TestLayer extends Layer {
     @Override
     public void render(Rect r) {
         MarbleIM.prepare();
-        MarbleIM.label("Hello World!", 5, 0);
+        MarbleIM.label("Hello World!", 0, 0);
         MarbleIM.unprepare();
     }
 }
