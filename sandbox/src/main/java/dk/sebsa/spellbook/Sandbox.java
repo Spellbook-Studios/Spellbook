@@ -75,7 +75,7 @@ public class Sandbox extends Application {
     @Override
     public void createInitialScene(Entity e) {
         Entity entity = new Camera(e);
-        SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
+        SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("assets/32.spr"));
 
         spriteRenderer.scale = 2;
         spriteRenderer.layer = 1;

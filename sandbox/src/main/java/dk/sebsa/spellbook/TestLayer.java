@@ -43,13 +43,13 @@ public class TestLayer extends Layer {
             if(keyEvent.key == GLFW.GLFW_KEY_F11) window.fullscreen(!window.isFullscreen());
             else if(keyEvent.key == GLFW.GLFW_KEY_H) {
                 Entity entity = new Entity(ECS.ROOT);
-                SpriteRenderer sr = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
+                SpriteRenderer sr = new SpriteRenderer(AssetManager.getAssetS("assets/32.spr"));
                 entity.addComponent(sr);
                 entity.addComponent(new SpriteCollider2D(sr));
                 entity.transform.setPosition(Random.getFloat(-430, 430), Random.getFloat(-200, 200), 0);
             } else if(keyEvent.key == GLFW.GLFW_KEY_J) {
                 Entity entity = new Entity(ECS.ROOT);
-                SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
+                SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("assets/32.spr"));
                 entity.addComponent(spriteRenderer);
                 entity.addComponent(new CircleCollider2D());
 
@@ -68,6 +68,7 @@ public class TestLayer extends Layer {
     public void render(Rect r) {
         MarbleIM.prepare();
         MarbleIM.label("Hello World!", 0, 0);
+        MarbleIM.sprite(new Rect(0,100,100,100), null);
         MarbleIM.unprepare();
     }
 }

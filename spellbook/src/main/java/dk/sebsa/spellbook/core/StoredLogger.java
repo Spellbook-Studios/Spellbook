@@ -14,6 +14,11 @@ import java.time.format.DateTimeFormatter;
 
 import static dk.sebsa.spellbook.util.FileUtils.zipSingleFile;
 
+/**
+ * Logger that stores files and puts them in zips
+ * @author sebs
+ * @since 1.0.0
+ */
 public class StoredLogger extends SpellbookLogger {
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d-MM-u");
 

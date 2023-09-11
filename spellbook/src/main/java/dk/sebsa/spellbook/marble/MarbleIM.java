@@ -5,6 +5,7 @@ import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
+import dk.sebsa.spellbook.opengl.Sprite;
 import lombok.Getter;
 
 import java.awt.*;
@@ -93,6 +94,15 @@ public class MarbleIM {
 
             tempX += glyph.scale().x;
         }
+    }
+
+    /**
+     * Renders a sprice to the screen
+     * @param rect The dimensions and position of the sprite
+     * @param sprite The sprite to render
+     */
+    public static void sprite(Rect rect, Sprite sprite) {
+        GL2D.drawSprite(rect, sprite);
     }
 
     private static GLSLShaderProgram shaderProgram;

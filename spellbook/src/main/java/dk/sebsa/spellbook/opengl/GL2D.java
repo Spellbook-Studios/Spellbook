@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
+import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.io.GLFWWindow;
@@ -25,6 +26,8 @@ public class GL2D {
     private static Mesh2D guiMesh;
     private static Matrix4x4f ortho;
     private static Color currentColor;
+    private static AssetReference missingSpriteR;
+    public static Sprite missingSprite;
 
     /**
      * Initializes the renderer, done once pr program
@@ -42,6 +45,9 @@ public class GL2D {
         guiMesh = Mesh2D.getQuad();
         prepareShader(defaultShader);
         logger.log("GL2D loaded");
+
+        missingSpriteR = AssetManager.getAssetS("/spellbook/missing.spr");
+        missingSprite = missingSpriteR.get();
     }
 
     /**
@@ -140,6 +146,7 @@ public class GL2D {
         // Draw
         changeColor(mat.getColor());
         if(mat.getTexture() != null) mat.getTexture().bind();
+        else missingSprite.getMaterial().getTexture().bind();
         // TODO: else { noTexture.bind(); u.set(0,0,1,1); }
         defaultShader.setUniform("useColor", mat.isTextured() ? 0 : 1);
         defaultShader.setUniform("offset", u.x, u.y, u.width, u.height);
@@ -148,6 +155,74 @@ public class GL2D {
 
         GL20.glDrawArrays(GL30.GL_TRIANGLES, 0, 6);
         if(mat.getTexture() != null) mat.getTexture().unbind();
+        else missingSprite.getMaterial().getTexture().unbind();
+    }
+
+    private static final Rect rect1 = new Rect();   // This one is used for multiple things
+    private static final Rect rect2 = new Rect();   // This one is used for multiple things
+    private static final Rect tr = new Rect();
+    private static final Rect tru = new Rect();
+    private static final Rect ti = new Rect();
+    private static final Rect tu = new Rect();
+    private static final Rect bl = new Rect();
+    private static final Rect blu = new Rect();
+    private static final Rect l = new Rect();
+    private static final Rect lu = new Rect();
+
+    /**
+     * Renders a sprite to the screen
+     * @param r Dimension and position of the sprite
+     * @param e The sprite (if null a missing texutre sprite will be renderd)
+     */
+    public static void drawSprite(Rect r, Sprite e) {
+        if(e == null) e = missingSprite;
+        //Cache a short variable for the texture, just so we only have to type a character anytime we use it
+        Rect uv = e.getUV();
+
+        //Get the top left corner of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(r.x, r.y, e.getPadding().x, e.getPadding().y);   // TL
+        rect2.set(uv.x, uv.y, e.getPaddingUV().x, e.getPaddingUV().y); // TLU
+        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
+
+        //Get the top right corner of the box using corresponding padding values and draw it using a texture drawing method
+        tr.set((r.x + r.width) - e.getPadding().width, r.y, e.getPadding().width, e.getPadding().y);    // TR
+        tru.set((uv.x + uv.width) - e.getPaddingUV().width, uv.y, e.getPaddingUV().width, e.getPaddingUV().y); // TRU
+        drawTextureWithTextCords(e.getMaterial(), tr, tru);
+
+        //Get the bottom left corner of the box using corresponding padding values and draw it using a texture drawing method
+        bl.set(r.x, (r.y + r.height) - e.getPadding().height, e.getPadding().x, e.getPadding().height); // BL
+        blu.set(uv.x, (uv.y + uv.height) - e.getPaddingUV().height, e.getPaddingUV().x, e.getPaddingUV().height); //BLU
+        drawTextureWithTextCords(e.getMaterial(), bl, blu);
+
+        //Get the bottom right corner of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(tr.x, bl.y, e.getPadding().width, e.getPadding().height); // BR
+        rect2.set(tru.x, blu.y, e.getPaddingUV().width, e.getPaddingUV().height); // BRU
+        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
+
+        //Get the left side of the box using corresponding padding values and draw it using a texture drawing method
+        l.set(r.x, r.y + e.getPadding().y, e.getPadding().x, r.height - (e.getPadding().y + e.getPadding().height)); // L
+        lu.set(uv.x, uv.y + e.getPaddingUV().y, e.getPaddingUV().x, uv.height - (e.getPaddingUV().y + e.getPaddingUV().height)); //LU
+        drawTextureWithTextCords(e.getMaterial(), l, lu);
+
+        //Get the right side of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(tr.x, r.y + e.getPadding().y, e.getPadding().width, l.height); // RI
+        rect2.set(tru.x, lu.y, e.getPaddingUV().width, lu.height); // RU
+        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
+
+        //Get the top of the box using corresponding padding values and draw it using a texture drawing method
+        ti.set(r.x + e.getPadding().x, r.y, r.width - (e.getPadding().x + e.getPadding().width), e.getPadding().y); // TI
+        tu.set(uv.x + e.getPaddingUV().x, uv.y, uv.width - (e.getPaddingUV().x + e.getPaddingUV().width), e.getPaddingUV().y); // TU
+        drawTextureWithTextCords(e.getMaterial(), ti, tu);
+
+        //Get the bottom of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(ti.x, bl.y, ti.width, e.getPadding().height); // B
+        rect2.set(tu.x, blu.y, tu.width, e.getPaddingUV().height); // BU
+        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
+
+        //Get the center of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(ti.x, l.y, ti.width, l.height); // C
+        rect2.set(tu.x, lu.y, tu.width, lu.height); // CU
+        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
     }
 
     /**
@@ -157,5 +232,7 @@ public class GL2D {
         guiMesh.destroy();
         defaultShader = null;
         shaderR.unRefrence();
+        missingSprite = null;
+        missingSpriteR.unRefrence();
     }
 }

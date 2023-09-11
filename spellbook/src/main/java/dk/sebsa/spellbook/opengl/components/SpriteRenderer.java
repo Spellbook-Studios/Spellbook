@@ -7,6 +7,7 @@ import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
+import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.Sprite;
 
@@ -83,6 +84,10 @@ public class SpriteRenderer implements Component {
     public void onEnable(Entity e) {
         this.entity = e;
         if(spriteR != null) sprite = spriteR.get();
+        else {
+            sprite = GL2D.missingSprite;
+            Spellbook.getLogger().warn("SpriteRender sprite reference is null");
+        }
     }
 
     @Override
@@ -92,6 +97,7 @@ public class SpriteRenderer implements Component {
 
     @Override
     public void onDisable() {
-        if(spriteR != null) { sprite = null; spriteR.unRefrence(); }
+        sprite = null;
+        if(spriteR != null) { spriteR.unRefrence(); }
     }
 }
