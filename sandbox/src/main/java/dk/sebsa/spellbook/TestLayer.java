@@ -38,6 +38,7 @@ public class TestLayer extends Layer {
         if(e.eventType().equals(Event.EventType.ioKeyReleased)) {
             KeyReleasedEvent keyEvent = (KeyReleasedEvent) e;
             if(keyEvent.key == GLFW.GLFW_KEY_F2) debugLayer.enabled = !debugLayer.enabled;
+            if(keyEvent.key == GLFW.GLFW_KEY_F3) MarbleIM.font("Consolas", 100, 1);
         } else if(e.eventType().equals(Event.EventType.ioKeyPressed)) {
             KeyPressedEvent keyEvent = (KeyPressedEvent) e;
             if(keyEvent.key == GLFW.GLFW_KEY_F11) window.fullscreen(!window.isFullscreen());
