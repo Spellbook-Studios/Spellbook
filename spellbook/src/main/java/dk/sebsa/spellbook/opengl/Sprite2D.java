@@ -43,6 +43,7 @@ public class Sprite2D {
 
             shader.createUniform("matColor", e.logger);
         } catch (Exception ex) {
+            //noinspection InstantiationOfUtilityClass
             Spellbook.instance.error(new ClassLogger(new Sprite2D(), e.logger).stackTrace(ex), true);
         }
     }

@@ -45,7 +45,11 @@ public class FileUtils {
      */
     public static List<File> listFilesInFolder(final File folder) {
         List<File> files = new ArrayList<>();
-        for (final File fileEntry : folder.listFiles()) {
+
+        File[] a = folder.listFiles();
+        if(a == null) return files;
+
+        for (final File fileEntry : a) {
             if (fileEntry.isDirectory()) {
                 files.addAll(listFilesInFolder(fileEntry));
             } else {

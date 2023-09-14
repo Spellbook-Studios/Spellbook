@@ -195,11 +195,15 @@ public class GLFWWindow {
             if (isFullscreen) {
                 oldW = width; oldH = height;
                 GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-                glfwGetWindowPos(id, posX, posY);
-                glfwSetWindowMonitor(id, glfwGetPrimaryMonitor(), 0, 0, videoMode.width(), videoMode.height(),
-                        GLFW_DONT_CARE);
-                // Enable v-sync
-                glfwSwapInterval(vsync ? 1 : 0);
+                if(videoMode == null) {
+                    logger.err("glfwGetVideoMode returned null");
+                } else {
+                    glfwGetWindowPos(id, posX, posY);
+                    glfwSetWindowMonitor(id, glfwGetPrimaryMonitor(), 0, 0, videoMode.width(), videoMode.height(),
+                            GLFW_DONT_CARE);
+                    // Enable v-sync
+                    glfwSwapInterval(vsync ? 1 : 0);
+                }
             } else
                 glfwSetWindowMonitor(id, 0, posX[0], posY[0], oldW, oldH, GLFW_DONT_CARE);
         }
@@ -215,6 +219,7 @@ public class GLFWWindow {
     /**
      * Destroys the window and the GLFW context with it
      */
+    @SuppressWarnings("DataFlowIssue")
     public void destroy() {
         log("Window Cleanup");
         glfwSetFramebufferSizeCallback(id, null).free();

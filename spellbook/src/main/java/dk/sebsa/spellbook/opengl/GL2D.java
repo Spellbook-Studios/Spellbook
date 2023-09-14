@@ -35,6 +35,7 @@ public class GL2D {
      * @param s The default 2d shader
      */
     public static void init(GLFWWindow w, AssetReference s) {
+        //noinspection InstantiationOfUtilityClass
         logger = new ClassLogger(new GL2D(), Spellbook.getLogger());
         logger.log("Initializing GL2D");
 
