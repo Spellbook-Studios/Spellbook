@@ -6,7 +6,7 @@ version: "1.0"
 
 #Specify inspection profile for code analysis
 profile:
-  name: qodana.starter
+  name: qodana.recommended
 
 #Enable inspections
 #include:
@@ -24,8 +24,9 @@ projectJDK: 17 #(Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
 
 #Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
-#plugins:
-#  - id: <plugin.id> #(plugin id can be found at https://plugins.jetbrains.com)
+#(plugin id can be found at https://plugins.jetbrains.com)
+plugins:
+  - id: 6317-lombok
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 linter: jetbrains/qodana-jvm-community:latest
