@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.opengl.components;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
@@ -35,7 +34,7 @@ public class SpriteRenderer implements Component {
      * (0.5f, 0.5f) places the middle of the sprite directly on the position
      * (0f, 0f) places the top-left corner of the sprite on the position
      */
-    public Vector2f anchor = new Vector2f(0.5f, 0.5f);
+    public final Vector2f anchor = new Vector2f(0.5f, 0.5f);
     /**
      * PENDING!!!!!!!!!!!
      */

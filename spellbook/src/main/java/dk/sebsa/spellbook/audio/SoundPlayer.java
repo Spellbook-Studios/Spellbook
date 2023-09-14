@@ -3,7 +3,6 @@ package dk.sebsa.spellbook.audio;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
-import lombok.Getter;
 
 /**
  * Plays sound from the position of an entity

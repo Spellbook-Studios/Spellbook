@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.imgui;
 
-import dk.sebsa.spellbook.math.Rect;
 import imgui.ImGui;
 import imgui.ImGuiIO;
 import imgui.ImGuiPlatformIO;
@@ -26,7 +25,7 @@ import static org.lwjgl.glfw.GLFW.*;
  * @author sebs
  * @since 1.0.0
  */
-@SuppressWarnings("MissingJavadoc")
+@SuppressWarnings("ALL")
 public class SpellbookImGUIGLFWImpl {
     private static final String OS = System.getProperty("os.name", "generic").toLowerCase();
     protected static final boolean IS_WINDOWS = OS.contains("win");
@@ -63,7 +62,7 @@ public class SpellbookImGUIGLFWImpl {
     private boolean wantUpdateMonitors = true;
     private double time = 0.0;
 
-    public boolean init(final long windowId) {
+    public void init(final long windowId) {
         this.windowPtr = windowId;
 
         detectGlfwVersionAndEnabledFeatures();
@@ -125,8 +124,6 @@ public class SpellbookImGUIGLFWImpl {
         if (IS_WINDOWS) {
             mainViewport.setPlatformHandleRaw(GLFWNativeWin32.glfwGetWin32Window(windowId));
         }
-
-        return true;
     }
 
     /**
@@ -153,10 +150,6 @@ public class SpellbookImGUIGLFWImpl {
         time = currentTime;
 
         updateGamepads();
-    }
-
-    public void dispose() {
-
     }
 
     private void detectGlfwVersionAndEnabledFeatures() {

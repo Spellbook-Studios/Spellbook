@@ -8,8 +8,6 @@ import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
-import dk.sebsa.spellbook.math.Vector3f;
-import dk.sebsa.spellbook.opengl.FBO;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.RenderStage;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
@@ -18,9 +16,7 @@ import dk.sebsa.spellbook.phys.components.Collider2D;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.lwjgl.opengl.GL11.*;

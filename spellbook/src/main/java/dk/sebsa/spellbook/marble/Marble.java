@@ -44,7 +44,7 @@ public class Marble implements Module {
 
     @Override
     public void cleanup() {
-
+        logger.log("Cleanup");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.core;
 
-import dk.sebsa.Spellbook;
 import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.mana.LogFormatter;
 import lombok.SneakyThrows;
@@ -36,8 +35,8 @@ public class StoredLogger extends SpellbookLogger {
         // Create log targets
         try {
             if(!target.mkdirs() && !target.createNewFile()) { // If file exits
-                target.delete();
-                target.createNewFile();
+                if(!target.delete()) return;
+                if(!target.createNewFile()) return;
             }
 
             fw = new FileWriter(target, false);
@@ -64,6 +63,7 @@ public class StoredLogger extends SpellbookLogger {
         File directory = new File(parent);
         String[] files = directory.list();
         int i = 1;
+        assert files != null;
         for(String s : files) {
             if(s.startsWith(start)) i++;
         }
@@ -82,9 +82,7 @@ public class StoredLogger extends SpellbookLogger {
                 zipName += "-"+getNumber(zipName, parent);
 
                 zipSingleFile(Paths.get(target.getPath()), parent + "/" + zipName + ".zip");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (IOException ignored) { } // THERE IS NO WAY TO LOG THIS
         }
     }
 }

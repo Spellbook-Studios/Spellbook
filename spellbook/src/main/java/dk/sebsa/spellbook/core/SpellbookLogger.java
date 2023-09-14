@@ -24,7 +24,6 @@ public class SpellbookLogger implements Logger {
      */
     public SpellbookLogger(LogFormatter formatterIn, SpellbookCapabilities caps) {
         this.formatter = (FormatterImpl) formatterIn; // This cast will always work :D
-        formatter.formatTrace = formatter.formatTrace;
 
         if(caps.logDisableASCIIEscapeCharacters) return;
         formatter.formatTrace = "\u001B[90m " + formatter.formatTrace;

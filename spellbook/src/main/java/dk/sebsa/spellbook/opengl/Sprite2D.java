@@ -2,13 +2,11 @@ package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.FrameData;
-import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.io.GLFWWindow;
-import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import org.joml.Matrix4f;
@@ -16,7 +14,6 @@ import org.lwjgl.opengl.GL30;
 
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;

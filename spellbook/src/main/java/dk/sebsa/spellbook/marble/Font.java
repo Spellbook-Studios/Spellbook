@@ -21,7 +21,7 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Font {
     private BufferedImage bufferedImage;
-    private java.awt.Font font;
+    private final java.awt.Font baseFont;
     private Vector2f imageSize;
     private FontMetrics fontMetrics;
 
@@ -32,17 +32,17 @@ public class Font {
 
     /**
      * Creates a font using AWT to generate the font textures
-     * @param font The AWT font to use
+     * @param baseFont The AWT font to use
      */
-    public Font(java.awt.Font font) {
-        this.font = font;
+    public Font(java.awt.Font baseFont) {
+        this.baseFont = baseFont;
         generateFont();
     }
 
     private void generateFont() {
         GraphicsConfiguration graphCon = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
         Graphics2D graphics = graphCon.createCompatibleImage(1, 1, Transparency.TRANSLUCENT).createGraphics();
-        graphics.setFont(font);
+        graphics.setFont(baseFont);
 
         fontMetrics = graphics.getFontMetrics();
         fontMaxHeight = (float) (fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent());
@@ -63,7 +63,7 @@ public class Font {
 
     private ByteBuffer generateImage() {
         Graphics2D graphics2d = (Graphics2D) bufferedImage.getGraphics();
-        graphics2d.setFont(font);
+        graphics2d.setFont(baseFont);
         graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         drawCharacters(graphics2d);
@@ -72,7 +72,7 @@ public class Font {
 
     private static final String ISO_8559_1 = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïððòóôõö÷øùúûüýþÿ";
     private void drawCharacters(Graphics2D graphics2d) {
-        int tempX = 0;
+        float tempX = 0;
         int tempY = 0;
         Charset charset = Charset.forName("ISO_8859_1");
         byte[] chars = charset.encode(ISO_8559_1).array();
@@ -102,11 +102,11 @@ public class Font {
         bufferedImage.getRGB(0, 0, w, h, pixels, 0, w);
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(w * h * 4);
 
-        for(int i = 0; i < pixels.length; i++) {
-            byteBuffer.put((byte) ((pixels[i] >> 16) & 0xFF)); 	// Red
-            byteBuffer.put((byte) ((pixels[i] >> 8) & 0xFF)); 	// Green
-            byteBuffer.put((byte) (pixels[i] >> 31)); 		// Blue
-            byteBuffer.put((byte) ((pixels[i] >> 24) & 0xFF)); 	// Alpha
+        for (int pixel : pixels) {
+            byteBuffer.put((byte) ((pixel >> 16) & 0xFF));    // Red
+            byteBuffer.put((byte) ((pixel >> 8) & 0xFF));    // Green
+            byteBuffer.put((byte) (pixel >> 31));        // Blue
+            byteBuffer.put((byte) ((pixel >> 24) & 0xFF));    // Alpha
         }
         byteBuffer.flip();
         return byteBuffer;

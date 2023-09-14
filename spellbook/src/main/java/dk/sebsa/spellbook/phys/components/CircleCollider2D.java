@@ -1,9 +1,6 @@
 package dk.sebsa.spellbook.phys.components;
 
-import dk.sebsa.spellbook.FrameData;
-import dk.sebsa.spellbook.ecs.Transform;
 import dk.sebsa.spellbook.math.*;
-import lombok.Getter;
 
 /**
  * A collider in the shape of a circle

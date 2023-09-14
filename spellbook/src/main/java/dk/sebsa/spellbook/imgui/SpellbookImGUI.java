@@ -57,7 +57,6 @@ public class SpellbookImGUI implements Module {
     public void cleanup() {
         logger.log("ImGUI cleanup");
         implGl3.dispose();
-        implGLFW.dispose();
         ImGui.destroyContext();
     }
 

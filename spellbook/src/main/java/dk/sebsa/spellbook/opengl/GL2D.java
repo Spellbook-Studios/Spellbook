@@ -63,7 +63,7 @@ public class GL2D {
             shaderProgram.createUniform("screenPos", logger);
             shaderProgram.createUniform("color", logger);
             shaderProgram.createUniform("useColor", logger);
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { logger.warn("Failed to create shader uniforms", "This might still work, if the error is from the uniforms already having been created"); logger.stackTrace(e); }
         shaderProgram.initFor2D = true;
     }
 

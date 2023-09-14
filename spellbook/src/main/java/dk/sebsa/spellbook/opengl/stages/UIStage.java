@@ -4,9 +4,7 @@ import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.LayerStack;
 import dk.sebsa.spellbook.io.GLFWWindow;
-import dk.sebsa.spellbook.marble.MarbleIM;
 import dk.sebsa.spellbook.math.Rect;
-import dk.sebsa.spellbook.opengl.FBO;
 import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.RenderStage;
 

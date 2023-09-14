@@ -84,8 +84,5 @@ public class Sandbox extends Application {
         entity.addComponent(new PlayerMovement());
         entity.addComponent(new SoundListener());
         entity.addComponent(new SpriteCollider2D(spriteRenderer));
-//        CircleCollider2D c = new CircleCollider2D();
-//        c.radius = 32;
-//        entity.addComponent(c);
     }
 }

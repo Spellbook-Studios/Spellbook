@@ -103,8 +103,7 @@ public class Rect {
      */
     public boolean overlap(Rect r) {
         if (y < r.y-r.height || y-height > r.y) return false;
-        if (x+width < r.x || x > r.x + r.width) return false;
-        return true;
+        return !(x + width < r.x) && !(x > r.x + r.width);
     }
 
     /**

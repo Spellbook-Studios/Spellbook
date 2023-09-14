@@ -121,7 +121,7 @@ public class Spellbook {
             init(); // Init Spellbook, and setup workers (+Pre-Main Loop)
             mainLoop(); // Actual main loop
         } catch (Exception | Error e) {
-            e.printStackTrace();
+            logger.warn("Main loop caucht exception / error: " + e.getMessage());
         }
 
         // Exit

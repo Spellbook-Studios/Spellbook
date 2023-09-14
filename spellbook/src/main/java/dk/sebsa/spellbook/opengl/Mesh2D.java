@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.opengl;
 
-import dk.sebsa.spellbook.asset.Asset;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;

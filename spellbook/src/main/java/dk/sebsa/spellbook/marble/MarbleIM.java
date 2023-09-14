@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.marble;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
@@ -9,8 +8,6 @@ import dk.sebsa.spellbook.opengl.Sprite;
 import dk.sebsa.spellbook.util.ThreeKeyHashMap;
 import lombok.Getter;
 
-import java.awt.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 

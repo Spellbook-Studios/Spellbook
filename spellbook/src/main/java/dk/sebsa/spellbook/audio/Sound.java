@@ -5,17 +5,12 @@ import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL11;
-import org.lwjgl.stb.STBVorbis;
 import org.lwjgl.stb.STBVorbisInfo;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;

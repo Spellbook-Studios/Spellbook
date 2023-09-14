@@ -4,7 +4,6 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.core.events.EngineRenderEvent;
-import dk.sebsa.spellbook.math.Rect;
 
 import java.util.ArrayList;
 import java.util.List;
