@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.io;
 
 import dk.sebsa.spellbook.core.events.UserEvent;
-import dk.sebsa.spellbook.math.Vector2f;
 
 /**
  * Tells the engine that the mouse has moved

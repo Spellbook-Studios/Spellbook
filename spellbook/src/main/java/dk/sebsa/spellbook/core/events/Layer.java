@@ -3,7 +3,6 @@ package dk.sebsa.spellbook.core.events;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.math.Rect;
-import lombok.Getter;
 
 /**
  * Handles UI user events, and can also subscribe to engine events

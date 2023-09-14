@@ -4,7 +4,6 @@ import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.math.Rect;
-import dk.sebsa.spellbook.opengl.FBO;
 import dk.sebsa.spellbook.opengl.RenderStage;
 import dk.sebsa.spellbook.opengl.Sprite2D;
 

@@ -13,6 +13,7 @@ import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.io.KeyPressedEvent;
 import dk.sebsa.spellbook.io.KeyReleasedEvent;
+import dk.sebsa.spellbook.marble.MarbleIM;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.phys.components.CircleCollider2D;
@@ -37,18 +38,19 @@ public class TestLayer extends Layer {
         if(e.eventType().equals(Event.EventType.ioKeyReleased)) {
             KeyReleasedEvent keyEvent = (KeyReleasedEvent) e;
             if(keyEvent.key == GLFW.GLFW_KEY_F2) debugLayer.enabled = !debugLayer.enabled;
+            if(keyEvent.key == GLFW.GLFW_KEY_F3) MarbleIM.font("Consolas", 100, 1);
         } else if(e.eventType().equals(Event.EventType.ioKeyPressed)) {
             KeyPressedEvent keyEvent = (KeyPressedEvent) e;
             if(keyEvent.key == GLFW.GLFW_KEY_F11) window.fullscreen(!window.isFullscreen());
             else if(keyEvent.key == GLFW.GLFW_KEY_H) {
                 Entity entity = new Entity(ECS.ROOT);
-                SpriteRenderer sr = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
+                SpriteRenderer sr = new SpriteRenderer(AssetManager.getAssetS("assets/32.spr"));
                 entity.addComponent(sr);
                 entity.addComponent(new SpriteCollider2D(sr));
                 entity.transform.setPosition(Random.getFloat(-430, 430), Random.getFloat(-200, 200), 0);
             } else if(keyEvent.key == GLFW.GLFW_KEY_J) {
                 Entity entity = new Entity(ECS.ROOT);
-                SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("/spellbook/32.spr"));
+                SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("assets/32.spr"));
                 entity.addComponent(spriteRenderer);
                 entity.addComponent(new CircleCollider2D());
 
@@ -65,6 +67,9 @@ public class TestLayer extends Layer {
 
     @Override
     public void render(Rect r) {
-
+        MarbleIM.prepare();
+        MarbleIM.label("Hello World!", 0, 0);
+        MarbleIM.sprite(new Rect(0,100,100,100), null);
+        MarbleIM.unprepare();
     }
 }

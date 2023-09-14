@@ -14,6 +14,7 @@ import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
+import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.OpenGLModule;
 import dk.sebsa.spellbook.phys.Newton2D;
@@ -111,6 +112,7 @@ public class Spellbook {
 
         // Log important debug info
         logger.log("Running Spellbook: " + SPELLBOOK_VERSION);
+        logger.log(capabilities);
         logger.log(app);
         Mana.logSystemInfo(logger);
 
@@ -119,7 +121,7 @@ public class Spellbook {
             init(); // Init Spellbook, and setup workers (+Pre-Main Loop)
             mainLoop(); // Actual main loop
         } catch (Exception | Error e) {
-            e.printStackTrace();
+            logger.warn("Main loop caucht exception / error: " + e.getMessage());
         }
 
         // Exit
@@ -149,6 +151,7 @@ public class Spellbook {
         if(DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
         if(capabilities.audio) registerModule(new OpenALModule());
         if(capabilities.newton2D) registerModule(new Newton2D());
+        registerModule(new Marble());
 
         logger.log("Engine Init Event, prepare for trouble!..");
         eventBus.engine(new EngineInitEvent((SpellbookLogger) logger, capabilities, application));

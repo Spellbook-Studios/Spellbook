@@ -48,7 +48,7 @@ public class SoundListener implements Component {
      * Sets the orientation of this soundlistener
      * @param at Direction this is looking at
      * @param up Direction upwards from listener
-     *           https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/chapter22/listener_at_up.png
+     *           <a href="https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/chapter22/listener_at_up.png">...</a>
      */
     public void setOrientation(Vector3f at, Vector3f up) {
         float[] data = new float[6];

@@ -1,12 +1,12 @@
 package dk.sebsa.spellbook.opengl.components;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
+import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.Sprite;
 
@@ -34,7 +34,7 @@ public class SpriteRenderer implements Component {
      * (0.5f, 0.5f) places the middle of the sprite directly on the position
      * (0f, 0f) places the top-left corner of the sprite on the position
      */
-    public Vector2f anchor = new Vector2f(0.5f, 0.5f);
+    public final Vector2f anchor = new Vector2f(0.5f, 0.5f);
     /**
      * PENDING!!!!!!!!!!!
      */
@@ -83,6 +83,10 @@ public class SpriteRenderer implements Component {
     public void onEnable(Entity e) {
         this.entity = e;
         if(spriteR != null) sprite = spriteR.get();
+        else {
+            sprite = GL2D.missingSprite;
+            Spellbook.getLogger().warn("SpriteRender sprite reference is null");
+        }
     }
 
     @Override
@@ -92,6 +96,7 @@ public class SpriteRenderer implements Component {
 
     @Override
     public void onDisable() {
-        if(spriteR != null) { sprite = null; spriteR.unRefrence(); }
+        sprite = null;
+        if(spriteR != null) { spriteR.unRefrence(); }
     }
 }

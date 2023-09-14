@@ -17,7 +17,7 @@ public abstract class Collider2D implements Component {
      * Where the colliders is anchored to the entity
      * 0.5f 0.5f: the middle of the collider resides on the entities pos
      */
-    public Vector2f anchor = new Vector2f(0.5f, 0.5f);
+    public final Vector2f anchor = new Vector2f(0.5f, 0.5f);
 
     /**
      * The center of the collider

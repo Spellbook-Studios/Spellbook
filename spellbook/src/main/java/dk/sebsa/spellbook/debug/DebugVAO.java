@@ -4,7 +4,6 @@ import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
 
-import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL42.*;
 
 /**

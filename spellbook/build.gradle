@@ -22,6 +22,12 @@ tasks.register('javadocJar', Jar) {
     archiveClassifier.set("javadoc")
 }
 
+compileJava.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
 artifacts {
     archives javadocJar, sourcesJar
 }

@@ -7,6 +7,17 @@ package dk.sebsa.spellbook.math;
  */
 public class Rect {
     /**
+     * A vertically flipped UV Rect
+     * (0,0,1,-1)
+     */
+    public static final Rect verticalFlippedUV = new Rect(0,0,1,-1);
+    /**
+     * A vertically simple UV Rect
+     * (0,0,1,1)
+     */
+    public static final Rect UV = new Rect(0,0,1,1);
+
+    /**
      * The location of the rects top-left corner within a 2d space
      */
     public float x, y;
@@ -92,8 +103,7 @@ public class Rect {
      */
     public boolean overlap(Rect r) {
         if (y < r.y-r.height || y-height > r.y) return false;
-        if (x+width < r.x || x > r.x + r.width) return false;
-        return true;
+        return !(x + width < r.x) && !(x > r.x + r.width);
     }
 
     /**

@@ -99,7 +99,7 @@ public class FileUtils {
         try (
                 ZipOutputStream zos = new ZipOutputStream(
                         new FileOutputStream(zipFileName));
-                FileInputStream fis = new FileInputStream(source.toFile());
+                FileInputStream fis = new FileInputStream(source.toFile())
         ) {
 
             ZipEntry zipEntry = new ZipEntry(source.getFileName().toString());

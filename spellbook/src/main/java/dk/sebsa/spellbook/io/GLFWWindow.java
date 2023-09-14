@@ -4,7 +4,6 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.events.Event;
-import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -47,7 +46,7 @@ public class GLFWWindow {
      * Modified in the sense that the window has been moved or resized.
      */
     @Getter
-    private boolean isDirty = true;
+    private boolean isDirty;
     @Getter
     private boolean isFullscreen; // Can be set by the user but is first set on the next frame
     private boolean actuallyFullscreen; // Weather the window is currently in fullscreen
@@ -139,10 +138,14 @@ public class GLFWWindow {
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
             // Center the window
-            glfwSetWindowPos(
-                    id,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2);
+            if (vidmode != null) {
+                glfwSetWindowPos(
+                        id,
+                        (vidmode.width() - pWidth.get(0)) / 2,
+                        (vidmode.height() - pHeight.get(0)) / 2);
+            } else {
+                logger.warn("glfwGetVideoMode returned null");
+            }
         } // the stack frame is popped automatically
 
         log("Finalizing window setup");
@@ -274,5 +277,14 @@ public class GLFWWindow {
      */
     public void fullscreen(boolean fullscreen) {
         this.isFullscreen = fullscreen;
+    }
+
+    /**
+     * Changes the window title
+     * @param title The new title
+     */
+    public void setWindowTitle(String title) {
+        glfwSetWindowTitle(id, title);
+        windowTitle = title;
     }
 }

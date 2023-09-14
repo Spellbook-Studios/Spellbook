@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.core;
 
-import dk.sebsa.Spellbook;
 import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.mana.LogFormatter;
 import lombok.SneakyThrows;
@@ -14,6 +13,11 @@ import java.time.format.DateTimeFormatter;
 
 import static dk.sebsa.spellbook.util.FileUtils.zipSingleFile;
 
+/**
+ * Logger that stores files and puts them in zips
+ * @author sebs
+ * @since 1.0.0
+ */
 public class StoredLogger extends SpellbookLogger {
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d-MM-u");
 
@@ -31,8 +35,10 @@ public class StoredLogger extends SpellbookLogger {
         // Create log targets
         try {
             if(!target.getParentFile().mkdirs() && !target.createNewFile()) { // If file exits
-                target.delete();
-                target.createNewFile();
+
+            if(!target.mkdirs() && !target.createNewFile()) { // If file exits
+                if(!target.delete()) return;
+                if(!target.createNewFile()) return;
             }
 
             fw = new FileWriter(target, false);
@@ -59,6 +65,7 @@ public class StoredLogger extends SpellbookLogger {
         File directory = new File(parent);
         String[] files = directory.list();
         int i = 1;
+        assert files != null;
         for(String s : files) {
             if(s.startsWith(start)) i++;
         }
@@ -77,9 +84,7 @@ public class StoredLogger extends SpellbookLogger {
                 zipName += "-"+getNumber(zipName, parent);
 
                 zipSingleFile(Paths.get(target.getPath()), parent + "/" + zipName + ".zip");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (IOException ignored) { } // THERE IS NO WAY TO LOG THIS
         }
     }
 }

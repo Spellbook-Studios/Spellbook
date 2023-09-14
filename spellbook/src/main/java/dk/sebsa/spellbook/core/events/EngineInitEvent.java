@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.SpellbookCapabilities;
-import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.SpellbookLogger;
 

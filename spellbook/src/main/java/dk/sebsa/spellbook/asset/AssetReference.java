@@ -45,6 +45,7 @@ public class AssetReference {
             asset.load(this);
         }
 
+        //noinspection unchecked
         return (T) asset;
     }
 

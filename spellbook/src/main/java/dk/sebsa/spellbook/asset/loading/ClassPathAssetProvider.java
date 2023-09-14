@@ -2,6 +2,7 @@ package dk.sebsa.spellbook.asset.loading;
 
 import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.asset.AssetReference;
+import dk.sebsa.spellbook.core.ClassLogger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,10 +23,10 @@ import java.util.jar.JarFile;
  * @since 1.0.0
  */
 public class ClassPathAssetProvider extends AssetProvider {
-    private final Logger logger;
+    private final ClassLogger logger;
 
     public ClassPathAssetProvider(Logger logger) {
-        this.logger = logger;
+        this.logger = new ClassLogger(this, logger);
     }
 
     private final Class<ClassPathAssetProvider> clazz = ClassPathAssetProvider.class;
@@ -37,12 +38,13 @@ public class ClassPathAssetProvider extends AssetProvider {
         assets = new ArrayList<>();
 
         URL dirUrl = cl.getResource("dk/sebsa/spellbook/asset");
+        assert dirUrl != null;
         String protocol = dirUrl.getProtocol();
 
         try { // Depending on the enviroment the assets has to be loaded from an "external folder" (Often when running from IDE)
             if(protocol.equals("file")) { logger.log("IDE Support Jar Load"); importFromSketchyJar(); }
             else { logger.log("Classic Jar Load"); importFromJar();}
-        } catch (IOException e) { logger.err("Error loading assets: "); e.printStackTrace(); }
+        } catch (IOException e) { logger.err("Error loading assets: "); logger.stackTrace(e); }
 
         return assets;
     }
@@ -52,6 +54,7 @@ public class ClassPathAssetProvider extends AssetProvider {
         String me = clazz.getName().replace(".", "/") + ".class";
         URL dirUrl = cl.getResource(me);
 
+        assert dirUrl != null; // Cant find itself???
         String jarPath = dirUrl.getPath().substring(5, dirUrl.getPath().indexOf("!"));
         JarFile jar = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8));
         Enumeration<JarEntry> entries = jar.entries();

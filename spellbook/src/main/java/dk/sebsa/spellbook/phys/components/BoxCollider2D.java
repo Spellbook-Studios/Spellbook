@@ -16,7 +16,7 @@ public class BoxCollider2D extends Collider2D {
     /**
      * The size of the collider
      */
-    public Vector2f size = new Vector2f(100, 100);
+    public final Vector2f size = new Vector2f(100, 100);
     @Getter private Rect worldPositionRect;
 
     @Override

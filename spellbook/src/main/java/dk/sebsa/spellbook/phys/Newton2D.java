@@ -4,7 +4,6 @@ import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.EngineFrameProcess;
 import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.core.events.EventListener;
-import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
 import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.Collider2D;
