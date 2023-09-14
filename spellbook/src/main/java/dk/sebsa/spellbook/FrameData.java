@@ -31,6 +31,7 @@ public class FrameData {
      */
     public FrameData(GLFWInput input, int renderSpriteMaxLayers) {
         this.input = input;
+        //noinspection unchecked
         renderSprite = new HashMap[renderSpriteMaxLayers];
 
         for(int i = 0; i < renderSpriteMaxLayers; i++) {
