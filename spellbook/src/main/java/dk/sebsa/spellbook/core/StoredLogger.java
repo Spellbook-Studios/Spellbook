@@ -35,12 +35,11 @@ public class StoredLogger extends SpellbookLogger {
         // Create log targets
         try {
             if(!target.getParentFile().mkdirs() && !target.createNewFile()) { // If file exits
-
-            if(!target.mkdirs() && !target.createNewFile()) { // If file exits
-                if(!target.delete()) return;
-                if(!target.createNewFile()) return;
+                if (!target.mkdirs() && !target.createNewFile()) { // If file exits
+                    if (!target.delete()) return;
+                    if (!target.createNewFile()) return;
+                }
             }
-
             fw = new FileWriter(target, false);
             fw.write("# Logs from SpellbookLogger with Mana\n");
         } catch (IOException e) { super.print("Failed to create log file: " + new ClassLogger(this, null).stackTrace(e)); }
