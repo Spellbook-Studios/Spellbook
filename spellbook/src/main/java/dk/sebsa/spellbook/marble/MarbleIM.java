@@ -19,15 +19,16 @@ import java.util.Map;
  * @author sebs
  * @since 0.0.1
  */
+@Getter
 public class MarbleIM {
     /**
      * Font: Calibri
      * Size: 12
      * Style: Plain
      */
-    @Getter private static Font defaultFont;
+    private static Font defaultFont;
     @Getter private static Font currFont;
-    private static ThreeKeyHashMap<String, Integer, Integer, Font> fontMap = new ThreeKeyHashMap<>();
+    private static final ThreeKeyHashMap<String, Integer, Integer, Font> fontMap = new ThreeKeyHashMap<>();
 
     private static boolean prepared = false;
     private static boolean checkPrepared() {
