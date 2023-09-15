@@ -11,6 +11,7 @@ profile:
 include:
   - name: ClassHasNoToStringMethod
   - name: MissingJavadoc
+  - name: CheckDependencyLicenses
 
 projectJDK: 17 #(Applied in CI/CD pipeline)
 

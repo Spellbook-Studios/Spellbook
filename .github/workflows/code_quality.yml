@@ -36,8 +36,9 @@ jobs:
           fetch-depth: 0
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@main
-        env:
+        with:
           args: --apply-fixes
           pr-mode: false
           push-fixes: pull-request
+        env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
