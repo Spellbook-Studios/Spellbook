@@ -36,5 +36,6 @@ jobs:
         uses: JetBrains/qodana-action@main
         env:
           args: --apply-fixes
+          pr-mode: false
           push-fixes: pull-request
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
