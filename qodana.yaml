@@ -17,8 +17,8 @@ include:
 exclude:
   - name: All
     paths:
-      - "sandbox/**"
-      - "buildSrc/**"
+      - sandbox/**
+      - buildSrc/**
 
 projectJDK: 17 #(Applied in CI/CD pipeline)
 
@@ -32,4 +32,4 @@ plugins:
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 linter: jetbrains/qodana-jvm:latest
-fixesStrategy: cleanup/apply
+fixesStrategy: CLEANUP
