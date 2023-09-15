@@ -10,15 +10,16 @@ import dk.sebsa.spellbook.opengl.RenderStage;
 
 /**
  * Renders a layerstack to the screen
- * @since 1.0.0
+ *
  * @author sebs
+ * @since 1.0.0
  */
 public class UIStage extends RenderStage {
     private final LayerStack stack;
 
     /**
      * @param window The window to render to
-     * @param stack Layerstack to render
+     * @param stack  Layerstack to render
      */
     public UIStage(GLFWWindow window, LayerStack stack) {
         super(window);
@@ -32,8 +33,7 @@ public class UIStage extends RenderStage {
 
     @Override
     protected void draw(Rect r, FrameData frameData) {
-        for(int i = stack.stack.size()-1; i >= 0; i--) {
-            Layer l = stack.stack.get(i);
+        for (Layer l : stack.stack) {
             l.ensureRender(r);
         }
     }

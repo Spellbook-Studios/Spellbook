@@ -19,7 +19,6 @@ import dk.sebsa.spellbook.opengl.RenderPipeline;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
 import dk.sebsa.spellbook.opengl.stages.UIStage;
-import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 
 import java.io.File;
 
@@ -28,11 +27,11 @@ public class Sandbox extends Application {
 
     public static void main(String[] args) {
         Spellbook.start(new Sandbox(), SpellbookCapabilities.builder()
-                        .spellbookDebug(true)
-                        .logStoreTarget("../logs/latest.log")
-                        .logDisableASCIIEscapeCharacters(false)
-                        .debugIMGUI(false)
-                        .build()
+                .spellbookDebug(true)
+                .logStoreTarget("../logs/latest.log")
+                .logDisableASCIIEscapeCharacters(false)
+                .debugIMGUI(true)
+                .build()
                 .addAssetProvider(new FolderAssetProvider(new File("assets/")))
         );
     }
@@ -75,6 +74,7 @@ public class Sandbox extends Application {
     @Override
     public void createInitialScene(Entity e) {
         Entity entity = new Camera(e);
+        entity.name = "Player";
         SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("assets/32.spr"));
 
         spriteRenderer.scale = 2;
@@ -83,6 +83,5 @@ public class Sandbox extends Application {
         entity.addComponent(spriteRenderer);
         entity.addComponent(new PlayerMovement());
         entity.addComponent(new SoundListener());
-        entity.addComponent(new SpriteCollider2D(spriteRenderer));
     }
 }
