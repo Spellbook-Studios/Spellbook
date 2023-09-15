@@ -15,7 +15,7 @@ include:
 
 #Disable inspections
 exclude:
-  - name: *
+  - name: All
     paths:
       - "sandbox/**"
       - "buildSrc/**"
