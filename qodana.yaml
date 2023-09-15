@@ -13,13 +13,6 @@ include:
   - name: ClassHasNoToStringMethod
   - name: MissingJavadoc
 
-#Disable inspections
-exclude:
-  - name: All
-    paths:
-      - sandbox/**
-      - buildSrc/**
-
 projectJDK: 17 #(Applied in CI/CD pipeline)
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)

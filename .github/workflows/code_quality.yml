@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - 'releases/*'
 
 jobs:
   qodana:
@@ -22,4 +21,6 @@ jobs:
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@main
         env:
+          args: --apply-fixes
+          push-fixes: pull-request
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
