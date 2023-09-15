@@ -9,14 +9,16 @@ profile:
   name: qodana.recommended
 
 #Enable inspections
-#include:
-#  - name: <SomeEnabledInspectionId>
+include:
+  - name: ClassHasNoToStringMethod
+  - name: MissingJavadoc
 
 #Disable inspections
-#exclude:
-#  - name: <SomeDisabledInspectionId>
-#    paths:
-#      - <path/where/not/run/inspection>
+exclude:
+  - name: *
+    paths:
+      - "sandbox/**"
+      - "buildSrc/**"
 
 projectJDK: 17 #(Applied in CI/CD pipeline)
 
@@ -25,8 +27,9 @@ projectJDK: 17 #(Applied in CI/CD pipeline)
 
 #Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
 #(plugin id can be found at https://plugins.jetbrains.com)
-#plugins:
-#  - id: lombok
+plugins:
+  - id: Lombook Plugin
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
-linter: jetbrains/qodana-jvm-community:latest
+linter: jetbrains/qodana-jvm:latest
+fixesStrategy: cleanup/apply
