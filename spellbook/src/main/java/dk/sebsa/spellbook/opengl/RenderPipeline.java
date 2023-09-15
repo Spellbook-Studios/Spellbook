@@ -46,12 +46,9 @@ public class RenderPipeline {
             }
         }
 
-        FBO prevFBO = null;
-        List<FBO> fbos = new ArrayList<>(renderStages.size());
         for(RenderStage stage : renderStages) {
             try {
-                prevFBO = stage.render(prevFBO, e.frameData);
-                fbos.add(prevFBO);
+                stage.render(e.frameData);
             } catch (Exception ex) {
                 Spellbook.instance.error("Render stage: " + stage.getName() + ", failed to run. Error: " + ex.getMessage() + "\nStacktrace: " + logger.stackTrace(ex), false);
             }

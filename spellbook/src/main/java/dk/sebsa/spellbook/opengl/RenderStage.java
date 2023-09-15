@@ -50,11 +50,10 @@ public abstract class RenderStage {
     /**
      * Renders the stage to it's FBO
      *
-     * @param prevFBO The FBO of the previous stage
      * @param frameData Active FrameData
      * @return FBO with rendered content
      */
-    protected FBO render(FBO prevFBO, FrameData frameData) {
+    protected FBO render(FrameData frameData) {
         if(!init || window.isDirty()) init();
         fbo.bindFrameBuffer();
 
