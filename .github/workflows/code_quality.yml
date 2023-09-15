@@ -20,6 +20,6 @@ jobs:
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
         with:
-          args: --apply-fixes,--project-dir=/data/project/project/
+          args: --apply-fixes
           push-fixes: pull-request
 #          args: --baseline,qodana.sarif.json
