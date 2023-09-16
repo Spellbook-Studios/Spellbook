@@ -9,6 +9,7 @@ pipeline {
         docker {
             args '''
               -v "${WORKSPACE}":/data/project/
+              -v "${WORKSPACE}/.qodana-cache/":/data/cache/
               --entrypoint=""
               '''
             image 'jetbrains/qodana-jvm-community'
