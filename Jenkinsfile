@@ -8,7 +8,7 @@ pipeline {
     agent {
         docker {
             args '''
-              -v "${WORKSPACE}":/data/project
+              -v "${WORKSPACE}":/data/project/
               --entrypoint=""
               '''
             image 'jetbrains/qodana-jvm-community'
@@ -28,7 +28,7 @@ pipeline {
                 sh '''
                 qodana \
                 --fail-threshold 1 \
-                --project-dir "${WORKSPACE}"
+                --project-dir /data/project/spellbook/
                 '''
             }
         }
