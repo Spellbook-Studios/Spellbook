@@ -5,6 +5,7 @@ import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.math.Vector2f;
+import lombok.Getter;
 import org.lwjgl.glfw.*;
 
 /**
@@ -21,7 +22,28 @@ public class GLFWInput {
     private byte[] buttons;
     private byte[] buttonsPressed;
     private byte[] buttonsReleased;
-    private double scrollX, scrollY = 0;
+    /**
+     * -- GETTER --
+     * Get horizontal scroll value, this is equal to all scroll offsets of entire program lifetime
+     *
+     * @return The offset this frame
+     */
+    @Getter
+    @Getter
+    private double scrollX, /**
+     * -- GETTER --
+     * Get vertical scroll value, this is equal to all scroll offsets of entire program lifetime
+     *
+     * @return The offset this frame
+     */
+    scrollY = 0;
+    /**
+     * -- GETTER --
+     * Gets the mouse position on screen
+     *
+     * @return The current mouse position
+     */
+    @Getter
     private final Vector2f mousePos = new Vector2f(0, 0);
 
     private final GLFWWindow window;
@@ -37,7 +59,7 @@ public class GLFWInput {
     private final EventBus eventBus;
 
     /**
-     * @param e The event used for loading loggers
+     * @param e      The event used for loading loggers
      * @param window The window to bind to
      */
     public GLFWInput(EngineInitEvent e, GLFWWindow window) {
@@ -98,7 +120,7 @@ public class GLFWInput {
             public void invoke(long window, double xpos, double ypos) {
                 // Create Event
                 MouseMoveEvent e = new MouseMoveEvent((float) xpos, (float) ypos,
-                        mousePos.x-((float) xpos), mousePos.y-((float) ypos));
+                        mousePos.x - ((float) xpos), mousePos.y - ((float) ypos));
                 eventBus.user(e);
 
                 // Save mouse position
@@ -132,14 +154,15 @@ public class GLFWInput {
 
     /**
      * Resets input data
+     *
      * @param all Weather to reset data that should not be reset, only true at init
      */
     private void resetInputData(boolean all) {
-        if(all) keys = new byte[GLFW.GLFW_KEY_LAST];
+        if (all) keys = new byte[GLFW.GLFW_KEY_LAST];
         keysPressed = new byte[GLFW.GLFW_KEY_LAST];
         keysReleased = new byte[GLFW.GLFW_KEY_LAST];
 
-        if(all) buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
+        if (all) buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
         buttonsPressed = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
         buttonsReleased = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
     }
@@ -167,84 +190,71 @@ public class GLFWInput {
     // DONT LOOK AT
 
     /**
-     * Gets the mouse position on screen
-     * @return The current mouse position
-     */
-    public Vector2f getMousePos() { return mousePos; }
-
-    /**
      * Returns weather a key is currently pressed by a user
+     *
      * @param key The key to check for use GLFW.GLFW_KEY_???
      * @return True if the key is pressed down
      */
     public boolean isKeyDown(int key) {
-        if(key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
+        if (key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
         return keys[key] == 1;
     }
 
     /**
      * Returns weather a key was pressed this frame
+     *
      * @param key The key to check for use GLFW.GLFW_KEY_???
      * @return True if the key was just pressed
      */
     public boolean isKeyPressed(int key) {
-        if(key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
+        if (key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
         return keysPressed[key] == 1;
     }
 
     /**
      * Returns weather a key was released this frame
+     *
      * @param key The key to check for use GLFW.GLFW_KEY_???
      * @return True if the key was just released
      */
     public boolean isKeyReleased(int key) {
-        if(key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
+        if (key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
         return keysReleased[key] == 1;
     }
 
     /**
      * Returns weather a button is currently pressed by a user
+     *
      * @param button The button to check for use GLFW.GLFW_MOUSE_BUTTON_?
      * @return True if the button is pressed down
      */
     public boolean isButtonDown(int button) {
-        if(button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST) throw new IllegalArgumentException("Button not supported by GLFW");
+        if (button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST)
+            throw new IllegalArgumentException("Button not supported by GLFW");
         return buttons[button] == 1;
     }
 
     /**
      * Returns weather a button was pressed this frame
+     *
      * @param button The button to check for use GLFW.GLFW_MOUSE_BUTTON_?
      * @return True if the button was just pressed
      */
     public boolean isButtonPressed(int button) {
-        if(button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST) throw new IllegalArgumentException("Button not supported by GLFW");
+        if (button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST)
+            throw new IllegalArgumentException("Button not supported by GLFW");
         return buttonsPressed[button] == 1;
     }
 
     /**
      * Returns weather a button was released this frame
+     *
      * @param button The button to check for use GLFW.GLFW_MOUSE_BUTTON_?
      * @return True if the button was just released
      */
     public boolean isButtonReleased(int button) {
-        if(button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST) throw new IllegalArgumentException("Button not supported by GLFW");
+        if (button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST)
+            throw new IllegalArgumentException("Button not supported by GLFW");
         return buttonsReleased[button] == 1;
-    }
-
-    /**
-     * Get horizontal scroll value, this is equal to all scroll offsets of entire program lifetime
-     * @return The offset this frame
-     */
-    public double getScrollX() {
-        return scrollX;
-    }
-
-    /**
-     * Get vertical scroll value, this is equal to all scroll offsets of entire program lifetime
-     * @return The offset this frame
-     */
-    public double getScrollY() {
-        return scrollY;
     }
 }

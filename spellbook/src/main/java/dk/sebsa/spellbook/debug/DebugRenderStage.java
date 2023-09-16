@@ -13,6 +13,7 @@ import dk.sebsa.spellbook.opengl.RenderStage;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
 import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.Collider2D;
+import lombok.Getter;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
@@ -31,25 +32,24 @@ import static org.lwjgl.opengl.GL11.*;
 public class DebugRenderStage extends RenderStage {
     private final float[] testPos = {
             0.0f, 0.0f,
-            10,    0.0f,
+            10, 0.0f,
             0.0f, 0.0f,
-            -10,    0.0f,
+            -10, 0.0f,
     };
     private final DebugVAO linesVAO = new DebugVAO(testPos, 2);
     private final DebugVAO pointsVAO = new DebugVAO(testPos, 2);
 
+    @Getter
     enum DebugRenderMode {
         ModeScreenSpace(1),
         ModeWorldCamera(2);
 
         private final int value;
+
         DebugRenderMode(int value) {
             this.value = value;
         }
 
-        public int getValue() {
-            return value;
-        }
     }
 
     private final AssetReference shaderReference;
@@ -70,7 +70,9 @@ public class DebugRenderStage extends RenderStage {
     }
 
     @Override
-    public String getName() { return "Debug"; }
+    public String getName() {
+        return "Debug";
+    }
 
     @Override
     protected void draw(Rect r, FrameData frameData) {
@@ -96,9 +98,10 @@ public class DebugRenderStage extends RenderStage {
 
     private static final float CIRCLE_DETAIL = 32;
     private static final float PI = (float) Math.PI;
+
     private void drawCircle(Vector2f point, float radius) {
         GL11.glBegin(GL_LINE_LOOP);
-        for(int i = 0; i < CIRCLE_DETAIL; i++) {
+        for (int i = 0; i < CIRCLE_DETAIL; i++) {
             float z = i / CIRCLE_DETAIL * 360;
             float x = radius * (float) Math.cos(Math.toRadians(z));
             float y = radius * (float) Math.sin(Math.toRadians(z));
@@ -114,9 +117,9 @@ public class DebugRenderStage extends RenderStage {
         shader.setUniform("mode", DebugRenderMode.ModeWorldCamera.value);
         shader.setUniform("color", Color.yellow);
 
-        for(Collider2D collider2D : frameData.newton2DSolids) {
-            if(collider2D instanceof BoxCollider2D) rects.add(((BoxCollider2D) collider2D).getWorldPositionRect());
-            else if(collider2D instanceof CircleCollider2D) {
+        for (Collider2D collider2D : frameData.newton2DSolids) {
+            if (collider2D instanceof BoxCollider2D) rects.add(((BoxCollider2D) collider2D).getWorldPositionRect());
+            else if (collider2D instanceof CircleCollider2D) {
                 drawCircle(collider2D.getCenter(), ((CircleCollider2D) collider2D).radius);
             }
 
@@ -129,24 +132,32 @@ public class DebugRenderStage extends RenderStage {
     }
 
     private void drawRectList(Set<Rect> rectSet) {
-        float[] vertices = new float[16*rectSet.size()];
+        float[] vertices = new float[16 * rectSet.size()];
         int i = 0;
-        for(Rect r : rectSet) {
+        for (Rect r : rectSet) {
             // C1 to C2
-            vertices[i*16] = r.x; vertices[i*16+1] = r.y;
-            vertices[i*16+2] = r.x+r.width; vertices[i*16+3] = r.y;
+            vertices[i * 16] = r.x;
+            vertices[i * 16 + 1] = r.y;
+            vertices[i * 16 + 2] = r.x + r.width;
+            vertices[i * 16 + 3] = r.y;
 
             // C2 to C3
-            vertices[i*16+4] = r.x+r.width; vertices[i*16+5] = r.y;
-            vertices[i*16+6] = r.x+r.width; vertices[i*16+7] = r.y-r.height;
+            vertices[i * 16 + 4] = r.x + r.width;
+            vertices[i * 16 + 5] = r.y;
+            vertices[i * 16 + 6] = r.x + r.width;
+            vertices[i * 16 + 7] = r.y - r.height;
 
             // C3 to C4
-            vertices[i*16+8] = r.x+r.width; vertices[i*16+9] = r.y-r.height;
-            vertices[i*16+10] = r.x; vertices[i*16+11] = r.y-r.height;
+            vertices[i * 16 + 8] = r.x + r.width;
+            vertices[i * 16 + 9] = r.y - r.height;
+            vertices[i * 16 + 10] = r.x;
+            vertices[i * 16 + 11] = r.y - r.height;
 
             // C4 to C1
-            vertices[i*16+12] = r.x; vertices[i*16+13] = r.y-r.height;
-            vertices[i*16+14] = r.x; vertices[i*16+15] = r.y;
+            vertices[i * 16 + 12] = r.x;
+            vertices[i * 16 + 13] = r.y - r.height;
+            vertices[i * 16 + 14] = r.x;
+            vertices[i * 16 + 15] = r.y;
 
             i++;
             // THE RECT
@@ -159,10 +170,11 @@ public class DebugRenderStage extends RenderStage {
     }
 
     private void drawPointList(Set<Vector2f> points) {
-        float[] vertices = new float[2*points.size()];
+        float[] vertices = new float[2 * points.size()];
         int i = 0;
-        for(Vector2f v : points) {
-            vertices[i*2] = v.x; vertices[i*2+1] = v.y;
+        for (Vector2f v : points) {
+            vertices[i * 2] = v.x;
+            vertices[i * 2 + 1] = v.y;
             i++;
         }
 

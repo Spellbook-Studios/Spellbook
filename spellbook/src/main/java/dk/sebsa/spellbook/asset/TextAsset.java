@@ -9,11 +9,13 @@ import java.io.InputStream;
 
 /**
  * Text loaded from a file
- * @since 1.0.0
+ *
  * @author sebs
+ * @since 1.0.0
  */
+@Getter
 public class TextAsset implements Asset {
-    @Getter private String text;
+    private String text;
 
     @Override
     public void load(AssetReference reference) {

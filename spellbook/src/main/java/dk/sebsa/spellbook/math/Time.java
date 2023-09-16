@@ -1,14 +1,15 @@
 package dk.sebsa.spellbook.math;
 
+import dk.sebsa.mana.Logger;
+import lombok.Getter;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
-import dk.sebsa.mana.Logger;
-
 /**
  * Keeps track of time
- * 
+ *
  * @author sebsn
  * @since 1.0.0
  */
@@ -36,13 +37,28 @@ public class Time {
     private static double averageFrameLength; // The average frame length this second. In millis
     private static double frameTimeThisSecond;
 
+    /**
+     * -- GETTER --
+     *
+     * @return the time between the start of the current frame and the start of the
+     * last frame (in millis)
+     */
+    @Getter
     private static float deltaTime;
+    /**
+     * -- GETTER --
+     *
+     * @return the time between the start of the current frame and the start of the
+     * last frame (in millis) unscaled
+     */
+    @Getter
     private static float unscaledDelta;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     /**
      * Initializes time keeping
+     *
      * @param logger Main logger
      */
     public static void init(final Logger logger) {
@@ -105,22 +121,6 @@ public class Time {
      */
     public static String getNow() {
         return LocalTime.now().format(dateTimeFormatter);
-    }
-
-    /**
-     * @return the time between the start of the current frame and the start of the
-     *         last frame (in millis)
-     */
-    public static float getDeltaTime() {
-        return deltaTime;
-    }
-
-    /**
-     * @return the time between the start of the current frame and the start of the
-     *         last frame (in millis) unscaled
-     */
-    public static float getUnscaledDelta() {
-        return unscaledDelta;
     }
 
     /**
