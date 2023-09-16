@@ -27,13 +27,13 @@ pipeline {
                 stage('Run') {
                     agent {
                         docker {
+                            label 'docker'
                             args '''-v "${WORKSPACE}":/data/project/ -v "${WORKSPACE}/cache":/data/cache/ --entrypoint=""'''
                             image 'jetbrains/qodana-jvm-community'
                         }
                     }
                     steps {
-                        sh '''
-                        sudo qodana \
+                        sh '''qodana \
                         --fail-threshold 1 \
                         --property=project.open.type=Gradle \
                         --project-dir /data/project/ \
