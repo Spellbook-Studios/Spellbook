@@ -33,7 +33,7 @@ pipeline {
                     }
                     steps {
                         sh '''
-                        qodana \
+                        sudo qodana \
                         --fail-threshold 1 \
                         --property=project.open.type=Gradle \
                         --project-dir /data/project/ \
