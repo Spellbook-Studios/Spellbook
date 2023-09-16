@@ -29,7 +29,6 @@ public class GLFWInput {
      * @return The offset this frame
      */
     @Getter
-    @Getter
     private double scrollX, /**
      * -- GETTER --
      * Get vertical scroll value, this is equal to all scroll offsets of entire program lifetime
