@@ -12,11 +12,18 @@ pipeline {
         }
     }
     stages {
+        stage('Build') {
+            steps {
+                withGradle {
+                    sh './gradlew clean build build'
+                }
+                archiveArtifacts artifacts: 'spellbook/build/libs/*.jar', followSymlinks: false
+            }
+        }
         stage('Qodana') {
             steps {
                 sh '''
-                qodana \
-                --fail-threshold <number>
+                qodana
                 '''
             }
         }
