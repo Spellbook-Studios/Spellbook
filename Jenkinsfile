@@ -17,28 +17,30 @@ pipeline {
             }
         }
         stage('Qodana') {
-            stage('Preparations') {
-                steps {
-                    sh 'mkdir -p cache/'
-                    sh 'chown jenkins:jenkins cache'
-                }
-            }
-            stage('Run') {
-                agent {
-                    docker {
-                        args '''-v "${WORKSPACE}":/data/project/ -v "${WORKSPACE}/cache/":/data/cache/ --entrypoint=""'''
-                        image 'jetbrains/qodana-jvm-community'
+            stages {
+                stage('Preparations') {
+                    steps {
+                        sh 'mkdir -p cache/'
+                        sh 'chown jenkins:jenkins cache'
                     }
                 }
-                steps {
-                    sh '''
-                    qodana \
-                    --fail-threshold 1 \
-                    --property=project.open.type=Gradle \
-                    --project-dir /data/project/ \
-                    --source-dir spellbook/src/main/java/ \
-                    --baseline /data/project/qodana.sarif.json
-                    '''
+                stage('Run') {
+                    agent {
+                        docker {
+                            args '''-v "${WORKSPACE}":/data/project/ -v "${WORKSPACE}/cache/":/data/cache/ --entrypoint=""'''
+                            image 'jetbrains/qodana-jvm-community'
+                        }
+                    }
+                    steps {
+                        sh '''
+                        qodana \
+                        --fail-threshold 1 \
+                        --property=project.open.type=Gradle \
+                        --project-dir /data/project/ \
+                        --source-dir spellbook/src/main/java/ \
+                        --baseline /data/project/qodana.sarif.json
+                        '''
+                    }
                 }
             }
         }
