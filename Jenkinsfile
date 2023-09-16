@@ -28,6 +28,7 @@ pipeline {
                 sh '''
                 qodana \
                 --fail-threshold 1 \
+                --property=project.open.type=Gradle
                 --project-dir /data/project/spellbook/
                 '''
             }
