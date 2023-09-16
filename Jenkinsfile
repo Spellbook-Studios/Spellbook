@@ -4,15 +4,9 @@ pipeline {
         ossrhPassword=credentials('ossrh-plw-password')
         ossrhSignKeyFile=credentials('ossrh-plw-signing-keyringfile')
     }
-    agent {
-        docker {
-            args '''
-              -v "${WORKSPACE}":/data/project/
-              --entrypoint=""
-              '''
-            image 'jetbrains/qodana-jvm-community'
-        }
-    }
+
+    agent any
+
     stages {
         stage('Build') {
             steps {
@@ -23,16 +17,29 @@ pipeline {
             }
         }
         stage('Qodana') {
-            steps {
-                sh '''
-                qodana \
-                --fail-threshold 1 \
-                --property=project.open.type=Gradle \
-                --project-dir /data/project/ \
-                --source-dir spellbook/src/main/java/ \
-                --cache-dir /data/project/.cache/ \
-                --baseline /data/project/qodana.sarif.json
-                '''
+            stage('Preparations') {
+                steps {
+                    sh 'mkdir -p cache/'
+                    sh 'chown jenkins:jenkins cache'
+                }
+            }
+            stage('Run') {
+                agent {
+                    docker {
+                        args '''-v "${WORKSPACE}":/data/project/ -v "${WORKSPACE}/cache/":/data/cache/ --entrypoint=""'''
+                        image 'jetbrains/qodana-jvm-community'
+                    }
+                }
+                steps {
+                    sh '''
+                    qodana \
+                    --fail-threshold 1 \
+                    --property=project.open.type=Gradle \
+                    --project-dir /data/project/ \
+                    --source-dir spellbook/src/main/java/ \
+                    --baseline /data/project/qodana.sarif.json
+                    '''
+                }
             }
         }
         stage('Deploy') {
