@@ -29,8 +29,9 @@ pipeline {
                 --fail-threshold 1 \
                 --property=project.open.type=Gradle \
                 --project-dir /data/project/ \
-                --source-dir spellbook/src/main/java/
-                --cache-dir /data/project/.cache/
+                --source-dir spellbook/src/main/java/ \
+                --cache-dir /data/project/.cache/ \
+                --baseline /data/project/qodana.sarif.json
                 '''
             }
         }
