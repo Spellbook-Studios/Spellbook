@@ -27,7 +27,7 @@ pipeline {
                 stage('Run') {
                     agent {
                         docker {
-                            args '''-v "${WORKSPACE}":/data/project/ -v "${WORKSPACE}/cache/":/data/cache/ --entrypoint=""'''
+                            args '''-v "${WORKSPACE}":/data/project/ -v "${WORKSPACE}/cache":/data/cache/ --entrypoint=""'''
                             image 'jetbrains/qodana-jvm-community'
                         }
                     }
