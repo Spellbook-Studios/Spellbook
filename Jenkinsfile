@@ -18,17 +18,10 @@ pipeline {
         }
         stage('Qodana') {
             stages {
-                stage('Preparations') {
-                    steps {
-                        sh 'mkdir -p cache/'
-                        sh 'chown jenkins:jenkins cache'
-                    }
-                }
                 stage('Run') {
                     agent {
                         docker {
-                            label 'docker'
-                            args '''-v "${WORKSPACE}":/data/project/ -v "${WORKSPACE}/cache":/data/cache/ --entrypoint=""'''
+                            args '''-v "${WORKSPACE}":/data/project/ --entrypoint=""'''
                             image 'jetbrains/qodana-jvm-community'
                         }
                     }
