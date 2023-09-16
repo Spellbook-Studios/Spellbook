@@ -26,6 +26,7 @@ pipeline {
         stage('Qodana') {
             steps {
                 sh '''
+                ls /data/project/ &&
                 qodana \
                 --fail-threshold 1 \
                 --property=project.open.type=Gradle
