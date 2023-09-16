@@ -24,7 +24,8 @@ pipeline {
             steps {
                 sh '''
                 qodana \
-                --fail-threshold 1
+                --fail-threshold 1 \
+                --project-dir "${WORKSPACE}"
                 '''
             }
         }
