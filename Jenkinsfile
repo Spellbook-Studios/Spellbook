@@ -1,7 +1,6 @@
 pipeline {
     environment {
         QODANA_TOKEN=credentials('spellbook-qodana-token')
-        GRADLE_USER_HOME="${WORKSPACE}"
         ossrhPassword=credentials('ossrh-plw-password')
         ossrhSignKeyFile=credentials('ossrh-plw-signing-keyringfile')
     }
