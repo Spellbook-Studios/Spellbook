@@ -1,16 +1,12 @@
 package dk.sebsa;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import dk.sebsa.mana.LogFormatter;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.mana.impl.FormatBuilder;
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.audio.OpenALModule;
-import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.Module;
+import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
@@ -21,9 +17,13 @@ import dk.sebsa.spellbook.phys.Newton2D;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The mother of all Spellbook programs
- * 
+ *
  * @author sebsn
  * @since 1.0.0
  */
@@ -50,7 +50,8 @@ public class Spellbook {
     public static String graphicsCard = "Toaster"; // Set at runtime
 
     // Runtime stuff
-    @Getter private static Logger logger;
+    @Getter
+    private static Logger logger;
     @Getter
     private final SpellbookCapabilities capabilities;
     @Getter
@@ -67,6 +68,7 @@ public class Spellbook {
 
     /**
      * Loads and initializes a module
+     *
      * @param m Module to load
      */
     public void registerModule(Module m) {
@@ -77,7 +79,7 @@ public class Spellbook {
 
     /**
      * Create a new Spellbook instance
-     * 
+     *
      * @param app  Starts the application
      * @param caps The new spellbook instance uses these capabilities
      */
@@ -96,12 +98,13 @@ public class Spellbook {
         instance = this;
 
         // Logger init
-        if(DEBUG) {
+        if (DEBUG) {
             try {
                 LogFormatter format = new FormatBuilder().buildFromFile("/spellbook/loggers/main.xml");
 
                 // Create logger with storage logic if needed
-                if(caps.logStorageMode.equals(SpellbookCapabilities.LogStorageModes.dont)) logger = new SpellbookLogger(format, caps);
+                if (caps.logStorageMode.equals(SpellbookCapabilities.LogStorageModes.dont))
+                    logger = new SpellbookLogger(format, caps);
                 else logger = new StoredLogger(format, caps);
             } catch (IOException e) {
                 throw new RuntimeException("Spellbook failed to start!!! >>> Logger load IOException");
@@ -146,11 +149,12 @@ public class Spellbook {
         registerModule(moduleCore);
 
         // Add Non Core Modules
-        if(capabilities.ecs) registerModule(new ECS());
-        if(capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl)) registerModule(new OpenGLModule());
-        if(DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
-        if(capabilities.audio) registerModule(new OpenALModule());
-        if(capabilities.newton2D) registerModule(new Newton2D());
+        if (capabilities.ecs) registerModule(new ECS());
+        if (capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl))
+            registerModule(new OpenGLModule());
+        if (DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
+        if (capabilities.audio) registerModule(new OpenALModule());
+        if (capabilities.newton2D) registerModule(new Newton2D());
         registerModule(new Marble());
 
         logger.log("Engine Init Event, prepare for trouble!..");
@@ -211,11 +215,12 @@ public class Spellbook {
 
     /**
      * Use this to report errors even when you don't have a logger
-     * @param error The error message
+     *
+     * @param error    The error message
      * @param shutdown If true the program will shut down
      */
     public void error(String error, boolean shutdown) {
         logger.err(error);
-        if(shutdown) this.shutdown = true;
+        if (shutdown) this.shutdown = true;
     }
 }
