@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 withGradle {
-                    sh './gradlew clean build build'
+                    sh './gradlew clean build'
                 }
                 archiveArtifacts artifacts: 'spellbook/build/libs/*.jar', followSymlinks: false
             }
@@ -23,7 +23,8 @@ pipeline {
         stage('Qodana') {
             steps {
                 sh '''
-                qodana
+                qodana \
+                --fail-threshold 1
                 '''
             }
         }

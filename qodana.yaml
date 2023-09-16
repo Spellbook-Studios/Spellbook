@@ -20,8 +20,8 @@ projectJDK: 17 #(Applied in CI/CD pipeline)
 
 #Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
 #(plugin id can be found at https://plugins.jetbrains.com)
-plugins:
-  - id: Lombook Plugin
+#plugins:
+#  - id: Lombook Plugin
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 fixesStrategy: CLEANUP
