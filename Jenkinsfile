@@ -8,7 +8,6 @@ pipeline {
         docker {
             args '''
               -v "${WORKSPACE}":/data/project/
-              -v "${WORKSPACE}_cache/":/data/cache/
               --entrypoint=""
               '''
             image 'jetbrains/qodana-jvm-community'
@@ -31,6 +30,7 @@ pipeline {
                 --property=project.open.type=Gradle \
                 --project-dir /data/project/ \
                 --source-dir spellbook/src/main/java/
+                --cache-dir /data/project/.cache/
                 '''
             }
         }
