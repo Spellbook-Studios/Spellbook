@@ -23,9 +23,9 @@ pipeline {
         stage('Qodana') {
             steps {
                 sh '''
-                qodana \
+                qodana scan \
                 --fail-threshold 1 \
-                --project-dir "/data/project"
+                --project-dir "${WORKSPACE}"
                 '''
             }
         }
