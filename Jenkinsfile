@@ -35,6 +35,7 @@ pipeline {
             }
         }
         stage('Deploy') {
+            when { anyOf { branch 'main' } }
             steps {
                 withGradle {
                     sh '''
