@@ -9,7 +9,6 @@ profile:
 
 #Enable inspections
 include:
-  - name: ClassHasNoToStringMethod
   - name: MissingJavadoc
   - name: CheckDependencyLicenses
 

@@ -19,12 +19,18 @@ import java.util.jar.JarFile;
 
 /**
  * Loads assets from within the jar located under spellbook/
+ *
  * @author sebs
  * @since 1.0.0
  */
 public class ClassPathAssetProvider extends AssetProvider {
     private final ClassLogger logger;
 
+    /**
+     * Creates ClassPathAssetProvider
+     *
+     * @param logger Spellbook main logger
+     */
     public ClassPathAssetProvider(Logger logger) {
         this.logger = new ClassLogger(this, logger);
     }
@@ -42,9 +48,17 @@ public class ClassPathAssetProvider extends AssetProvider {
         String protocol = dirUrl.getProtocol();
 
         try { // Depending on the enviroment the assets has to be loaded from an "external folder" (Often when running from IDE)
-            if(protocol.equals("file")) { logger.log("IDE Support Jar Load"); importFromSketchyJar(); }
-            else { logger.log("Classic Jar Load"); importFromJar();}
-        } catch (IOException e) { logger.err("Error loading assets: "); logger.stackTrace(e); }
+            if (protocol.equals("file")) {
+                logger.log("IDE Support Jar Load");
+                importFromSketchyJar();
+            } else {
+                logger.log("Classic Jar Load");
+                importFromJar();
+            }
+        } catch (IOException e) {
+            logger.err("Error loading assets: ");
+            logger.stackTrace(e);
+        }
 
         return assets;
     }
@@ -59,9 +73,10 @@ public class ClassPathAssetProvider extends AssetProvider {
         JarFile jar = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8));
         Enumeration<JarEntry> entries = jar.entries();
 
-        while(entries.hasMoreElements()) {
+        while (entries.hasMoreElements()) {
             String name = entries.nextElement().getName();
-            if(name.startsWith("spellbook/") && !name.endsWith("/")) assets.add(new AssetReference("/" + name, AssetReference.LocationTypes.Jar));
+            if (name.startsWith("spellbook/") && !name.endsWith("/"))
+                assets.add(new AssetReference("/" + name, AssetReference.LocationTypes.Jar));
         }
 
         jar.close();
@@ -71,16 +86,20 @@ public class ClassPathAssetProvider extends AssetProvider {
         List<String> streams = new ArrayList<>();
         streams.add("spellbook");
 
-        while(!streams.isEmpty()) {
+        while (!streams.isEmpty()) {
             InputStream in = cl.getResourceAsStream(streams.get(0));
-            if(in == null) { logger.err("When importing assets from jar folder was not found: " + streams.get(0)); return; }
+            if (in == null) {
+                logger.err("When importing assets from jar folder was not found: " + streams.get(0));
+                return;
+            }
 
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 logger.log(line);
-                if(line.contains(".")) assets.add(new AssetReference("/" + streams.get(0) + "/" + line, AssetReference.LocationTypes.Jar));
+                if (line.contains("."))
+                    assets.add(new AssetReference("/" + streams.get(0) + "/" + line, AssetReference.LocationTypes.Jar));
                 else streams.add(streams.get(0) + "/" + line);
             }
 
