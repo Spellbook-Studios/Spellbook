@@ -1,11 +1,9 @@
 pipeline {
     environment {
         QODANA_TOKEN=credentials('spellbook-qodana-token')
-        ossrhUsername="PinkLemonadeWizard"
+
         ossrhPassword=credentials('ossrh-plw-password')
-        "signing.keyId"=credentials('ossrh-plw-signing-keyid')
-        "signing.password"=credentials('ossrh-plw-signing-keypwd')
-        "signing.secretKeyRingFile"=credentials('ossrh-plw-signing-keyringfile')
+        ossrhSignKeyFile=credentials('ossrh-plw-signing-keyringfile')
     }
     agent {
         docker {
@@ -37,7 +35,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 withGradle {
-                    sh './gradlew publish'
+                    sh '''
+                    ./gradlew publish \
+                    -PossrhUsername=PinkLemonadeWizard \
+                    -PossrhPassword=${ossrhPassword} \
+                    -Psigning.keyId=BBCE4E01 \
+                    -Psigning.password=${ossrhPassword} \
+                    -Psigning.secretKeyRingFile=${ossrhSignKeyFile}
+                    '''
                 }
             }
         }
