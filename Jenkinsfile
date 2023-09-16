@@ -1,6 +1,11 @@
 pipeline {
     environment {
         QODANA_TOKEN=credentials('spellbook-qodana-token')
+        ossrhUsername="PinkLemonadeWizard"
+        ossrhPassword=credentials('ossrh-plw-password')
+        signing.keyId=credentials('ossrh-plw-signing-keyid')
+        signing.password=credentials('ossrh-plw-signing-keypwd')
+        signing.secretKeyRingFile=credentials('ossrh-plw-signing-keyringfile')
     }
     agent {
         docker {
@@ -17,7 +22,7 @@ pipeline {
                 withGradle {
                     sh './gradlew clean build'
                 }
-                archiveArtifacts artifacts: 'spellbook/build/libs/*.jar', followSymlinks: false
+                archiveArtifacts artifacts: 'spellbook/build/libs/*.jar', fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
             }
         }
         stage('Qodana') {
@@ -27,6 +32,11 @@ pipeline {
                 --fail-threshold 1 \
                 --project-dir "${WORKSPACE}"
                 '''
+            }
+        }
+        stage('Deploy') {
+            withGradle {
+                sh './gradlew publish'
             }
         }
     }
