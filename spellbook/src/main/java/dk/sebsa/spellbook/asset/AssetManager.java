@@ -57,6 +57,8 @@ public class AssetManager {
 
     /**
      * Destroys all assets, done at cleanup
+     *
+     * @param logger Main spellbook logger
      */
     public void engineCleanup(Logger logger) {
         logger.log("AssetManger cleanup, let's see the leaks");

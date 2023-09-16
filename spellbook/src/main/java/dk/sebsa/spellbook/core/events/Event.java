@@ -4,14 +4,21 @@ package dk.sebsa.spellbook.core.events;
  * Events represents to things
  * User Event: A representation of an event occurring inside Spellbook (stored and queued)
  * Engine Event: A call from the core, telling the engine that it's time to do X (blocking and immediate)
+ *
  * @author sebsn
  * @since 1.0.0
  */
 public abstract class Event {
+    /**
+     * Gets the type of event
+     *
+     * @return The type of the event
+     */
     public abstract EventType eventType();
 
     /**
      * A enum denoting what triggered an event
+     *
      * @author sebsn
      * @since 1.0.0
      */

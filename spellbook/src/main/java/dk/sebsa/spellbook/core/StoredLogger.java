@@ -15,6 +15,7 @@ import static dk.sebsa.spellbook.util.FileUtils.zipSingleFile;
 
 /**
  * Logger that stores files and puts them in zips
+ *
  * @author sebs
  * @since 1.0.0
  */
@@ -26,6 +27,10 @@ public class StoredLogger extends SpellbookLogger {
 
     private FileWriter fw;
 
+    /**
+     * @param formatterIn The logformatter to use
+     * @param caps        Spellbook's capabilities
+     */
     public StoredLogger(LogFormatter formatterIn, SpellbookCapabilities caps) {
         super(formatterIn, caps);
 
@@ -34,7 +39,7 @@ public class StoredLogger extends SpellbookLogger {
 
         // Create log targets
         try {
-            if(!target.getParentFile().mkdirs() && !target.createNewFile()) { // If file exits
+            if (!target.getParentFile().mkdirs() && !target.createNewFile()) { // If file exits
                 if (!target.mkdirs() && !target.createNewFile()) { // If file exits
                     if (!target.delete()) return;
                     if (!target.createNewFile()) return;
@@ -42,7 +47,9 @@ public class StoredLogger extends SpellbookLogger {
             }
             fw = new FileWriter(target, false);
             fw.write("# Logs from SpellbookLogger with Mana\n");
-        } catch (IOException e) { super.print("Failed to create log file: " + new ClassLogger(this, null).stackTrace(e)); }
+        } catch (IOException e) {
+            super.print("Failed to create log file: " + new ClassLogger(this, null).stackTrace(e));
+        }
     }
 
     @Override
@@ -56,7 +63,8 @@ public class StoredLogger extends SpellbookLogger {
 
     /**
      * Gets the number of files in a directory which filename starts with [start]
-     * @param start The prefix to search for
+     *
+     * @param start  The prefix to search for
      * @param parent The directory to search in
      * @return The number of files +1
      */
@@ -65,25 +73,27 @@ public class StoredLogger extends SpellbookLogger {
         String[] files = directory.list();
         int i = 1;
         assert files != null;
-        for(String s : files) {
-            if(s.startsWith(start)) i++;
+        for (String s : files) {
+            if (s.startsWith(start)) i++;
         }
         return i;
     }
 
-    @SneakyThrows @Override
+    @SneakyThrows
+    @Override
     public void close() {
         super.close();
 
         fw.close();
-        if(zipped) {
+        if (zipped) {
             String parent = target.getParent();
             try {
-                String zipName = "log-"+dtf.format(LocalDateTime.now());
-                zipName += "-"+getNumber(zipName, parent);
+                String zipName = "log-" + dtf.format(LocalDateTime.now());
+                zipName += "-" + getNumber(zipName, parent);
 
                 zipSingleFile(Paths.get(target.getPath()), parent + "/" + zipName + ".zip");
-            } catch (IOException ignored) { } // THERE IS NO WAY TO LOG THIS
+            } catch (IOException ignored) {
+            } // THERE IS NO WAY TO LOG THIS
         }
     }
 }

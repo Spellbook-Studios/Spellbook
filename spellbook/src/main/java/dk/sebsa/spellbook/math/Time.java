@@ -38,17 +38,13 @@ public class Time {
     private static double frameTimeThisSecond;
 
     /**
-     * -- GETTER --
-     *
-     * @return the time between the start of the current frame and the start of the
+     * The time between the start of the current frame and the start of the
      * last frame (in millis)
      */
     @Getter
     private static float deltaTime;
     /**
-     * -- GETTER --
-     *
-     * @return the time between the start of the current frame and the start of the
+     * The time between the start of the current frame and the start of the
      * last frame (in millis) unscaled
      */
     @Getter

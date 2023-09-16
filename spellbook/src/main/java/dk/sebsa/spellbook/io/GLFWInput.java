@@ -24,23 +24,21 @@ public class GLFWInput {
     private byte[] buttonsReleased;
     /**
      * -- GETTER --
-     * Get horizontal scroll value, this is equal to all scroll offsets of entire program lifetime
-     *
-     * @return The offset this frame
+     * The horizontal scroll value, this is equal to all scroll offsets of entire program lifetime
      */
     @Getter
-    private double scrollX, /**
-     * -- GETTER --
-     * Get vertical scroll value, this is equal to all scroll offsets of entire program lifetime
-     *
-     * @return The offset this frame
-     */
-    scrollY = 0;
+    private double scrollX;
+
     /**
      * -- GETTER --
-     * Gets the mouse position on screen
-     *
-     * @return The current mouse position
+     * The vertical scroll value, this is equal to all scroll offsets of entire program lifetime
+     */
+    @Getter
+    private double scrollY;
+
+    /**
+     * -- GETTER --
+     * The mouse position on screen
      */
     @Getter
     private final Vector2f mousePos = new Vector2f(0, 0);

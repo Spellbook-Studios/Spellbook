@@ -113,6 +113,13 @@ public class Entity {
         return c;
     }
 
+    /**
+     * Gets a component
+     *
+     * @param targetClass The class to search for
+     * @param <T>         The class to search for
+     * @return The first instance of the component, or null if not found
+     */
     public <T extends Component> T getComponent(Class<T> targetClass) {
         for (Component c : components) {
             if (c.getClass().equals(targetClass))
