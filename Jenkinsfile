@@ -1,7 +1,7 @@
 pipeline {
     environment {
         QODANA_TOKEN=credentials('spellbook-qodana-token')
-
+        GRADLE_USER_HOME="${WORKSPACE}"
         ossrhPassword=credentials('ossrh-plw-password')
         ossrhSignKeyFile=credentials('ossrh-plw-signing-keyringfile')
     }
@@ -9,7 +9,7 @@ pipeline {
         docker {
             args '''
               -v "${WORKSPACE}":/data/project/
-              -v "${WORKSPACE}/.qodana-cache/":/data/cache/
+              -v "${WORKSPACE}/.cache/":/data/cache/
               --entrypoint=""
               '''
             image 'jetbrains/qodana-jvm-community'
