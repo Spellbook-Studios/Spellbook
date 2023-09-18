@@ -38,7 +38,9 @@ public class TestLayer extends Layer {
     public void render(Rect r) {
         MarbleIM.prepare();
         MarbleIM.label("Hello World!", 0, 0);
-        MarbleIM.sprite(new Rect(0, 100, 100, 100), null);
+        MarbleIM.box(new Rect(0, 100, 100, 100));
+        MarbleIM.boxSpecialLight(new Rect(0, 100, 50, 50));
+        MarbleIM.boxSpecialDark(new Rect(50, 100, 50, 50));
         MarbleIM.unprepare();
     }
 }

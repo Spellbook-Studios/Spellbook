@@ -39,7 +39,9 @@ public class Sprite implements Asset {
      * @param material The material
      */
     public Sprite(Rect offset, Rect padding, Material material) {
-
+        this.offset = offset;
+        this.padding = padding;
+        this.material = material;
     }
 
     /**
