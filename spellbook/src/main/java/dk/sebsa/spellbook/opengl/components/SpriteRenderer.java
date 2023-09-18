@@ -13,6 +13,7 @@ import dk.sebsa.spellbook.opengl.Sprite;
 /**
  * Handles the rendering of a sprite
  * This is meant to represent a sprite to be rendered
+ *
  * @author sebs
  * @since 1.0.0
  */
@@ -57,6 +58,7 @@ public class SpriteRenderer implements Component {
 
     /**
      * A spriterender that automatically references and unreferences sprites from an assetreference
+     *
      * @param spriteR Reference to a sprite
      */
     public SpriteRenderer(AssetReference spriteR) {
@@ -65,6 +67,7 @@ public class SpriteRenderer implements Component {
 
     /**
      * Sets a shaders uniforms with the values of this SpriteRenderer
+     *
      * @param shader A shader that is prepared for sprite rendering by Sprite2D
      */
     public void setUniforms(GLSLShaderProgram shader) {
@@ -82,7 +85,7 @@ public class SpriteRenderer implements Component {
     @Override
     public void onEnable(Entity e) {
         this.entity = e;
-        if(spriteR != null) sprite = spriteR.get();
+        if (spriteR != null) sprite = spriteR.get();
         else {
             sprite = GL2D.missingSprite;
             Spellbook.getLogger().warn("SpriteRender sprite reference is null");
@@ -97,6 +100,8 @@ public class SpriteRenderer implements Component {
     @Override
     public void onDisable() {
         sprite = null;
-        if(spriteR != null) { spriteR.unRefrence(); }
+        if (spriteR != null) {
+            spriteR.unReference();
+        }
     }
 }

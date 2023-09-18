@@ -111,6 +111,12 @@ public class Matrix4x4f {
         }
     }
 
+    /**
+     * ??
+     *
+     * @param v ??
+     * @return ??
+     */
     public Vector2f transformPoint(Vector2f v) {
         Vector2f p = new Vector2f();
         p.x = m[0][3] + (m[0][0] * v.x + -m[1][0] * v.y);

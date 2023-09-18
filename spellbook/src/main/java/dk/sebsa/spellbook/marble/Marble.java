@@ -8,6 +8,7 @@ import dk.sebsa.spellbook.core.events.*;
 
 /**
  * UI and UX module for Spellbook
+ *
  * @author sebs
  * @since 0.0.1a
  */
@@ -30,6 +31,7 @@ public class Marble implements Module {
     }
 
     private AssetReference guiShaderR;
+
     @EventListener
     public void engineFirstFrame(EngineFirstFrameEvent e) {
         guiShaderR = AssetManager.getAssetS("/spellbook/shaders/SpellbookUI.glsl");
@@ -39,7 +41,7 @@ public class Marble implements Module {
     @EventListener
     public void engineCleanup(EngineCleanupEvent e) {
         MarbleIM.destroy();
-        guiShaderR.unRefrence();
+        guiShaderR.unReference();
     }
 
     @Override

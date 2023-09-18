@@ -15,8 +15,10 @@ import java.util.List;
  * The surface of model, something which can be rendered
  */
 public class Material implements Asset {
-    @Getter private Color color;
-    @Getter private Texture texture;
+    @Getter
+    private Color color;
+    @Getter
+    private Texture texture;
     private AssetReference textureR; // Might exist texture reference
     private boolean isTextured;
 
@@ -31,6 +33,7 @@ public class Material implements Asset {
 
     /**
      * A material with no texture and the color supplied
+     *
      * @param color The color of this material
      */
     public Material(Color color) {
@@ -41,6 +44,7 @@ public class Material implements Asset {
 
     /**
      * A material with a texture and the color white
+     *
      * @param texture The texture of material
      */
     public Material(Texture texture) {
@@ -51,7 +55,8 @@ public class Material implements Asset {
 
     /**
      * A material with color and texture
-     * @param color The color of this material
+     *
+     * @param color   The color of this material
      * @param texture The texture of this material
      */
     public Material(Color color, Texture texture) {
@@ -62,6 +67,7 @@ public class Material implements Asset {
 
     /**
      * Weather this material has a texture
+     *
      * @return True if the material has a texture, false otherwise
      */
     public boolean isTextured() {
@@ -70,11 +76,12 @@ public class Material implements Asset {
 
     /**
      * Binds the material to a shader, and binds the texture if it is textured
+     *
      * @param shader A shader with uniforms ["matColor"]
      */
     public void bind(GLSLShaderProgram shader) {
         shader.setUniform("matColor", color);
-        if(isTextured) texture.bind();
+        if (isTextured) texture.bind();
     }
 
 
@@ -82,21 +89,21 @@ public class Material implements Asset {
      * Unbinds the texture if textured
      */
     public void unbind() {
-        if(isTextured) texture.unbind();
+        if (isTextured) texture.unbind();
     }
 
     @Override
     public void load(AssetReference location) {
         try {
             List<String> file = FileUtils.readAllLinesList(FileUtils.loadFile(location.location));
-            for(String line : file) {
-                if(line.startsWith("t")) {
+            for (String line : file) {
+                if (line.startsWith("t")) {
                     isTextured = true;
                     textureR = AssetManager.getAssetS(line.split(":")[1]);
                     texture = textureR.get();
-                }  else if(line.startsWith("c")) {
+                } else if (line.startsWith("c")) {
                     String[] e = line.split(":")[1].split(",");
-                    color = Color.color(Float.parseFloat(e[0]),Float.parseFloat(e[1]),Float.parseFloat(e[2]),Float.parseFloat(e[3]));
+                    color = Color.color(Float.parseFloat(e[0]), Float.parseFloat(e[1]), Float.parseFloat(e[2]), Float.parseFloat(e[3]));
                 }
             }
         } catch (IOException e) {
@@ -107,6 +114,6 @@ public class Material implements Asset {
     @Override
     public void destroy() {
         texture = null;
-        if(textureR != null) textureR.unRefrence();
+        if (textureR != null) textureR.unReference();
     }
 }

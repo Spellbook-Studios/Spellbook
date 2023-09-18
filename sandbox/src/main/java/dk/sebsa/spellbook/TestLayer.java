@@ -8,7 +8,6 @@ import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.io.KeyPressedEvent;
-import dk.sebsa.spellbook.io.KeyReleasedEvent;
 import dk.sebsa.spellbook.marble.MarbleIM;
 import dk.sebsa.spellbook.math.Rect;
 import org.lwjgl.glfw.GLFW;
@@ -27,13 +26,11 @@ public class TestLayer extends Layer {
     protected void userEvent(UserEvent e) {
         log(e);
 
-        if (e.eventType().equals(Event.EventType.ioKeyReleased)) {
-            KeyReleasedEvent keyEvent = (KeyReleasedEvent) e;
-            if (keyEvent.key == GLFW.GLFW_KEY_F2) debugLayer.enabled = !debugLayer.enabled;
-            if (keyEvent.key == GLFW.GLFW_KEY_F3) MarbleIM.font("Consolas", 100, 1);
-        } else if (e.eventType().equals(Event.EventType.ioKeyPressed)) {
+        if (e.eventType().equals(Event.EventType.ioKeyPressed)) {
             KeyPressedEvent keyEvent = (KeyPressedEvent) e;
             if (keyEvent.key == GLFW.GLFW_KEY_F11) window.fullscreen(!window.isFullscreen());
+            if (keyEvent.key == GLFW.GLFW_KEY_F2) debugLayer.enabled = !debugLayer.enabled;
+            if (keyEvent.key == GLFW.GLFW_KEY_F3) MarbleIM.font("Consolas", 100, 1);
         }
     }
 

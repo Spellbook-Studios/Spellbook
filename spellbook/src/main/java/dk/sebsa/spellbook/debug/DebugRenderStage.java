@@ -184,7 +184,7 @@ public class DebugRenderStage extends RenderStage {
 
     @Override
     protected void destroy() {
-        shaderReference.unRefrence();
+        shaderReference.unReference();
         linesVAO.destroy();
         pointsVAO.destroy();
         shader = null;

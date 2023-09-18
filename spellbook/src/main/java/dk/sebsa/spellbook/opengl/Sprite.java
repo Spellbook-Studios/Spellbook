@@ -31,6 +31,23 @@ public class Sprite implements Asset {
     private AssetReference textureR;
     private Texture texture;
 
+    /**
+     * Alternative Sprite Constructer
+     *
+     * @param offset   The offset
+     * @param padding  The padding
+     * @param material The material
+     */
+    public Sprite(Rect offset, Rect padding, Material material) {
+
+    }
+
+    /**
+     * Normal sprite constructor used by assetreference.java
+     */
+    public Sprite() {
+    }
+
     @Override
     public void load(AssetReference location) {
         try {
@@ -56,7 +73,7 @@ public class Sprite implements Asset {
     @Override
     public void destroy() {
         texture = null;
-        if (textureR != null) textureR.unRefrence();
+        if (textureR != null) textureR.unReference();
     }
 
     private final Rect uv = new Rect(0, 0, 0, 0);

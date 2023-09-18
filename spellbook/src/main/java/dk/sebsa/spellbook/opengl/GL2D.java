@@ -253,8 +253,8 @@ public class GL2D {
     public static void cleanup() {
         guiMesh.destroy();
         defaultShader = null;
-        shaderR.unRefrence();
+        shaderR.unReference();
         missingSprite = null;
-        missingSpriteR.unRefrence();
+        missingSpriteR.unReference();
     }
 }

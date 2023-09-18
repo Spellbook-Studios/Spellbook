@@ -107,6 +107,6 @@ public class Sprite2D {
      */
     public static void destroy() {
         shader = null;
-        shaderR.unRefrence();
+        shaderR.unReference();
     }
 }
