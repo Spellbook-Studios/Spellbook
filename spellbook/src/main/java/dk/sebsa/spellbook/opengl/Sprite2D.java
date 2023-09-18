@@ -12,19 +12,29 @@ import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL30;
 
-
 import java.util.Collection;
 import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * Renders 2d sprites
+ *
+ * @author sebsn
+ * @since 1.0.0
+ */
 public class Sprite2D {
     private static Mesh2D mainMesh;
     private static AssetReference shaderR;
     private static GLSLShaderProgram shader;
 
+    /**
+     * Inits the renderer
+     *
+     * @param e The engineLoadEvent
+     */
     public static void init(EngineLoadEvent e) {
-        if(mainMesh != null) return;
+        if (mainMesh != null) return;
 
         mainMesh = Mesh2D.getRenderMesh();
 
@@ -50,8 +60,9 @@ public class Sprite2D {
 
     /**
      * Renders a list of spriterenders to the screen
-     * @param window The window to render to
-     * @param r Where to render to
+     *
+     * @param window    The window to render to
+     * @param r         Where to render to
      * @param frameData The spriterenders to render
      */
     public static void renderSprites(GLFWWindow window, Rect r, FrameData frameData) {
@@ -70,12 +81,12 @@ public class Sprite2D {
         shader.bind();
         shader.setUniform("projectionViewMatrix", projection.mul(Camera.activeCamera.getViewMatrix()));
 
-        for(int i = 0; i < frameData.getRenderSprite().length; i++ ){
+        for (int i = 0; i < frameData.getRenderSprite().length; i++) {
             Map<Sprite, Collection<SpriteRenderer>> layer = frameData.getRenderSprite()[i];
             for (Sprite s : layer.keySet()) {
                 s.getMaterial().bind(shader);
 
-                for(SpriteRenderer sr : layer.get(s)) {
+                for (SpriteRenderer sr : layer.get(s)) {
                     // Render
                     sr.setUniforms(shader);
                     GL30.glDrawArrays(GL_TRIANGLES, 0, 6);

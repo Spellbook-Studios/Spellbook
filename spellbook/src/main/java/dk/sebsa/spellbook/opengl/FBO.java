@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
-
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
 import org.lwjgl.opengl.GL11;
@@ -15,13 +14,17 @@ import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Frame Buffer Object
- * @since 1.0.0
+ *
  * @author sebs
+ * @since 1.0.0
  */
 public class FBO {
     private final int frameBufferID;
     private final int depthBufferID;
     private final Texture texture;
+    /**
+     * A material that can be used to render this fbo
+     */
     public final Material material;
 
     /**
@@ -36,11 +39,13 @@ public class FBO {
 
     private final GLFWWindow window;
 
-    private void trace(Object o) { Spellbook.getLogger().trace(o); }
+    private void trace(Object o) {
+        Spellbook.getLogger().trace(o);
+    }
 
     /**
-     * @param w Width of buffer
-     * @param h Height of buffer
+     * @param w      Width of buffer
+     * @param h      Height of buffer
      * @param window Window of program
      */
     public FBO(int w, int h, GLFWWindow window) {
@@ -65,7 +70,7 @@ public class FBO {
         GL11.glBindTexture(GL_TEXTURE_2D, 0);
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, depthBufferID);
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, frameBufferID);
-        glViewport(0,0,width,height);
+        glViewport(0, 0, width, height);
     }
 
     /**
@@ -75,7 +80,7 @@ public class FBO {
     public void unBind() {
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, 0);
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        glViewport(0,0,window.getWidth(),window.getHeight());
+        glViewport(0, 0, window.getWidth(), window.getHeight());
     }
 
     private int createTextureAttachment() {
@@ -96,7 +101,7 @@ public class FBO {
         int buffer = GL30.glGenRenderbuffers();
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, buffer);
         GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, GL11.GL_DEPTH_COMPONENT, width, height);
-        GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER,buffer);
+        GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER, buffer);
         return buffer;
     }
 
@@ -118,12 +123,13 @@ public class FBO {
 
     /**
      * Render an FBO
+     *
      * @param fbo The fbo to render
-     * @param r Where to render it
-     * @param t Texture coords (most often (0,0,1,1);
+     * @param r   Where to render it
+     * @param t   Texture coords (most often (0,0,1,1);
      */
     public static void renderFBO(FBO fbo, Rect r, Rect t) {
-        if(fbo == null) return;
+        if (fbo == null) return;
         GL2D.prepare();
         GL2D.drawTextureWithTextCords(fbo.material, r, t);
         GL2D.unprepare();
@@ -131,14 +137,15 @@ public class FBO {
 
     /**
      * Render a list of FBO, with element 0 being first
+     *
      * @param fbos The fbo to render
-     * @param r Where to render it
-     * @param t Texture coords (most often (0,0,1,1);
+     * @param r    Where to render it
+     * @param t    Texture coords (most often (0,0,1,1);
      */
     public static void renderFBOS(List<FBO> fbos, Rect r, Rect t) {
-        if(fbos == null || fbos.isEmpty()) return;
+        if (fbos == null || fbos.isEmpty()) return;
         GL2D.prepare();
-        for(FBO fbo : fbos) GL2D.drawTextureWithTextCords(fbo.material, r, t);
+        for (FBO fbo : fbos) GL2D.drawTextureWithTextCords(fbo.material, r, t);
         GL2D.unprepare();
     }
 }

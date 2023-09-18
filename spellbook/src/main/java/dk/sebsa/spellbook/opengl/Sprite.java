@@ -12,10 +12,20 @@ import lombok.Getter;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * A sprite asset
+ * A sprite has a texture, and it's offset (pos, size) on the texture, and padding (used for scaling)
+ *
+ * @author sebsn
+ * @since 1.0.0
+ */
 public class Sprite implements Asset {
-    @Getter private Rect offset;
-    @Getter private Rect padding;
-    @Getter private Material material;
+    @Getter
+    private Rect offset;
+    @Getter
+    private Rect padding;
+    @Getter
+    private Material material;
 
     // Might exist if loaded with texture and not material directly
     private AssetReference textureR;
@@ -25,17 +35,17 @@ public class Sprite implements Asset {
     public void load(AssetReference location) {
         try {
             List<String> file = FileUtils.readAllLinesList(FileUtils.loadFile(location.location));
-            for(String line : file) {
-                if(line.startsWith("t")) {
+            for (String line : file) {
+                if (line.startsWith("t")) {
                     textureR = AssetManager.getAssetS(line.split(":")[1]);
                     texture = textureR.get();
                     material = new Material(Color.white, texture);
-                } else if(line.startsWith("o")) {
+                } else if (line.startsWith("o")) {
                     String[] e = line.split(":")[1].split(",");
-                    offset = new Rect(Float.parseFloat(e[0]),Float.parseFloat(e[1]),Float.parseFloat(e[2]),Float.parseFloat(e[3]));
-                } else if(line.startsWith("p")) {
+                    offset = new Rect(Float.parseFloat(e[0]), Float.parseFloat(e[1]), Float.parseFloat(e[2]), Float.parseFloat(e[3]));
+                } else if (line.startsWith("p")) {
                     String[] e = line.split(":")[1].split(",");
-                    padding = new Rect(Float.parseFloat(e[0]),Float.parseFloat(e[1]),Float.parseFloat(e[2]),Float.parseFloat(e[3]));
+                    padding = new Rect(Float.parseFloat(e[0]), Float.parseFloat(e[1]), Float.parseFloat(e[2]), Float.parseFloat(e[3]));
                 }
             }
         } catch (IOException e) {
@@ -46,23 +56,31 @@ public class Sprite implements Asset {
     @Override
     public void destroy() {
         texture = null;
-        if(textureR != null) textureR.unRefrence();
+        if (textureR != null) textureR.unRefrence();
     }
 
-    private final Rect uv = new Rect(0,0,0,0);
+    private final Rect uv = new Rect(0, 0, 0, 0);
+
+    /**
+     * @return The uv map of the sprite
+     */
     public Rect getUV() {
-        if(offset == null) return null;
-        if(material.getTexture() == null) return uv;
+        if (offset == null) return null;
+        if (material.getTexture() == null) return uv;
 
         float w = material.getTexture().getWidth();
         float h = material.getTexture().getHeight();
         return uv.set(offset.x / w, offset.y / h, offset.width / w, offset.height / h);
     }
 
-    private final Rect paddingUV = new Rect(0,0,0,0);
+    private final Rect paddingUV = new Rect(0, 0, 0, 0);
+
+    /**
+     * @return Returns the padding UV map
+     */
     public Rect getPaddingUV() {
-        if(padding == null) return null;
-        if(material.getTexture() == null) return paddingUV;
+        if (padding == null) return null;
+        if (material.getTexture() == null) return paddingUV;
 
         float w = material.getTexture().getWidth();
         float h = material.getTexture().getHeight();

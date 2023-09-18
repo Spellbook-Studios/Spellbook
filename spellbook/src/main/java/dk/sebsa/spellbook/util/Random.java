@@ -4,6 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Functions for generating pseudo random values in a thread safe way
+ *
  * @author sebsn
  * @since 1.0.0
  */
@@ -39,7 +40,9 @@ public class Random {
     }
 
     /**
-     * @return a random float within min and max;
+     * @param min Lowest possible output value
+     * @param max Highest possible output value
+     * @return a random float within min and max
      */
     public static float getFloat(float min, float max) {
         return min + ThreadLocalRandom.current().nextFloat() * (max - min);

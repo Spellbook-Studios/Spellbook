@@ -15,6 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 /**
  * A renderer for rendering 2D sprites
+ *
  * @author sebs
  * @since 1.0.0
  */
@@ -27,10 +28,15 @@ public class GL2D {
     private static Matrix4x4f ortho;
     private static Color currentColor;
     private static AssetReference missingSpriteR;
+    /**
+     * The missingSprite sprite from Spellbook internal assets
+     * In rendering, it can be used when there is an absence of other textures
+     */
     public static Sprite missingSprite;
 
     /**
      * Initializes the renderer, done once pr program
+     *
      * @param w The window in which it will render
      * @param s The default 2d shader
      */
@@ -53,6 +59,7 @@ public class GL2D {
 
     /**
      * Prepares a shader for 2d rendering
+     *
      * @param shaderProgram The shader to prepare
      */
     public static void prepareShader(GLSLShaderProgram shaderProgram) {
@@ -64,12 +71,15 @@ public class GL2D {
             shaderProgram.createUniform("screenPos", logger);
             shaderProgram.createUniform("color", logger);
             shaderProgram.createUniform("useColor", logger);
-        } catch (Exception e) { logger.warn("Failed to create shader uniforms", "This might still work, if the error is from the uniforms already having been created"); logger.stackTrace(e); }
+        } catch (Exception e) {
+            logger.warn("Failed to create shader uniforms", "This might still work, if the error is from the uniforms already having been created");
+            logger.stackTrace(e);
+        }
         shaderProgram.initFor2D = true;
     }
 
     private static void changeColor(Color c) {
-        if(c==currentColor) return;
+        if (c == currentColor) return;
         defaultShader.setUniform("color", c);
         currentColor = c;
     }
@@ -78,19 +88,22 @@ public class GL2D {
      * Prepares GL2D for rendering
      * Uses the default shader(Spellbook2d.glsl)
      */
-    public static void prepare() { prepare(defaultShader); }
+    public static void prepare() {
+        prepare(defaultShader);
+    }
 
     /**
      * Prepares GL2D for rendering
+     *
      * @param shader The shader to prepare for
      */
     public static void prepare(GLSLShaderProgram shader) {
-        if(!shader.initFor2D) prepareShader(shader);
+        if (!shader.initFor2D) prepareShader(shader);
 
         // Disable 3d
         glDisable(GL_DEPTH_TEST);
 
-        if(window.isDirty()) ortho = Matrix4x4f.ortho(0, window.getWidth(), window.getHeight(), 0, -1, 1);
+        if (window.isDirty()) ortho = Matrix4x4f.ortho(0, window.getWidth(), window.getHeight(), 0, -1, 1);
 
         // Render preparation
         defaultShader.bind();
@@ -112,29 +125,36 @@ public class GL2D {
 
     /**
      * Draws a texture with(out) texture coordinates (0,0,1,1)
-     * @param mat Material to draw
+     *
+     * @param mat      Material to draw
      * @param drawRect Where to draw
      */
-    public static void drawTextureWithTextCords(Material mat, Rect drawRect) { drawTextureWithTextCords(mat, drawRect, Rect.UV, guiMesh); }
+    public static void drawTextureWithTextCords(Material mat, Rect drawRect) {
+        drawTextureWithTextCords(mat, drawRect, Rect.UV, guiMesh);
+    }
 
     /**
      * Draws a texture with texture coordinates
-     * @param mat Material to draw
+     *
+     * @param mat      Material to draw
      * @param drawRect Where to draw
-     * @param uvRect Texture coords
+     * @param uvRect   Texture coords
      */
-    public static void drawTextureWithTextCords(Material mat, Rect drawRect, Rect uvRect) { drawTextureWithTextCords(mat, drawRect, uvRect, guiMesh); }
+    public static void drawTextureWithTextCords(Material mat, Rect drawRect, Rect uvRect) {
+        drawTextureWithTextCords(mat, drawRect, uvRect, guiMesh);
+    }
 
-    private static final Rect u = new Rect(0,0,0,0);
-    private static final Rect r = new Rect(0,0,0,0);
-    private static final Rect r2 = new Rect(0,0,0,0);
+    private static final Rect u = new Rect(0, 0, 0, 0);
+    private static final Rect r = new Rect(0, 0, 0, 0);
+    private static final Rect r2 = new Rect(0, 0, 0, 0);
 
     /**
      * Draws a texture with texture coordinates
-     * @param mat Material to draw
+     *
+     * @param mat      Material to draw
      * @param drawRect Where to draw
-     * @param uvRect Texture coords
-     * @param mesh Mesh to draw to
+     * @param uvRect   Texture coords
+     * @param mesh     Mesh to draw to
      */
     public static void drawTextureWithTextCords(Material mat, Rect drawRect, Rect uvRect, Mesh2D mesh) {
         window.rect.getIntersection(r2.set(drawRect.x, drawRect.y, drawRect.width, drawRect.height), r);
@@ -146,7 +166,7 @@ public class GL2D {
 
         // Draw
         changeColor(mat.getColor());
-        if(mat.getTexture() != null) mat.getTexture().bind();
+        if (mat.getTexture() != null) mat.getTexture().bind();
         else missingSprite.getMaterial().getTexture().bind();
         // TODO: else { noTexture.bind(); u.set(0,0,1,1); }
         defaultShader.setUniform("useColor", mat.isTextured() ? 0 : 1);
@@ -155,7 +175,7 @@ public class GL2D {
         defaultShader.setUniform("screenPos", r.x, r.y);
 
         GL20.glDrawArrays(GL30.GL_TRIANGLES, 0, 6);
-        if(mat.getTexture() != null) mat.getTexture().unbind();
+        if (mat.getTexture() != null) mat.getTexture().unbind();
         else missingSprite.getMaterial().getTexture().unbind();
     }
 
@@ -172,11 +192,12 @@ public class GL2D {
 
     /**
      * Renders a sprite to the screen
+     *
      * @param r Dimension and position of the sprite
      * @param e The sprite (if null a missing texutre sprite will be renderd)
      */
     public static void drawSprite(Rect r, Sprite e) {
-        if(e == null) e = missingSprite;
+        if (e == null) e = missingSprite;
         //Cache a short variable for the texture, just so we only have to type a character anytime we use it
         Rect uv = e.getUV();
 
