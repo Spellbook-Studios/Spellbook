@@ -55,6 +55,8 @@ pipeline {
     }
 
     post {
-        discordSend description: "Jenkins Pipeline Build", footer: "ci.sebsa.dk", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: credentials('spellbook_webhook_url')
+        always {
+            discordSend description: "Jenkins Pipeline Build", footer: "ci.sebsa.dk", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: credentials('spellbook_webhook_url')
+        }
     }
 }
