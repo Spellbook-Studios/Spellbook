@@ -53,7 +53,7 @@ pipeline {
             }
         }
     }
-
+/**
     post {
         always {
             withCredentials([string(credentialsId: 'spellbook_webhook_url', variable: 'SPELLBOOK-WEBHOOK-URL')]) {
@@ -61,5 +61,5 @@ pipeline {
             }
             discordSend description: "Jenkins Pipeline Build", footer: "ci.sebsa.dk", link: env.BUILD_URL, result: currentBuild.currentResult, title: "$SPELLBOOK-WEBHOOK-URL", webhookURL: credentials('spellbook_webhook_url')
         }
-    }
+    }*/
 }
