@@ -17,3 +17,4 @@ upon Spellbook and uses it for both developing the game and runs with Spellbook 
 a [Java library](https://github.com/Spellbook-Studios/Spellbook/packages/1788482). **TODO: Instructions coming soon**
 
 *With love, Sebastian :heart:*
+
