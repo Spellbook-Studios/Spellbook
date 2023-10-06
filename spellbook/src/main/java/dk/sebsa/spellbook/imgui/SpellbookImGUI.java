@@ -6,6 +6,7 @@ import dk.sebsa.spellbook.core.events.EngineFrameEarly;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.core.events.EventListener;
+import dk.sebsa.spellbook.io.GLFWWindow;
 import imgui.ImGui;
 import imgui.gl3.ImGuiImplGl3;
 import lombok.Getter;
@@ -20,9 +21,13 @@ import lombok.Getter;
  */
 public class SpellbookImGUI implements Module {
     private ClassLogger logger;
-    @Getter private ImGuiImplGl3 implGl3;
-    @Getter private SpellbookImGUIGLFWImpl implGLFW;
-    @Getter private static SpellbookImGUI instance;
+    @Getter
+    private ImGuiImplGl3 implGl3;
+    @Getter
+    private SpellbookImGUIGLFWImpl implGLFW;
+    @Getter
+    private static SpellbookImGUI instance;
+    private GLFWWindow window;
 
     @Override
     public void init(EventBus eventBus) {
@@ -32,7 +37,7 @@ public class SpellbookImGUI implements Module {
 
     @EventListener
     public void engineFrameEarly(EngineFrameEarly e) {
-        SpellbookImGUI.getInstance().getImplGLFW().newFrame();
+        SpellbookImGUI.getInstance().getImplGLFW().newFrame(window);
     }
 
     @EventListener
@@ -47,6 +52,7 @@ public class SpellbookImGUI implements Module {
         implGLFW.init(e.moduleCore.getWindow().getId());
         implGl3 = new ImGuiImplGl3();
         implGl3.init("#version 150");
+        window = e.moduleCore.getWindow();
 
         // Init ImGUI
         ImGui.init();

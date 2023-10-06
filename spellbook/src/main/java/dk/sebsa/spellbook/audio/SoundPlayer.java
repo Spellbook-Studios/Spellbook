@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.audio;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
@@ -28,14 +29,24 @@ public class SoundPlayer implements Component {
 
     @Override
     public void onEnable(Entity entity) {
-        source = new SoundSource(loop, relative);
-        source.setBuffer(sound.get());
+        if (sound != null) {
+            source = new SoundSource(loop, relative);
+            source.setBuffer(sound.get());
+        }
     }
 
     /**
      * Plays / Resumes the sound
      */
     public void start() {
+        if (source == null) {
+            if (sound == null) {
+                Spellbook.instance.error("No sound was said when calling SoundPlayer.start()", false);
+                return;
+            }
+            source = new SoundSource(loop, relative);
+            source.setBuffer(sound.get());
+        }
         source.play();
     }
 

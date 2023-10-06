@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.imgui;
 
+import dk.sebsa.spellbook.io.GLFWWindow;
 import imgui.ImGui;
 import imgui.ImGuiIO;
 import imgui.ImGuiPlatformIO;
@@ -22,6 +23,7 @@ import static org.lwjgl.glfw.GLFW.*;
 /**
  * Copied from default spair.imgui implementation
  * Just cut down to what we need
+ *
  * @author sebs
  * @since 1.0.0
  */
@@ -39,10 +41,8 @@ public class SpellbookImGUIGLFWImpl {
     private boolean glfwHasMonitorWorkArea;
 
     // For application window properties
-    private final int[] winWidth = new int[1];
-    private final int[] winHeight = new int[1];
-    private final int[] fbWidth = new int[1];
-    private final int[] fbHeight = new int[1];
+    private int winWidth;
+    private int winHeight;
 
 
     // Empty array to fill ImGuiIO.NavInputs with zeroes
@@ -129,18 +129,14 @@ public class SpellbookImGUIGLFWImpl {
     /**
      * Updates {@link ImGuiIO} and {@link org.lwjgl.glfw.GLFW} state.
      */
-    public void newFrame() {
+    public void newFrame(GLFWWindow window) {
         final ImGuiIO io = ImGui.getIO();
 
-        glfwGetWindowSize(windowPtr, winWidth, winHeight);
-        glfwGetFramebufferSize(windowPtr, fbWidth, fbHeight);
-        io.setDisplaySize((float) winWidth[0], (float) winHeight[0]);
-
-        if (winWidth[0] > 0 && winHeight[0] > 0) {
-            final float scaleX = (float) fbWidth[0] / winWidth[0];
-            final float scaleY = (float) fbHeight[0] / winHeight[0];
-            io.setDisplayFramebufferScale(scaleX, scaleY);
-        }
+        winWidth = window.getWidth();
+        winHeight = window.getHeight();
+        io.setDisplaySize((float) winWidth, (float) winHeight);
+        io.setDisplayFramebufferScale(1, 1);
+        
         if (wantUpdateMonitors) {
             updateMonitors();
         }
