@@ -57,6 +57,16 @@ pipeline {
                 }
             }
         }
+        stage('JavaDoc') {
+            when { anyOf { branch 'main' } }
+            steps {
+                withGradle {
+                    sh '''
+                    ./gradlew :spellbook:javadoc'''
+                }
+                javadoc javadocDir: 'spellbook/build/docs/javadoc', keepAll: false
+            }
+        }
     }
 /**
     post {
