@@ -10,6 +10,8 @@
 
 ## Using Spellbook
 
+#### [READ THE DOCS](https://ci.sebsa.dk/job/Spellbook%20Studios/job/Spellbook/job/main/javadoc/index.html)
+
 **Game Engine** You can use our own game editor [Arcana](https://github.com/Spellbook-Studios/Arcana), which is based
 upon Spellbook and uses it for both developing the game and runs with Spellbook at runtime.
 
