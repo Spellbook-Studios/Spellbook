@@ -65,6 +65,7 @@ public class Spellbook {
      * The FRAME_DATA for the current frame
      */
     public static FrameData FRAME_DATA;
+    private Marble marbleModule;
 
     /**
      * Loads and initializes a module
@@ -155,7 +156,9 @@ public class Spellbook {
         if (DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
         if (capabilities.audio) registerModule(new OpenALModule());
         if (capabilities.newton2D) registerModule(new Newton2D());
-        registerModule(new Marble());
+
+        marbleModule = new Marble();
+        registerModule(marbleModule);
 
         logger.log("Engine Init Event, prepare for trouble!..");
         eventBus.engine(new EngineInitEvent((SpellbookLogger) logger, capabilities, application));
@@ -172,7 +175,7 @@ public class Spellbook {
 
         while (!GLFW.glfwWindowShouldClose(moduleCore.getWindow().getId()) && errorCount < capabilities.spellbookShutdown && !shutdown) {
             // Process input and prepare for frame
-            FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer);
+            FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer, marbleModule);
             eventBus.engine(new EngineFrameEarly(FRAME_DATA));
             Time.procsessFrame();
 

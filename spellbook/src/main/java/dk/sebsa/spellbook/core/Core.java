@@ -17,18 +17,26 @@ import java.util.List;
 /**
  * Core module of Spellbook
  * Always present
- * Always craeted first, and updated first
+ * Always created first, and updated first
+ *
  * @author sebsn
  * @since 1.0.0
  */
 public class Core implements Module, EventHandler {
     private Logger logger;
-    @Getter private GLFWWindow window;
-    @Getter private GLFWInput input;
-    @Getter private LayerStack stack;
+    @Getter
+    private GLFWWindow window;
+    @Getter
+    private GLFWInput input;
+    @Getter
+    private LayerStack stack;
 
-    private void log(Object... o) { logger.log(o); }
-    @Getter private AssetManager assetManager;
+    private void log(Object... o) {
+        logger.log(o);
+    }
+
+    @Getter
+    private AssetManager assetManager;
 
     @Override
     public void init(EventBus eventBus) {
@@ -54,13 +62,13 @@ public class Core implements Module, EventHandler {
         // Assets
         List<AssetReference> assets = new ArrayList<>();
 
-        for(AssetProvider provider : e.capabilities.getAssetsProviders()) {
+        for (AssetProvider provider : e.capabilities.getAssetsProviders()) {
             log(" - Provider: " + provider.toString());
             assets.addAll(provider.getAssets());
         }
 
         logger.trace("Loaded Assets: ");
-        for(AssetReference asset : assets) {
+        for (AssetReference asset : assets) {
             logger.trace(" " + asset);
         }
 

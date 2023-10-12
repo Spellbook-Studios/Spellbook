@@ -6,6 +6,7 @@ import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
 import dk.sebsa.spellbook.io.*;
+import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Time;
 import imgui.ImGui;
@@ -15,6 +16,7 @@ import java.text.DecimalFormat;
 
 /**
  * A UI layer rendered using ImGUI
+ *
  * @author sebs
  * @since 1.0.0
  */
@@ -33,48 +35,50 @@ public abstract class ImGUILayer extends Layer {
 
     /**
      * Weather to disable the default drawing windows
+     *
      * @return true disables the window, otherwise they are drown
      */
     protected abstract boolean disableDefaultWindows();
 
     @Override
     protected void userEvent(UserEvent e) {
-        if(!Spellbook.instance.getCapabilities().debugIMGUI) return;
+        if (!Spellbook.instance.getCapabilities().debugIMGUI) return;
         final ImGuiIO io = ImGui.getIO();
-        if(e.eventType() == Event.EventType.ioMouseMove) {
+        if (e.eventType() == Event.EventType.ioMouseMove) {
             MouseMoveEvent e2 = (MouseMoveEvent) e;
             io.setMousePos(e2.mouseX, e2.mouseY);
-        } else if(e.eventType() == Event.EventType.ioButtonPressed) {
+        } else if (e.eventType() == Event.EventType.ioButtonPressed) {
             ButtonPressedEvent e2 = (ButtonPressedEvent) e;
             io.setMouseDown(e2.button, true);
-        } else if(e.eventType() == Event.EventType.ioButtonReleased) {
+        } else if (e.eventType() == Event.EventType.ioButtonReleased) {
             ButtonReleasedEvent e2 = (ButtonReleasedEvent) e;
             io.setMouseDown(e2.button, false);
-        } else if(e.eventType() == Event.EventType.ioMouseScroll) {
+        } else if (e.eventType() == Event.EventType.ioMouseScroll) {
             MouseScrollEvent e2 = (MouseScrollEvent) e;
             io.setMouseWheelH(io.getMouseWheelH() + (float) e2.offsetX);
             io.setMouseWheel(io.getMouseWheel() + (float) e2.offsetY);
-        } else if(e.eventType() == Event.EventType.ioKeyPressed) {
+        } else if (e.eventType() == Event.EventType.ioKeyPressed) {
             KeyPressedEvent e2 = (KeyPressedEvent) e;
             io.setKeysDown(e2.key, true);
-        } else if(e.eventType() == Event.EventType.ioKeyReleased) {
+        } else if (e.eventType() == Event.EventType.ioKeyReleased) {
             KeyReleasedEvent e2 = (KeyReleasedEvent) e;
             io.setKeysDown(e2.key, false);
-        } else if(e.eventType() == Event.EventType.ioChar) {
-			CharEvent e2 = (CharEvent) e;
-			io.addInputCharacter(e2.codePoint);
-		}
+        } else if (e.eventType() == Event.EventType.ioChar) {
+            CharEvent e2 = (CharEvent) e;
+            io.addInputCharacter(e2.codePoint);
+        }
     }
+
     private static final DecimalFormat df = new DecimalFormat("#.#####");
 
     @Override
-    public void render(Rect r) {
-        if(!Spellbook.instance.getCapabilities().debugIMGUI) return;
+    public void render(Marble marble, Rect r) {
+        if (!Spellbook.instance.getCapabilities().debugIMGUI) return;
         // Starts the imgui frame
         ImGui.newFrame();
 
         // draw the frame
-        if(!disableDefaultWindows()) {
+        if (!disableDefaultWindows()) {
             String aft = df.format(Time.getAFL());
 
             ImGui.begin("Engine Stats");

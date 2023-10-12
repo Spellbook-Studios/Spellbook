@@ -2,6 +2,7 @@ package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.SpellbookLogger;
+import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Rect;
 
 /**
@@ -24,9 +25,12 @@ public abstract class Layer implements EventHandler {
 
     /**
      * Logs an object to the ClassLogger
+     *
      * @param o Object to log
      */
-    protected void log(Object o) { logger.log(o.toString()); }
+    protected void log(Object o) {
+        logger.log(o.toString());
+    }
 
     /**
      * @param logger The main Spellbook logger
@@ -47,15 +51,19 @@ public abstract class Layer implements EventHandler {
 
     /**
      * Renders this layer to the current FBO (if the layer is enabled)
-     * @param r Surface to render to
+     *
+     * @param marble The marble GUI module instance
+     * @param r      Surface to render to
      */
-    public void ensureRender(Rect r) { // TODO: I hate this if check
-        if(enabled) render(r);
+    public void ensureRender(Marble marble, Rect r) { // TODO: I hate this if check
+        if (enabled) render(marble, r);
     }
 
     /**
      * Render the UI to the current framebuffer
-     * @param r Surface to render to
+     *
+     * @param marble The marble GUI module instance
+     * @param r      Surface to render to
      */
-    protected abstract void render(Rect r);
+    protected abstract void render(Marble marble, Rect r);
 }
