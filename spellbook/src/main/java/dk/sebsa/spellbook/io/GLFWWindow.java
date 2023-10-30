@@ -20,9 +20,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
  * A representation of a GLFW window with OpenGL rendering supported
- * 
- * @since 1.0.0
+ *
  * @author sebs
+ * @since 1.0.0
  */
 public class GLFWWindow {
     /**
@@ -88,8 +88,9 @@ public class GLFWWindow {
         log("Init GLFW");
 
         // Setup GLFW error callback
-        // For now this is System.err
-        GLFWErrorCallback.createPrint(System.err).set();
+        glfwSetErrorCallback(((error, description) -> {
+            Spellbook.getLogger().err("GLFW Error [" + Integer.toHexString(error) + "]: " + GLFWErrorCallback.getDescription(description));
+        }));
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
         if (!glfwInit())
@@ -97,7 +98,7 @@ public class GLFWWindow {
 
         // Configure GLFW
         glfwDefaultWindowHints(); // optional, the current window hints are already the default
-                                  // but better safe than sorry
+        // but better safe than sorry
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
@@ -183,6 +184,7 @@ public class GLFWWindow {
     }
 
     private int oldW, oldH;
+
     /**
      * Tells the window to process frame events
      */
@@ -193,9 +195,10 @@ public class GLFWWindow {
 
             isDirty = true;
             if (isFullscreen) {
-                oldW = width; oldH = height;
+                oldW = width;
+                oldH = height;
                 GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-                if(videoMode == null) {
+                if (videoMode == null) {
                     logger.err("glfwGetVideoMode returned null");
                 } else {
                     glfwGetWindowPos(id, posX, posY);
@@ -261,7 +264,7 @@ public class GLFWWindow {
 
         /**
          * Event caused when the user or the program resizes the window
-         * 
+         *
          * @param window The new rect representing the window
          */
         public WindowResizedEvent(Rect window) {
@@ -277,7 +280,7 @@ public class GLFWWindow {
     /**
      * Sets the current fullscreen Status
      * If set the window will reflect the changes on the next frame
-     * 
+     *
      * @param fullscreen The new fullscreen status
      */
     public void fullscreen(boolean fullscreen) {
@@ -286,6 +289,7 @@ public class GLFWWindow {
 
     /**
      * Changes the window title
+     *
      * @param title The new title
      */
     public void setWindowTitle(String title) {
