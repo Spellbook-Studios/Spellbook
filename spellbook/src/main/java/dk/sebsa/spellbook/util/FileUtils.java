@@ -14,19 +14,21 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * Utilities for creating files
- * @author sebsn
+ *
+ * @author sebs
  * @since 1.0.0
  */
 public class FileUtils {
     /**
      * Loads a file either on drive space or in jar resources
+     *
      * @param location The location of the file. Prefix with "/" when acssesing jar resources
      * @return An inputstream of the file
      * @throws IOException If file can't be found or loaded
      */
     public static InputStream loadFile(String location) throws IOException {
         try {
-            if(location.startsWith("/")) {
+            if (location.startsWith("/")) {
                 location = location.replaceFirst("/", "");
                 ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
@@ -47,7 +49,7 @@ public class FileUtils {
         List<File> files = new ArrayList<>();
 
         File[] a = folder.listFiles();
-        if(a == null) return files;
+        if (a == null) return files;
 
         for (final File fileEntry : a) {
             if (fileEntry.isDirectory()) {
@@ -62,6 +64,7 @@ public class FileUtils {
 
     /**
      * Add all lines from file to list
+     *
      * @param is An input stream for the file
      * @return A list of lines, does not end with a line ending charater
      * @throws IOException If the buffered reader erros
@@ -73,20 +76,22 @@ public class FileUtils {
         String line;
         while ((line = br.readLine()) != null) {
             list.add(line);
-        } br.close();
+        }
+        br.close();
 
         return list;
     }
 
     /**
      * Get all content from a file / InputStream as a string
+     *
      * @param is An input stream for the file
      * @return A string representing all the content in the file with line endings
      * @throws IOException If the buffered reader errors
      */
     public static String readAllLines(InputStream is) throws IOException {
         StringBuilder e = new StringBuilder();
-        for(String line : readAllLinesList(is)) {
+        for (String line : readAllLinesList(is)) {
             e.append(line).append("\n");
         }
 
@@ -95,7 +100,8 @@ public class FileUtils {
 
     /**
      * Zips a single file into a new zip file
-     * @param source The file to zip
+     *
+     * @param source      The file to zip
      * @param zipFileName The name of the zipfile
      * @throws IOException If the file fails to load or write
      */
@@ -120,7 +126,8 @@ public class FileUtils {
 
     /**
      * Reads an inputstream and stores the contents in a bytebuffer
-     * @param is The input stream
+     *
+     * @param is         The input stream
      * @param bufferSize Buffer size
      * @return The buffer with the data
      * @throws IOException If the RBC fails to read from the input stream

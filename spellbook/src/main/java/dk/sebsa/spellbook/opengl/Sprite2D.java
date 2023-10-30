@@ -20,7 +20,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Renders 2d sprites
  *
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class Sprite2D {

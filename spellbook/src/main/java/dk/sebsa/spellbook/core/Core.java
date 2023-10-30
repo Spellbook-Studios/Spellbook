@@ -19,7 +19,7 @@ import java.util.List;
  * Always present
  * Always created first, and updated first
  *
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class Core implements Module, EventHandler {

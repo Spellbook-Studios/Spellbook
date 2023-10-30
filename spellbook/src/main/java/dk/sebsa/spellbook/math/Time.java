@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Keeps track of time
  *
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class Time {

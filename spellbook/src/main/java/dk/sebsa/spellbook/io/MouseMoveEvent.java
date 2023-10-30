@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.core.events.UserEvent;
 /**
  * Tells the engine that the mouse has moved
  *
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class MouseMoveEvent extends UserEvent {

@@ -4,7 +4,8 @@ import dk.sebsa.spellbook.core.events.UserEvent;
 
 /**
  * Tells the engine that a user has released a keyboard key
- * @author sebsn
+ *
+ * @author sebs
  * @since 1.0.0
  */
 public class KeyReleasedEvent extends UserEvent {

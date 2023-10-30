@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 /**
  * The mother of all Spellbook programs
  *
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class Spellbook {
@@ -161,7 +161,7 @@ public class Spellbook {
             taskManager = new ITaskManager() {
                 @Override
                 public void handleReturn() {
-                    
+
                 }
 
                 @Override

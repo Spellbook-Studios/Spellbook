@@ -13,7 +13,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Renders with OpenGL
- * @author sebsn
+ *
+ * @author sebs
  * @since 1.0.0
  */
 public class OpenGLModule implements Module {
@@ -32,7 +33,7 @@ public class OpenGLModule implements Module {
         GL2D.init(e.moduleCore.getWindow(), e.assetManager.getAsset("/spellbook/shaders/Spellbook2d.glsl"));
 
         capRender2D = e.capabilities.render2D;
-        if(capRender2D) {
+        if (capRender2D) {
             Sprite2D.init(e);
         }
     }
@@ -42,12 +43,12 @@ public class OpenGLModule implements Module {
         GL2D.cleanup();
         pipeline.destroy();
 
-        if(capRender2D) {
+        if (capRender2D) {
             Sprite2D.destroy();
         }
     }
 
-    private static final Rect invertedUV = new Rect(0,0,1,-1);
+    private static final Rect invertedUV = new Rect(0, 0, 1, -1);
 
     @EventListener
     public void engineRender(EngineRenderEvent e) {

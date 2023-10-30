@@ -12,7 +12,7 @@ import java.util.function.Supplier;
  * @param <K3> Type of third key
  * @param <K4> Type of fourth key
  * @param <V>  Type of value
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class FourKeyHashMap<K1, K2, K3, K4, V> {

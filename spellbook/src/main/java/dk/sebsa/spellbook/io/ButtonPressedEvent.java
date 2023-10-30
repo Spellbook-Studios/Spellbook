@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.core.events.UserEvent;
 /**
  * Tells the engine that a user has pressed a mouse button
  *
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class ButtonPressedEvent extends UserEvent {

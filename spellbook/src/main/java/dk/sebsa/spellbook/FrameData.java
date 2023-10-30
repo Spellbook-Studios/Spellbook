@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * For data used on a pr frame basis
  *
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class FrameData {
@@ -40,7 +40,7 @@ public class FrameData {
     public FrameData(GLFWInput input, int renderSpriteMaxLayers, Marble marble) {
         this.input = input;
         this.marble = marble;
-        
+
         //noinspection unchecked
         renderSprite = new HashMap[renderSpriteMaxLayers];
 

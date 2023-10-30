@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * @param <K2> Type of second key
  * @param <K3> Type of third key
  * @param <V>  Type of value
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class ThreeKeyHashMap<K1, K2, K3, V> {

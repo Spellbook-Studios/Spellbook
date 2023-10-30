@@ -26,10 +26,11 @@ public class LayerStack {
 
     /**
      * Polls events from event queue and handles them through layerstack
+     *
      * @param events Events to process
      */
     public void handleEvents(Queue<UserEvent> events) {
-        while(!events.isEmpty()) {
+        while (!events.isEmpty()) {
             UserEvent e = events.poll();
 
             for (Layer layer : stack) {
@@ -42,7 +43,8 @@ public class LayerStack {
 
     /**
      * Builds layerstacks
-     * @author sebsn
+     *
+     * @author sebs
      * @since 1.0.0
      */
     public static class LayerStackBuilder {
@@ -50,13 +52,18 @@ public class LayerStack {
 
         /**
          * Appends layer to top of layerstack
+         *
          * @param layer Layer to append
          * @return this
          */
-        public LayerStack.LayerStackBuilder appendLayer(Layer layer) { stack.add(layer); return this; }
+        public LayerStack.LayerStackBuilder appendLayer(Layer layer) {
+            stack.add(layer);
+            return this;
+        }
 
         /**
          * Assembles the final layerstack with the layers append in appendLayer(Layer layer)
+         *
          * @return The final layerstack
          */
         public LayerStack build() {

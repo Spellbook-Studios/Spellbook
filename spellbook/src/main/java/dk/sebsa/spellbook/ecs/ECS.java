@@ -7,7 +7,8 @@ import dk.sebsa.spellbook.core.events.*;
 
 /**
  * Handles the execution of component updates
- * @author sebsn
+ *
+ * @author sebs
  * @since 1.0.0
  */
 public class ECS implements Module {
@@ -30,7 +31,7 @@ public class ECS implements Module {
 
     @Override
     public void cleanup() {
-        for(Component c : ROOT.getAllComponent()) {
+        for (Component c : ROOT.getAllComponent()) {
             c.onDisable();
         }
     }
@@ -42,11 +43,11 @@ public class ECS implements Module {
 
     @EventListener
     public void engineFrameProcess(EngineFrameProcess e) {
-        for(Component c : e.frameData.components) {
+        for (Component c : e.frameData.components) {
             c.update(e.frameData);
         }
 
-        for(Component c : e.frameData.components) {
+        for (Component c : e.frameData.components) {
             c.lateUpdate(e.frameData);
         }
 
@@ -54,7 +55,7 @@ public class ECS implements Module {
     }
 
     private static void noDirt(Entity e) {
-        for(Entity c : e.getChildren()) {
+        for (Entity c : e.getChildren()) {
             c.transform.cleanDirt();
             noDirt(c);
         }
@@ -62,7 +63,7 @@ public class ECS implements Module {
 
     @EventListener
     public void engineRender(EngineRenderEvent e) {
-        for(Component c : e.frameData.components) {
+        for (Component c : e.frameData.components) {
             c.render();
         }
     }
@@ -70,7 +71,7 @@ public class ECS implements Module {
     @EventListener
     public void engineFirstFrame(EngineFirstFrameEvent e) {
         e.application.createInitialScene(ROOT);
-        if(Camera.activeCamera == null) logger.warn("Initial scene doesn't contain a camera!");
+        if (Camera.activeCamera == null) logger.warn("Initial scene doesn't contain a camera!");
 
     }
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 @Builder

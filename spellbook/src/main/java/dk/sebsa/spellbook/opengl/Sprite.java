@@ -16,7 +16,7 @@ import java.util.List;
  * A sprite asset
  * A sprite has a texture, and it's offset (pos, size) on the texture, and padding (used for scaling)
  *
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class Sprite implements Asset {

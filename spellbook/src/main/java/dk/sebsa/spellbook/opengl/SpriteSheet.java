@@ -17,7 +17,7 @@ import java.util.Map;
  * A spritesheet asset
  * A sprite sheet contains multiple sprites which are loaded in together with the spritesheet
  *
- * @author sebsn
+ * @author sebs
  * @since 1.0.0
  */
 public class SpriteSheet implements Asset {

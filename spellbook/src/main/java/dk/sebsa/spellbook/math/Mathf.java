@@ -2,12 +2,14 @@ package dk.sebsa.spellbook.math;
 
 /**
  * Utils for doing math with floats
- * @author sebsn
+ *
+ * @author sebs
  * @since 1.0.0
  */
 public class Mathf {
     /**
      * Wraps a value to be within the min and max values
+     *
      * @param val Value to wrap
      * @param min Minimum value
      * @param max Max value
@@ -15,11 +17,12 @@ public class Mathf {
      */
     public static float wrap(float val, float min, float max) {
         float remainder = max - min;
-        return ((val-min) % remainder + remainder) % remainder + min;
+        return ((val - min) % remainder + remainder) % remainder + min;
     }
 
     /**
      * Clamps a value to be within the min and max values
+     *
      * @param val Value to clamp
      * @param min Minimum value
      * @param max Max value
@@ -31,6 +34,7 @@ public class Mathf {
 
     /**
      * Returns the square distance between 2 points in 2d space
+     *
      * @param a Point a
      * @param b Point B
      * @return The distance between the points squared
