@@ -166,17 +166,23 @@ public class Spellbook {
 
                 @Override
                 public Task run(Task task) {
-                    return null;
+                    task.execute();
+                    return task;
                 }
 
                 @Override
                 public TaskGroup run(TaskGroup tasks) {
-                    return null;
+                    for (Task t : tasks.tasks) {
+                        run(t);
+                    }
+                    return tasks;
                 }
 
                 @Override
                 public Task runNotifyOnFinish(Task task, Consumer<Task> consumer) {
-                    return null;
+                    run(task);
+                    consumer.accept(task);
+                    return task;
                 }
             };
 

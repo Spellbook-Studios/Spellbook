@@ -1,5 +1,7 @@
 package dk.sebsa.spellbook.core.threading;
 
+import dk.sebsa.spellbook.math.Time;
+
 import java.util.Collection;
 
 /**
@@ -31,4 +33,9 @@ public class TaskGroup {
         tasks.removeIf(task -> task.state == TaskState.DONE);
         return tasks.isEmpty();
     }
+
+    /**
+     * The time the task was instantiated / the time the task has been running
+     */
+    public final long startTime = Time.getTime();
 }

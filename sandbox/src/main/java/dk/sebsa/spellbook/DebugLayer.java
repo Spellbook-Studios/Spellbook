@@ -4,7 +4,8 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.audio.SoundPlayer;
 import dk.sebsa.spellbook.core.SpellbookLogger;
-import dk.sebsa.spellbook.core.threading.WaitAndPrintTask;
+import dk.sebsa.spellbook.core.threading.Task;
+import dk.sebsa.spellbook.core.threading.TaskGroup;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.imgui.ImGUILayer;
@@ -13,11 +14,17 @@ import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 import dk.sebsa.spellbook.util.Random;
 import imgui.ImGui;
+import imgui.flag.ImGuiTableFlags;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DebugLayer extends ImGUILayer {
     public DebugLayer(SpellbookLogger logger) {
         super(logger);
     }
+
+    public List<TaskGroup> groups = new ArrayList<>();
 
     @Override
     protected void drawImGUI() {
@@ -61,10 +68,37 @@ public class DebugLayer extends ImGUILayer {
                 player.removeComponent(player.getComponent(SpriteCollider2D.class));
             }
 
-            if (ImGui.button("Test Task")) {
-                Spellbook.instance.getTaskManager().run(new WaitAndPrintTask("IT FUCKING CUCKING WORKS!"));
+            ImGui.end();
+        }
+
+        if (!Spellbook.instance.getCapabilities().disableThreading && ImGui.begin("Thread Testing")) {
+            if (ImGui.button("1000x Print")) {
+                List<Task> tasks = new ArrayList<>();
+                for (int i = 0; i < 1000; i++) {
+                    tasks.add(new WaitAndPrintTask("IT FUCKING CUCKING WORKS! nr. " + i));
+                }
+                TaskGroup g = new TaskGroup(tasks);
+                Spellbook.instance.getTaskManager().run(g);
+                groups.add(g);
             }
 
+            if (ImGui.beginTable("##", 3, ImGuiTableFlags.ScrollY | ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg)) {
+                ImGui.tableSetupColumn("Started");
+                ImGui.tableSetupColumn("Size Left");
+                ImGui.tableSetupColumn("IsDone");
+                ImGui.tableHeadersRow();
+
+                for (TaskGroup g : groups) {
+                    ImGui.tableNextColumn();
+                    ImGui.text(String.valueOf(g.startTime));
+                    ImGui.tableNextColumn();
+                    ImGui.text(String.valueOf(g.tasks.size()));
+                    ImGui.tableNextColumn();
+                    ImGui.text(String.valueOf(g.isDone()));
+                }
+
+                ImGui.endTable();
+            }
             ImGui.end();
         }
     }

@@ -43,6 +43,7 @@ public class SpellbookTaskManager implements ITaskManager {
 
     @Override
     public TaskGroup run(TaskGroup tasks) {
+        for (Task t : tasks.tasks) run(t);
         return tasks;
     }
 
