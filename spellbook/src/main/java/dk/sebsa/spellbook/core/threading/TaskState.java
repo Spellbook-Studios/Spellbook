@@ -20,7 +20,7 @@ public enum TaskState {
      */
     DONE,
     /**
-     * IDFK Future<?> has a isCancalled() method
+     * IDFK Futures has a isCancalled() method
      */
     CANCELLED
 }
