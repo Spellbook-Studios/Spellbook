@@ -3,24 +3,36 @@ package dk.sebsa.spellbook.core.threading;
 import dk.sebsa.spellbook.math.Time;
 
 /**
- * A executable task
+ * An executable task which can be completed asynchronously from the rest of the Spellbook engine
  *
  * @author sebs
  * @since 1.0.0
  */
-public interface Task {
+public abstract class Task implements Runnable {
+    /**
+     * The current state of the task
+     */
+    public TaskState state = TaskState.CREATED;
+
     /**
      * @return The name of the task
      */
-    String name();
+    public abstract String name();
 
     /**
-     * Runs the task on the current thread
+     * Executes the task
      */
-    void run();
+    public abstract void execute();
+
+    @Override
+    public void run() {
+        state = TaskState.RUNNING;
+        execute();
+        state = TaskState.DONE;
+    }
 
     /**
-     * The time the task was instantiated / first runned
+     * The time the task was instantiated / the time the task has been running
      */
     long startTime = Time.getTime();
 }

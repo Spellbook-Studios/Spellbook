@@ -8,6 +8,10 @@ import dk.sebsa.spellbook.audio.OpenALModule;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.core.threading.ITaskManager;
+import dk.sebsa.spellbook.core.threading.SpellbookTaskManager;
+import dk.sebsa.spellbook.core.threading.Task;
+import dk.sebsa.spellbook.core.threading.TaskGroup;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.marble.Marble;
@@ -20,6 +24,7 @@ import org.lwjgl.glfw.GLFW;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * The mother of all Spellbook programs
@@ -60,6 +65,8 @@ public class Spellbook {
     private final List<Module> modules = new ArrayList<>();
     private Core moduleCore;
     private final Application application;
+    @Getter
+    private ITaskManager taskManager;
 
     /**
      * The FRAME_DATA for the current frame
@@ -149,6 +156,32 @@ public class Spellbook {
         moduleCore = new Core();
         registerModule(moduleCore);
 
+        if (capabilities.disableThreading) {
+            logger.log("Skipping Threading");
+            taskManager = new ITaskManager() {
+                @Override
+                public void handleReturn() {
+                    
+                }
+
+                @Override
+                public Task run(Task task) {
+                    return null;
+                }
+
+                @Override
+                public TaskGroup run(TaskGroup tasks) {
+                    return null;
+                }
+
+                @Override
+                public Task runNotifyOnFinish(Task task, Consumer<Task> consumer) {
+                    return null;
+                }
+            };
+
+        } else taskManager = new SpellbookTaskManager();
+
         // Add Non Core Modules
         if (capabilities.ecs) registerModule(new ECS());
         if (capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl))
@@ -174,6 +207,8 @@ public class Spellbook {
         eventBus.engine(new EngineFirstFrameEvent(application));
 
         while (!GLFW.glfwWindowShouldClose(moduleCore.getWindow().getId()) && errorCount < capabilities.spellbookShutdown && !shutdown) {
+            taskManager.handleReturn();
+
             // Process input and prepare for frame
             FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer, marbleModule);
             eventBus.engine(new EngineFrameEarly(FRAME_DATA));

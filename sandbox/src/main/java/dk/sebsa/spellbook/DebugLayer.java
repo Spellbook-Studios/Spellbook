@@ -1,8 +1,10 @@
 package dk.sebsa.spellbook;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.audio.SoundPlayer;
 import dk.sebsa.spellbook.core.SpellbookLogger;
+import dk.sebsa.spellbook.core.threading.WaitAndPrintTask;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.imgui.ImGUILayer;
@@ -57,6 +59,10 @@ public class DebugLayer extends ImGUILayer {
                 Entity player = ECS.ROOT.searchChildren("Player");
                 player.removeComponent(player.getComponent(CircleCollider2D.class));
                 player.removeComponent(player.getComponent(SpriteCollider2D.class));
+            }
+
+            if (ImGui.button("Test Task")) {
+                Spellbook.instance.getTaskManager().run(new WaitAndPrintTask("IT FUCKING CUCKING WORKS!"));
             }
 
             ImGui.end();
