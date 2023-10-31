@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     id 'dk.sebsa.spellbook.java-application-conventions'
 }
@@ -11,13 +13,83 @@ application {
     mainClass = 'dk.sebsa.spellbook.Sandbox'
 }
 
+ext {
+    jreversion = "21.0.1+12"
+}
 
-distributions {
-    main {
-        contents {
-            from('assets') {
-                into 'assets'
-            }
+
+// DISTRIBUTION STUFF BELOW
+// Get JDK
+def osArch = System.getProperty("os.arch")
+if (osArch.startsWith("amd64")) osArch = "x64"
+
+def jreos = "linux"
+switch (OperatingSystem.current()) {
+    case OperatingSystem.LINUX:
+        jreos = "linux"
+        break
+    case OperatingSystem.MAC_OS:
+        jreos = "max"
+        break
+    case OperatingSystem.WINDOWS:
+        jreos = "windows"
+        break
+}
+def jrestring = "OpenJDK21U-jre_${osArch}_${jreos}_hotspot_${project.ext.jreversion.replace("+", "_")}.zip"
+def jreurl = "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-${project.ext.jreversion}/${jrestring}";
+
+tasks.register('downloadJRE') {
+    // Download jre to zip
+    def f = new File(project.buildDir.getPath() + "/jre/jre.zip")
+    f.getParentFile().mkdirs();
+    if (!f.exists()) {
+        new URL(jreurl).withInputStream { i -> f.withOutputStream { it << i } }
+    }
+}
+
+tasks.register('downloadJREUnzip', Copy) {
+    dependsOn 'downloadJRE'
+    from {
+        zipTree(project.buildDir.getPath() + "/jre/jre.zip")
+    }
+    into project.buildDir.getPath() + "/jre/"
+}
+
+startScripts {
+    doLast {
+        def windowsScriptFile = file getWindowsScript()
+        def unixScriptFile = file getUnixScript()
+
+        windowsScriptFile.text = windowsScriptFile.text.replace('if defined JAVA_HOME goto findJavaFromJavaHome', '')
+        windowsScriptFile.text = windowsScriptFile.text.replace('set JAVA_EXE=java.exe', 'SET JAVA_EXE=%~dp0/../jre/bin/javaw.exe')
+        windowsScriptFile.text = windowsScriptFile.text.replace('"%JAVA_EXE%" ', 'start "" "%JAVA_EXE%" ')
+
+        unixScriptFile.text = unixScriptFile.text.replace('if [ -n "\\$JAVA_HOME" ] ; then', 'if false ; then')
+        unixScriptFile.text = unixScriptFile.text.replace('JAVACMD=java', 'JAVACMD=../jre/bin/javaw')
+    }
+}
+
+class SandboxUnixStartScriptGenerator implements ScriptGenerator {
+    void generateScript(JavaAppStartScriptGenerationDetails details, Writer destination) {
+        // implementation
+    }
+}
+
+class SandboxWindowsStartScriptGenerator implements ScriptGenerator {
+    void generateScript(JavaAppStartScriptGenerationDetails details, Writer destination) {
+        // implementation
+    }
+}
+
+distributions.main {
+    contents {
+        from('assets') {
+            into 'assets'
+        }
+        from("${project.buildDir.getPath()}/jre/jdk-${project.ext.jreversion}-jre") {
+            into 'jre'
         }
     }
 }
+
+installDist.dependsOn('downloadJREUnzip')

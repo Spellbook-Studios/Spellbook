@@ -15,14 +15,22 @@ ext {
     jomlVersion = "1.10.5"
 }
 
+// Supports Linux X64/Arm64, macOS Arm64, Windows x64
 switch (OperatingSystem.current()) {
     case OperatingSystem.LINUX:
-        project.ext.lwjglNatives = "natives-linux"
+        def osArch = System.getProperty("os.arch")
+        project.ext.lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
+                ? "natives-linux-${osArch.contains("64") || osArch.startsWith("armv8") ? "arm64" : "arm32"}"
+                : "natives-linux"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = "natives-macos-arm64"
         break
     case OperatingSystem.WINDOWS:
         project.ext.lwjglNatives = "natives-windows"
         break
 }
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
