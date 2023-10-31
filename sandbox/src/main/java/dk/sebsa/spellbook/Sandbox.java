@@ -24,15 +24,34 @@ import java.io.File;
 
 public class Sandbox extends Application {
     public DebugLayer debugLayer;
+    private static boolean isDebug = false;
 
     public static void main(String[] args) {
+        // Parse args
+        for (String arg : args)
+            if (arg.equalsIgnoreCase("-debug")) {
+                isDebug = true;
+                break;
+            }
+
+        // Create spellbook
+        if (isDebug) {
+            Spellbook.start(new Sandbox(), SpellbookCapabilities.builder()
+                    .spellbookDebug(true)
+                    .logStoreTarget("logs/latest.log")
+                    .logDisableASCIIEscapeCharacters(false)
+                    .debugIMGUI(true)
+                    .build()
+                    .addAssetProvider(new FolderAssetProvider(new File("assets/"), "sandbox"))
+            );
+            return;
+        }
+
         Spellbook.start(new Sandbox(), SpellbookCapabilities.builder()
-                .spellbookDebug(true)
+                .spellbookDebug(false)
                 .logStoreTarget("../logs/latest.log")
-                .logDisableASCIIEscapeCharacters(false)
-                .debugIMGUI(true)
                 .build()
-                .addAssetProvider(new FolderAssetProvider(new File("assets/")))
+                .addAssetProvider(new FolderAssetProvider(new File("../assets/"), "sandbox"))
         );
     }
 
@@ -48,16 +67,22 @@ public class Sandbox extends Application {
 
     @Override
     public String version() {
-        return "1.0a";
+        return "1.0b";
     }
 
     @Override
     public RenderPipeline renderingPipeline(EngineLoadEvent e) {
+        if (isDebug) {
+            return new RenderPipeline.RenderPipelineBuilder()
+                    .appendStage(new SpriteStage(e))
+                    .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
+
+                    .appendStage(new DebugRenderStage(e))
+                    .build(e.logger);
+        }
         return new RenderPipeline.RenderPipelineBuilder()
                 .appendStage(new SpriteStage(e))
                 .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
-
-                .appendStage(new DebugRenderStage(e))
                 .build(e.logger);
     }
 
@@ -75,7 +100,7 @@ public class Sandbox extends Application {
     public void createInitialScene(Entity e) {
         Entity entity = new Camera(e);
         entity.name = "Player";
-        SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("assets/32.spr"));
+        SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("sandbox/32.spr"));
 
         spriteRenderer.scale = 2;
         spriteRenderer.layer = 1;
