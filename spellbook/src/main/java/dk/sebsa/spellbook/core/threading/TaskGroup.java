@@ -57,7 +57,7 @@ public class TaskGroup {
      * @since 1.0.0
      */
     public static class TaskGroupBuilder {
-        private List<Task> tasks = new ArrayList<>();
+        private final List<Task> tasks = new ArrayList<>();
 
         /**
          * Adds a task to the taskgroup

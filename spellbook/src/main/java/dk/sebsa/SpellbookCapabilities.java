@@ -108,6 +108,13 @@ public class SpellbookCapabilities {
     @Builder.Default
     public final boolean disableThreading = false;
 
+    /**
+     * The amount max amount of time (IN MILLIS) the engine will wait for running tasks to finish before interrupting them
+     * Default: 10 seconds / 10000
+     */
+    @Builder.Default
+    public final long shutdownTasksAwaitMillis = 10000;
+
 
     /**
      * Adds an AssetProvider to Spellbook
