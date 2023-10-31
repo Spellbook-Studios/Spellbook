@@ -77,8 +77,10 @@ public class Entity {
         }
 
         parent = e;
-        parent.children.add(this);
-        transform.recalculateLocalTransformation();
+        if (e != null) {
+            parent.children.add(this);
+            transform.recalculateLocalTransformation();
+        }
     }
 
     @Override

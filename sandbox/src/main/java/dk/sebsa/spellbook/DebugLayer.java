@@ -24,6 +24,7 @@ public class DebugLayer extends ImGUILayer {
     }
 
     public List<TaskGroup> groups = new ArrayList<>();
+    public Entity thousandObjectRoot;
 
     @Override
     protected void drawImGUI() {
@@ -66,6 +67,32 @@ public class DebugLayer extends ImGUILayer {
                 player.removeComponent(player.getComponent(CircleCollider2D.class));
                 player.removeComponent(player.getComponent(SpriteCollider2D.class));
             }
+
+            ImGui.end();
+        }
+
+        if (ImGui.begin("Thousand Object Test")) {
+            if (thousandObjectRoot == null) {
+                if (ImGui.button("Spawn Root")) {
+                    thousandObjectRoot = new Entity(ECS.ROOT);
+                }
+            } else {
+                if (ImGui.button("Destroy Root")) {
+                    thousandObjectRoot.parent(null);
+                    thousandObjectRoot = null;
+                }
+            }
+
+            ImGui.beginDisabled(thousandObjectRoot == null);
+            if (ImGui.button("Spawn 1000x")) {
+                for (int i = 0; i < 1000; i++) {
+                    Entity entity = new Entity(thousandObjectRoot);
+                    SpriteRenderer sr = new SpriteRenderer(AssetManager.getAssetS("assets/32.spr"));
+                    entity.addComponent(sr);
+                    entity.transform.setPosition(Random.getFloat(-430, 430), Random.getFloat(-200, 200), 0);
+                }
+            }
+            ImGui.endDisabled();
 
             ImGui.end();
         }
