@@ -26,7 +26,7 @@ public class TestLayer extends Layer {
 
     @Override
     protected void userEvent(UserEvent e) {
-        log(e);
+        logger.trace(e);
 
         if (e.eventType().equals(Event.EventType.ioKeyPressed)) {
             KeyPressedEvent keyEvent = (KeyPressedEvent) e;

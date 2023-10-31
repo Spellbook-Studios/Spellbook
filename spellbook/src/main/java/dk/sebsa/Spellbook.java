@@ -232,7 +232,7 @@ public class Spellbook {
             taskManager.handleReturn();
 
             // Process input and prepare for frame
-            FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer, marbleModule);
+            FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer, marbleModule, taskManager);
             eventBus.engine(new EngineFrameEarly(FRAME_DATA));
             Time.procsessFrame();
 

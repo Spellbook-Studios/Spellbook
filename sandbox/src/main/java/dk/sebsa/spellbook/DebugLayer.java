@@ -84,6 +84,7 @@ public class DebugLayer extends ImGUILayer {
             }
 
             ImGui.beginDisabled(thousandObjectRoot == null);
+            ImGui.sameLine();
             if (ImGui.button("Spawn 1000x")) {
                 for (int i = 0; i < 1000; i++) {
                     Entity entity = new Entity(thousandObjectRoot);

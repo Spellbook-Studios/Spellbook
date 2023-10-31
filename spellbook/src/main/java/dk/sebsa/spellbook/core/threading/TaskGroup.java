@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * A collection of tasks that are running
- * Still not fully implemented
+ * Task groups are static and once instantiated the tasks inside of it cannot be changed
  *
  * @author sebs
  * @since 1.0.0
