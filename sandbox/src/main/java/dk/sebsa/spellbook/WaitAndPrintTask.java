@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.core.threading.Task;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Waits for 1-10 seconds and prints an input string afterwars
+ * Waits for 1-10 seconds and prints an input string afterwadrs
  *
  * @author sebs
  * @since 1.0.0
@@ -26,12 +26,8 @@ public class WaitAndPrintTask extends Task {
     }
 
     @Override
-    public void execute() {
-        try {
-            Thread.sleep((long) (ThreadLocalRandom.current().nextFloat() * 10 * 1000));
-        } catch (InterruptedException ignored) {
-            // IDK THIS IS JUST A TEST TASK
-        }
+    public void execute() throws InterruptedException {
+        Thread.sleep((long) (ThreadLocalRandom.current().nextFloat() * 10 * 1000));
 
         System.out.println(out);
     }

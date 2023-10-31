@@ -4,7 +4,6 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.audio.SoundPlayer;
 import dk.sebsa.spellbook.core.SpellbookLogger;
-import dk.sebsa.spellbook.core.threading.Task;
 import dk.sebsa.spellbook.core.threading.TaskGroup;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
@@ -73,13 +72,12 @@ public class DebugLayer extends ImGUILayer {
 
         if (!Spellbook.instance.getCapabilities().disableThreading && ImGui.begin("Thread Testing")) {
             if (ImGui.button("1000x Print")) {
-                List<Task> tasks = new ArrayList<>();
+                TaskGroup.TaskGroupBuilder b = TaskGroup.builder();
+
                 for (int i = 0; i < 1000; i++) {
-                    tasks.add(new WaitAndPrintTask("IT FUCKING CUCKING WORKS! nr. " + i));
+                    b.addTask(new WaitAndPrintTask("IT FUCKING CUCKING WORKS! nr. " + i));
                 }
-                TaskGroup g = new TaskGroup(tasks);
-                Spellbook.instance.getTaskManager().run(g);
-                groups.add(g);
+                groups.add(Spellbook.instance.getTaskManager().run(b.build()));
             }
 
             if (ImGui.beginTable("##", 3, ImGuiTableFlags.ScrollY | ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg)) {

@@ -22,13 +22,17 @@ public abstract class Task implements Runnable {
     /**
      * Executes the task
      */
-    public abstract void execute();
+    public abstract void execute() throws InterruptedException;
 
     @Override
     public void run() {
         state = TaskState.RUNNING;
-        execute();
-        state = TaskState.DONE;
+        try {
+            execute();
+            state = TaskState.DONE;
+        } catch (InterruptedException e) {
+            state = TaskState.CANCELLED;
+        }
     }
 
     /**

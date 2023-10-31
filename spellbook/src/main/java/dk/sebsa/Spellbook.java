@@ -24,6 +24,7 @@ import org.lwjgl.glfw.GLFW;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -132,7 +133,7 @@ public class Spellbook {
             init(); // Init Spellbook, and setup workers (+Pre-Main Loop)
             mainLoop(); // Actual main loop
         } catch (Exception | Error e) {
-            logger.warn("Main loop caucht exception / error: " + e.getMessage());
+            logger.warn("Main loop caught exception / error: " + e.getMessage());
         }
 
         // Exit
@@ -166,7 +167,7 @@ public class Spellbook {
 
                 @Override
                 public Task run(Task task) {
-                    task.execute();
+                    task.run();
                     return task;
                 }
 
@@ -183,6 +184,21 @@ public class Spellbook {
                     run(task);
                     consumer.accept(task);
                     return task;
+                }
+
+                @Override
+                public void shutdown() {
+
+                }
+
+                @Override
+                public void shutdownNow() {
+
+                }
+
+                @Override
+                public boolean awaitFinish(long timeout, TimeUnit timeUnit) {
+                    return true;
                 }
             };
 
@@ -236,10 +252,21 @@ public class Spellbook {
     private void cleanup() {
         eventBus.engine(new EngineCleanupEvent());
 
+        logger.log("TaskManager initial shutdown");
+        taskManager.shutdown();
+
         logger.log("Cleanup Modules");
         for (Module m : modules) {
             logger.log("Module - " + m.name());
             m.cleanup();
+        }
+
+        logger.log("Awaiting taskmanager shutdown (up to 5 seconds)");
+        if (!taskManager.awaitFinish(5, TimeUnit.SECONDS)) {
+            logger.log("... force shutdown");
+            taskManager.shutdownNow();
+        } else {
+            logger.log("... done");
         }
 
         // Cleanup leaked assets

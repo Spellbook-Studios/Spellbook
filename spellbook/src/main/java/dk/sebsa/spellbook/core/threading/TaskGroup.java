@@ -2,7 +2,9 @@ package dk.sebsa.spellbook.core.threading;
 
 import dk.sebsa.spellbook.math.Time;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * A collection of tasks that are running
@@ -38,4 +40,43 @@ public class TaskGroup {
      * The time the task was instantiated / the time the task has been running
      */
     public final long startTime = Time.getTime();
+
+    /**
+     * Instantiates a new taskgroup builder
+     *
+     * @return a blank taskgroup builder
+     */
+    public static TaskGroupBuilder builder() {
+        return new TaskGroupBuilder();
+    }
+
+    /**
+     * Builds TaskGroups
+     *
+     * @author sebs
+     * @since 1.0.0
+     */
+    public static class TaskGroupBuilder {
+        private List<Task> tasks = new ArrayList<>();
+
+        /**
+         * Adds a task to the taskgroup
+         *
+         * @param t Task to add
+         * @return this
+         */
+        public TaskGroupBuilder addTask(Task t) {
+            tasks.add(t);
+            return this;
+        }
+
+        /**
+         * Assembles a taskgroup with the tasks provided
+         *
+         * @return new TaskGroup
+         */
+        public TaskGroup build() {
+            return new TaskGroup(tasks);
+        }
+    }
 }

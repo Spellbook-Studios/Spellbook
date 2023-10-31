@@ -8,11 +8,11 @@ package dk.sebsa.spellbook.core.threading;
  */
 public enum TaskState {
     /**
-     * The object is instantiated
+     * The task has not been started
      */
     CREATED,
     /**
-     * The task is currently being executed
+     * The task is currently running
      */
     RUNNING,
     /**
@@ -20,7 +20,7 @@ public enum TaskState {
      */
     DONE,
     /**
-     * IDFK Futures has a isCancalled() method
+     * Not Yet Implemented
      */
     CANCELLED
 }

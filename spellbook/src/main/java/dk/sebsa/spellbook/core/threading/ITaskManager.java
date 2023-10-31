@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.core.threading;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -38,4 +39,23 @@ public interface ITaskManager {
      * @return The task now running
      */
     Task runNotifyOnFinish(Task task, Consumer<Task> consumer);
+
+    /**
+     * The TaskManager stops accepting new tasks and begins cleanup
+     */
+    void shutdown();
+
+    /**
+     * The TaskManager stops accepting new tasks, stops all executing tasks and begins cleanup
+     */
+    void shutdownNow();
+
+    /**
+     * Returns when all tasks are finished or when timeout is hit
+     *
+     * @param timeout  the maximum time to wait
+     * @param timeUnit TimeUnit of the timeout argument
+     * @return true if this executor terminated and false if the timeout elapsed before termination
+     */
+    boolean awaitFinish(long timeout, TimeUnit timeUnit);
 }

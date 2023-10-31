@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -51,5 +52,24 @@ public class SpellbookTaskManager implements ITaskManager {
     public Task runNotifyOnFinish(Task task, Consumer<Task> consumer) {
         tasksRunning.put(run(task), consumer);
         return task;
+    }
+
+    @Override
+    public void shutdown() {
+        threadPool.shutdown();
+    }
+
+    @Override
+    public void shutdownNow() {
+        threadPool.shutdownNow();
+    }
+
+    @Override
+    public boolean awaitFinish(long timeout, TimeUnit timeUnit) {
+        try {
+            return threadPool.awaitTermination(timeout, timeUnit);
+        } catch (InterruptedException e) {
+            return false;
+        }
     }
 }
