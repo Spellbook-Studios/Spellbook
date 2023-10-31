@@ -17,30 +17,28 @@ ext {
     jreversion = "21.0.1+12"
 }
 
+version = "1.0a"
 
 // DISTRIBUTION STUFF BELOW
 // Get JDK
 def osArch = System.getProperty("os.arch")
 if (osArch.startsWith("amd64")) osArch = "x64"
 
-def jreos = "linux"
-switch (OperatingSystem.current()) {
+def jrestring = "";
+switch (project.ext.os) {
     case OperatingSystem.LINUX:
-        jreos = "linux"
-        break
-    case OperatingSystem.MAC_OS:
-        jreos = "max"
+        jrestring = "OpenJDK21U-jre_${osArch}_linux_hotspot_${project.ext.jreversion.replace("+", "_")}.tar.gz"
         break
     case OperatingSystem.WINDOWS:
-        jreos = "windows"
+        jrestring = "OpenJDK21U-jre_${osArch}_windows_hotspot_${project.ext.jreversion.replace("+", "_")}.zip"
         break
 }
-def jrestring = "OpenJDK21U-jre_${osArch}_${jreos}_hotspot_${project.ext.jreversion.replace("+", "_")}.zip"
 def jreurl = "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-${project.ext.jreversion}/${jrestring}";
+def outString = jrestring.split("\\.")[0]
 
 tasks.register('downloadJRE') {
     // Download jre to zip
-    def f = new File(project.buildDir.getPath() + "/jre/jre.zip")
+    def f = new File(project.buildDir.getPath() + "/jre/${jrestring}")
     f.getParentFile().mkdirs();
     if (!f.exists()) {
         new URL(jreurl).withInputStream { i -> f.withOutputStream { it << i } }
@@ -50,9 +48,12 @@ tasks.register('downloadJRE') {
 tasks.register('downloadJREUnzip', Copy) {
     dependsOn 'downloadJRE'
     from {
-        zipTree(project.buildDir.getPath() + "/jre/jre.zip")
+        if (jreurl.endsWith(".zip"))
+            zipTree(project.buildDir.getPath() + "/jre/${jrestring}")
+        else if (jreurl.endsWith(".tar.gz"))
+            tarTree(project.buildDir.getPath() + "/jre/${jrestring}")
     }
-    into project.buildDir.getPath() + "/jre/"
+    into project.buildDir.getPath() + "/jre/${outString}/"
 }
 
 startScripts {
@@ -65,7 +66,7 @@ startScripts {
         windowsScriptFile.text = windowsScriptFile.text.replace('"%JAVA_EXE%" ', 'start "" "%JAVA_EXE%" ')
 
         unixScriptFile.text = unixScriptFile.text.replace('if [ -n "\\$JAVA_HOME" ] ; then', 'if false ; then')
-        unixScriptFile.text = unixScriptFile.text.replace('JAVACMD=java', 'JAVACMD=../jre/bin/javaw')
+        unixScriptFile.text = unixScriptFile.text.replace('JAVACMD=java', 'JAVACMD=../jre/bin/java')
     }
 }
 
@@ -86,10 +87,21 @@ distributions.main {
         from('assets') {
             into 'assets'
         }
-        from("${project.buildDir.getPath()}/jre/jdk-${project.ext.jreversion}-jre") {
+        from("${project.buildDir.getPath()}/jre/${outString}/jdk-${project.ext.jreversion}-jre") {
             into 'jre'
         }
     }
 }
 
+def os = "";
+switch (project.ext.os) {
+    case OperatingSystem.LINUX:
+        os = "linux"
+        break
+    case OperatingSystem.WINDOWS:
+        os = "windows"
+        break
+}
+distZip.setArchiveFileName("sandbox-${project.version}-${os}.zip")
+distZip.dependsOn('downloadJREUnzip')
 installDist.dependsOn('downloadJREUnzip')

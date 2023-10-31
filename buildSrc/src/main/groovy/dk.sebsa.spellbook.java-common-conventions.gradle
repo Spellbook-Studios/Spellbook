@@ -15,16 +15,24 @@ ext {
     jomlVersion = "1.10.5"
 }
 
-// Supports Linux X64/Arm64, macOS Arm64, Windows x64
-switch (OperatingSystem.current()) {
+// Supports Linux X64, Windows x64
+if (!project.hasProperty('targetOS')) {
+    switch (OperatingSystem.current()) {
+        case OperatingSystem.LINUX:
+            project.ext.os = OperatingSystem.LINUX
+            break
+        case OperatingSystem.WINDOWS:
+            project.ext.os = OperatingSystem.WINDOWS
+            break
+    }
+} else {
+    if (targetOS.equalsIgnoreCase("linux")) project.ext.os = OperatingSystem.LINUX
+    else if (targetOS.equalsIgnoreCase("windows") || os.equalsIgnoreCase("win")) project.ext.os = OperatingSystem.WINDOWS
+}
+
+switch (project.ext.os) {
     case OperatingSystem.LINUX:
-        def osArch = System.getProperty("os.arch")
-        project.ext.lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
-                ? "natives-linux-${osArch.contains("64") || osArch.startsWith("armv8") ? "arm64" : "arm32"}"
-                : "natives-linux"
-        break
-    case OperatingSystem.MAC_OS:
-        project.ext.lwjglNatives = "natives-macos-arm64"
+        project.ext.lwjglNatives = "natives-linux"
         break
     case OperatingSystem.WINDOWS:
         project.ext.lwjglNatives = "natives-windows"
