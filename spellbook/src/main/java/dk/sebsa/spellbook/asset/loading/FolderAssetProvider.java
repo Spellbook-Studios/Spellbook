@@ -16,23 +16,36 @@ import java.util.List;
  */
 public class FolderAssetProvider extends AssetProvider {
     private final File folder;
+    private final String namePrefix;
 
     /**
-     * @param folder The folder to search files from (searches recursively)
+     * @param folder     The folder to search files from (searches recursively)
+     * @param namePrefix Prefix before assets names
+     *                   Lets say assets are located in ../idk/the/path/assets/
+     *                   An asset located at
+     *                   ../idk/the/path/assets/textures/hello.png
+     *                   becomes [namePrefix]/textures/hello.png
      */
-    public FolderAssetProvider(File folder) {
+    public FolderAssetProvider(File folder, String namePrefix) {
         this.folder = folder;
-        if(!folder.isDirectory()) {
-            Spellbook.instance.error("Path is not a directory: " + folder.getPath(), true);
-        }
+        this.namePrefix = namePrefix;
     }
 
     @Override
     public List<AssetReference> getAssets() {
         List<AssetReference> assets = new ArrayList<>();
 
-        for(File f : FileUtils.listFilesInFolder(folder)) {
-            assets.add(new AssetReference(f.getPath(), AssetReference.LocationTypes.Disk));
+        if (!folder.isDirectory()) {
+            Spellbook.getLogger().warn("FolderAsssetProvider: Path is not a directory: " + folder.getPath());
+            return assets;
+        }
+
+        // For naming assets
+        for (File f : FileUtils.listFilesInFolder(folder)) {
+            String assetName = f.getPath()
+                    .replace('\\', '/')
+                    .replace(folder.getPath().replace('\\', '/'), namePrefix);
+            assets.add(new AssetReference(f.getPath(), assetName, AssetReference.LocationTypes.Disk));
         }
 
         return assets;

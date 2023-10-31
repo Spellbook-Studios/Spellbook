@@ -30,14 +30,26 @@ public class AssetReference {
     private int usages = 0;
 
     /**
+     * The name will be the assets location
+     *
      * @param location     The location identifier of the asset
      * @param locationType The type of the location
      */
     public AssetReference(String location, LocationTypes locationType) {
         this.location = location;
         this.locationType = locationType;
+        this.name = location.replace('\\', '/'); // In case of windows
+    }
 
-        this.name = location.replace('\\', '/'); // For windows xD
+    /***
+     * @param location     The location identifier of the asset
+     * @param name         The name and identifier of the asset
+     * @param locationType The type of the location
+     */
+    public AssetReference(String location, String name, LocationTypes locationType) {
+        this.location = location;
+        this.locationType = locationType;
+        this.name = name;
     }
 
     /**

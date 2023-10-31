@@ -17,7 +17,9 @@ m.find()
 version = m.group(1)
 
 group = 'dk.sebsa'
-archivesBaseName = 'spellbook'
+base {
+    archivesBaseName = 'spellbook'
+}
 
 tasks.register('sourcesJar', Jar) {
     from sourceSets.main.allJava

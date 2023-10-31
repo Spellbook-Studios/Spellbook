@@ -68,7 +68,7 @@ public class SoundPlayer implements Component {
     @Override
     public void onDisable() {
         source.cleanup();
-        sound.unReference();
+        if (sound != null) sound.unReference();
         source = null;
     }
 

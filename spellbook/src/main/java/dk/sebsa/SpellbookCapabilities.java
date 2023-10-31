@@ -179,6 +179,8 @@ public class SpellbookCapabilities {
                 ", logStoreTarget='" + logStoreTarget + '\'' +
                 ", logStorageMode=" + logStorageMode +
                 ", logDisableASCIIEscapeCharacters=" + logDisableASCIIEscapeCharacters +
+                ", disableThreading=" + disableThreading +
+                ", shutdownTasksAwaitMillis=" + shutdownTasksAwaitMillis +
                 '}';
     }
 }

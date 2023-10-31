@@ -10,3 +10,14 @@ application {
     // Define the main class for the application.
     mainClass = 'dk.sebsa.spellbook.Sandbox'
 }
+
+
+distributions {
+    main {
+        contents {
+            from('assets') {
+                into 'assets'
+            }
+        }
+    }
+}
