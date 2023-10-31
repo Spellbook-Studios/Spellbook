@@ -265,12 +265,14 @@ public class Spellbook {
         moduleCore.getAssetManager().engineCleanup(logger);
 
         // TaskManager force shutdown
-        logger.log("Awaiting taskmanager shutdown (" + capabilities.shutdownTasksAwaitMillis + " millis)");
-        if (!taskManager.awaitFinish(capabilities.shutdownTasksAwaitMillis, TimeUnit.MILLISECONDS)) {
-            logger.log("... force shutdown");
-            taskManager.shutdownNow();
-        } else {
-            logger.log("... done");
+        if (capabilities.shutdownTasksAwaitMillis >= 0) {
+            logger.log("Awaiting taskmanager shutdown (" + capabilities.shutdownTasksAwaitMillis + " millis)");
+            if (!taskManager.awaitFinish(capabilities.shutdownTasksAwaitMillis, TimeUnit.MILLISECONDS)) {
+                logger.log("... force shutdown");
+                taskManager.shutdownNow();
+            } else {
+                logger.log("... done");
+            }
         }
     }
 

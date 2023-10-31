@@ -110,6 +110,8 @@ public class SpellbookCapabilities {
 
     /**
      * The amount max amount of time (IN MILLIS) the engine will wait for running tasks to finish before interrupting them
+     * -1 Disables the interrupting entirely and the tasks will run until they are finished
+     * 0 Skips the wait and interrupts all tasks immediately
      * Default: 10 seconds / 10000
      */
     @Builder.Default
