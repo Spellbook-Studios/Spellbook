@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.imgui;
 
-import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.EngineFrameEarly;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
@@ -9,6 +8,7 @@ import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import imgui.ImGui;
 import imgui.gl3.ImGuiImplGl3;
+import lombok.CustomLog;
 import lombok.Getter;
 
 /**
@@ -19,8 +19,8 @@ import lombok.Getter;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class SpellbookImGUI implements Module {
-    private ClassLogger logger;
     @Getter
     private ImGuiImplGl3 implGl3;
     @Getter
@@ -42,8 +42,6 @@ public class SpellbookImGUI implements Module {
 
     @EventListener
     public void engineLoad(EngineLoadEvent e) {
-        this.logger = new ClassLogger(this, e.logger);
-
         logger.log("ImGUI Init");
         ImGui.createContext();
 

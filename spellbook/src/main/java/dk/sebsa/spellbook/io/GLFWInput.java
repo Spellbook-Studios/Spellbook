@@ -1,10 +1,10 @@
 package dk.sebsa.spellbook.io;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.math.Vector2f;
+import lombok.CustomLog;
 import lombok.Getter;
 import org.lwjgl.glfw.*;
 
@@ -14,6 +14,7 @@ import org.lwjgl.glfw.*;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class GLFWInput {
     // Input Data
     private byte[] keys;
@@ -52,7 +53,6 @@ public class GLFWInput {
     private final GLFWScrollCallback scrollCallback;
     private final GLFWCharCallback charCallback; // For text input
 
-    private final ClassLogger logger;
     private final EventBus eventBus;
 
     /**
@@ -60,7 +60,6 @@ public class GLFWInput {
      * @param window The window to bind to
      */
     public GLFWInput(EngineInitEvent e, GLFWWindow window) {
-        this.logger = new ClassLogger(this, e.logger);
         this.window = window;
         this.eventBus = Spellbook.instance.getEventBus();
         resetInputData(true);

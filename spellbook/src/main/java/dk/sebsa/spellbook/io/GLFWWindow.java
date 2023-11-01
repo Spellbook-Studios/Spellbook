@@ -1,10 +1,9 @@
 package dk.sebsa.spellbook.io;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.mana.Logger;
-import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.math.Rect;
+import lombok.CustomLog;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -24,6 +23,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class GLFWWindow {
     /**
      * The id as given by OpenGl
@@ -58,21 +58,12 @@ public class GLFWWindow {
      */
     public final Rect rect = new Rect();
 
-    private final Logger logger;
-
-    private void log(Object... o) {
-        logger.log(o);
-    }
-
     /**
-     * @param logger      The coal logger
      * @param windowTitle The title of the window
      * @param width       The starting width of the window
      * @param height      The starting height of the window
      */
-    public GLFWWindow(Logger logger, String windowTitle, int width, int height) {
-        this.logger = new ClassLogger(this, logger);
-
+    public GLFWWindow(String windowTitle, int width, int height) {
         this.windowTitle = windowTitle;
         this.width = width;
         this.height = height;
@@ -85,11 +76,11 @@ public class GLFWWindow {
      * Initializes the window and shows it on screen
      */
     public void init() {
-        log("Init GLFW");
+        logger.log("Init GLFW");
 
         // Setup GLFW error callback
         glfwSetErrorCallback(((error, description) -> {
-            Spellbook.getLogger().err("GLFW Error [" + Integer.toHexString(error) + "]: " + GLFWErrorCallback.getDescription(description));
+            Spellbook.instance.error("GLFW Error [" + Integer.toHexString(error) + "]: " + GLFWErrorCallback.getDescription(description), false);
         }));
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
@@ -102,14 +93,14 @@ public class GLFWWindow {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
-        log("Create window: ", this);
+        logger.log("Create window: ", this);
 
         // Create the window
         id = glfwCreateWindow(width, height, windowTitle, NULL, NULL);
         if (id == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
-        log("Setup resize callback");
+        logger.log("Setup resize callback");
         // you can read above ^^, but this is called whenever the window is resized by
         // the user
         glfwSetFramebufferSizeCallback(id, (window, w, h) -> {
@@ -119,7 +110,7 @@ public class GLFWWindow {
             this.height = h;
             rect.set(0, 0, width, height);
 
-            log("Windows resized", this);
+            logger.log("Windows resized", this);
             Spellbook.instance.getEventBus().engine(new WindowResizedEvent(rect));
 
             minimized = w == 0 && h == 0;
@@ -127,7 +118,7 @@ public class GLFWWindow {
             glViewport(0, 0, w, h);
         });
 
-        log("Push the first frame..");
+        logger.log("Push the first frame..");
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1); // int*
             IntBuffer pHeight = stack.mallocInt(1); // int*
@@ -149,7 +140,7 @@ public class GLFWWindow {
             }
         } // the stack frame is popped automatically
 
-        log("Finalizing window setup");
+        logger.log("Finalizing window setup");
         glfwMakeContextCurrent(id); // Makes it so glfw knows that the window we are working with is this
         glfwSwapInterval(vsync ? 1 : 0); // Sets the swapinterval according to vsync prefrences
 
@@ -157,7 +148,7 @@ public class GLFWWindow {
         glfwWindowHint(GLFW_STENCIL_BITS, 4);
         glfwWindowHint(GLFW_SAMPLES, 4);
 
-        log("Init OpenGL support");
+        logger.log("Init OpenGL support");
         // Init OpenGL
         // This line is critical for LWJGL's interoperation with GLFW's
         // OpenGL context, or any context that is managed externally.
@@ -166,7 +157,7 @@ public class GLFWWindow {
         // bindings available for use.
         GL.createCapabilities();
 
-        log("Setup GL functionality");
+        logger.log("Setup GL functionality");
         // Enable transparency
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -180,7 +171,7 @@ public class GLFWWindow {
 
         // Get graphics card
         Spellbook.graphicsCard = glGetString(GL_RENDER) + " " + glGetString(GL_VENDOR);
-        log("Graphics Card: " + Spellbook.graphicsCard);
+        logger.log("Graphics Card: " + Spellbook.graphicsCard);
     }
 
     private int oldW, oldH;
@@ -191,7 +182,7 @@ public class GLFWWindow {
     public void update() {
         if (isFullscreen != actuallyFullscreen) {
             actuallyFullscreen = isFullscreen;
-            log("Changed fullscren to: " + isFullscreen);
+            logger.log("Changed fullscren to: " + isFullscreen);
 
             isDirty = true;
             if (isFullscreen) {
@@ -224,11 +215,11 @@ public class GLFWWindow {
      */
     @SuppressWarnings("DataFlowIssue")
     public void destroy() {
-        log("Window Cleanup");
+        logger.log("Window Cleanup");
         glfwSetFramebufferSizeCallback(id, null).free();
         glfwDestroyWindow(id);
 
-        log("Terminate GLFW");
+        logger.log("Terminate GLFW");
         glfwTerminate();
         glfwSetErrorCallback(null).free();
     }

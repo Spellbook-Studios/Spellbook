@@ -1,15 +1,14 @@
 package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.AssetReference;
-import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.math.Vector3f;
 import dk.sebsa.spellbook.util.FileUtils;
+import lombok.CustomLog;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
 
@@ -25,22 +24,15 @@ import static org.lwjgl.opengl.GL20.*;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class GLSLShaderProgram implements Asset {
     private int programId;
     private int vertexShaderId, fragmentShaderId;
     private final Map<String, Integer> uniforms = new HashMap<>();
-    private final ClassLogger logger;
     /**
      * Weather the shader has been prepared by GL2D
      */
     public boolean initFor2D = false;
-
-    /**
-     * GLSLShaderprogram with Spellbook logger
-     */
-    public GLSLShaderProgram() {
-        logger = new ClassLogger(this, Spellbook.getLogger());
-    }
 
     @Override
     public void load(AssetReference location) {
@@ -148,9 +140,8 @@ public class GLSLShaderProgram implements Asset {
      * Creates a uniform
      *
      * @param uniformName The uniform as written in the shader
-     * @param logger      Logger to log warnings to
      */
-    public void createUniform(String uniformName, Logger logger) {
+    public void createUniform(String uniformName) {
         logger.trace(" - Creating uniform named - " + uniformName);
         if (uniforms.containsKey(uniformName)) return;
         int uniformLocation = glGetUniformLocation(programId,

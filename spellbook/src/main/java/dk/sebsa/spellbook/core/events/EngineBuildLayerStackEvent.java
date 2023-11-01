@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.core.events;
 
-import dk.sebsa.spellbook.core.SpellbookLogger;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -16,11 +15,6 @@ public class EngineBuildLayerStackEvent extends Event {
         return EventType.engineBuildLayerStack;
     }
 
-    /**
-     * The main spellbook logger
-     */
-    public final SpellbookLogger logger;
-    
     /**
      * The builder, add stacks and modify the builder during the event
      */

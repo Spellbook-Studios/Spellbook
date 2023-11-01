@@ -48,7 +48,7 @@ public class StoredLogger extends SpellbookLogger {
             fw = new FileWriter(target, false);
             fw.write("# Logs from SpellbookLogger with Mana\n");
         } catch (IOException e) {
-            super.print("Failed to create log file: " + new ClassLogger(this, null).stackTrace(e));
+            super.print("Failed to create log file: " + new ClassLogger(getClass(), null).stackTrace(e));
         }
     }
 

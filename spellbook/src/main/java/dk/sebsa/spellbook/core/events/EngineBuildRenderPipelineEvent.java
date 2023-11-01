@@ -2,7 +2,6 @@ package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.core.Core;
-import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.opengl.RenderPipeline;
 import dk.sebsa.spellbook.opengl.stages.UIStage;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +28,6 @@ public class EngineBuildRenderPipelineEvent extends Event {
      * The Core module
      */
     public final Core moduleCore;
-    /**
-     * The main spellbook logger
-     */
-    public final SpellbookLogger logger;
     /**
      * Spellbook capabilities
      */

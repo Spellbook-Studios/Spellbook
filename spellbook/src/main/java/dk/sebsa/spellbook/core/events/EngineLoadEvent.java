@@ -4,7 +4,6 @@ import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.Core;
-import dk.sebsa.spellbook.core.SpellbookLogger;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -31,10 +30,6 @@ public class EngineLoadEvent extends Event {
      * The Core module
      */
     public final Core moduleCore;
-    /**
-     * The main spellbook logger
-     */
-    public final SpellbookLogger logger;
 
     @Override
     public EventType eventType() {

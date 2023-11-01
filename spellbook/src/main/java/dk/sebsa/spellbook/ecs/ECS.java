@@ -1,10 +1,9 @@
 package dk.sebsa.spellbook.ecs;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.mana.Logger;
-import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.*;
+import lombok.CustomLog;
 
 /**
  * Handles the execution of component updates
@@ -12,6 +11,7 @@ import dk.sebsa.spellbook.core.events.*;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class ECS implements Module {
     /**
      * The current root entity
@@ -23,18 +23,9 @@ public class ECS implements Module {
         eventBus.registerListeners(this);
     }
 
-    private Logger logger;
-
-    @EventListener
-    public void engineInit(EngineInitEvent e) {
-        this.logger = new ClassLogger(this, e.logger);
-    }
-
     @Override
     public void cleanup() {
-        for (Component c : ROOT.getAllComponent()) {
-            c.onDisable();
-        }
+        ROOT.delete();
     }
 
     @EventListener

@@ -67,6 +67,7 @@ public class Entity {
 
     /**
      * Parents this entity to another entity
+     * If the parent is set to null the entity is deleted
      *
      * @param e This entity's new parent
      */
@@ -80,7 +81,25 @@ public class Entity {
         if (e != null) {
             parent.children.add(this);
             transform.recalculateLocalTransformation();
+        } else delete();
+    }
+
+    /**
+     * If the parent is not null, this is unparented
+     * It cleans up all the components on this entity
+     * Afterward it will call the delete() method on all it's children
+     */
+    public void delete() {
+        if (parent != null) {
+            parent.children.remove(this);
+            parent = null;
         }
+
+        while (!components.isEmpty()) {
+            components.getFirst().onDisable();
+            components.removeFirst();
+        }
+        while (!children.isEmpty()) children.getFirst().delete();
     }
 
     @Override

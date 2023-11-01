@@ -2,7 +2,6 @@ package dk.sebsa.spellbook;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.Core;
-import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
@@ -11,22 +10,23 @@ import dk.sebsa.spellbook.io.KeyPressedEvent;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.marble.MarbleIMRenderer;
 import dk.sebsa.spellbook.math.Rect;
+import lombok.CustomLog;
 import org.lwjgl.glfw.GLFW;
 
+@CustomLog
 public class TestLayer extends Layer {
     private final DebugLayer debugLayer;
     private final GLFWWindow window;
     private MarbleIMRenderer marble;
 
-    public TestLayer(SpellbookLogger logger, DebugLayer debugLayer) {
-        super(logger);
+    public TestLayer(DebugLayer debugLayer) {
         this.debugLayer = debugLayer;
         this.window = ((Core) Spellbook.instance.getModules().get(0)).getWindow();
     }
 
     @Override
     protected void userEvent(UserEvent e) {
-        logger.trace(e);
+        log.log(e);
 
         if (e.eventType().equals(Event.EventType.ioKeyPressed)) {
             KeyPressedEvent keyEvent = (KeyPressedEvent) e;

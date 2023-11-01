@@ -9,6 +9,7 @@ import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.Sprite;
+import lombok.CustomLog;
 
 /**
  * Handles the rendering of a sprite
@@ -17,6 +18,7 @@ import dk.sebsa.spellbook.opengl.Sprite;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class SpriteRenderer implements Component {
     private Entity entity;
 
@@ -88,7 +90,7 @@ public class SpriteRenderer implements Component {
         if (spriteR != null) sprite = spriteR.get();
         else {
             sprite = GL2D.missingSprite;
-            Spellbook.getLogger().warn("SpriteRender sprite reference is null");
+            logger.warn("SpriteRender sprite reference is null");
         }
     }
 

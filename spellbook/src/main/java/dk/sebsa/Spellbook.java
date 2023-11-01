@@ -151,7 +151,7 @@ public class Spellbook {
         logger.log("Started time at: " + Time.getNow());
 
         logger.log("Creating EventBus");
-        eventBus = new EventBus(logger);
+        eventBus = new EventBus();
         eventBus.registerListeners(application);
 
         logger.log("Registering Modules");
@@ -217,10 +217,10 @@ public class Spellbook {
         registerModule(marbleModule);
 
         logger.log("Engine Init Event, prepare for trouble!..");
-        eventBus.engine(new EngineInitEvent((SpellbookLogger) logger, capabilities, application));
+        eventBus.engine(new EngineInitEvent(capabilities, application));
 
         logger.log("Open the gates, Engine Load Event");
-        eventBus.engine(new EngineLoadEvent(capabilities, moduleCore.getAssetManager(), application, moduleCore, (SpellbookLogger) logger));
+        eventBus.engine(new EngineLoadEvent(capabilities, moduleCore.getAssetManager(), application, moduleCore));
 
         logger.log("Initialization done!");
     }

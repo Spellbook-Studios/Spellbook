@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.imgui;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
@@ -21,11 +20,8 @@ import java.text.DecimalFormat;
  * @since 1.0.0
  */
 public abstract class ImGUILayer extends Layer {
-    /**
-     * @param logger (Not used, currently)
-     */
-    public ImGUILayer(SpellbookLogger logger) {
-        super(logger);
+    public ImGUILayer() {
+        super();
     }
 
     /**

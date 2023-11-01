@@ -2,10 +2,13 @@ package dk.sebsa.spellbook.marble;
 
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
-import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.Module;
-import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.core.events.EngineCleanupEvent;
+import dk.sebsa.spellbook.core.events.EngineLoadEvent;
+import dk.sebsa.spellbook.core.events.EventBus;
+import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.util.ThreeKeyHashMap;
+import lombok.CustomLog;
 
 /**
  * UI and UX module for Spellbook
@@ -13,17 +16,12 @@ import dk.sebsa.spellbook.util.ThreeKeyHashMap;
  * @author sebs
  * @since 0.0.1a
  */
+@CustomLog
 public class Marble implements Module {
-    private ClassLogger logger;
 
     @Override
     public void init(EventBus eventBus) {
         eventBus.registerListeners(this);
-    }
-
-    @EventListener
-    public void engineInit(EngineInitEvent e) {
-        logger = new ClassLogger(this, e.logger);
     }
 
     @EventListener

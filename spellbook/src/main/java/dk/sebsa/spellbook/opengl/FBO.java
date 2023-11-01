@@ -1,8 +1,8 @@
 package dk.sebsa.spellbook.opengl;
 
-import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
+import lombok.CustomLog;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
@@ -18,6 +18,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class FBO {
     private final int frameBufferID;
     private final int depthBufferID;
@@ -38,10 +39,6 @@ public class FBO {
     public final int height;
 
     private final GLFWWindow window;
-
-    private void trace(Object o) {
-        Spellbook.getLogger().trace(o);
-    }
 
     /**
      * @param w      Width of buffer
@@ -84,7 +81,7 @@ public class FBO {
     }
 
     private int createTextureAttachment() {
-        trace("Gen Texture Attachment");
+        logger.trace("Gen Texture Attachment");
         int texture = GL11.glGenTextures();
 
         GL11.glBindTexture(GL_TEXTURE_2D, texture);
@@ -97,7 +94,7 @@ public class FBO {
     }
 
     private int createDepthBufferAttachment() {
-        trace("Gen DepthBuffer Attachment");
+        logger.trace("Gen DepthBuffer Attachment");
         int buffer = GL30.glGenRenderbuffers();
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, buffer);
         GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, GL11.GL_DEPTH_COMPONENT, width, height);
@@ -106,7 +103,7 @@ public class FBO {
     }
 
     private int createFrameBuffer() {
-        trace("Creating FrameBuffer");
+        logger.trace("Creating FrameBuffer");
         int buffer = GL30.glGenFramebuffers();
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, buffer);
         GL11.glDrawBuffer(GL30.GL_COLOR_ATTACHMENT0);

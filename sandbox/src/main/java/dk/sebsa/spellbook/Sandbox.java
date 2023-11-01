@@ -80,9 +80,9 @@ public class Sandbox implements Application {
 
     @EventListener
     public void engineBuildLayerStack(EngineBuildLayerStackEvent e) {
-        debugLayer = new DebugLayer(e.logger);
+        debugLayer = new DebugLayer();
 
-        e.builder.appendLayer(new TestLayer(e.logger, debugLayer))
+        e.builder.appendLayer(new TestLayer(debugLayer))
                 .appendLayer(debugLayer);
     }
 

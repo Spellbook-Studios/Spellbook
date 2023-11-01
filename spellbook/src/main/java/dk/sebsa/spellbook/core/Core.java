@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.core;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.asset.loading.AssetProvider;
@@ -9,6 +8,7 @@ import dk.sebsa.spellbook.asset.loading.ClassPathAssetProvider;
 import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.io.GLFWWindow;
+import lombok.CustomLog;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -22,18 +22,14 @@ import java.util.List;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class Core implements Module, EventHandler {
-    private Logger logger;
     @Getter
     private GLFWWindow window;
     @Getter
     private GLFWInput input;
     @Getter
     private LayerStack stack;
-
-    private void log(Object... o) {
-        logger.log(o);
-    }
 
     @Getter
     private AssetManager assetManager;
@@ -45,25 +41,24 @@ public class Core implements Module, EventHandler {
 
     @EventListener
     public void engineInit(EngineInitEvent e) {
-        this.logger = new ClassLogger(this, e.logger);
-        this.window = new GLFWWindow(e.logger, e.application.name(), 960, 540);
+        this.window = new GLFWWindow(e.application.name(), 960, 540);
         this.input = new GLFWInput(e, window);
         this.assetManager = new AssetManager();
 
-        e.capabilities.getAssetsProviders().add(new ClassPathAssetProvider(e.logger));
+        e.capabilities.getAssetsProviders().add(new ClassPathAssetProvider());
 
-        this.stack = ((EngineBuildLayerStackEvent) Spellbook.instance.getEventBus().engine(new EngineBuildLayerStackEvent(e.logger))).builder.build();
+        this.stack = ((EngineBuildLayerStackEvent) Spellbook.instance.getEventBus().engine(new EngineBuildLayerStackEvent())).builder.build();
     }
 
     @EventListener
     public void engineLoad(EngineLoadEvent e) {
-        log("Core: Load asset providers");
+        logger.log("Core: Load asset providers");
 
         // Assets
         List<AssetReference> assets = new ArrayList<>();
 
         for (AssetProvider provider : e.capabilities.getAssetsProviders()) {
-            log(" - Provider: " + provider.toString());
+            logger.log(" - Provider: " + provider.toString());
             assets.addAll(provider.getAssets());
         }
 
@@ -74,7 +69,7 @@ public class Core implements Module, EventHandler {
 
         assetManager.registerReferences(assets);
 
-        log("Asset Providers done");
+        logger.log("Asset Providers done");
 
         // Window & Input
         window.init();
@@ -83,14 +78,14 @@ public class Core implements Module, EventHandler {
 
     @Override
     public void cleanup() {
-        log("Core Cleanup");
+        logger.log("Core Cleanup");
         input.cleanup();
         window.destroy();
     }
 
     @EventListener
     public void windowResized(GLFWWindow.WindowResizedEvent e) {
-        log("Window Reisezed");
+        logger.log("Window Reisezed");
     }
 
     @EventListener

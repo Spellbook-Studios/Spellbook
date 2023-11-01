@@ -1,7 +1,5 @@
 package dk.sebsa.spellbook.core.events;
 
-import dk.sebsa.spellbook.core.ClassLogger;
-import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Rect;
 
@@ -18,27 +16,6 @@ public abstract class Layer implements EventHandler {
      * Weather the layers is accepting events and is being rendered
      */
     public boolean enabled = true;
-    /**
-     * Logger that the layer should use
-     */
-    protected final ClassLogger logger;
-
-    /**
-     * Logs an object to the ClassLogger
-     *
-     * @param o Object to log
-     */
-    protected void log(Object o) {
-        logger.log(o.toString());
-    }
-
-    /**
-     * @param logger The main Spellbook logger
-     */
-    public Layer(SpellbookLogger logger) {
-        this.logger = new ClassLogger(this, logger);
-    }
-
 
     /**
      * Handles user events

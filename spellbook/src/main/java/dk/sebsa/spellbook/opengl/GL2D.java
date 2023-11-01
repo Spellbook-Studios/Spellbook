@@ -1,13 +1,12 @@
 package dk.sebsa.spellbook.opengl;
 
-import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
-import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Rect;
+import lombok.CustomLog;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
@@ -19,8 +18,8 @@ import static org.lwjgl.opengl.GL11.*;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class GL2D {
-    private static ClassLogger logger;
     private static GLFWWindow window;
     private static AssetReference shaderR;
     private static GLSLShaderProgram defaultShader;
@@ -41,8 +40,6 @@ public class GL2D {
      * @param s The default 2d shader
      */
     public static void init(GLFWWindow w, AssetReference s) {
-        //noinspection InstantiationOfUtilityClass
-        logger = new ClassLogger(new GL2D(), Spellbook.getLogger());
         logger.log("Initializing GL2D");
 
         window = w;
@@ -65,12 +62,12 @@ public class GL2D {
     public static void prepareShader(GLSLShaderProgram shaderProgram) {
         logger.log("Prepare shader for 2D rendering " + shaderR.name);
         try {
-            shaderProgram.createUniform("projection", logger);
-            shaderProgram.createUniform("offset", logger);
-            shaderProgram.createUniform("pixelScale", logger);
-            shaderProgram.createUniform("screenPos", logger);
-            shaderProgram.createUniform("color", logger);
-            shaderProgram.createUniform("useColor", logger);
+            shaderProgram.createUniform("projection");
+            shaderProgram.createUniform("offset");
+            shaderProgram.createUniform("pixelScale");
+            shaderProgram.createUniform("screenPos");
+            shaderProgram.createUniform("color");
+            shaderProgram.createUniform("useColor");
         } catch (Exception e) {
             logger.warn("Failed to create shader uniforms", "This might still work, if the error is from the uniforms already having been created");
             logger.stackTrace(e);

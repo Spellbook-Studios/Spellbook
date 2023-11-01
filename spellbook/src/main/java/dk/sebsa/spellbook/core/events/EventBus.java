@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.core.events;
 
-import dk.sebsa.mana.Logger;
-import dk.sebsa.spellbook.core.ClassLogger;
+import lombok.CustomLog;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,6 +13,7 @@ import java.util.*;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class EventBus {
     private record Listener(Object o, Method m) {
     }
@@ -24,14 +24,6 @@ public class EventBus {
      */
     public final Queue<UserEvent> userEvents = new PriorityQueue<>();
     private final HashMap<String, List<Listener>> listeners = new HashMap<>();
-    private final ClassLogger logger;
-
-    /**
-     * @param logger The main spellbook logger
-     */
-    public EventBus(Logger logger) {
-        this.logger = new ClassLogger(this, logger);
-    }
 
     /**
      * Register all listener methods in a objects class

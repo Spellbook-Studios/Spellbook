@@ -3,7 +3,6 @@ package dk.sebsa.spellbook;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.audio.SoundPlayer;
-import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.core.threading.TaskGroup;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
@@ -19,10 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DebugLayer extends ImGUILayer {
-    public DebugLayer(SpellbookLogger logger) {
-        super(logger);
-    }
-
     public List<TaskGroup> groups = new ArrayList<>();
     public Entity thousandObjectRoot;
 
@@ -78,7 +73,7 @@ public class DebugLayer extends ImGUILayer {
                 }
             } else {
                 if (ImGui.button("Destroy Root")) {
-                    thousandObjectRoot.parent(null);
+                    thousandObjectRoot.delete();
                     thousandObjectRoot = null;
                 }
             }

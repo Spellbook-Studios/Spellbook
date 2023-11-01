@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.core;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.mana.Logger;
 
 import java.io.PrintWriter;
@@ -7,7 +8,8 @@ import java.io.StringWriter;
 
 /**
  * Logs to a SpellbookLogger with a classes classname
- * This should not be passed between objects
+ * Also provides some utility functions
+ * Anotate a class with @CustomLog to autoamtically get a logger object
  *
  * @author sebs
  * @since 1.0.0
@@ -17,12 +19,12 @@ public class ClassLogger implements Logger {
     private final String className;
 
     /**
-     * @param o          The object to which this class logger belongs
+     * @param clazz      Then class this logger belongs to
      * @param mainLogger The main spellbook logger
      */
-    public ClassLogger(Object o, Logger mainLogger) {
+    public ClassLogger(Class<?> clazz, Logger mainLogger) {
         this.mainLogger = (SpellbookLogger) mainLogger;
-        this.className = o.getClass().getSimpleName();
+        this.className = clazz.getSimpleName();
     }
 
     @Override
@@ -48,6 +50,17 @@ public class ClassLogger implements Logger {
     @Override
     public void close() {
 
+    }
+
+
+    /**
+     * Creates a new classlogger using the main spellbook logger
+     *
+     * @param clazz The class this belongs this
+     * @return The new logger
+     */
+    public static ClassLogger getLogger(Class<?> clazz) {
+        return new ClassLogger(clazz, Spellbook.getLogger());
     }
 
     /**

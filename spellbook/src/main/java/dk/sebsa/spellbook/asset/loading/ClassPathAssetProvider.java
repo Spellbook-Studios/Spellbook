@@ -1,8 +1,7 @@
 package dk.sebsa.spellbook.asset.loading;
 
-import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.asset.AssetReference;
-import dk.sebsa.spellbook.core.ClassLogger;
+import lombok.CustomLog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,18 +22,8 @@ import java.util.jar.JarFile;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class ClassPathAssetProvider extends AssetProvider {
-    private final ClassLogger logger;
-
-    /**
-     * Creates ClassPathAssetProvider
-     *
-     * @param logger Spellbook main logger
-     */
-    public ClassPathAssetProvider(Logger logger) {
-        this.logger = new ClassLogger(this, logger);
-    }
-
     private final Class<ClassPathAssetProvider> clazz = ClassPathAssetProvider.class;
     private final ClassLoader cl = clazz.getClassLoader();
     private List<AssetReference> assets;

@@ -3,12 +3,12 @@ package dk.sebsa.spellbook.opengl;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.AssetReference;
-import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
+import lombok.CustomLog;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL30;
 
@@ -23,6 +23,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class Sprite2D {
     private static Mesh2D mainMesh;
     private static AssetReference shaderR;
@@ -44,17 +45,16 @@ public class Sprite2D {
 
         // Prepare shader
         try {
-            shader.createUniform("transformMatrix", e.logger);
-            shader.createUniform("pixelScale", e.logger);
-            shader.createUniform("objectScale", e.logger);
-            shader.createUniform("anchor", e.logger);
-            shader.createUniform("offset", e.logger);
-            shader.createUniform("projectionViewMatrix", e.logger);
+            shader.createUniform("transformMatrix");
+            shader.createUniform("pixelScale");
+            shader.createUniform("objectScale");
+            shader.createUniform("anchor");
+            shader.createUniform("offset");
+            shader.createUniform("projectionViewMatrix");
 
-            shader.createUniform("matColor", e.logger);
+            shader.createUniform("matColor");
         } catch (Exception ex) {
-            //noinspection InstantiationOfUtilityClass
-            Spellbook.instance.error(new ClassLogger(new Sprite2D(), e.logger).stackTrace(ex), true);
+            Spellbook.instance.error(logger.stackTrace(ex), true);
         }
     }
 

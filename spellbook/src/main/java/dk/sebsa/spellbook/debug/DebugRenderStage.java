@@ -64,9 +64,9 @@ public class DebugRenderStage extends RenderStage {
         shader = shaderReference.get();
 
         // Uniforms
-        shader.createUniform("projectionViewMatrix", e.logger);
-        shader.createUniform("color", e.logger);
-        shader.createUniform("mode", e.logger);
+        shader.createUniform("projectionViewMatrix");
+        shader.createUniform("color");
+        shader.createUniform("mode");
     }
 
     @Override
