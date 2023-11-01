@@ -97,7 +97,6 @@ public class DebugRenderStage extends RenderStage {
     }
 
     private static final float CIRCLE_DETAIL = 32;
-    private static final float PI = (float) Math.PI;
 
     private void drawCircle(Vector2f point, float radius) {
         GL11.glBegin(GL_LINE_LOOP);
