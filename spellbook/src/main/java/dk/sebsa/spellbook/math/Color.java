@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.math;
 
 import dk.sebsa.spellbook.util.FourKeyHashMap;
+import lombok.ToString;
 
 /**
  * A representation of an RGBA color
@@ -8,6 +9,7 @@ import dk.sebsa.spellbook.util.FourKeyHashMap;
  * @author sebs
  * @since 1.0.0
  */
+@ToString
 public class Color {
     /**
      * Red value of color
@@ -58,16 +60,6 @@ public class Color {
         this.b = Mathf.clamp(b, 0, 1);
         this.g = Mathf.clamp(g, 0, 1);
         this.a = Mathf.clamp(a, 0, 1);
-    }
-
-    @Override
-    public String toString() {
-        return "Color{" +
-                "r=" + r +
-                ", g=" + g +
-                ", b=" + b +
-                ", a=" + a +
-                '}';
     }
 
     // Defaults

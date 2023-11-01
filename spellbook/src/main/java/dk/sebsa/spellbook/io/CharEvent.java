@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.io;
 
 import dk.sebsa.spellbook.core.events.UserEvent;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Tells the engine that the keyboard is sending a char event
@@ -8,19 +9,13 @@ import dk.sebsa.spellbook.core.events.UserEvent;
  * @author sebs
  * @since 1.0.0
  */
+@RequiredArgsConstructor
 public class CharEvent extends UserEvent {
     /**
      * The code point of the charater
      * e.g. GLFW.GLFW_KEY_F3
      */
     public final int codePoint;
-
-    /**
-     * @param codePoint The codepoint of the charater
-     */
-    public CharEvent(int codePoint) {
-        this.codePoint = codePoint;
-    }
 
     @Override
     public EventType eventType() {

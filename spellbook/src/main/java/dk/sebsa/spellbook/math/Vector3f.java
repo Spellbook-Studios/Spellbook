@@ -1,11 +1,14 @@
 package dk.sebsa.spellbook.math;
 
+import lombok.ToString;
+
 /**
  * A vector of 3 floats
  *
  * @author sebs
  * @since 1.0.0
  */
+@ToString
 public class Vector3f {
     /**
      * x Value
@@ -98,16 +101,6 @@ public class Vector3f {
         this.z = z;
         return this;
     }
-
-    @Override
-    public String toString() {
-        return "Vector3f{" +
-                "x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                '}';
-    }
-
 
     /**
      * Returns a new vector equal to (this.x + v, this.y + v, this.z + v)

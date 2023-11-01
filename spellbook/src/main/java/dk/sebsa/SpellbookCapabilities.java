@@ -4,6 +4,7 @@ import dk.sebsa.spellbook.asset.loading.AssetProvider;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @Builder
+@ToString
 public class SpellbookCapabilities {
     /**
      * Weather logging and other debugging functionalities should be enabled
@@ -78,6 +80,7 @@ public class SpellbookCapabilities {
      * Per default, it only loads the spellbook library assets
      */
     @Getter
+    @ToString.Exclude
     private final List<AssetProvider> assetsProviders = new ArrayList<>();
 
     /**
@@ -161,26 +164,5 @@ public class SpellbookCapabilities {
          * Zips the log file into a zip in the log directory
          */
         zipped,
-    }
-
-    @Override
-    public String toString() {
-        return "SpellbookCapabilities{" +
-                "spellbookDebug=" + spellbookDebug +
-                ", spellbookShutdown=" + spellbookShutdown +
-                ", debugIMGUI=" + debugIMGUI +
-                ", renderingProvider=" + renderingProvider +
-                ", render2D=" + render2D +
-                ", spriteMaxLayer=" + spriteMaxLayer +
-                ", ecs=" + ecs +
-                ", audio=" + audio +
-                ", renderResolution=" + renderResolution +
-                ", newton2D=" + newton2D +
-                ", logStoreTarget='" + logStoreTarget + '\'' +
-                ", logStorageMode=" + logStorageMode +
-                ", logDisableASCIIEscapeCharacters=" + logDisableASCIIEscapeCharacters +
-                ", disableThreading=" + disableThreading +
-                ", shutdownTasksAwaitMillis=" + shutdownTasksAwaitMillis +
-                '}';
     }
 }

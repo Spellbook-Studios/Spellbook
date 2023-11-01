@@ -1,11 +1,14 @@
 package dk.sebsa.spellbook.math;
 
+import lombok.ToString;
+
 /**
  * A vector of 2 floats
  *
  * @author sebs
  * @since 1.0.0
  */
+@ToString
 public class Vector2f {
     /**
      * x value of vector
@@ -226,14 +229,6 @@ public class Vector2f {
      */
     public float max() {
         return Math.max(x, y);
-    }
-
-    @Override
-    public String toString() {
-        return "Vector2f{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
     }
 
     /**

@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.io;
 
 import dk.sebsa.spellbook.core.events.UserEvent;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Tells the engine that a user has pressed a mouse button
@@ -8,19 +9,13 @@ import dk.sebsa.spellbook.core.events.UserEvent;
  * @author sebs
  * @since 1.0.0
  */
+@RequiredArgsConstructor
 public class ButtonPressedEvent extends UserEvent {
     /**
      * The button pressed
      * e.g. GLFW.GLFW_MOUSE_BUTTON_1
      */
     public final int button;
-
-    /**
-     * @param button The button pressed
-     */
-    public ButtonPressedEvent(int button) {
-        this.button = button;
-    }
 
     @Override
     public EventType eventType() {

@@ -1,25 +1,21 @@
 package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.spellbook.FrameData;
+import lombok.RequiredArgsConstructor;
 
 /**
  * The hasppens before the frame happens
  * used eg. polling glfw events
- * @since 1.0.0
+ *
  * @author sebs
+ * @since 1.0.0
  */
+@RequiredArgsConstructor
 public class EngineFrameEarly extends Event {
     /**
      * Framedata for this frame
      */
     public final FrameData frameData;
-
-    /**
-     * @param frameData Framedata for this frame
-     */
-    public EngineFrameEarly(FrameData frameData) {
-        this.frameData = frameData;
-    }
 
     @Override
     public EventType eventType() {

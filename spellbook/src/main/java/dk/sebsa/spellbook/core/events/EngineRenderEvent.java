@@ -2,31 +2,25 @@ package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.io.GLFWWindow;
+import lombok.RequiredArgsConstructor;
 
 /**
- *  Now render the frame
- * @since 1.0.0
+ * Now render the frame
+ *
  * @author sebs
+ * @since 1.0.0
  */
+@RequiredArgsConstructor
 public class EngineRenderEvent extends Event {
-    /**
-     * Current window to render to
-     */
-    public final GLFWWindow window;
-
     /**
      * Framedata for this frame
      */
     public final FrameData frameData;
 
     /**
-     * @param frameData Framedata for this frame
-     * @param window Window to render to
+     * Current window to render to
      */
-    public EngineRenderEvent(FrameData frameData, GLFWWindow window) {
-        this.window = window;
-        this.frameData = frameData;
-    }
+    public final GLFWWindow window;
 
     @Override
     public EventType eventType() {

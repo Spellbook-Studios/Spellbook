@@ -65,10 +65,11 @@ public class EventBus {
      * Dispatches and engine event to relevant listeners
      *
      * @param e The event
+     * @return the Event
      */
-    public void engine(Event e) {
+    public Event engine(Event e) {
         final String type = e.eventType().toString();
-        if (!listeners.containsKey(type)) return;
+        if (!listeners.containsKey(type)) return e;
         for (Listener listener : listeners.get(type)) {
             try {
                 listener.m.invoke(listener.o, e);
@@ -78,5 +79,7 @@ public class EventBus {
                 logger.err("Method invoked exception: " + type + " in: " + listener.o.getClass().getName(), logger.stackTrace(ex));
             }
         }
+
+        return e;
     }
 }

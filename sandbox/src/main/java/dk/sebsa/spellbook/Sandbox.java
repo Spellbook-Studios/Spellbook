@@ -9,20 +9,17 @@ import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
 import dk.sebsa.spellbook.audio.SoundListener;
 import dk.sebsa.spellbook.core.Application;
-import dk.sebsa.spellbook.core.events.EngineInitEvent;
-import dk.sebsa.spellbook.core.events.EngineLoadEvent;
-import dk.sebsa.spellbook.core.events.LayerStack;
+import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.debug.DebugRenderStage;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.Entity;
-import dk.sebsa.spellbook.opengl.RenderPipeline;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
 import dk.sebsa.spellbook.opengl.stages.UIStage;
 
 import java.io.File;
 
-public class Sandbox extends Application {
+public class Sandbox implements Application {
     public DebugLayer debugLayer;
     private static boolean isDebug = false;
 
@@ -70,20 +67,12 @@ public class Sandbox extends Application {
         return "1.0b";
     }
 
-    @Override
-    public RenderPipeline renderingPipeline(EngineLoadEvent e) {
-        if (isDebug) {
-            return new RenderPipeline.RenderPipelineBuilder()
-                    .appendStage(new SpriteStage(e))
-                    .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
 
-                    .appendStage(new DebugRenderStage(e))
-                    .build(e.logger);
-        }
-        return new RenderPipeline.RenderPipelineBuilder()
-                .appendStage(new SpriteStage(e))
-                .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()))
-                .build(e.logger);
+    @EventListener
+    public void engineBuildRenderPipeline(EngineBuildRenderPipelineEvent e) {
+        e.builder.appendStage(new SpriteStage(e))
+                .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()));
+        if (isDebug) e.builder.appendStage(new DebugRenderStage(e));
     }
 
     @Override
@@ -96,9 +85,9 @@ public class Sandbox extends Application {
                 .build();
     }
 
-    @Override
-    public void createInitialScene(Entity e) {
-        Entity entity = new Camera(e);
+    @EventListener
+    public void engineCreateFirstScene(EngineCreateFirstSceneEvent e) {
+        Entity entity = new Camera(e.ROOT);
         entity.name = "Player";
         SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("sandbox/32.spr"));
 

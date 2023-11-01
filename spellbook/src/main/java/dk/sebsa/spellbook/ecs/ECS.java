@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.ecs;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.core.Module;
@@ -70,7 +71,7 @@ public class ECS implements Module {
 
     @EventListener
     public void engineFirstFrame(EngineFirstFrameEvent e) {
-        e.application.createInitialScene(ROOT);
+        Spellbook.instance.getEventBus().engine(new EngineCreateFirstSceneEvent(ROOT));
         if (Camera.activeCamera == null) logger.warn("Initial scene doesn't contain a camera!");
 
     }

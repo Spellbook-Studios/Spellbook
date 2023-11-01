@@ -1,5 +1,7 @@
 package dk.sebsa.spellbook.core.events;
 
+import lombok.ToString;
+
 /**
  * Events represents to things
  * User Event: A representation of an event occurring inside Spellbook (stored and queued)
@@ -8,6 +10,7 @@ package dk.sebsa.spellbook.core.events;
  * @author sebs
  * @since 1.0.0
  */
+@ToString
 public abstract class Event {
     /**
      * Gets the type of event
@@ -32,6 +35,21 @@ public abstract class Event {
          * The engine should now begin to load in resources
          */
         engineLoad,
+
+        /**
+         * The engine is now ready to build the first scene
+         */
+        engineCreateFirstScene,
+
+        /**
+         * Engine needs a layerstack
+         */
+        engineBuildLayerStack,
+
+        /**
+         * Engine needs a render pipeline
+         */
+        engineBuildRenderPipeline,
 
         /**
          * Everything is initilized and all resources are ready
@@ -104,12 +122,5 @@ public abstract class Event {
          * Tells the engine that the mouse scrolled
          */
         ioMouseScroll,
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "type=" + eventType() +
-                '}';
     }
 }

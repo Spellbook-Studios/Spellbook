@@ -152,6 +152,7 @@ public class Spellbook {
 
         logger.log("Creating EventBus");
         eventBus = new EventBus(logger);
+        eventBus.registerListeners(application);
 
         logger.log("Registering Modules");
         moduleCore = new Core();

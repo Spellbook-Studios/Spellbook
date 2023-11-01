@@ -1,11 +1,14 @@
 package dk.sebsa.spellbook.math;
 
+import lombok.ToString;
+
 /**
  * A representation of a 2 dimensional square
  *
  * @author sebs
  * @since 1.0.0
  */
+@ToString
 public class Rect {
     /**
      * A vertically flipped UV Rect
@@ -211,16 +214,6 @@ public class Rect {
         this.width += r.width;
         this.height += r.height;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "Rect{" +
-                "x=" + x +
-                ", y=" + y +
-                ", width=" + width +
-                ", height=" + height +
-                '}';
     }
 
     /**

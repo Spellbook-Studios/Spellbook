@@ -1,10 +1,8 @@
 package dk.sebsa.spellbook.opengl;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.Module;
-import dk.sebsa.spellbook.core.events.EngineLoadEvent;
-import dk.sebsa.spellbook.core.events.EngineRenderEvent;
-import dk.sebsa.spellbook.core.events.EventBus;
-import dk.sebsa.spellbook.core.events.EventListener;
+import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 
@@ -29,7 +27,7 @@ public class OpenGLModule implements Module {
 
     @EventListener
     public void engineLoad(EngineLoadEvent e) {
-        pipeline = e.app.renderingPipeline(e);
+        pipeline = ((EngineBuildRenderPipelineEvent) Spellbook.instance.getEventBus().engine(new EngineBuildRenderPipelineEvent(e.moduleCore, e.logger, e.capabilities))).builder.build(e.logger);
         GL2D.init(e.moduleCore.getWindow(), e.assetManager.getAsset("/spellbook/shaders/Spellbook2d.glsl"));
 
         capRender2D = e.capabilities.render2D;

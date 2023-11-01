@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.io;
 
 import dk.sebsa.spellbook.core.events.UserEvent;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Tells the engine that a user has released a keyboard key
@@ -8,18 +9,12 @@ import dk.sebsa.spellbook.core.events.UserEvent;
  * @author sebs
  * @since 1.0.0
  */
+@RequiredArgsConstructor
 public class KeyReleasedEvent extends UserEvent {
     /**
      * The key pressed
      */
     public final int key;
-
-    /**
-     * @param key The key pressed
-     */
-    public KeyReleasedEvent(int key) {
-        this.key = key;
-    }
 
     @Override
     public EventType eventType() {

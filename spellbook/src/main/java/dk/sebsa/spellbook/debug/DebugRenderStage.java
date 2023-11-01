@@ -3,7 +3,7 @@ package dk.sebsa.spellbook.debug;
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
-import dk.sebsa.spellbook.core.events.EngineLoadEvent;
+import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
@@ -56,9 +56,9 @@ public class DebugRenderStage extends RenderStage {
     private GLSLShaderProgram shader;
 
     /**
-     * @param e Engine Load Event
+     * @param e Build RenderPipeline event
      */
-    public DebugRenderStage(EngineLoadEvent e) {
+    public DebugRenderStage(EngineBuildRenderPipelineEvent e) {
         super(e.moduleCore.getWindow());
         shaderReference = AssetManager.getAssetS("/spellbook/shaders/SpellbookDebugShader.glsl");
         shader = shaderReference.get();
