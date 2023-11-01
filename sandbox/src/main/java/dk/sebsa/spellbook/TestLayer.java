@@ -2,7 +2,7 @@ package dk.sebsa.spellbook;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.Core;
-import dk.sebsa.spellbook.core.events.EngineInitEvent;
+import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
@@ -18,8 +18,8 @@ public class TestLayer extends Layer {
     private final GLFWWindow window;
     private MarbleIMRenderer marble;
 
-    public TestLayer(EngineInitEvent e, DebugLayer debugLayer) {
-        super(e.logger);
+    public TestLayer(SpellbookLogger logger, DebugLayer debugLayer) {
+        super(logger);
         this.debugLayer = debugLayer;
         this.window = ((Core) Spellbook.instance.getModules().get(0)).getWindow();
     }

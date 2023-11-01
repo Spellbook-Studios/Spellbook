@@ -9,13 +9,15 @@ import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
 import dk.sebsa.spellbook.audio.SoundListener;
 import dk.sebsa.spellbook.core.Application;
-import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.core.events.EngineBuildLayerStackEvent;
+import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
+import dk.sebsa.spellbook.core.events.EngineCreateFirstSceneEvent;
+import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.debug.DebugRenderStage;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
-import dk.sebsa.spellbook.opengl.stages.UIStage;
 
 import java.io.File;
 
@@ -70,19 +72,18 @@ public class Sandbox implements Application {
 
     @EventListener
     public void engineBuildRenderPipeline(EngineBuildRenderPipelineEvent e) {
-        e.builder.appendStage(new SpriteStage(e))
-                .appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()));
+        e.builder.appendStage(new SpriteStage(e));
+        e.appendUIStage();
+
         if (isDebug) e.builder.appendStage(new DebugRenderStage(e));
     }
 
-    @Override
-    public LayerStack layerStack(EngineInitEvent e) {
+    @EventListener
+    public void engineBuildLayerStack(EngineBuildLayerStackEvent e) {
         debugLayer = new DebugLayer(e.logger);
 
-        return new LayerStack.LayerStackBuilder()
-                .appendLayer(new TestLayer(e, debugLayer))
-                .appendLayer(debugLayer)
-                .build();
+        e.builder.appendLayer(new TestLayer(e.logger, debugLayer))
+                .appendLayer(debugLayer);
     }
 
     @EventListener

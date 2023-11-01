@@ -1,8 +1,6 @@
 package dk.sebsa.spellbook.core;
 
-import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EventHandler;
-import dk.sebsa.spellbook.core.events.LayerStack;
 
 /**
  * A Spellbook Application
@@ -32,12 +30,4 @@ public interface Application extends EventHandler {
      * @return The version of the application
      */
     String version();
-
-    /**
-     * Assembles the layerstack to be used
-     *
-     * @param e The engine init event
-     * @return The final layerstack that should be used
-     */
-    LayerStack layerStack(EngineInitEvent e);
 }

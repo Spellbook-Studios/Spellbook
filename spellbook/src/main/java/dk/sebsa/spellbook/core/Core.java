@@ -52,7 +52,7 @@ public class Core implements Module, EventHandler {
 
         e.capabilities.getAssetsProviders().add(new ClassPathAssetProvider(e.logger));
 
-        this.stack = e.application.layerStack(e);
+        this.stack = ((EngineBuildLayerStackEvent) Spellbook.instance.getEventBus().engine(new EngineBuildLayerStackEvent(e.logger))).builder.build();
     }
 
     @EventListener

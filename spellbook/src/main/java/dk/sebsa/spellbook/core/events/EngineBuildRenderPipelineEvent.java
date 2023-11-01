@@ -4,6 +4,7 @@ import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.core.Core;
 import dk.sebsa.spellbook.core.SpellbookLogger;
 import dk.sebsa.spellbook.opengl.RenderPipeline;
+import dk.sebsa.spellbook.opengl.stages.UIStage;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -36,4 +37,13 @@ public class EngineBuildRenderPipelineEvent extends Event {
      * Spellbook capabilities
      */
     public final SpellbookCapabilities capabilities;
+
+    /**
+     * adds a UIStage to the builder
+     * Shortcut for writing:
+     * builder.appendStage(new UIStage(event.moduleCore.getWindow(), event.moduleCore.getStack()))
+     */
+    public void appendUIStage() {
+        builder.appendStage(new UIStage(moduleCore.getWindow(), moduleCore.getStack()));
+    }
 }

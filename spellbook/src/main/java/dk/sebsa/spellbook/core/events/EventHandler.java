@@ -107,4 +107,13 @@ public interface EventHandler {
     @EventListener
     default void engineBuildRenderPipeline(EngineBuildRenderPipelineEvent e) {
     }
+
+    /**
+     * The engine needs a new LayerStack
+     *
+     * @param e The event
+     */
+    @EventListener
+    default void engineBuildLayerStack(EngineBuildLayerStackEvent e) {
+    }
 }
