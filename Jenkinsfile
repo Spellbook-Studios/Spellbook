@@ -16,7 +16,7 @@ pipeline {
         stage('Build') {
             steps {
                 withGradle {
-                    sh './gradlew clean build'
+                    sh './gradlew clean :spellbook:build'
                 }
                 archiveArtifacts artifacts: 'spellbook/build/libs/*.jar', fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
             }
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 withGradle {
                     sh '''
-                    ./gradlew publish \
+                    ./gradlew :spellbook:publish \
                     -PossrhUsername=PinkLemonadeWizard \
                     -PossrhPassword=${ossrhPassword} \
                     -Psigning.keyId=BBCE4E01 \
