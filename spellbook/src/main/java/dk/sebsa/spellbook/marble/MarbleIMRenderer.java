@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.marble;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;

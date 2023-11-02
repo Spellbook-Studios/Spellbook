@@ -7,12 +7,17 @@ linter: jetbrains/qodana-jvm:latest
 profile:
   name: qodana.recommended
 
+exclude:
+  - name: All
+    paths:
+      - sandbox
+
 #Enable inspections
 include:
   - name: MissingJavadoc
   - name: CheckDependencyLicenses
 
-projectJDK: 17 #(Applied in CI/CD pipeline)
+projectJDK: 21 #(Applied in CI/CD pipeline)
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
@@ -24,3 +29,4 @@ plugins:
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 fixesStrategy: CLEANUP
+

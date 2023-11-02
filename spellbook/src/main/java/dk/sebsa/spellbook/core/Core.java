@@ -23,16 +23,12 @@ import java.util.List;
  * @author sebs
  * @since 1.0.0
  */
+@Getter
 @CustomLog
 public class Core implements Module, EventHandler {
-    @Getter
     private GLFWWindow window;
-    @Getter
     private GLFWInput input;
-    @Getter
     private LayerStack stack;
-
-    @Getter
     private AssetManager assetManager;
 
     @EventListener

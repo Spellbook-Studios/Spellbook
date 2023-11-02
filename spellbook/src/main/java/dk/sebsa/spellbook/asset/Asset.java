@@ -3,20 +3,17 @@ package dk.sebsa.spellbook.asset;
 import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import lombok.CustomLog;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Basic representation of loadable object for use in Spellbook
  * @author sebs
  * @since 1.0.0
  */
+@Getter
 @CustomLog
 public abstract class Asset {
-    @Getter
     protected AssetLocation location;
-    @Getter
     private boolean isLoaded = false;
-    @Getter
     protected int usages = 0;
 
     /**

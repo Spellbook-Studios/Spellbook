@@ -24,7 +24,7 @@ public class SoundPlayer implements Component {
      * The sound buffer to play
      */
     public String soundName;
-    public Sound sound;
+    private Sound sound;
 
     private SoundSource source;
 

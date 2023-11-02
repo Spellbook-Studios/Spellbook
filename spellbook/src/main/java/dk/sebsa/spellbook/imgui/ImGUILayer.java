@@ -20,6 +20,9 @@ import java.text.DecimalFormat;
  * @since 1.0.0
  */
 public abstract class ImGUILayer extends Layer {
+    /**
+     * Empty ImGUI layer
+     */
     public ImGUILayer() {
         super();
     }

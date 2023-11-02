@@ -19,7 +19,6 @@ jobs:
       - uses: JetBrains/qodana-action@v2023.2
         name: Qodana Scan
         env:
-          QODANA_TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb24iOiIzN0Q1ZSIsInByb2plY3QiOiIzb3FOTyIsInRva2VuIjoiQWdaNHEifQ.FvoDDDBKvgA8s-4476Ba_wIabTOhTy7QsRL-gOWJFZY
-#        with:
-#          args: --baseline,qodana.sarif.json,--property=project.open.type=Gradle
-#          push-fixes: pull-request
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        with:
+          args: --baseline,qodana.sarif.json

@@ -24,8 +24,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  * @author sebs
  * @since 1.0.0
  */
+@Getter
 public class Sound extends Asset {
-    @Getter private int soundBufferId;
+    private int soundBufferId;
 
     @Override
     public void load() {

@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.asset;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
 

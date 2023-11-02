@@ -51,7 +51,7 @@ public class DebugRenderStage extends RenderStage {
 
     }
 
-    private GLSLShaderProgram shader;
+    private final GLSLShaderProgram shader;
 
     /**
      * @param e Build RenderPipeline event

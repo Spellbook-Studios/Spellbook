@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.marble;
 
-import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.*;

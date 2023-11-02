@@ -1,12 +1,5 @@
 package dk.sebsa.spellbook.asset.loading;
 
-import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.asset.Asset;
-import dk.sebsa.spellbook.asset.TextAsset;
-import dk.sebsa.spellbook.audio.Sound;
-import dk.sebsa.spellbook.opengl.*;
-import lombok.ToString;
-
 /**
  * The location and identifier of an asset
  *

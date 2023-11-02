@@ -3,7 +3,6 @@ package dk.sebsa.spellbook.audio;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
-import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.core.events.EventListener;
 import lombok.CustomLog;
 import org.lwjgl.openal.AL;

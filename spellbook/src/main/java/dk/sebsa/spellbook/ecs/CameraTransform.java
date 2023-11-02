@@ -8,8 +8,9 @@ import org.joml.Matrix4f;
  * @since 1.0.0
  * @author sebs
  */
+@Getter
 public class CameraTransform extends Transform {
-    @Getter private final Matrix4f viewMatrix = new Matrix4f();
+    private final Matrix4f viewMatrix = new Matrix4f();
 
     /**
      * @param entity The entity this is linked to
