@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.asset.loading;
 
-import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.CustomLog;
 
@@ -33,8 +32,8 @@ public class FolderAssetProvider extends AssetProvider {
     }
 
     @Override
-    public List<AssetReference> getAssets() {
-        List<AssetReference> assets = new ArrayList<>();
+    public List<AssetLocation> getAssets() {
+        List<AssetLocation> assets = new ArrayList<>();
 
         if (!folder.isDirectory()) {
             logger.warn("FolderAsssetProvider: Path is not a directory: " + folder.getPath());
@@ -46,7 +45,7 @@ public class FolderAssetProvider extends AssetProvider {
             String assetName = f.getPath()
                     .replace('\\', '/')
                     .replace(folder.getPath().replace('\\', '/'), namePrefix);
-            assets.add(new AssetReference(f.getPath(), assetName, AssetReference.LocationTypes.Disk));
+            assets.add(new AssetLocation(f.getPath(), AssetLocation.LocationTypes.Disk, assetName));
         }
 
         return assets;

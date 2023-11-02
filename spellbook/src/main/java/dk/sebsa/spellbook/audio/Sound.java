@@ -2,7 +2,7 @@ package dk.sebsa.spellbook.audio;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
-import dk.sebsa.spellbook.asset.AssetReference;
+import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
 import org.lwjgl.openal.AL11;
@@ -28,7 +28,7 @@ public class Sound extends Asset {
     @Getter private int soundBufferId;
 
     @Override
-    public void load(AssetReference location) {
+    public void load() {
         soundBufferId = AL11.alGenBuffers();
 
         // Load vorbis file in PCM format
@@ -45,10 +45,10 @@ public class Sound extends Asset {
         AL11.alDeleteBuffers(soundBufferId);
     }
 
-    private ShortBuffer readVorbis(AssetReference file, STBVorbisInfo info) throws IOException {
+    private ShortBuffer readVorbis(AssetLocation file, STBVorbisInfo info) throws IOException {
         // Load file into memory
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            ByteBuffer vorbis = FileUtils.isToBB(FileUtils.loadFile(file.location), 32 * 1024);
+            ByteBuffer vorbis = FileUtils.isToBB(FileUtils.loadFile(file.location()), 32 * 1024);
             IntBuffer error = stack.mallocInt(1);
             long decoder = stb_vorbis_open_memory(vorbis, error, null);
 

@@ -1,9 +1,11 @@
 package dk.sebsa.spellbook.marble;
 
+import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.AssetManager;
-import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
+import dk.sebsa.spellbook.opengl.SpriteSheet;
 import dk.sebsa.spellbook.util.ThreeKeyHashMap;
 import lombok.CustomLog;
 
@@ -18,28 +20,25 @@ public class Marble implements Module {
     @EventListener
     public void engineFirstFrame(EngineFirstFrameEvent e) {
         defaultFont = font("Inter", 16, java.awt.Font.PLAIN);
-        blackstoneSheetR = AssetManager.getAssetS("/spellbook/marble/Blackstone.sht");
-        guiShaderR = AssetManager.getAssetS("/spellbook/shaders/SpellbookUI.glsl");
     }
 
-    private AssetReference guiShaderR;
-    private AssetReference blackstoneSheetR;
     private Font defaultFont;
-    private static final ThreeKeyHashMap<Font, AssetReference, AssetReference, MarbleIMRenderer> rendererHashMap = new ThreeKeyHashMap<>();
+    private static final ThreeKeyHashMap<Font, SpriteSheet, GLSLShaderProgram, MarbleIMRenderer> rendererHashMap = new ThreeKeyHashMap<>();
 
     /**
      * Gets the MarbleIMRender with the terms specified
      *
      * @param f            The font of the renderer or null. If null the defualt font will be used (Inter, Plain, 16)
-     * @param spriteSheetR The spritesheet of the renderer, or null. If null Blackstone will be used
-     * @param shaderR      The shader of the renderer, or null. If null the default GUI shader will be used
+     * @param spriteSheet  The spritesheet of the renderer, or null. If null Blackstone will be used
+     * @param shader       The shader of the renderer, or null. If null the default GUI shader will be used
      * @return The renderer that matches the parameters
      */
-    public MarbleIMRenderer getMarbleIM(Font f, AssetReference spriteSheetR, AssetReference shaderR) {
+    public MarbleIMRenderer getMarbleIM(Font f, SpriteSheet spriteSheet, GLSLShaderProgram shader) {
         Font font = f != null ? f : defaultFont;
-        AssetReference spriteSheet = spriteSheetR != null ? spriteSheetR : blackstoneSheetR;
-        AssetReference shader = shaderR != null ? shaderR : guiShaderR;
-        return rendererHashMap.getPut(font, spriteSheet, shader, () -> new MarbleIMRenderer(font, spriteSheet, shader));
+        SpriteSheet sht = spriteSheet != null ? spriteSheet : (SpriteSheet) AssetManager.getAssetS("/spellbook/marble/Blackstone.sht");
+        GLSLShaderProgram shd = shader != null ? shader : (GLSLShaderProgram) AssetManager.getAssetS("/spellbook/shaders/SpellbookUI.glsl");
+
+        return rendererHashMap.getPut(font, sht, shd, () -> new MarbleIMRenderer(font, sht, shd));
     }
 
     @EventListener

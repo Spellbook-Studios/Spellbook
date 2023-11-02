@@ -90,7 +90,7 @@ public class Sandbox implements Application {
     public void engineCreateFirstScene(EngineCreateFirstSceneEvent e) {
         Entity entity = new Camera(e.ROOT);
         entity.name = "Player";
-        SpriteRenderer spriteRenderer = new SpriteRenderer(AssetManager.getAssetS("sandbox/32.spr"));
+        SpriteRenderer spriteRenderer = new SpriteRenderer("sandbox/32.spr");
 
         spriteRenderer.scale = 2;
         spriteRenderer.layer = 1;

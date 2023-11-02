@@ -3,7 +3,6 @@ package dk.sebsa.spellbook.opengl;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.AssetManager;
-import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
@@ -19,7 +18,6 @@ public class Material extends Asset {
     private Color color;
     @Getter
     private Texture texture;
-    private AssetReference textureR; // Might exist texture reference
     private boolean isTextured;
 
     /**
@@ -93,14 +91,13 @@ public class Material extends Asset {
     }
 
     @Override
-    public void load(AssetReference location) {
+    public void load() {
         try {
-            List<String> file = FileUtils.readAllLinesList(FileUtils.loadFile(location.location));
+            List<String> file = FileUtils.readAllLinesList(FileUtils.loadFile(location.location()));
             for (String line : file) {
                 if (line.startsWith("t")) {
                     isTextured = true;
-                    textureR = AssetManager.getAssetS(line.split(":")[1]);
-                    texture = textureR.get();
+                    texture = (Texture) AssetManager.getAssetS(line.split(":")[1]);
                 } else if (line.startsWith("c")) {
                     String[] e = line.split(":")[1].split(",");
                     color = Color.color(Float.parseFloat(e[0]), Float.parseFloat(e[1]), Float.parseFloat(e[2]), Float.parseFloat(e[3]));
@@ -113,7 +110,6 @@ public class Material extends Asset {
 
     @Override
     public void destroy() {
-        texture = null;
-        if (textureR != null) textureR.unReference();
+        if (texture != null) texture.unreference();
     }
 }

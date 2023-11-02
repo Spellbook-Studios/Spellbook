@@ -2,7 +2,6 @@ package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.FrameData;
-import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.io.GLFWWindow;
@@ -26,7 +25,6 @@ import static org.lwjgl.opengl.GL11.*;
 @CustomLog
 public class Sprite2D {
     private static Mesh2D mainMesh;
-    private static AssetReference shaderR;
     private static GLSLShaderProgram shader;
 
     /**
@@ -40,8 +38,7 @@ public class Sprite2D {
         mainMesh = Mesh2D.getRenderMesh();
 
         // Get shader
-        shaderR = e.assetManager.getAsset("/spellbook/shaders/Sprite2D.glsl");
-        shader = shaderR.get();
+        shader = (GLSLShaderProgram) e.assetManager.getAsset("/spellbook/shaders/Sprite2D.glsl");
 
         // Prepare shader
         try {
@@ -106,7 +103,6 @@ public class Sprite2D {
      * Cleanup assets used by Sprite2D
      */
     public static void destroy() {
-        shader = null;
-        shaderR.unReference();
+        shader.unreference();
     }
 }

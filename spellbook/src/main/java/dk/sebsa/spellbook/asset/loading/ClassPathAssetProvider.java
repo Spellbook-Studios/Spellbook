@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.asset.loading;
 
-import dk.sebsa.spellbook.asset.AssetReference;
 import lombok.CustomLog;
 
 import java.io.BufferedReader;
@@ -26,10 +25,10 @@ import java.util.jar.JarFile;
 public class ClassPathAssetProvider extends AssetProvider {
     private final Class<ClassPathAssetProvider> clazz = ClassPathAssetProvider.class;
     private final ClassLoader cl = clazz.getClassLoader();
-    private List<AssetReference> assets;
+    private List<AssetLocation> assets;
 
     @Override
-    public List<AssetReference> getAssets() {
+    public List<AssetLocation> getAssets() {
         assets = new ArrayList<>();
 
         URL dirUrl = cl.getResource("dk/sebsa/spellbook/asset");
@@ -65,7 +64,7 @@ public class ClassPathAssetProvider extends AssetProvider {
         while (entries.hasMoreElements()) {
             String name = entries.nextElement().getName();
             if (name.startsWith("spellbook/") && !name.endsWith("/"))
-                assets.add(new AssetReference("/" + name, AssetReference.LocationTypes.Jar));
+                assets.add(new AssetLocation("/" + name, AssetLocation.LocationTypes.Jar));
         }
 
         jar.close();
@@ -88,7 +87,7 @@ public class ClassPathAssetProvider extends AssetProvider {
             while ((line = br.readLine()) != null) {
                 logger.log(line);
                 if (line.contains("."))
-                    assets.add(new AssetReference("/" + streams.get(0) + "/" + line, AssetReference.LocationTypes.Jar));
+                    assets.add(new AssetLocation("/" + streams.get(0) + "/" + line, AssetLocation.LocationTypes.Jar));
                 else streams.add(streams.get(0) + "/" + line);
             }
 

@@ -2,7 +2,7 @@ package dk.sebsa.spellbook.core;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
-import dk.sebsa.spellbook.asset.AssetReference;
+import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.asset.loading.AssetProvider;
 import dk.sebsa.spellbook.asset.loading.ClassPathAssetProvider;
 import dk.sebsa.spellbook.core.events.*;
@@ -69,7 +69,7 @@ public class Core implements Module, EventHandler {
 
             @Override
             public void execute() throws InterruptedException {
-                List<AssetReference> assets = new ArrayList<>();
+                List<AssetLocation> assets = new ArrayList<>();
 
                 for (AssetProvider provider : e.capabilities.getAssetsProviders()) {
                     logger.log(" - Provider: " + provider.toString());
@@ -77,7 +77,7 @@ public class Core implements Module, EventHandler {
                 }
 
                 logger.trace("Loaded Assets: ");
-                for (AssetReference asset : assets) {
+                for (AssetLocation asset : assets) {
                     logger.trace(" " + asset);
                 }
 

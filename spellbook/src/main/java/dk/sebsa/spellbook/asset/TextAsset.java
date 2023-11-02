@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.asset;
 
 import dk.sebsa.Spellbook;
+import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
 
@@ -18,14 +19,14 @@ public class TextAsset extends Asset {
     private String text;
 
     @Override
-    public void load(AssetReference reference) {
+    public void load() {
         StringBuilder sb = new StringBuilder();
         try {
-            InputStream is = FileUtils.loadFile(reference.location);
+            InputStream is = FileUtils.loadFile(location.location());
             sb.append(is);
             is.close();
         } catch (IOException e) {
-            Spellbook.instance.error("TextAsset: Failed to load file at location: " + reference, false);
+            Spellbook.instance.error("TextAsset: Failed to load file at location: " + location, false);
         }
         text = sb.toString();
     }

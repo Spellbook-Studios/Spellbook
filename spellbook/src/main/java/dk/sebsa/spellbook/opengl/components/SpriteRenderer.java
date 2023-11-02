@@ -1,7 +1,7 @@
 package dk.sebsa.spellbook.opengl.components;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.asset.AssetReference;
+import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Rect;
@@ -28,9 +28,9 @@ public class SpriteRenderer implements Component {
     public Sprite sprite;
 
     /**
-     * An AssetReference referencing a sprite
+     * The name of the sprite
      */
-    public AssetReference spriteR;
+    public String spriteName;
 
     /**
      * Where to place the sprite upon the entity
@@ -58,13 +58,11 @@ public class SpriteRenderer implements Component {
 
     }
 
-    /**
-     * A spriterender that automatically references and unreferences sprites from an assetreference
-     *
-     * @param spriteR Reference to a sprite
+    /***
+     * @param spriteName Name of the sprite
      */
-    public SpriteRenderer(AssetReference spriteR) {
-        this.spriteR = spriteR;
+    public SpriteRenderer(String spriteName) {
+        this.spriteName = spriteName;
     }
 
     /**
@@ -87,8 +85,8 @@ public class SpriteRenderer implements Component {
     @Override
     public void onEnable(Entity e) {
         this.entity = e;
-        if (spriteR != null) sprite = spriteR.get();
-        else {
+        this.sprite = (Sprite) AssetManager.getAssetS(spriteName);
+        if(sprite==null) {
             sprite = GL2D.missingSprite;
             logger.warn("SpriteRender sprite reference is null");
         }
@@ -101,9 +99,6 @@ public class SpriteRenderer implements Component {
 
     @Override
     public void onDisable() {
-        sprite = null;
-        if (spriteR != null) {
-            spriteR.unReference();
-        }
+        if (sprite != null && sprite != GL2D.missingSprite) sprite.unreference();
     }
 }

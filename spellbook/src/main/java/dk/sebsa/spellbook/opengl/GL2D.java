@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.spellbook.asset.AssetManager;
-import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Matrix4x4f;
@@ -21,12 +20,10 @@ import static org.lwjgl.opengl.GL11.*;
 @CustomLog
 public class GL2D {
     private static GLFWWindow window;
-    private static AssetReference shaderR;
     private static GLSLShaderProgram defaultShader;
     private static Mesh2D guiMesh;
     private static Matrix4x4f ortho;
     private static Color currentColor;
-    private static AssetReference missingSpriteR;
     /**
      * The missingSprite sprite from Spellbook internal assets
      * In rendering, it can be used when there is an absence of other textures
@@ -39,19 +36,17 @@ public class GL2D {
      * @param w The window in which it will render
      * @param s The default 2d shader
      */
-    public static void init(GLFWWindow w, AssetReference s) {
+    public static void init(GLFWWindow w, GLSLShaderProgram s) {
         logger.log("Initializing GL2D");
 
         window = w;
-        shaderR = s;
-        defaultShader = s.get();
+        defaultShader = s;
 
         guiMesh = Mesh2D.getQuad();
         prepareShader(defaultShader);
         logger.log("GL2D loaded");
 
-        missingSpriteR = AssetManager.getAssetS("/spellbook/missing.spr");
-        missingSprite = missingSpriteR.get();
+        missingSprite = (Sprite) AssetManager.getAssetS("/spellbook/missing.spr");
     }
 
     /**
@@ -60,7 +55,7 @@ public class GL2D {
      * @param shaderProgram The shader to prepare
      */
     public static void prepareShader(GLSLShaderProgram shaderProgram) {
-        logger.log("Prepare shader for 2D rendering " + shaderR.name);
+        logger.log("Prepare shader for 2D rendering " + shaderProgram.getLocation().name());
         try {
             shaderProgram.createUniform("projection");
             shaderProgram.createUniform("offset");
@@ -249,9 +244,7 @@ public class GL2D {
      */
     public static void cleanup() {
         guiMesh.destroy();
-        defaultShader = null;
-        shaderR.unReference();
-        missingSprite = null;
-        missingSpriteR.unReference();
+        defaultShader.unreference();
+        missingSprite.unreference();
     }
 }

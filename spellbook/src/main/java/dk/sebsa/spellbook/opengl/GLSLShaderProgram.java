@@ -2,7 +2,6 @@ package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
-import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Vector2f;
@@ -35,7 +34,7 @@ public class GLSLShaderProgram extends Asset {
     public boolean initFor2D = false;
 
     @Override
-    public void load(AssetReference location) {
+    public void load() {
         logger.log("Creating shader program");
         programId = glCreateProgram();
         if (programId == 0) {
@@ -47,7 +46,7 @@ public class GLSLShaderProgram extends Asset {
         logger.log("Loading shader code");
         String[] shaderCode;
         try {
-            shaderCode = FileUtils.readAllLines(FileUtils.loadFile(location.location)).split("// SPELLBOOK END VERTEX SHADER //");
+            shaderCode = FileUtils.readAllLines(FileUtils.loadFile(location.location())).split("// SPELLBOOK END VERTEX SHADER //");
         } catch (IOException e) {
             Spellbook.instance.error("Could not load shader: " + logger.stackTrace(e), true);
             return;

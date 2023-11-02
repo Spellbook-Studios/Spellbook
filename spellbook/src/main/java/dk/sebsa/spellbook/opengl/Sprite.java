@@ -3,7 +3,6 @@ package dk.sebsa.spellbook.opengl;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.AssetManager;
-import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.util.FileUtils;
@@ -28,7 +27,6 @@ public class Sprite extends Asset {
     private Material material;
 
     // Might exist if loaded with texture and not material directly
-    private AssetReference textureR;
     private Texture texture;
 
     /**
@@ -51,13 +49,12 @@ public class Sprite extends Asset {
     }
 
     @Override
-    public void load(AssetReference location) {
+    public void load() {
         try {
-            List<String> file = FileUtils.readAllLinesList(FileUtils.loadFile(location.location));
+            List<String> file = FileUtils.readAllLinesList(FileUtils.loadFile(location.location()));
             for (String line : file) {
                 if (line.startsWith("t")) {
-                    textureR = AssetManager.getAssetS(line.split(":")[1]);
-                    texture = textureR.get();
+                    texture = (Texture) AssetManager.getAssetS(line.split(":")[1]);
                     material = new Material(Color.white, texture);
                 } else if (line.startsWith("o")) {
                     String[] e = line.split(":")[1].split(",");
@@ -74,8 +71,7 @@ public class Sprite extends Asset {
 
     @Override
     public void destroy() {
-        texture = null;
-        if (textureR != null) textureR.unReference();
+        if (texture != null) texture.unreference();
     }
 
     private final Rect uv = new Rect(0, 0, 0, 0);

@@ -2,7 +2,6 @@ package dk.sebsa.spellbook.debug;
 
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.AssetManager;
-import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.math.Color;
@@ -52,7 +51,6 @@ public class DebugRenderStage extends RenderStage {
 
     }
 
-    private final AssetReference shaderReference;
     private GLSLShaderProgram shader;
 
     /**
@@ -60,8 +58,7 @@ public class DebugRenderStage extends RenderStage {
      */
     public DebugRenderStage(EngineBuildRenderPipelineEvent e) {
         super(e.moduleCore.getWindow());
-        shaderReference = AssetManager.getAssetS("/spellbook/shaders/SpellbookDebugShader.glsl");
-        shader = shaderReference.get();
+        shader = (GLSLShaderProgram) AssetManager.getAssetS("/spellbook/shaders/SpellbookDebugShader.glsl");
 
         // Uniforms
         shader.createUniform("projectionViewMatrix");
@@ -183,9 +180,8 @@ public class DebugRenderStage extends RenderStage {
 
     @Override
     protected void destroy() {
-        shaderReference.unReference();
+        shader.unreference();
         linesVAO.destroy();
         pointsVAO.destroy();
-        shader = null;
     }
 }

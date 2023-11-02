@@ -2,7 +2,7 @@ package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
-import dk.sebsa.spellbook.asset.AssetReference;
+import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
 import org.lwjgl.BufferUtils;
@@ -28,8 +28,7 @@ public class Texture extends Asset {
     @Getter private float width, height;
 
 
-    @Override
-    public void load(AssetReference location) {
+    public void load() {
         try {
             set(loadTexture(location));
         } catch (IOException e) {
@@ -54,14 +53,14 @@ public class Texture extends Asset {
      * @param location the location of the texture file
      * @return The information about this OpenGL texture
      */
-    private TextureInfo loadTexture(AssetReference location) throws IOException {
+    private TextureInfo loadTexture(AssetLocation location) throws IOException {
         ByteBuffer data;
 
         IntBuffer widthBuffer = BufferUtils.createIntBuffer(1);
         IntBuffer heightBuffer = BufferUtils.createIntBuffer(1);
         IntBuffer channelsBuffer = BufferUtils.createIntBuffer(1);
 
-        InputStream is = FileUtils.loadFile(location.location);
+        InputStream is = FileUtils.loadFile(location.location());
 
         // Load texture from stream
         byte[] bytes = new byte[8000];

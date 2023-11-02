@@ -1,7 +1,7 @@
 package dk.sebsa.spellbook.marble;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.asset.AssetReference;
+import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
@@ -20,9 +20,7 @@ import java.util.Map;
 public class MarbleIMRenderer {
     private static boolean prepared = false;
     private final Font currFont;
-    private final AssetReference spriteSheetR;
     private final SpriteSheet spriteSheet;
-    private final AssetReference shaderR;
     private final GLSLShaderProgram shader;
 
     private static Sprite sprBox;
@@ -62,16 +60,13 @@ public class MarbleIMRenderer {
 
     /**
      * @param font         Font to use
-     * @param spriteSheetR Spritesheet to use
-     * @param shaderR      Shade to use
+     * @param spriteSheet Spritesheet to use
+     * @param shader      Shade to use
      */
-    public MarbleIMRenderer(Font font, AssetReference spriteSheetR, AssetReference shaderR) {
-        this.spriteSheetR = spriteSheetR;
-        this.shaderR = shaderR;
+    public MarbleIMRenderer(Font font, SpriteSheet spriteSheet, GLSLShaderProgram shader) {
+        this.spriteSheet = spriteSheet;
+        this.shader = shader;
         this.currFont = font;
-        shader = shaderR.get();
-
-        spriteSheet = spriteSheetR.get();
 
         // Get sprites
         sprBox = spriteSheet.spr("Box");
@@ -188,8 +183,8 @@ public class MarbleIMRenderer {
      * Unreferences / Deletes any assets used by the render
      */
     public void destroy() {
-        shaderR.unReference();
-        spriteSheetR.unReference();
+        shader.unreference();
+        spriteSheet.unreference();
     }
 
     @Override

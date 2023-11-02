@@ -23,7 +23,7 @@ public class OpenGLModule implements Module {
     @EventListener
     public void engineLoad(EngineLoadEvent e) {
         pipeline = ((EngineBuildRenderPipelineEvent) Spellbook.instance.getEventBus().engine(new EngineBuildRenderPipelineEvent(e.moduleCore, e.capabilities))).builder.build();
-        GL2D.init(e.moduleCore.getWindow(), e.assetManager.getAsset("/spellbook/shaders/Spellbook2d.glsl"));
+        GL2D.init(e.moduleCore.getWindow(), (GLSLShaderProgram) e.assetManager.getAsset("/spellbook/shaders/Spellbook2d.glsl"));
 
         capRender2D = e.capabilities.render2D;
         if (capRender2D) {

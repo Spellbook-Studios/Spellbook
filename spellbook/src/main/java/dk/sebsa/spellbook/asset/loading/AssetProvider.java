@@ -1,7 +1,5 @@
 package dk.sebsa.spellbook.asset.loading;
 
-import dk.sebsa.spellbook.asset.AssetReference;
-
 import java.util.List;
 
 /**
@@ -16,5 +14,5 @@ public abstract class AssetProvider {
      *
      * @return The assets
      */
-    public abstract List<AssetReference> getAssets();
+    public abstract List<AssetLocation> getAssets();
 }
