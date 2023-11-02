@@ -75,4 +75,14 @@ public class SpriteSheet extends Asset {
     public Sprite spr(String name) {
         return spriteMap.get(name);
     }
+
+    @Override
+    public String toString() {
+        return "SpriteSheet{" +
+                "location=" + location +
+                ", material=" + material +
+                ", offset=" + offset +
+                ", padding=" + padding +
+                '}';
+    }
 }

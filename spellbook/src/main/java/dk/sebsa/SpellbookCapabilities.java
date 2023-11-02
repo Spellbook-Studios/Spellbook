@@ -1,6 +1,7 @@
 package dk.sebsa;
 
 import dk.sebsa.spellbook.asset.loading.AssetProvider;
+import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.Builder;
 import lombok.Getter;
@@ -119,6 +120,12 @@ public class SpellbookCapabilities {
      */
     @Builder.Default
     public final long shutdownTasksAwaitMillis = 10000;
+
+    /**
+     * The opengl clear value
+     */
+    @Builder.Default
+    public Color clearColor = Color.neonOrange;
 
 
     /**

@@ -1,9 +1,11 @@
 package dk.sebsa.spellbook.phys.components;
 
-import dk.sebsa.spellbook.math.*;
+import dk.sebsa.spellbook.math.Mathf;
+import dk.sebsa.spellbook.math.Vector2f;
 
 /**
  * A collider in the shape of a circle
+ *
  * @author sebs
  * @since 1.0.0
  */
@@ -27,7 +29,7 @@ public class CircleCollider2D extends Collider2D {
         circle2.set(collider.getCenter());
 
         float distanceSq = Math.abs(Mathf.sqDistance(circle1, circle2));
-        if(distanceSq < (radius + collider.radius) * (radius + collider.radius)) {
+        if (distanceSq < (radius + collider.radius) * (radius + collider.radius)) {
             float x = (circle1.x + circle2.x) / 2;
             float y = (circle1.y + circle2.y) / 2;
             float dist = (float) Math.sqrt(distanceSq);
@@ -38,6 +40,8 @@ public class CircleCollider2D extends Collider2D {
             circle2.y = y + collider.radius * (circle2.y - circle1.y) / dist;
 
             collider.entity.transform.setPosition(circle2.x, circle2.y, 0);
+            onCollide(collider);
+            collider.onCollide(this);
         }
     }
 }

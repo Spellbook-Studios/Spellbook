@@ -6,6 +6,8 @@ import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.Sprite;
 import dk.sebsa.spellbook.opengl.SpriteSheet;
+import lombok.CustomLog;
+import lombok.Getter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -16,9 +18,11 @@ import java.util.Map;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class MarbleIMRenderer {
     private static boolean prepared = false;
-    private final Font currFont;
+    @Getter
+    private final Font font;
     private final SpriteSheet spriteSheet;
     private final GLSLShaderProgram shader;
 
@@ -58,14 +62,14 @@ public class MarbleIMRenderer {
     }
 
     /**
-     * @param font         Font to use
+     * @param font        Font to use
      * @param spriteSheet Spritesheet to use
      * @param shader      Shade to use
      */
     public MarbleIMRenderer(Font font, SpriteSheet spriteSheet, GLSLShaderProgram shader) {
         this.spriteSheet = spriteSheet;
         this.shader = shader;
-        this.currFont = font;
+        this.font = font;
 
         // Get sprites
         sprBox = spriteSheet.spr("Box");
@@ -85,14 +89,15 @@ public class MarbleIMRenderer {
      * @param y    GUI Position Y
      */
     public void label(String text, float x, float y) {
-        Map<Byte, Font.Glyph> chars = currFont.getCharTable();
+        if (!prepared) logger.err("Please prepare Marble before rendering");
+        Map<Byte, Font.Glyph> chars = font.getCharTable();
         byte[] c = text.getBytes(StandardCharsets.ISO_8859_1);
         float tempX = x;
 
         for (byte value : c) {
             Font.Glyph glyph = chars.get(value);
 
-            GL2D.drawTextureWithTextCords(currFont.getMaterial(), new Rect(tempX, y, glyph.scale().x, glyph.scale().y), new Rect(glyph.pos().x, glyph.pos().y, glyph.size().x, glyph.size().y));
+            GL2D.drawTextureWithTextCords(font.getMaterial(), new Rect(tempX, y, glyph.scale().x, glyph.scale().y), new Rect(glyph.pos().x, glyph.pos().y, glyph.size().x, glyph.size().y));
 
             tempX += glyph.scale().x;
         }
@@ -105,6 +110,7 @@ public class MarbleIMRenderer {
      * @param sprite The sprite to render
      */
     public void sprite(Rect rect, Sprite sprite) {
+        if (!prepared) logger.err("Please prepare Marble before rendering");
         GL2D.drawSprite(rect, sprite);
     }
 
@@ -115,6 +121,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void box(Rect rect) {
+        if (!prepared) logger.err("Please prepare Marble before rendering");
         sprite(rect, sprBox);
     }
 
@@ -125,6 +132,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void boxSpecialLight(Rect rect) {
+        if (!prepared) logger.err("Please prepare Marble before rendering");
         sprite(rect, sprBoxSpecialLight);
     }
 
@@ -135,6 +143,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void boxSpecialDark(Rect rect) {
+        if (!prepared) logger.err("Please prepare Marble before rendering");
         sprite(rect, sprBoxSpecialDark);
     }
 
@@ -145,6 +154,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void button(Rect rect) {
+        if (!prepared) logger.err("Please prepare Marble before rendering");
         sprite(rect, sprButton);
     }
 
@@ -155,6 +165,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void buttonHover(Rect rect) {
+        if (!prepared) logger.err("Please prepare Marble before rendering");
         sprite(rect, sprButtonHover);
     }
 
@@ -165,6 +176,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void buttonSpecial(Rect rect) {
+        if (!prepared) logger.err("Please prepare Marble before rendering");
         sprite(rect, sprButtonSpecial);
     }
 
@@ -175,6 +187,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void window(Rect rect) {
+        if (!prepared) logger.err("Please prepare Marble before rendering");
         sprite(rect, sprWindow);
     }
 
@@ -189,7 +202,7 @@ public class MarbleIMRenderer {
     @Override
     public String toString() {
         return "MarbleIMRenderer{" +
-                "currFont=" + currFont +
+                "currFont=" + font +
                 ", spriteSheet=" + spriteSheet +
                 ", shader=" + shader +
                 '}';

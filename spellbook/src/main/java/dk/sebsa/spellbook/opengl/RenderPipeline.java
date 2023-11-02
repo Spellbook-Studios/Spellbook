@@ -80,6 +80,13 @@ public class RenderPipeline {
         private List<RenderStage> renderStages = new ArrayList<>();
 
         /**
+         * @return true if no renderstages are added, false otherwise
+         */
+        public boolean isEmpty() {
+            return renderStages.isEmpty();
+        }
+
+        /**
          * Appends a stage to the end of a pipeline
          *
          * @param stage The stage to append

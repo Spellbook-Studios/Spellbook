@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * The engine needs a new RenderPipeline
+ * If nothing is added to the builder the module will add a SpriteStage and UI stage for you
  *
  * @author sebs
  * @since 1.0.0

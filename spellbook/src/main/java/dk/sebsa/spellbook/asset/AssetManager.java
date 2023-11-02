@@ -4,6 +4,7 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.audio.Sound;
+import dk.sebsa.spellbook.marble.FontType;
 import dk.sebsa.spellbook.opengl.*;
 
 import java.util.HashMap;
@@ -42,6 +43,8 @@ public class AssetManager {
             return new SpriteSheet();
         else if (location.endsWith(".ogg"))
             return new Sound();
+        else if (location.endsWith(".ttf"))
+            return new FontType();
         else {
             Spellbook.instance.error("Failed to identify asset type: " + location, false);
             return null;
@@ -56,7 +59,7 @@ public class AssetManager {
     public void registerReferences(List<AssetLocation> references) {
         for (AssetLocation ref : references) {
             Asset asset = makeAsset(ref.location());
-            if(asset == null) continue;
+            if (asset == null) continue;
 
             asset.location = ref;
             assets.put(ref.name(), asset);

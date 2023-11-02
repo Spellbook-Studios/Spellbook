@@ -2,9 +2,14 @@ package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.Module;
-import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
+import dk.sebsa.spellbook.core.events.EngineLoadEvent;
+import dk.sebsa.spellbook.core.events.EngineRenderEvent;
+import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
+import dk.sebsa.spellbook.opengl.stages.SpriteStage;
+import dk.sebsa.spellbook.opengl.stages.UIStage;
 
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.opengl.GL11.*;
@@ -16,13 +21,21 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 1.0.0
  */
 public class OpenGLModule implements Module {
-    private final Color clearColor = Color.neonOrange;
+    private Color clearColor;
     private RenderPipeline pipeline;
     private boolean capRender2D;
 
     @EventListener
     public void engineLoad(EngineLoadEvent e) {
-        pipeline = ((EngineBuildRenderPipelineEvent) Spellbook.instance.getEventBus().engine(new EngineBuildRenderPipelineEvent(e.moduleCore, e.capabilities))).builder.build();
+        clearColor = e.capabilities.clearColor;
+        var event = new EngineBuildRenderPipelineEvent(e.moduleCore, e.capabilities);
+        var builder = ((EngineBuildRenderPipelineEvent) Spellbook.instance.getEventBus().engine(event)).builder;
+
+        // If the builder is empty it will add some default stuff
+        if (builder.isEmpty())
+            builder.appendStage(new SpriteStage(event)).appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()));
+        pipeline = builder.build();
+
         GL2D.init(e.moduleCore.getWindow(), (GLSLShaderProgram) e.assetManager.getAsset("/spellbook/shaders/Spellbook2d.glsl"));
 
         capRender2D = e.capabilities.render2D;

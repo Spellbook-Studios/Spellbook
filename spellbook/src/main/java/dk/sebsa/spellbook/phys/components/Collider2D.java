@@ -8,11 +8,13 @@ import lombok.Getter;
 
 /**
  * Abstract representation of a 2 dimensional collider component
+ *
  * @author sebs
  * @since 1.0.0
  */
 public abstract class Collider2D implements Component {
-    @Getter protected Entity entity;
+    @Getter
+    protected Entity entity;
     /**
      * Where the colliders is anchored to the entity
      * 0.5f 0.5f: the middle of the collider resides on the entities pos
@@ -22,7 +24,8 @@ public abstract class Collider2D implements Component {
     /**
      * The center of the collider
      */
-    @Getter private Vector2f center;
+    @Getter
+    private Vector2f center;
 
     @Override
     public void onEnable(Entity entity) {
@@ -36,11 +39,18 @@ public abstract class Collider2D implements Component {
 
     @Override
     public void lateUpdate(FrameData frameData) {
-        if(center == null) { center = new Vector2f(); calcCenter(); }
-        if(entity.transform.isDirty())  {
+        if (center == null) {
+            center = new Vector2f();
+            calcCenter();
+        }
+        if (entity.transform.isDirty()) {
             frameData.newton2DMovers.add(this);
             calcCenter();
-        } else                            frameData.newton2DSolids.add(this);
+        } else frameData.newton2DSolids.add(this);
+    }
+
+    public void onCollide(Collider2D other) {
+        // NOT IMPLEMENTED BY DEFAULT
     }
 
     /**

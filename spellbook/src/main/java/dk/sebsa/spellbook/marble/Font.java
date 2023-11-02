@@ -37,6 +37,16 @@ public class Font {
     private float fontCharHeight;
 
     /**
+     * Calculates the width of a string written in this font
+     *
+     * @param s String to calculate
+     * @return The width
+     */
+    public int getStringWidth(String s) {
+        return fontMetrics.stringWidth(s);
+    }
+
+    /**
      * Creates a font using AWT to generate the font textures
      *
      * @param baseFont The AWT font to use
@@ -132,5 +142,13 @@ public class Font {
      * @since 0.0.1
      */
     public record Glyph(Vector2f pos, Vector2f size, Vector2f scale) {
+    }
+
+    @Override
+    public String toString() {
+        return "Font{" +
+                "size=" + baseFont.getSize() +
+                ", name=" + baseFont.getFontName() +
+                '}';
     }
 }

@@ -143,4 +143,19 @@ public class Color {
      * R=255, G=160, B=0, A=255
      */
     public static final Color neonOrange = color(1, 0.6470588f, 0.0f);
+    /**
+     * Color
+     * R=255, G=128, B=255, A=255
+     */
+    public static final Color lightMagenta = color(1f, 0.5f, 1f);
+    /**
+     * Color
+     * R=255, G=128, B=180, A=255
+     */
+    public static final Color babyPink = color(1f, 0.70588235294f, 1f);
+    /**
+     * Color
+     * R=0, G=128, B=255, A=255
+     */
+    public static final Color azure = color(0f, 0.5f, 1f);
 }

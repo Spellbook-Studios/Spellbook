@@ -50,7 +50,7 @@ public class ThreeKeyHashMap<K1, K2, K3, V> {
      * @param key2 Key 2
      * @param key3 Key 3
      * @param v    Computed if value is absent
-     * @return Either the value mapped to the keys or if non existent the one supplied by v
+     * @return Either the value mapped to the keys or if non-existent the one supplied by v
      */
     public V getPut(K1 key1, K2 key2, K3 key3, Supplier<V> v) {
         V r = get(key1, key2, key3);
