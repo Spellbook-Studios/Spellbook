@@ -8,10 +8,7 @@ import dk.sebsa.spellbook.audio.OpenALModule;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.events.*;
-import dk.sebsa.spellbook.core.threading.ITaskManager;
-import dk.sebsa.spellbook.core.threading.SpellbookTaskManager;
-import dk.sebsa.spellbook.core.threading.Task;
-import dk.sebsa.spellbook.core.threading.TaskGroup;
+import dk.sebsa.spellbook.core.threading.*;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.marble.Marble;
@@ -216,11 +213,15 @@ public class Spellbook {
         marbleModule = new Marble();
         registerModule(marbleModule);
 
+        var tasks = DynamicTaskGroup.builder().build();
+
         logger.log("Engine Init Event, prepare for trouble!..");
-        eventBus.engine(new EngineInitEvent(capabilities, application));
+        eventBus.engine(new EngineInitEvent(capabilities, application, tasks));
+        tasks.awaitDone();
 
         logger.log("Open the gates, Engine Load Event");
-        eventBus.engine(new EngineLoadEvent(capabilities, moduleCore.getAssetManager(), application, moduleCore));
+        eventBus.engine(new EngineLoadEvent(capabilities, moduleCore.getAssetManager(), application, moduleCore, tasks));
+        tasks.awaitDone();
 
         logger.log("Initialization done!");
     }

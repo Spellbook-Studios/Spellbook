@@ -3,10 +3,7 @@ package dk.sebsa.spellbook.marble;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.core.Module;
-import dk.sebsa.spellbook.core.events.EngineCleanupEvent;
-import dk.sebsa.spellbook.core.events.EngineLoadEvent;
-import dk.sebsa.spellbook.core.events.EventBus;
-import dk.sebsa.spellbook.core.events.EventListener;
+import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.util.ThreeKeyHashMap;
 import lombok.CustomLog;
 
@@ -25,7 +22,7 @@ public class Marble implements Module {
     }
 
     @EventListener
-    public void engineLoad(EngineLoadEvent e) {
+    public void engineFirstFrame(EngineFirstFrameEvent e) {
         defaultFont = font("Inter", 16, java.awt.Font.PLAIN);
         blackstoneSheetR = AssetManager.getAssetS("/spellbook/marble/Blackstone.sht");
         guiShaderR = AssetManager.getAssetS("/spellbook/shaders/SpellbookUI.glsl");

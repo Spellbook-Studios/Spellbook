@@ -6,6 +6,7 @@ import dk.sebsa.spellbook.asset.AssetReference;
 import dk.sebsa.spellbook.asset.loading.AssetProvider;
 import dk.sebsa.spellbook.asset.loading.ClassPathAssetProvider;
 import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.core.threading.Task;
 import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import lombok.CustomLog;
@@ -47,7 +48,17 @@ public class Core implements Module, EventHandler {
 
         e.capabilities.getAssetsProviders().add(new ClassPathAssetProvider());
 
-        this.stack = ((EngineBuildLayerStackEvent) Spellbook.instance.getEventBus().engine(new EngineBuildLayerStackEvent())).builder.build();
+        e.tasks.addTask(new Task() {
+            @Override
+            public String name() {
+                return "BuildLayerStackTask";
+            }
+
+            @Override
+            public void execute() throws InterruptedException {
+                stack = ((EngineBuildLayerStackEvent) Spellbook.instance.getEventBus().engine(new EngineBuildLayerStackEvent())).builder.build();
+            }
+        });
     }
 
     @EventListener
@@ -55,21 +66,31 @@ public class Core implements Module, EventHandler {
         logger.log("Core: Load asset providers");
 
         // Assets
-        List<AssetReference> assets = new ArrayList<>();
+        e.tasks.addTask(new Task() {
+            @Override
+            public String name() {
+                return "LoadAssetReferencesTask";
+            }
 
-        for (AssetProvider provider : e.capabilities.getAssetsProviders()) {
-            logger.log(" - Provider: " + provider.toString());
-            assets.addAll(provider.getAssets());
-        }
+            @Override
+            public void execute() throws InterruptedException {
+                List<AssetReference> assets = new ArrayList<>();
 
-        logger.trace("Loaded Assets: ");
-        for (AssetReference asset : assets) {
-            logger.trace(" " + asset);
-        }
+                for (AssetProvider provider : e.capabilities.getAssetsProviders()) {
+                    logger.log(" - Provider: " + provider.toString());
+                    assets.addAll(provider.getAssets());
+                }
 
-        assetManager.registerReferences(assets);
+                logger.trace("Loaded Assets: ");
+                for (AssetReference asset : assets) {
+                    logger.trace(" " + asset);
+                }
 
-        logger.log("Asset Providers done");
+                assetManager.registerReferences(assets);
+
+                logger.log("Asset Providers done");
+            }
+        });
 
         // Window & Input
         window.init();
