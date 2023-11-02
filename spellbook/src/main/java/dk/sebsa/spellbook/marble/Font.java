@@ -34,6 +34,7 @@ public class Font {
     private Material material;
     @Getter
     private float fontMaxHeight;
+    private float fontCharHeight;
 
     /**
      * Creates a font using AWT to generate the font textures
@@ -51,7 +52,8 @@ public class Font {
         graphics.setFont(baseFont);
 
         fontMetrics = graphics.getFontMetrics();
-        fontMaxHeight = (float) (fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent());
+        fontMaxHeight = (float) (fontMetrics.getHeight());
+        fontCharHeight = (float) (fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent());
         imageSize = new Vector2f(2048, 2048);
         bufferedImage = graphics.getDeviceConfiguration().createCompatibleImage((int) imageSize.x, (int) imageSize.y, Transparency.TRANSLUCENT);
 
@@ -94,9 +96,10 @@ public class Font {
                 tempX = 0;
                 tempY += 1;
             }
+            var y = (fontMaxHeight) * tempY;
 
-            charTable.put(chars[i], new Glyph(new Vector2f(tempX / imageSize.x, (tempY * fontMaxHeight) / imageSize.y), new Vector2f(charWidth / imageSize.x, fontMaxHeight / imageSize.y), new Vector2f(charWidth, fontMaxHeight)));
-            graphics2d.drawString(String.valueOf(ISO_8559_1.charAt(i)), tempX, fontMetrics.getMaxAscent() + (fontMaxHeight * tempY));
+            charTable.put(chars[i], new Glyph(new Vector2f(tempX / imageSize.x, y / imageSize.y), new Vector2f(charWidth / imageSize.x, fontCharHeight / imageSize.y), new Vector2f(charWidth, fontMaxHeight)));
+            graphics2d.drawString(String.valueOf(ISO_8559_1.charAt(i)), tempX, fontMetrics.getMaxAscent() + y);
             tempX += advance;
         }
     }
