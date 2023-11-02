@@ -15,12 +15,6 @@ import lombok.CustomLog;
  */
 @CustomLog
 public class Marble implements Module {
-
-    @Override
-    public void init(EventBus eventBus) {
-        eventBus.registerListeners(this);
-    }
-
     @EventListener
     public void engineFirstFrame(EngineFirstFrameEvent e) {
         defaultFont = font("Inter", 16, java.awt.Font.PLAIN);

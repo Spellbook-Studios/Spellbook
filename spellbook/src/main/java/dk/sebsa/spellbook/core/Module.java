@@ -5,6 +5,8 @@ import dk.sebsa.spellbook.core.events.EventHandler;
 
 /**
  * A module of the Spellbook engine
+ * Modules are automatically subscribed to the eventBus
+ *
  * @since 1.0.0
  * @author sebs
  */
@@ -14,7 +16,9 @@ public interface Module extends EventHandler {
      * Mostly used to register listeners from the eventBus
      * @param eventBus The eventbus that the module can register itself to
      */
-    void init(EventBus eventBus);
+    default void init(EventBus eventBus) {
+        eventBus.registerListeners(this);
+    }
 
     /**
      * Destroy the module and close all streams...

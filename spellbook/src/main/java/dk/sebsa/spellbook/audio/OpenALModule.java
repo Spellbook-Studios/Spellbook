@@ -23,11 +23,6 @@ import java.nio.IntBuffer;
  */
 @CustomLog
 public class OpenALModule implements Module {
-    @Override
-    public void init(EventBus eventBus) {
-        eventBus.registerListeners(this);
-    }
-
     private long device;
     private long context;
 

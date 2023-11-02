@@ -35,11 +35,6 @@ public class Core implements Module, EventHandler {
     @Getter
     private AssetManager assetManager;
 
-    @Override
-    public void init(EventBus eventBus) {
-        eventBus.registerListeners(this);
-    }
-
     @EventListener
     public void engineInit(EngineInitEvent e) {
         this.window = new GLFWWindow(e.application.name(), 960, 540);

@@ -20,11 +20,6 @@ public class OpenGLModule implements Module {
     private RenderPipeline pipeline;
     private boolean capRender2D;
 
-    @Override
-    public void init(EventBus eventBus) {
-        eventBus.registerListeners(this);
-    }
-
     @EventListener
     public void engineLoad(EngineLoadEvent e) {
         pipeline = ((EngineBuildRenderPipelineEvent) Spellbook.instance.getEventBus().engine(new EngineBuildRenderPipelineEvent(e.moduleCore, e.capabilities))).builder.build();

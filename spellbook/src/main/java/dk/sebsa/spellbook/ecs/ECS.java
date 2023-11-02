@@ -19,11 +19,6 @@ public class ECS implements Module {
     public static Scene ROOT = new Scene();
 
     @Override
-    public void init(EventBus eventBus) {
-        eventBus.registerListeners(this);
-    }
-
-    @Override
     public void cleanup() {
         ROOT.delete();
     }

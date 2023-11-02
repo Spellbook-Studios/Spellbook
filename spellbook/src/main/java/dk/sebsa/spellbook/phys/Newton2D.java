@@ -14,11 +14,6 @@ import dk.sebsa.spellbook.phys.components.Collider2D;
  * @since 1.0.0
  */
 public class Newton2D implements Module {
-    @Override
-    public void init(EventBus eventBus) {
-        eventBus.registerListeners(this);
-    }
-
     @EventListener
     public void engineFrameProcess(EngineFrameProcess e) {
         for(Collider2D mover : e.frameData.newton2DMovers) {

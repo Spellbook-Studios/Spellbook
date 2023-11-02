@@ -147,7 +147,6 @@ public class Spellbook {
         Time.init(logger);
         logger.log("Started time at: " + Time.getNow());
 
-        logger.log("Creating EventBus");
         eventBus = new EventBus();
         eventBus.registerListeners(application);
 
@@ -202,7 +201,7 @@ public class Spellbook {
 
         } else taskManager = new SpellbookTaskManager();
 
-        // Add Non Core Modules
+        // Register Non Core Modules
         if (capabilities.ecs) registerModule(new ECS());
         if (capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl))
             registerModule(new OpenGLModule());
