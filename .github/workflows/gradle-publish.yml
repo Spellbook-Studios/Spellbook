@@ -5,14 +5,14 @@
 # This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
 
-name: Gradle Package
+name: Gradle Build & Publish
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -27,18 +27,13 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-          server-username: PinkLemonadeWizard
-          server-password: ${{ secrets.PINKLEMONADEWIZARD_OSSRH_PASSWORD }}
           gpg-private-key: ${{ secrets.BBCE4E01_SIGNING_KEY }}
           gpg-passphrase: ${{ secrets.BBCE4E01_SIGNING_PASSWORD }}
-      - name: Configure GPG Key
-        run: |
-          echo -n "$GPG_SIGNING_KEY" > secring.gpg
-        env:
-          GPG_SIGNING_KEY: ${{ secrets.BBCE4E01_SIGNING_KEY }}
+
       - name: Build & Publish with Gradle
         uses: gradle/gradle-build-action@v2
       - name: Publish
         env:
-          SIGNING_FILE: ${{ secrets.QODANA_TOKEN }}
-        run: ./gradlew clean :spellbook:build :spellbook:publish -PossrhUsername=PinkLemonadeWizard -Psigning.keyId=BBCE4E01 -Psigning.secretKeyRingFile=secring.gpg
+          MAVEN_USERNAME: PinkLemonadeWizard
+          MAVEN_PASSWORD: ${{ secrets.PINKLEMONADEWIZARD_OSSRH_PASSWORD }}
+        run: ./gradlew clean :spellbook:build :spellbook:publish
