@@ -1,0 +1,25 @@
+name: Quality Check
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
+
+      - uses: JetBrains/qodana-action@v2023.2
+        name: Qodana Scan
+        env:
+          QODANA_TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb24iOiIzN0Q1ZSIsInByb2plY3QiOiIzb3FOTyIsInRva2VuIjoiQWdaNHEifQ.FvoDDDBKvgA8s-4476Ba_wIabTOhTy7QsRL-gOWJFZY
+#        with:
+#          args: --baseline,qodana.sarif.json,--property=project.open.type=Gradle
+#          push-fixes: pull-request

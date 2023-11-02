@@ -29,6 +29,12 @@ public class SoundPlayer implements Component {
     private SoundSource source;
 
     /**
+     * Soundplayer with no sound
+     */
+    public SoundPlayer() {
+    }
+
+    /**
      * @param soundName Name of the sound to play
      */
     public SoundPlayer(String soundName) {

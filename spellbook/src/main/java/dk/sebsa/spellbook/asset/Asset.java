@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public abstract class Asset {
     @Getter
     protected AssetLocation location;
@@ -34,7 +35,10 @@ public abstract class Asset {
      * @return this
      */
     Asset get() {
-        if(usages < 1) { load(); isLoaded = true; }
+        if(usages < 1) {
+            load(); isLoaded = true;
+            logger.trace("Asset dynamically loaded " + location.name());
+        }
         usages++;
         return this;
     }
@@ -46,8 +50,8 @@ public abstract class Asset {
     public void unreference() {
         usages = usages - 1;
         if (usages < 1) {
-            isLoaded = false;
-            destroy();
+            isLoaded = false; destroy();
+            logger.trace("Asset dynamically destroyed " + location.name());
         }
     }
 

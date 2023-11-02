@@ -21,27 +21,6 @@ pipeline {
                 archiveArtifacts artifacts: 'spellbook/build/libs/*.jar', fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
             }
         }
-        stage('Qodana') {
-            stages {
-                stage('Run') {
-                    agent {
-                        docker {
-                            args '''-v "${WORKSPACE}":/data/project/ --entrypoint=""'''
-                            image 'jetbrains/qodana-jvm-community'
-                        }
-                    }
-                    steps {
-                        sh '''qodana \
-                        --fail-threshold 5 \
-                        --property=project.open.type=Gradle \
-                        --project-dir /data/project/ \
-                        --source-dir spellbook/src/main/java/ \
-                        --baseline /data/project/qodana.sarif.json
-                        '''
-                    }
-                }
-            }
-        }
         stage('Deploy') {
             when { anyOf { branch 'main' } }
             steps {
