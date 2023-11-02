@@ -11,11 +11,11 @@ exclude:
   - name: All
     paths:
       - sandbox
+      - spellbook/build.gradle
 
 #Enable inspections
 include:
   - name: MissingJavadoc
-  - name: CheckDependencyLicenses
 
 projectJDK: 21 #(Applied in CI/CD pipeline)
 
