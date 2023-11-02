@@ -36,10 +36,9 @@ jobs:
           echo -n "$GPG_SIGNING_KEY" > secring.gpg
         env:
           GPG_SIGNING_KEY: ${{ secrets.BBCE4E01_SIGNING_KEY }}
-      - name: Build with Gradle
+      - name: Build & Publish with Gradle
         uses: gradle/gradle-build-action@2.9.0
-        run: ./gradlew clean :spellbook:build
       - name: Publish
         env:
           SIGNING_FILE: ${{ secrets.QODANA_TOKEN }}
-        run: ./gradlew :spellbook:publish -PossrhUsername=PinkLemonadeWizard -Psigning.keyId=BBCE4E01 -Psigning.secretKeyRingFile=secring.gpg
+        run: ./gradlew clean :spellbook:build :spellbook:publish -PossrhUsername=PinkLemonadeWizard -Psigning.keyId=BBCE4E01 -Psigning.secretKeyRingFile=secring.gpg
