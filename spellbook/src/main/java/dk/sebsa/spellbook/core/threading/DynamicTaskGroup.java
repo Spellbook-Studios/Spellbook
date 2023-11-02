@@ -64,6 +64,13 @@ public class DynamicTaskGroup {
     }
 
     /**
+     * Waits for all tasks to finish
+     */
+    public void awaitDone() {
+        while(!runningTasks.isEmpty()) runningTasks.removeIf(task -> task.state == TaskState.DONE);
+    }
+
+    /**
      * Builds DynamicTaskGroups
      *
      * @author sebs
