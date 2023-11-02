@@ -23,7 +23,7 @@ import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
  * @author sebs
  * @since 1.0.0
  */
-public class Texture implements Asset {
+public class Texture extends Asset {
     private int id;
     @Getter private float width, height;
 

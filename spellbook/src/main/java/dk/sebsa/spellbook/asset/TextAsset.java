@@ -14,7 +14,7 @@ import java.io.InputStream;
  * @since 1.0.0
  */
 @Getter
-public class TextAsset implements Asset {
+public class TextAsset extends Asset {
     private String text;
 
     @Override

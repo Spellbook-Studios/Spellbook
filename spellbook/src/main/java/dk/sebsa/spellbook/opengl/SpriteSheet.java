@@ -20,7 +20,7 @@ import java.util.Map;
  * @author sebs
  * @since 1.0.0
  */
-public class SpriteSheet implements Asset {
+public class SpriteSheet extends Asset {
     private final List<Sprite> sprites = new ArrayList<>();
     private final Map<String, Sprite> spriteMap = new HashMap<>();
 

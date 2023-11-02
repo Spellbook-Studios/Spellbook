@@ -19,7 +19,7 @@ import java.util.List;
  * @author sebs
  * @since 1.0.0
  */
-public class Sprite implements Asset {
+public class Sprite extends Asset {
     @Getter
     private Rect offset;
     @Getter

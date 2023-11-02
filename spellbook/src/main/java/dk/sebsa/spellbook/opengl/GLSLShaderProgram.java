@@ -25,7 +25,7 @@ import static org.lwjgl.opengl.GL20.*;
  * @since 1.0.0
  */
 @CustomLog
-public class GLSLShaderProgram implements Asset {
+public class GLSLShaderProgram extends Asset {
     private int programId;
     private int vertexShaderId, fragmentShaderId;
     private final Map<String, Integer> uniforms = new HashMap<>();

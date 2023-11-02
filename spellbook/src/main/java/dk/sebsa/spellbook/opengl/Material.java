@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * The surface of model, something which can be rendered
  */
-public class Material implements Asset {
+public class Material extends Asset {
     @Getter
     private Color color;
     @Getter
