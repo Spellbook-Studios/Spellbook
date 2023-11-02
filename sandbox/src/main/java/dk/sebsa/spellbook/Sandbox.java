@@ -48,9 +48,9 @@ public class Sandbox implements Application {
 
         Spellbook.start(new Sandbox(), SpellbookCapabilities.builder()
                 .spellbookDebug(false)
-                .logStoreTarget("../logs/latest.log")
+                .logStoreTarget("logs/latest.log")
                 .build()
-                .addAssetProvider(new FolderAssetProvider(new File("../assets/"), "sandbox"))
+                .addAssetProvider(new FolderAssetProvider(new File("assets/"), "sandbox"))
         );
     }
 
