@@ -11,7 +11,7 @@ on:
   pull_request:
 
 jobs:
-  build-publish:
+  gradle-build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
