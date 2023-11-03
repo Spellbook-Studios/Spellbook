@@ -26,4 +26,3 @@ For information about working with spellbook, sandbox and creating spellbook app
 please [check the wiki](https://spellbook-studios.gitbook.io/spellbook/)
 
 *With love, Sebastian :heart:*
-

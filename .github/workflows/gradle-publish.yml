@@ -12,7 +12,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-publish:
+  gradle-build-publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
