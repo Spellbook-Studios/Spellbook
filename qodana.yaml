@@ -11,6 +11,7 @@ exclude:
   - name: All
     paths:
       - sandbox
+      - demos
       - spellbook/build.gradle
 
 #Enable inspections
