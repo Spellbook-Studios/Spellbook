@@ -29,4 +29,3 @@ plugins:
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 fixesStrategy: CLEANUP
-
