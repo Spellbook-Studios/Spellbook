@@ -240,4 +240,26 @@ public class Vector2f {
         float invLength = 1.0f / (float) java.lang.Math.sqrt(x * x + y * y);
         return new Vector2f(x * invLength, y * invLength);
     }
+
+    /**
+     * Returns the squared length of this vector
+     * Calculating the squared magnitude instead of the magnitude is much faster. Often if you are comparing magnitudes of two vectors you can just compare their squared magnitudes.
+     *
+     * @return the squared length of this vector
+     */
+    public float sqrMagnitude() {
+        return x * x + y * y;
+    }
+
+    /**
+     * Returns the length of this vector
+     * The length of the vector is square root of (x*x+y*y).
+     * <p>
+     * If you only need to compare magnitudes of some vectors, you can compare squared magnitudes of them using sqrMagnitude (computing squared magnitudes is faster).
+     *
+     * @return the length of this vector
+     */
+    public float magnitude() {
+        return (float) Math.sqrt(sqrMagnitude());
+    }
 }

@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.audio.SoundPlayer;
 import dk.sebsa.spellbook.core.threading.TaskGroup;
 import dk.sebsa.spellbook.ecs.ECS;
@@ -119,6 +118,11 @@ public class DebugLayer extends ImGUILayer {
 
                 ImGui.endTable();
             }
+            ImGui.end();
+        }
+
+        if (ImGui.begin("Player")) {
+            ImGui.text(Sandbox.player.transform.getGlobalPosition().toString());
             ImGui.end();
         }
     }

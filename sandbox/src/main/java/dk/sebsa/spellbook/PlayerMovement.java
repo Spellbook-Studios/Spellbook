@@ -19,22 +19,29 @@ public class PlayerMovement implements Component {
     }
 
     private final Vector3f deltaMovement = new Vector3f();
-    public final float speed = 30f;
+    public final float speed = 300f;
 
     @Override
     public void update(FrameData frameData) {
         GLFWInput input = frameData.input;
         deltaMovement.zero();
 
-        if(input.isKeyDown(GLFW.GLFW_KEY_W)) {
-            deltaMovement.y += speed * 10;
-        } if(input.isKeyDown(GLFW.GLFW_KEY_D)) {
-            deltaMovement.x += speed * 10;
-        } if(input.isKeyDown(GLFW.GLFW_KEY_S)) {
-            deltaMovement.y -= speed * 10;
-        } if(input.isKeyDown(GLFW.GLFW_KEY_A)) {
-            deltaMovement.x -= speed * 10;
+        if (Sandbox.gamePad != null) {
+            deltaMovement.set(Sandbox.gamePad.axisLeft.x, -Sandbox.gamePad.axisLeft.y, 0);
         }
-        if(!deltaMovement.isZero()) entity.transform.move(deltaMovement.mul(Time.getDeltaTime()));
+
+        if (input.isKeyDown(GLFW.GLFW_KEY_W)) {
+            deltaMovement.y = 1;
+        }
+        if (input.isKeyDown(GLFW.GLFW_KEY_D)) {
+            deltaMovement.x = 1;
+        }
+        if (input.isKeyDown(GLFW.GLFW_KEY_S)) {
+            deltaMovement.y = -1;
+        }
+        if (input.isKeyDown(GLFW.GLFW_KEY_A)) {
+            deltaMovement.x = -1;
+        }
+        if (!deltaMovement.isZero()) entity.transform.move(deltaMovement.mul(speed).mul(Time.getDeltaTime()));
     }
 }

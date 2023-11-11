@@ -101,8 +101,14 @@ public class Core implements Module, EventHandler {
     }
 
     @EventListener
+    public void engineFirstFrame(EngineFirstFrameEvent e) {
+        input.scanGamePads();
+    }
+
+    @EventListener
     public void engineFrameEarly(EngineFrameEarly e) {
         window.pollEvents();
+        input.updateGamePad();
     }
 
     @EventListener

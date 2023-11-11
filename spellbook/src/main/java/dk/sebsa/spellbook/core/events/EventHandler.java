@@ -1,6 +1,8 @@
 package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.spellbook.io.GLFWWindow;
+import dk.sebsa.spellbook.io.GamePadConnectedEvent;
+import dk.sebsa.spellbook.io.GamePadDisConnectedEvent;
 
 /**
  * Has functions for all engine events
@@ -115,5 +117,25 @@ public interface EventHandler {
      */
     @EventListener
     default void engineBuildLayerStack(EngineBuildLayerStackEvent e) {
+    }
+
+    /**
+     * Occurs when a gamepad is connected
+     * Either during FirstFrame or in the main loop
+     *
+     * @param e The event
+     */
+    @EventListener
+    default void gamePadConnected(GamePadConnectedEvent e) {
+    }
+
+    /**
+     * Occurs when a gamepad is disconnected
+     * Occurs in the main loop
+     *
+     * @param e The event
+     */
+    @EventListener
+    default void gamePadDisConnected(GamePadDisConnectedEvent e) {
     }
 }

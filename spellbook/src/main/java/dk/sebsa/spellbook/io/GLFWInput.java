@@ -49,11 +49,35 @@ public class GLFWInput {
     // Callbacks
     private final GLFWMouseButtonCallback mouseButtonCallback;
     private final GLFWKeyCallback keyCallback;
+    private final GLFWJoystickCallback joystickCallback;
     private final GLFWCursorPosCallback cursorCallback;
     private final GLFWScrollCallback scrollCallback;
     private final GLFWCharCallback charCallback; // For text input
 
+    /**
+     * All 16 gamepads
+     * They are all instantiated at program start, and are assigned to controller when they connect and disconnect
+     */
+    public final GamePad[] gamePads = new GamePad[16];
     private final EventBus eventBus;
+
+    private void connectGamePad(int jid) {
+        if (!GLFW.glfwJoystickPresent(jid)) return; // Returns if this is not a connected gamepad
+
+        gamePads[jid].setController();
+        logger.log("GamePad connected: " + gamePads[jid].toString());
+
+        eventBus.engine(new GamePadConnectedEvent(gamePads[jid]));
+    }
+
+    private void disconnectGamePad(int jid) {
+        if (!gamePads[jid].isConnected()) return; // Returns if this pad was never connected
+
+        logger.log("GamePad Disconnected: " + gamePads[jid].toString());
+        gamePads[jid].setController();
+
+        eventBus.engine(new GamePadDisConnectedEvent(gamePads[jid]));
+    }
 
     /**
      * @param e      The event used for loading loggers
@@ -81,6 +105,18 @@ public class GLFWInput {
 
                     ButtonReleasedEvent e = new ButtonReleasedEvent(button);
                     eventBus.user(e);
+                }
+            }
+        };
+
+        joystickCallback = new GLFWJoystickCallback() {
+            @Override
+            public void invoke(int jid, int event) {
+                if (event == GLFW.GLFW_CONNECTED) {
+                    if (!GLFW.glfwJoystickIsGamepad(jid)) return;
+                    connectGamePad(jid);
+                } else if (event == GLFW.GLFW_DISCONNECTED) {
+                    disconnectGamePad(jid);
                 }
             }
         };
@@ -146,6 +182,18 @@ public class GLFWInput {
         GLFW.glfwSetScrollCallback(window.getId(), scrollCallback);
         GLFW.glfwSetMouseButtonCallback(window.getId(), mouseButtonCallback);
         GLFW.glfwSetCharCallback(window.getId(), charCallback);
+        GLFW.glfwSetJoystickCallback(joystickCallback);
+    }
+
+    /**
+     * Creates gamepad instances and scans for connected gamepads
+     */
+    public void scanGamePads() {
+        // Scan for gamepads
+        for (int jid = 0; jid < 16; jid++) {
+            gamePads[jid] = new GamePad(jid);
+            connectGamePad(jid);
+        }
     }
 
     /**
@@ -172,6 +220,13 @@ public class GLFWInput {
         keyCallback.free();
         cursorCallback.free();
         scrollCallback.free();
+        joystickCallback.free();
+
+        // Cleanup gamepads
+        for (int jid = 0; jid < 16; jid++) {
+            disconnectGamePad(jid);
+            gamePads[jid] = null;
+        }
     }
 
     /**
@@ -252,5 +307,14 @@ public class GLFWInput {
         if (button < 0 || button > GLFW.GLFW_MOUSE_BUTTON_LAST)
             throw new IllegalArgumentException("Button not supported by GLFW");
         return buttonsReleased[button] == 1;
+    }
+
+    /**
+     * Updates the state of gamepads
+     */
+    public void updateGamePad() {
+        for (int jid = 0; jid < 16; jid++) {
+            gamePads[jid].update();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package dk.sebsa;
 
 import dk.sebsa.components.ObstacleComponent;
+import dk.sebsa.components.PipesManager;
 import dk.sebsa.components.TappyController;
 import dk.sebsa.layers.DeathScreen;
 import dk.sebsa.layers.MainMenuScreen;
@@ -12,6 +13,7 @@ import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Color;
+import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
@@ -22,6 +24,7 @@ public class Tappy implements Application {
     public static Tappy instance;
     private Entity tappy;
     private Layer mainMenuScreen, deathScreen;
+    private Entity pipes;
 
     public static void main(String[] args) {
         instance = new Tappy();
@@ -95,10 +98,16 @@ public class Tappy implements Application {
         tappy.transform.setPosition(0, -20, 0);
         mainMenuScreen.enabled = false;
         deathScreen.enabled = false;
+
+        if (pipes != null) pipes.delete();
+        pipes = new Entity(ECS.ROOT);
+        pipes.addComponent(new PipesManager());
+        Time.timeScale = 1;
     }
 
     public void death() {
         tappy.removeComponent(tappy.getComponent(TappyController.class));
         deathScreen.enabled = true;
+        Time.timeScale = 0;
     }
 }

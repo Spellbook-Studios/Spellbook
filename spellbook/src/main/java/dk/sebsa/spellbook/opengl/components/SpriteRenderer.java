@@ -86,7 +86,7 @@ public class SpriteRenderer implements Component {
     public void onEnable(Entity e) {
         this.entity = e;
         this.sprite = (Sprite) AssetManager.getAssetS(spriteName);
-        if(sprite==null) {
+        if (sprite == null) {
             sprite = GL2D.missingSprite;
             logger.warn("SpriteRender sprite reference is null");
         }

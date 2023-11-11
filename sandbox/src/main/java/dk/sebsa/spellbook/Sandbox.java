@@ -5,7 +5,6 @@ package dk.sebsa.spellbook;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.SpellbookCapabilities;
-import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
 import dk.sebsa.spellbook.audio.SoundListener;
 import dk.sebsa.spellbook.core.Application;
@@ -16,6 +15,9 @@ import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.debug.DebugRenderStage;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.Entity;
+import dk.sebsa.spellbook.io.GamePad;
+import dk.sebsa.spellbook.io.GamePadConnectedEvent;
+import dk.sebsa.spellbook.io.GamePadDisConnectedEvent;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.opengl.stages.SpriteStage;
 
@@ -86,17 +88,33 @@ public class Sandbox implements Application {
                 .appendLayer(debugLayer);
     }
 
+    public static Entity player;
+
     @EventListener
     public void engineCreateFirstScene(EngineCreateFirstSceneEvent e) {
-        Entity entity = new Camera(e.ROOT);
-        entity.name = "Player";
+        player = new Camera(e.ROOT);
+        player.name = "Player";
         SpriteRenderer spriteRenderer = new SpriteRenderer("sandbox/32.spr");
 
         spriteRenderer.scale = 2;
         spriteRenderer.layer = 1;
 
-        entity.addComponent(spriteRenderer);
-        entity.addComponent(new PlayerMovement());
-        entity.addComponent(new SoundListener());
+        player.addComponent(spriteRenderer);
+        player.addComponent(new PlayerMovement());
+        player.addComponent(new SoundListener());
+    }
+
+    public static GamePad gamePad;
+
+    @EventListener
+    public void gamePadConnected(GamePadConnectedEvent e) {
+        if (gamePad == null)
+            gamePad = e.gamePad;
+    }
+
+    @EventListener
+    public void gamePadDisConnected(GamePadDisConnectedEvent e) {
+        if (e.gamePad.id == gamePad.id)
+            gamePad = null;
     }
 }

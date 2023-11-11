@@ -122,5 +122,17 @@ public abstract class Event {
          * Tells the engine that the mouse scrolled
          */
         ioMouseScroll,
+
+        /**
+         * Occurs when a gamepad is connected
+         * Either during FirstFrame or in the main loop
+         */
+        gamePadConnected,
+
+        /**
+         * Occurs when a gamepad is disconnected
+         * Occurs in the main loop
+         */
+        gamePadDisConnected,
     }
 }
