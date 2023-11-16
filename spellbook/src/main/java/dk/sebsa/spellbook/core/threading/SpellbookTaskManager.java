@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -22,7 +23,8 @@ public class SpellbookTaskManager implements ITaskManager {
      * Creates a SpellbookTaskManager using the virtualThreadPerTaskExecutor executor
      */
     public SpellbookTaskManager() {
-        threadPool = Executors.newVirtualThreadPerTaskExecutor();
+        ThreadFactory factory = Thread.ofVirtual().name("VThread-", 0L).factory();
+        threadPool = Executors.newThreadPerTaskExecutor(factory);
     }
 
     @Override

@@ -2,7 +2,6 @@ package dk.sebsa.spellbook.asset.loading;
 
 import dk.sebsa.spellbook.asset.Identifier;
 import lombok.CustomLog;
-import lombok.ToString;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,14 +23,20 @@ import java.util.jar.JarFile;
  * @since 1.0.0
  */
 @CustomLog
-@ToString
 public class ClassPathAssetProvider extends AssetProvider {
     private final Class<ClassPathAssetProvider> clazz = ClassPathAssetProvider.class;
     private final ClassLoader cl = clazz.getClassLoader();
     private List<AssetLocation> assets;
-    @ToString.Include
     private final String namespace;
-    @ToString.Include
+
+    @Override
+    public String toString() {
+        return "ClassPathAssetProvider{" +
+                "namespace='" + namespace + '\'' +
+                ", path='" + path + '\'' +
+                '}';
+    }
+
     private final String path;
 
     /**
