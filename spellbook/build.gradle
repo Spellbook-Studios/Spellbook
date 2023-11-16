@@ -11,6 +11,21 @@ plugins {
     id 'signing'
 }
 
+dependencies {
+    testImplementation(platform('org.junit:junit-bom:5.10.1'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+}
+
+test {
+    useJUnitPlatform()
+    
+    maxHeapSize = '1G'
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
 // GET VERSION
 Matcher m = Pattern.compile("SPELLBOOK_VERSION = \"(.*?)\"").matcher(rootProject.file('spellbook/src/main/java/dk/sebsa/Spellbook.java').text.trim());
 m.find()

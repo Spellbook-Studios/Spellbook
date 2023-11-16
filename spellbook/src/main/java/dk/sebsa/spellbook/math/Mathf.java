@@ -12,7 +12,7 @@ public class Mathf {
      *
      * @param val Value to wrap
      * @param min Minimum value
-     * @param max Max value
+     * @param max Max value (Result is always lower)
      * @return The wrapped value
      */
     public static float wrap(float val, float min, float max) {
