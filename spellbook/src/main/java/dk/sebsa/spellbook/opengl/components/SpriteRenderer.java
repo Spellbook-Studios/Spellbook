@@ -2,6 +2,7 @@ package dk.sebsa.spellbook.opengl.components;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Rect;
@@ -28,9 +29,9 @@ public class SpriteRenderer implements Component {
     public Sprite sprite;
 
     /**
-     * The name of the sprite
+     * The identifier of the sprite
      */
-    public String spriteName;
+    public Identifier identifier = new Identifier("spellbook", "missing.spr");
 
     /**
      * Where to place the sprite upon the entity
@@ -51,7 +52,7 @@ public class SpriteRenderer implements Component {
     public int layer = 0;
 
     /**
-     * A spriterenderer without a sprite
+     * A spriterenderer without a set sprite
      * Set the sprite with this.sprite = ??
      */
     public SpriteRenderer() {
@@ -59,10 +60,10 @@ public class SpriteRenderer implements Component {
     }
 
     /***
-     * @param spriteName Name of the sprite
+     * @param identifier Identifier of a sprite
      */
-    public SpriteRenderer(String spriteName) {
-        this.spriteName = spriteName;
+    public SpriteRenderer(Identifier identifier) {
+        this.identifier = identifier;
     }
 
     /**
@@ -85,7 +86,7 @@ public class SpriteRenderer implements Component {
     @Override
     public void onEnable(Entity e) {
         this.entity = e;
-        this.sprite = (Sprite) AssetManager.getAssetS(spriteName);
+        this.sprite = (Sprite) AssetManager.getAssetS(identifier);
         if (sprite == null) {
             sprite = GL2D.missingSprite;
             logger.warn("SpriteRender sprite reference is null");

@@ -2,6 +2,7 @@ package dk.sebsa.layers;
 
 import dk.sebsa.Tappy;
 import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
@@ -28,7 +29,7 @@ public class DeathScreen extends Layer {
     @Override
     protected void render(Marble marble, Rect r) {
         if (titleRenderer == null) titleRenderer = marble.getMarbleIM(
-                marble.font((FontType) AssetManager.getAssetS("tappy/SAOWelcomeTT-Bold.ttf"), 82),
+                marble.font((FontType) AssetManager.getAssetS(new Identifier("tappy", "SAOWelcomeTT-Bold.ttf")), 82),
                 null,
                 null);
         if (otherRenderer == null) otherRenderer = marble.getMarbleIM(marble.font("Inter", 24), null, null);

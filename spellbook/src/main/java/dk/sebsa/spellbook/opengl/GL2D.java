@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Matrix4x4f;
@@ -46,7 +47,7 @@ public class GL2D {
         prepareShader(defaultShader);
         logger.log("GL2D loaded");
 
-        missingSprite = (Sprite) AssetManager.getAssetS("/spellbook/missing.spr");
+        missingSprite = (Sprite) AssetManager.getAssetS(new Identifier("spellbook", "missing.spr"));
     }
 
     /**
@@ -55,7 +56,7 @@ public class GL2D {
      * @param shaderProgram The shader to prepare
      */
     public static void prepareShader(GLSLShaderProgram shaderProgram) {
-        logger.log("Prepare shader for 2D rendering " + shaderProgram.getLocation().name());
+        logger.log("Prepare shader for 2D rendering " + shaderProgram.getLocation().identifier());
         try {
             shaderProgram.createUniform("projection");
             shaderProgram.createUniform("offset");

@@ -2,6 +2,7 @@ package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.FrameData;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.io.GLFWWindow;
@@ -38,7 +39,7 @@ public class Sprite2D {
         mainMesh = Mesh2D.getRenderMesh();
 
         // Get shader
-        shader = (GLSLShaderProgram) e.assetManager.getAsset("/spellbook/shaders/Sprite2D.glsl");
+        shader = (GLSLShaderProgram) e.assetManager.getAsset(new Identifier("spellbook", "shaders/Sprite2D.glsl"));
 
         // Prepare shader
         try {

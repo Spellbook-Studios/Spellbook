@@ -6,6 +6,7 @@ import lombok.Getter;
 
 /**
  * Basic representation of loadable object for use in Spellbook
+ *
  * @author sebs
  * @since 1.0.0
  */
@@ -29,12 +30,14 @@ public abstract class Asset {
 
     /**
      * Increase usages count & if not asset is not loaded it loads the asset
+     *
      * @return this
      */
     Asset get() {
-        if(usages < 1) {
-            load(); isLoaded = true;
-            logger.trace("Asset dynamically loaded " + location.name());
+        if (usages < 1) {
+            load();
+            isLoaded = true;
+            logger.trace("Asset dynamically loaded: " + location);
         }
         usages++;
         return this;
@@ -47,8 +50,9 @@ public abstract class Asset {
     public void unreference() {
         usages = usages - 1;
         if (usages < 1) {
-            isLoaded = false; destroy();
-            logger.trace("Asset dynamically destroyed " + location.name());
+            isLoaded = false;
+            destroy();
+            logger.trace("Asset dynamically destroyed " + location);
         }
     }
 

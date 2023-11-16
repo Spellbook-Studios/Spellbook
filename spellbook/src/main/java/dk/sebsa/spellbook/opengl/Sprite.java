@@ -3,6 +3,7 @@ package dk.sebsa.spellbook.opengl;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.util.FileUtils;
@@ -54,7 +55,7 @@ public class Sprite extends Asset {
             List<String> file = FileUtils.readAllLinesList(FileUtils.loadFile(location.location()));
             for (String line : file) {
                 if (line.startsWith("t")) {
-                    texture = (Texture) AssetManager.getAssetS(line.split(":")[1]);
+                    texture = (Texture) AssetManager.getAssetS(new Identifier(line.split(":", 2)[1]));
                     material = new Material(Color.white, texture);
                 } else if (line.startsWith("o")) {
                     String[] e = line.split(":")[1].split(",");

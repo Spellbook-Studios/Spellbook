@@ -37,7 +37,7 @@ public class Core implements Module, EventHandler {
         this.input = new GLFWInput(e, window);
         this.assetManager = new AssetManager();
 
-        e.capabilities.getAssetsProviders().add(new ClassPathAssetProvider());
+        e.capabilities.getAssetsProviders().add(new ClassPathAssetProvider("spellbook", "spellbook/"));
 
         e.tasks.addTask(new Task() {
             @Override

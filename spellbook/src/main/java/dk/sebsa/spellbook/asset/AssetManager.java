@@ -62,29 +62,29 @@ public class AssetManager {
             if (asset == null) continue;
 
             asset.location = ref;
-            assets.put(ref.name(), asset);
+            assets.put(ref.identifier().toString(), asset);
         }
     }
 
     /**
      * Gets an asset from the registry
      *
-     * @param name The name of the asset
+     * @param identifier An identifier representing the asset
      * @return The asset
      */
-    public Asset getAsset(String name) {
-        return assets.get(name).get();
+    public Asset getAsset(Identifier identifier) {
+        return assets.get(identifier.toString()).get();
     }
 
 
     /**
      * Gets an asset from the registry
      *
-     * @param name The name of the asset
+     * @param identifier An identifier representing the asset
      * @return The asset
      */
-    public static Asset getAssetS(String name) {
-        return instance.getAsset(name);
+    public static Asset getAssetS(Identifier identifier) {
+        return instance.getAsset(identifier);
     }
 
     /**
@@ -97,11 +97,11 @@ public class AssetManager {
 
         for (Asset asset : assets.values()) {
             if (asset.getUsages() > 0) {
-                logger.warn("Asset was still referenced at cleanup, possible leak? " + asset.location.name());
+                logger.warn("Asset was still referenced at cleanup, possible leak? " + asset.location.identifier());
                 try {
                     asset.forceDestroy();
                 } catch (Exception e) {
-                    logger.err("Failed to destroy asset: " + asset.location.name());
+                    logger.err("Failed to destroy asset: " + asset.location.identifier());
                 }
             }
         }

@@ -1,34 +1,17 @@
 package dk.sebsa.spellbook.asset.loading;
 
+import dk.sebsa.spellbook.asset.Identifier;
+
 /**
  * The location and identifier of an asset
  *
- * @param location The location of the asset
+ * @param identifier   The unique asset identifier
+ * @param location     The location of the asset
  * @param locationType The type of location
- * @param name The name / identifier of the asset
  * @author sebs
  * @since 1.0.0
  */
-public record AssetLocation(String location, LocationTypes locationType, String name) {
-    /**
-     * The name is discerned from the location
-     *
-     * @param location The location of the asset
-     * @param locationType The type of location
-     */
-    public AssetLocation(String location, LocationTypes locationType) {
-        this(location, locationType, location.replace('\\', '/'));
-    }
-
-    @Override
-    public String toString() {
-        return "AssetLocation{" +
-                "location='" + location + '\'' +
-                ", locationType=" + locationType +
-                ", name='" + name + '\'' +
-                '}';
-    }
-
+public record AssetLocation(Identifier identifier, String location, LocationTypes locationType) {
     /**
      * The types of location
      *
@@ -44,5 +27,14 @@ public record AssetLocation(String location, LocationTypes locationType, String 
          * The asset is located on the jars classpath
          */
         Jar,
+    }
+
+    @Override
+    public String toString() {
+        return "AssetLocation{" +
+                "identifier=" + identifier +
+                ", location='" + location + '\'' +
+                ", locationType=" + locationType +
+                '}';
     }
 }

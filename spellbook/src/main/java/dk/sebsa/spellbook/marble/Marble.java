@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.marble;
 
 import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.EngineCleanupEvent;
 import dk.sebsa.spellbook.core.events.EngineFirstFrameEvent;
@@ -30,16 +31,16 @@ public class Marble implements Module {
      * Gets the MarbleIMRender with the terms specified
      *
      * @param f           The font of the renderer or null. If null the defualt font will be used (Inter, Plain, 16)
-     * @param spriteSheet Name of the spritesheet of the renderer, or null. If null Blackstone will be used
-     * @param shader      Name  of the shader, or null. If null the default GUI shader will be used
+     * @param spriteSheet Identifier of the spritesheet of the renderer, or null. If null Blackstone will be used
+     * @param shader      Identifier of the shader, or null. If null the default GUI shader will be used
      * @return The renderer that matches the parameters
      */
-    public MarbleIMRenderer getMarbleIM(Font f, String spriteSheet, String shader) {
+    public MarbleIMRenderer getMarbleIM(Font f, Identifier spriteSheet, Identifier shader) {
         Font font = f != null ? f : defaultFont;
-        String sht = spriteSheet != null ? spriteSheet : "/spellbook/marble/Blackstone.sht";
-        String shd = shader != null ? shader : "/spellbook/shaders/SpellbookUI.glsl";
+        Identifier sht = spriteSheet != null ? spriteSheet : new Identifier("spellbook", "marble/Blackstone.sht");
+        Identifier shd = shader != null ? shader : new Identifier("spellbook", "shaders/SpellbookUI.glsl");
 
-        return rendererHashMap.getPut(font, sht, shd, () ->
+        return rendererHashMap.getPut(font, sht.toString(), shd.toString(), () ->
                 new MarbleIMRenderer(font, (SpriteSheet) AssetManager.getAssetS(sht), (GLSLShaderProgram) AssetManager.getAssetS(shd)));
     }
 

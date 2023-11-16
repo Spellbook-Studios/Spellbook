@@ -3,6 +3,7 @@ package dk.sebsa.spellbook.opengl;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
@@ -97,7 +98,7 @@ public class Material extends Asset {
             for (String line : file) {
                 if (line.startsWith("t")) {
                     isTextured = true;
-                    texture = (Texture) AssetManager.getAssetS(line.split(":")[1]);
+                    texture = (Texture) AssetManager.getAssetS(new Identifier(line.split(":", 2)[1]));
                 } else if (line.startsWith("c")) {
                     String[] e = line.split(":")[1].split(",");
                     color = Color.color(Float.parseFloat(e[0]), Float.parseFloat(e[1]), Float.parseFloat(e[2]), Float.parseFloat(e[3]));

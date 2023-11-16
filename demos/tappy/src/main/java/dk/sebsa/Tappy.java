@@ -5,6 +5,7 @@ import dk.sebsa.components.PipesManager;
 import dk.sebsa.components.TappyController;
 import dk.sebsa.layers.DeathScreen;
 import dk.sebsa.layers.MainMenuScreen;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
 import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.events.*;
@@ -42,7 +43,7 @@ public class Tappy implements Application {
 
         // Add Tappy
         this.tappy = new Entity(ECS.ROOT);
-        SpriteRenderer sp = new SpriteRenderer("tappy/tappy.spr");
+        SpriteRenderer sp = new SpriteRenderer(new Identifier("tappy", "tappy.spr"));
         tappy.addComponent(sp);
         sp.scale = 3f;
 

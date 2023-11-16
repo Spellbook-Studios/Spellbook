@@ -1,7 +1,9 @@
 package dk.sebsa.spellbook.asset.loading;
 
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.CustomLog;
+import lombok.ToString;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,21 +16,20 @@ import java.util.List;
  * @since 1.0.0
  */
 @CustomLog
+@ToString
 public class FolderAssetProvider extends AssetProvider {
+    @ToString.Include
     private final File folder;
-    private final String namePrefix;
+    @ToString.Include
+    private final String namespace;
 
     /**
-     * @param folder     The folder to search files from (searches recursively)
-     * @param namePrefix Prefix before assets names
-     *                   Lets say assets are located in ../idk/the/path/assets/
-     *                   An asset located at
-     *                   ../idk/the/path/assets/textures/hello.png
-     *                   becomes [namePrefix]/textures/hello.png
+     * @param folder    The folder to search files from (searches recursively)
+     * @param namespace The namespace of the assets that are loaded
      */
-    public FolderAssetProvider(File folder, String namePrefix) {
+    public FolderAssetProvider(File folder, String namespace) {
         this.folder = folder;
-        this.namePrefix = namePrefix;
+        this.namespace = namespace;
     }
 
     @Override
@@ -43,18 +44,14 @@ public class FolderAssetProvider extends AssetProvider {
         // For naming assets
         for (File f : FileUtils.listFilesInFolder(folder)) {
             String assetName = f.getPath()
-                    .replace('\\', '/')
-                    .replace(folder.getPath().replace('\\', '/'), namePrefix);
-            assets.add(new AssetLocation(f.getPath(), AssetLocation.LocationTypes.Disk, assetName));
+                    .replace(folder.getPath(), "")
+                    .replace('\\', '/');
+            if (assetName.charAt(0) == '/')
+                assetName = assetName.replaceFirst("/", "");
+
+            assets.add(new AssetLocation(new Identifier(namespace, assetName), f.getPath(), AssetLocation.LocationTypes.Disk));
         }
 
         return assets;
-    }
-
-    @Override
-    public String toString() {
-        return "FolderAssetProvider{" +
-                "folder=" + folder.getPath() +
-                '}';
     }
 }

@@ -1,6 +1,7 @@
 package dk.sebsa.components;
 
 import dk.sebsa.spellbook.FrameData;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Time;
@@ -29,7 +30,7 @@ public class PipesManager implements Component {
 
     public void spawnPipe() {
         var pipe = new Entity(e);
-        SpriteRenderer sr = new SpriteRenderer("tappy/pipe.spr");
+        SpriteRenderer sr = new SpriteRenderer(new Identifier("tappy", "pipe.spr"));
         sr.scale = 0.2f;
         pipe.addComponent(sr);
         pipe.addComponent(new PipeComponent());

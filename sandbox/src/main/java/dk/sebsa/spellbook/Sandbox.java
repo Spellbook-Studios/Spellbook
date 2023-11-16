@@ -5,6 +5,7 @@ package dk.sebsa.spellbook;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.SpellbookCapabilities;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
 import dk.sebsa.spellbook.audio.SoundListener;
 import dk.sebsa.spellbook.core.Application;
@@ -94,7 +95,7 @@ public class Sandbox implements Application {
     public void engineCreateFirstScene(EngineCreateFirstSceneEvent e) {
         player = new Camera(e.ROOT);
         player.name = "Player";
-        SpriteRenderer spriteRenderer = new SpriteRenderer("sandbox/32.spr");
+        SpriteRenderer spriteRenderer = new SpriteRenderer(new Identifier("sandbox", "32.spr"));
 
         spriteRenderer.scale = 2;
         spriteRenderer.layer = 1;

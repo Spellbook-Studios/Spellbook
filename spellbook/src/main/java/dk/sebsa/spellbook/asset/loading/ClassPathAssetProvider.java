@@ -1,6 +1,8 @@
 package dk.sebsa.spellbook.asset.loading;
 
+import dk.sebsa.spellbook.asset.Identifier;
 import lombok.CustomLog;
+import lombok.ToString;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,10 +24,24 @@ import java.util.jar.JarFile;
  * @since 1.0.0
  */
 @CustomLog
+@ToString
 public class ClassPathAssetProvider extends AssetProvider {
     private final Class<ClassPathAssetProvider> clazz = ClassPathAssetProvider.class;
     private final ClassLoader cl = clazz.getClassLoader();
     private List<AssetLocation> assets;
+    @ToString.Include
+    private final String namespace;
+    @ToString.Include
+    private final String path;
+
+    /**
+     * @param namespace The namespace of the assets that are loaded
+     * @param path      Path to load assets from e.g. "spellbook/"
+     */
+    public ClassPathAssetProvider(String namespace, String path) {
+        this.namespace = namespace;
+        this.path = path;
+    }
 
     @Override
     public List<AssetLocation> getAssets() {
@@ -35,7 +51,7 @@ public class ClassPathAssetProvider extends AssetProvider {
         assert dirUrl != null;
         String protocol = dirUrl.getProtocol();
 
-        try { // Depending on the enviroment the assets has to be loaded from an "external folder" (Often when running from IDE)
+        try { // Depending on the enviroment the assets has to be loaded from an "external folder" (Often when running from IDE (ECLIPSE))
             if (protocol.equals("file")) {
                 logger.log("IDE Support Jar Load");
                 importFromSketchyJar();
@@ -63,8 +79,11 @@ public class ClassPathAssetProvider extends AssetProvider {
 
         while (entries.hasMoreElements()) {
             String name = entries.nextElement().getName();
-            if (name.startsWith("spellbook/") && !name.endsWith("/"))
-                assets.add(new AssetLocation("/" + name, AssetLocation.LocationTypes.Jar));
+
+            if (name.startsWith(path) && !name.endsWith("/")) {
+                Identifier id = new Identifier(namespace, name.split(path)[1]);
+                assets.add(new AssetLocation(id, "/" + name, AssetLocation.LocationTypes.Jar));
+            }
         }
 
         jar.close();
@@ -72,7 +91,8 @@ public class ClassPathAssetProvider extends AssetProvider {
 
     private void importFromSketchyJar() throws IOException {
         List<String> streams = new ArrayList<>();
-        streams.add("spellbook");
+        String pathNoSlash = path.replace("/", "");
+        streams.add(pathNoSlash);
 
         while (!streams.isEmpty()) {
             InputStream in = cl.getResourceAsStream(streams.get(0));
@@ -86,19 +106,14 @@ public class ClassPathAssetProvider extends AssetProvider {
 
             while ((line = br.readLine()) != null) {
                 logger.log(line);
-                if (line.contains("."))
-                    assets.add(new AssetLocation("/" + streams.get(0) + "/" + line, AssetLocation.LocationTypes.Jar));
-                else streams.add(streams.get(0) + "/" + line);
+                if (line.contains(".")) { // TODO: INSTALL ECLIPSE AND TEST / REIMPLEMENT AGAAAAIN
+                    assets.add(new AssetLocation(null, "/" + streams.get(0) + "/" + line, AssetLocation.LocationTypes.Jar));
+                } else streams.add(streams.get(0) + "/" + line);
             }
 
             in.close();
             br.close();
             streams.remove(0);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "ClassPathAssetProvider{}";
     }
 }

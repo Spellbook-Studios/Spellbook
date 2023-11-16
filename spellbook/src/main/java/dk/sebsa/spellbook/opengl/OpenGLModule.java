@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.opengl;
 
 import dk.sebsa.Spellbook;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
@@ -36,7 +37,7 @@ public class OpenGLModule implements Module {
             builder.appendStage(new SpriteStage(event)).appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()));
         pipeline = builder.build();
 
-        GL2D.init(e.moduleCore.getWindow(), (GLSLShaderProgram) e.assetManager.getAsset("/spellbook/shaders/Spellbook2d.glsl"));
+        GL2D.init(e.moduleCore.getWindow(), (GLSLShaderProgram) e.assetManager.getAsset(new Identifier("spellbook", "shaders/Spellbook2d.glsl")));
 
         capRender2D = e.capabilities.render2D;
         if (capRender2D) {

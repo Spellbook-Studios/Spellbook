@@ -2,6 +2,7 @@ package dk.sebsa.spellbook.audio;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
 
@@ -21,9 +22,9 @@ public class SoundPlayer implements Component {
      */
     public boolean loop = false;
     /**
-     * The sound buffer to play
+     * Identifier of the soundbuffer to play
      */
-    public String soundName;
+    public Identifier identifier;
     private Sound sound;
 
     private SoundSource source;
@@ -35,15 +36,15 @@ public class SoundPlayer implements Component {
     }
 
     /**
-     * @param soundName Name of the sound to play
+     * @param identifier Identifier of a sound buffer
      */
-    public SoundPlayer(String soundName) {
-        this.soundName = soundName;
+    public SoundPlayer(Identifier identifier) {
+        this.identifier = identifier;
     }
 
     @Override
     public void onEnable(Entity entity) {
-        sound = (Sound) AssetManager.getAssetS(soundName);
+        sound = (Sound) AssetManager.getAssetS(identifier);
         if (sound != null) {
             source = new SoundSource(loop, relative);
             source.setBuffer(sound);

@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook;
 
 import dk.sebsa.Spellbook;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.audio.SoundPlayer;
 import dk.sebsa.spellbook.core.threading.TaskGroup;
 import dk.sebsa.spellbook.ecs.ECS;
@@ -25,17 +26,17 @@ public class DebugLayer extends ImGUILayer {
         if (ImGui.begin("Sandbox Controls")) {
             if (ImGui.button("Spawn Block")) {
                 Entity entity = new Entity(ECS.ROOT);
-                SpriteRenderer sr = new SpriteRenderer("sandbox/32.spr");
+                SpriteRenderer sr = new SpriteRenderer(new Identifier("sandbox", "32.spr"));
                 entity.addComponent(sr);
                 entity.addComponent(new SpriteCollider2D(sr));
                 entity.transform.setPosition(Random.getFloat(-430, 430), Random.getFloat(-200, 200), 0);
             }
             if (ImGui.button("Spawn Jukebox")) {
                 Entity entity = new Entity(ECS.ROOT);
-                SpriteRenderer spriteRenderer = (SpriteRenderer) entity.addComponent(new SpriteRenderer("sandbox/32.spr"));
+                SpriteRenderer spriteRenderer = (SpriteRenderer) entity.addComponent(new SpriteRenderer(new Identifier("sandbox", "32.spr")));
                 entity.addComponent(new CircleCollider2D());
 
-                SoundPlayer sound = (SoundPlayer) entity.addComponent(new SoundPlayer("sandbox/fantasymphony-wcb.ogg"));
+                SoundPlayer sound = (SoundPlayer) entity.addComponent(new SoundPlayer(new Identifier("sandbox", "fantasymphony-wcb.ogg")));
                 sound.loop = true;
 
                 entity.transform.setPosition(100, 100, 0);
@@ -81,7 +82,7 @@ public class DebugLayer extends ImGUILayer {
             if (ImGui.button("Spawn 1000x")) {
                 for (int i = 0; i < 1000; i++) {
                     Entity entity = new Entity(thousandObjectRoot);
-                    SpriteRenderer sr = new SpriteRenderer("sandbox/32.spr");
+                    SpriteRenderer sr = new SpriteRenderer(new Identifier("sandbox", "32.spr"));
                     entity.addComponent(sr);
                     entity.transform.setPosition(Random.getFloat(-430, 430), Random.getFloat(-200, 200), 0);
                 }
