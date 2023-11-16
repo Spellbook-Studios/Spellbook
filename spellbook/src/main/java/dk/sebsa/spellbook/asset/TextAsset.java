@@ -21,7 +21,7 @@ public class TextAsset extends Asset {
     public void load() {
         StringBuilder sb = new StringBuilder();
         try {
-            InputStream is = FileUtils.loadFile(location.location());
+            InputStream is = FileUtils.loadFile(location);
             sb.append(is);
             is.close();
         } catch (IOException e) {

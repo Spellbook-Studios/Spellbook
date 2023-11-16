@@ -94,7 +94,7 @@ public class Material extends Asset {
     @Override
     public void load() {
         try {
-            List<String> file = FileUtils.readAllLinesList(FileUtils.loadFile(location.location()));
+            List<String> file = FileUtils.readAllLinesList(FileUtils.loadFile(location));
             for (String line : file) {
                 if (line.startsWith("t")) {
                     isTextured = true;

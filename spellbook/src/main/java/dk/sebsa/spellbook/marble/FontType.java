@@ -14,7 +14,7 @@ public class FontType extends Asset {
     protected void load() {
         if (font == null)
             try {
-                font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, FileUtils.loadFile(location.location()));
+                font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, FileUtils.loadFile(location));
             } catch (Exception e) {
                 logger.err("Failed to load font: " + location.location());
                 logger.err(logger.stackTrace(e));

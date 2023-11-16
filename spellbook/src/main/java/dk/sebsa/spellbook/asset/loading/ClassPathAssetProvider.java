@@ -82,7 +82,7 @@ public class ClassPathAssetProvider extends AssetProvider {
 
             if (name.startsWith(path) && !name.endsWith("/")) {
                 Identifier id = new Identifier(namespace, name.split(path)[1]);
-                assets.add(new AssetLocation(id, "/" + name, AssetLocation.LocationTypes.Jar));
+                assets.add(new AssetLocation(id, name, AssetLocation.LocationTypes.Jar));
             }
         }
 
@@ -107,7 +107,7 @@ public class ClassPathAssetProvider extends AssetProvider {
             while ((line = br.readLine()) != null) {
                 logger.log(line);
                 if (line.contains(".")) { // TODO: INSTALL ECLIPSE AND TEST / REIMPLEMENT AGAAAAIN
-                    assets.add(new AssetLocation(null, "/" + streams.get(0) + "/" + line, AssetLocation.LocationTypes.Jar));
+                    assets.add(new AssetLocation(null, streams.get(0) + "/" + line, AssetLocation.LocationTypes.Jar));
                 } else streams.add(streams.get(0) + "/" + line);
             }
 

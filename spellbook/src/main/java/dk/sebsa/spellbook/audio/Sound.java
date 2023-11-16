@@ -21,6 +21,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
  * Contains an OGG Vorbis sound
+ *
  * @author sebs
  * @since 1.0.0
  */
@@ -49,7 +50,7 @@ public class Sound extends Asset {
     private ShortBuffer readVorbis(AssetLocation file, STBVorbisInfo info) throws IOException {
         // Load file into memory
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            ByteBuffer vorbis = FileUtils.isToBB(FileUtils.loadFile(file.location()), 32 * 1024);
+            ByteBuffer vorbis = FileUtils.isToBB(FileUtils.loadFile(file), 32 * 1024);
             IntBuffer error = stack.mallocInt(1);
             long decoder = stb_vorbis_open_memory(vorbis, error, null);
 

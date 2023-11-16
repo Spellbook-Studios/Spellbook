@@ -33,7 +33,7 @@ public class SpriteSheet extends Asset {
     @Override
     public void load() {
         try {
-            List<String> raw = FileUtils.readAllLinesList(FileUtils.loadFile(location.location()));
+            List<String> raw = FileUtils.readAllLinesList(FileUtils.loadFile(location));
             for (String line : raw) {
                 if (line.startsWith("m")) {
                     material = (Material) AssetManager.getAssetS(new Identifier(line.split(":", 2)[1]));

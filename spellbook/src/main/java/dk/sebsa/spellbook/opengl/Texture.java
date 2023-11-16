@@ -20,12 +20,14 @@ import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 
 /**
  * Representation of a texutere, this includes as assets but also ones created dynamically (e.g. fbos)
+ *
  * @author sebs
  * @since 1.0.0
  */
 public class Texture extends Asset {
     private int id;
-    @Getter private float width, height;
+    @Getter
+    private float width, height;
 
 
     public void load() {
@@ -38,6 +40,7 @@ public class Texture extends Asset {
 
     /**
      * Sets the values of this texture the one of the texture info
+     *
      * @param ti The texture info to load from
      * @return This texture
      */
@@ -50,6 +53,7 @@ public class Texture extends Asset {
 
     /**
      * Loads a texture from a file
+     *
      * @param location the location of the texture file
      * @return The information about this OpenGL texture
      */
@@ -60,14 +64,16 @@ public class Texture extends Asset {
         IntBuffer heightBuffer = BufferUtils.createIntBuffer(1);
         IntBuffer channelsBuffer = BufferUtils.createIntBuffer(1);
 
-        InputStream is = FileUtils.loadFile(location.location());
+        InputStream is = FileUtils.loadFile(location);
 
         // Load texture from stream
         byte[] bytes = new byte[8000];
         int curByte;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        while((curByte = is.read(bytes)) != -1) { bos.write(bytes, 0, curByte);}
+        while ((curByte = is.read(bytes)) != -1) {
+            bos.write(bytes, 0, curByte);
+        }
         is.close();
 
         bytes = bos.toByteArray();
@@ -108,18 +114,24 @@ public class Texture extends Asset {
     /**
      * Bind the texture to GL_TEXTURE_2D
      */
-    public void bind() { glBindTexture(GL_TEXTURE_2D, id); }
+    public void bind() {
+        glBindTexture(GL_TEXTURE_2D, id);
+    }
 
     /**
      * Unbinds the GL_TEXTURE_2D
      */
-    public void unbind() { glBindTexture(GL_TEXTURE_2D, 0); }
+    public void unbind() {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 
     /**
      * Used to load in TextureData
-     * @param width The width of the texture
-     * @param height The height of the texture
+     *
+     * @param width     The width of the texture
+     * @param height    The height of the texture
      * @param textureId The OpenGL texture id
      */
-    public record TextureInfo(int width, int height, int textureId) {}
+    public record TextureInfo(int width, int height, int textureId) {
+    }
 }

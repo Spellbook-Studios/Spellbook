@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.util;
 
+import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import org.lwjgl.BufferUtils;
 
 import java.io.*;
@@ -22,20 +23,16 @@ public class FileUtils {
     /**
      * Loads a file either on drive space or in jar resources
      *
-     * @param location The location of the file. Prefix with "/" when acssesing jar resources
+     * @param location The location of the file.
      * @return An inputstream of the file
      * @throws IOException If file can't be found or loaded
      */
-    public static InputStream loadFile(String location) throws IOException {
-        try {
-            if (location.startsWith("/")) {
-                location = location.replaceFirst("/", "");
-                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-                return classLoader.getResourceAsStream(location);
-            } else return new FileInputStream(location);
-        } catch (Exception e) {
-            throw new IOException("FileUtils, can't load file: " + location);
+    public static InputStream loadFile(AssetLocation location) throws IOException {
+        if (location.locationType() == AssetLocation.LocationTypes.Jar) {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            return classLoader.getResourceAsStream(location.location());
+        } else {
+            return new FileInputStream(location.location());
         }
     }
 

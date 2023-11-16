@@ -46,7 +46,7 @@ public class GLSLShaderProgram extends Asset {
         logger.log("Loading shader code");
         String[] shaderCode;
         try {
-            shaderCode = FileUtils.readAllLines(FileUtils.loadFile(location.location())).split("// SPELLBOOK END VERTEX SHADER //");
+            shaderCode = FileUtils.readAllLines(FileUtils.loadFile(location)).split("// SPELLBOOK END VERTEX SHADER //");
         } catch (IOException e) {
             Spellbook.instance.error("Could not load shader: " + logger.stackTrace(e), true);
             return;
