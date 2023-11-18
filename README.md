@@ -15,7 +15,7 @@
 ## Using Spellbook
 
 Spellbook has a fully fledged JavaDoc that has description for all methods, functions, classes and enums
-[READ THE DOCS](https://ci.sebsa.dk/job/Spellbook%20Studios/job/Spellbook/job/main/javadoc/index.html)
+[READ THE DOCS](https://maven.sebsa.dk/javadoc/snapshots/dk/sebsa/spellbook/1.0.0a-SNAPSHOT)
 
 **Game Engine** You can use our own game editor [Arcana](https://github.com/Spellbook-Studios/Arcana), which is based
 upon Spellbook and uses it for both developing the game and runs with Spellbook at runtime.
