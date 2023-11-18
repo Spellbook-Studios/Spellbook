@@ -18,7 +18,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    
+
     maxHeapSize = '1G'
 
     testLogging {
@@ -30,39 +30,35 @@ test {
 Matcher m = Pattern.compile("SPELLBOOK_VERSION = \"(.*?)\"").matcher(rootProject.file('spellbook/src/main/java/dk/sebsa/Spellbook.java').text.trim());
 m.find()
 version = m.group(1)
-
 group = 'dk.sebsa'
-base {
-    archivesBaseName = 'spellbook'
-}
 
-tasks.register('sourcesJar', Jar) {
-    from sourceSets.main.allJava
-    archiveClassifier.set("sources")
-}
-
-tasks.register('javadocJar', Jar) {
-    from javadoc
-    archiveClassifier.set("javadoc")
-}
-
+// UTF 8
 compileJava.options.encoding = 'UTF-8'
 javadoc.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+} // END
+
+task javadocJar(type: Jar) {
+    archiveClassifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
 }
 
 artifacts {
     archives javadocJar, sourcesJar
 }
-
 // Publishing
 publishing {
     repositories {
         maven {
-            name = "OSSRH"
-            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            name = "Spellbook-Repository"
+            def releasesRepoUrl = "https://maven.sebsa.dk/releases"
+            def snapshotsRepoUrl = "https://maven.sebsa.dk/snapshots"
             url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
 
             credentials {
@@ -106,12 +102,4 @@ publishing {
             }
         }
     }
-}
-
-if (!version.endsWith("SNAPSHOT")) {
-    signing {
-        sign publishing.publications.mavenJava
-    }
-} else {
-    signing.required = false
 }

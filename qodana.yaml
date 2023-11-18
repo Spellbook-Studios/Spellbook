@@ -3,7 +3,7 @@
 #             https://www.jetbrains.com/help/qodana/qodana-yaml.html            #
 #-------------------------------------------------------------------------------#
 version: "1.0"
-linter: jetbrains/qodana-jvm:latest
+linter: jetbrains/qodana-jvm-community:latest
 profile:
   name: qodana.recommended
 
@@ -26,7 +26,7 @@ projectJDK: 21 #(Applied in CI/CD pipeline)
 #Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
 #(plugin id can be found at https://plugins.jetbrains.com)
 plugins:
-  - id: Lombook Plugin
+  - id: Lombok Plugin
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 fixesStrategy: CLEANUP
