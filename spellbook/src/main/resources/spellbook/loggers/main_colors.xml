@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<logger>
+    <format>%esc[32m [%d] <![CDATA[<%c>]]> (%t) - %s</format>
+
+    <!-- Default -->
+    <warnFormat>%esc[33m WARN: [%d] <![CDATA[<%c>]]> (%t) - %s</warnFormat>
+    <errorFormat>%esc[91m ERROR: [%d] <![CDATA[<%c>]]> (%t) - %s</errorFormat>
+    <traceFormat>%esc[90m TRACE: [%d] <![CDATA[<%c>]]> (%t) - %s</traceFormat>
+</logger>

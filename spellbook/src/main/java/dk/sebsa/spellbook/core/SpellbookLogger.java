@@ -11,8 +11,8 @@ import java.io.PrintStream;
 /**
  * Central log collector for all Coal Loggers
  *
- * @since 1.0.0
  * @author sebs
+ * @since 1.0.0
  */
 public class SpellbookLogger implements Logger {
     private static final PrintStream out = System.out;
@@ -20,16 +20,12 @@ public class SpellbookLogger implements Logger {
 
     /**
      * @param formatterIn The format to use
-     * @param caps Main spellbook capabilities
+     * @param caps        Main spellbook capabilities
      */
     public SpellbookLogger(LogFormatter formatterIn, SpellbookCapabilities caps) {
         this.formatter = (FormatterImpl) formatterIn; // This cast will always work :D
 
-        if(caps.logDisableASCIIEscapeCharacters) return;
-        formatter.formatTrace = "\u001B[90m " + formatter.formatTrace;
-        formatter.formatLog = "\u001B[32m " + formatter.formatLog;
-        formatter.formatWarn = "\u001B[33m " + formatter.formatWarn;
-        formatter.formatErr = "\u001B[91m" + formatter.formatErr;
+        if (caps.logDisableASCIIEscapeCharacters) return;
     }
 
     protected void print(String s) {
@@ -37,7 +33,7 @@ public class SpellbookLogger implements Logger {
     }
 
     protected void log(String format, String className, Object... objects) {
-        for(Object o : objects) {
+        for (Object o : objects) {
             print(formatter.format(format, o, className));
         }
 
@@ -45,6 +41,7 @@ public class SpellbookLogger implements Logger {
 
     /**
      * Logs a trace message
+     *
      * @param objects Objects to log
      */
     @Override
@@ -54,6 +51,7 @@ public class SpellbookLogger implements Logger {
 
     /**
      * Logs a message
+     *
      * @param objects Objects to log
      */
     @Override
@@ -63,26 +61,31 @@ public class SpellbookLogger implements Logger {
 
     /**
      * Logs a warning
+     *
      * @param objects Objects to log
      */
     @Override
     public void warn(Object... objects) {
-        Spellbook.warnCount++; log(formatter.formatWarn, "Spellbook", objects);
+        Spellbook.warnCount++;
+        log(formatter.formatWarn, "Spellbook", objects);
     }
 
     /**
      * Logs an error
+     *
      * @param objects Objects to log
      */
     @Override
     public void err(Object... objects) {
-        Spellbook.errorCount++; log(formatter.formatErr, "Spellbook", objects);
+        Spellbook.errorCount++;
+        log(formatter.formatErr, "Spellbook", objects);
     }
 
     /**
      * Logs a trace message
+     *
      * @param className Simple Name of class logging this message
-     * @param objects Objects to log
+     * @param objects   Objects to log
      */
     public void trace(String className, Object... objects) {
         log(formatter.formatTrace, className, objects);
@@ -90,8 +93,9 @@ public class SpellbookLogger implements Logger {
 
     /**
      * Logs a message
+     *
      * @param className Simple Name of class logging this message
-     * @param objects Objects to log
+     * @param objects   Objects to log
      */
     public void log(String className, Object... objects) {
         log(formatter.formatLog, className, objects);
@@ -99,26 +103,32 @@ public class SpellbookLogger implements Logger {
 
     /**
      * Logs a warning
+     *
      * @param className Simple Name of class logging this warning
-     * @param objects Objects to log
+     * @param objects   Objects to log
      */
     public void warn(String className, Object... objects) {
-        Spellbook.warnCount++; log(formatter.formatWarn, className, objects);
+        Spellbook.warnCount++;
+        log(formatter.formatWarn, className, objects);
     }
 
     /**
      * Logs an error
+     *
      * @param className Simple Name of class logging this error
-     * @param objects Objects to log
+     * @param objects   Objects to log
      */
     public void err(String className, Object... objects) {
-        Spellbook.errorCount++; log(formatter.formatErr, className, objects);
+        Spellbook.errorCount++;
+        log(formatter.formatErr, className, objects);
     }
 
     @Override
     public void close() {
-        if(Spellbook.errorCount > 0) err("SpellbookLogger", "Program end with " + Spellbook.errorCount + " error(s)", "and " + Spellbook.warnCount + " warning(s).");
-        else if(Spellbook.warnCount > 0) warn("SpellbookLogger", "Program end with " + Spellbook.warnCount + " warning(s).");
+        if (Spellbook.errorCount > 0)
+            err("SpellbookLogger", "Program end with " + Spellbook.errorCount + " error(s)", "and " + Spellbook.warnCount + " warning(s).");
+        else if (Spellbook.warnCount > 0)
+            warn("SpellbookLogger", "Program end with " + Spellbook.warnCount + " warning(s).");
         else log(formatter.formatLog, "SpellbookLogger", "Program ended with 0 erros or warnings. :D");
     }
 }

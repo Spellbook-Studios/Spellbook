@@ -44,13 +44,17 @@ repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
     maven {
-        name 'OSSRH Snapshot'
-        url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+        name "spellbookRepositoryReleases"
+        url "https://maven.sebsa.dk/releases"
+    }
+    maven {
+        name "spellbookRepositorySnapshots"
+        url "https://maven.sebsa.dk/snapshots"
     }
 }
 
 dependencies {
-    implementation 'dk.sebsa:mana:1.0c-SNAPSHOT'
+    implementation 'dk.sebsa:mana:1.0d-SNAPSHOT'
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 

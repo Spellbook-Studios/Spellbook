@@ -4,6 +4,7 @@ import dk.sebsa.mana.LogFormatter;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.mana.impl.FormatBuilder;
 import dk.sebsa.spellbook.FrameData;
+import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.audio.OpenALModule;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.*;
@@ -15,10 +16,13 @@ import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.OpenGLModule;
 import dk.sebsa.spellbook.phys.Newton2D;
+import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -106,14 +110,20 @@ public class Spellbook {
         // Logger init
         if (DEBUG) {
             try {
-                LogFormatter format = new FormatBuilder().buildFromFile("/spellbook/loggers/main.xml");
+                InputStream logConfig;
+                if (caps.logDisableASCIIEscapeCharacters)
+                    logConfig = FileUtils.loadFile(new AssetLocation("spellbook/loggers/main.xml", AssetLocation.LocationTypes.Jar));
+                else
+                    logConfig = FileUtils.loadFile(new AssetLocation("spellbook/loggers/main_colors.xml", AssetLocation.LocationTypes.Jar));
+                
+                LogFormatter format = new FormatBuilder().buildFromFile(logConfig);
 
                 // Create logger with storage logic if needed
                 if (caps.logStorageMode.equals(SpellbookCapabilities.LogStorageModes.dont))
                     logger = new SpellbookLogger(format, caps);
                 else logger = new StoredLogger(format, caps);
-            } catch (IOException e) {
-                throw new RuntimeException("Spellbook failed to start!!! >>> Logger load IOException");
+            } catch (IOException | SAXException e) {
+                throw new RuntimeException("Spellbook failed to start!!! >>> Logger load failed");
             }
         } else {
             logger = new DeLogger();

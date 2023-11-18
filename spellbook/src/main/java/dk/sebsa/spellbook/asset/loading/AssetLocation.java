@@ -13,6 +13,16 @@ import dk.sebsa.spellbook.asset.Identifier;
  */
 public record AssetLocation(Identifier identifier, String location, LocationTypes locationType) {
     /**
+     * Creates an assetlocation without an identifier, useful for loading files that are not assets
+     *
+     * @param location     The location of the asset
+     * @param locationType The type of location
+     */
+    public AssetLocation(String location, LocationTypes locationType) {
+        this(null, location, locationType);
+    }
+
+    /**
      * The types of location
      *
      * @author sebs
