@@ -20,13 +20,5 @@ include:
 
 projectJDK: 21 #(Applied in CI/CD pipeline)
 
-#Execute shell command before Qodana execution (Applied in CI/CD pipeline)
-#bootstrap: sh ./prepare-qodana.sh
-
-#Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
-#(plugin id can be found at https://plugins.jetbrains.com)
-plugins:
-  - id: Lombok Plugin
-
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 fixesStrategy: CLEANUP
