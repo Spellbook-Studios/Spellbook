@@ -42,6 +42,12 @@ public class Identifier {
         return var2;
     }
 
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        else if (!(other instanceof Identifier otherIdentifier)) return false;
+        else return this.namespace.equals(otherIdentifier.namespace) && this.path.equals(otherIdentifier.path);
+    }
+
     @Override
     public String toString() {
         return namespace + NAMESPACE_SEPARATOR + path;

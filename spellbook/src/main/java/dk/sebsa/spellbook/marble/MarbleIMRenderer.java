@@ -1,6 +1,5 @@
 package dk.sebsa.spellbook.marble;
 
-import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
@@ -8,65 +7,41 @@ import dk.sebsa.spellbook.opengl.Sprite;
 import dk.sebsa.spellbook.opengl.SpriteSheet;
 import lombok.CustomLog;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
- * Renders components
+ * Renders UI components from a set SpriteSheet, with a specific font and a specific shader
  *
  * @author sebs
  * @since 1.0.0
  */
 @CustomLog
 public class MarbleIMRenderer {
-    private static boolean prepared = false;
     @Getter
-    private final Font font;
+    @Setter
+    private Font font;
     private final SpriteSheet spriteSheet;
     private final GLSLShaderProgram shader;
 
-    private static Sprite sprBox;
-    private static Sprite sprBoxSpecialLight;
-    private static Sprite sprBoxSpecialDark;
-    private static Sprite sprButton;
-    private static Sprite sprButtonHover;
-    private static Sprite sprButtonSpecial;
-    private static Sprite sprWindow;
-
-    private boolean checkPrepared() {
-        if (!prepared) Spellbook.instance.error("MarbleIM function called without IM being prepared", false);
-        return prepared;
-    }
-
-
-    /**
-     * Must be called before any MarbleIM calls can be issued
-     * This will overwrite GL2D settings so theese can be prepared at the same time
-     * You must call MarbleIM.unpreapre() when you are finished using MarbleIM
-     */
-    public void prepare() {
-        if (prepared) return;
-        GL2D.prepare(shader);
-        prepared = true;
-    }
-
-    /**
-     * Must be called after finished using MarbleIM methods
-     * Shouldn't be called if not prepared
-     */
-    public void unprepare() {
-        if (!prepared) return;
-        GL2D.unprepare();
-        prepared = false;
-    }
+    private final Sprite sprBox;
+    private final Sprite sprBoxSpecialLight;
+    private final Sprite sprBoxSpecialDark;
+    private final Sprite sprButton;
+    private final Sprite sprButtonHover;
+    private final Sprite sprButtonSpecial;
+    private final Sprite sprWindow;
+    private final Marble marble;
 
     /**
      * @param font        Font to use
      * @param spriteSheet Spritesheet to use
      * @param shader      Shade to use
      */
-    public MarbleIMRenderer(Font font, SpriteSheet spriteSheet, GLSLShaderProgram shader) {
+    public MarbleIMRenderer(Marble marble, Font font, SpriteSheet spriteSheet, GLSLShaderProgram shader) {
+        this.marble = marble;
         this.spriteSheet = spriteSheet;
         this.shader = shader;
         this.font = font;
@@ -89,7 +64,7 @@ public class MarbleIMRenderer {
      * @param y    GUI Position Y
      */
     public void label(String text, float x, float y) {
-        if (!prepared) logger.err("Please prepare Marble before rendering");
+        marble.ensureShader(shader);
         Map<Byte, Font.Glyph> chars = font.getCharTable();
         byte[] c = text.getBytes(StandardCharsets.ISO_8859_1);
         float tempX = x;
@@ -104,13 +79,13 @@ public class MarbleIMRenderer {
     }
 
     /**
-     * Renders a sprice to the screen
+     * Renders a sprite to the screen
      *
      * @param rect   The dimensions and position of the sprite
      * @param sprite The sprite to render
      */
     public void sprite(Rect rect, Sprite sprite) {
-        if (!prepared) logger.err("Please prepare Marble before rendering");
+        marble.ensureShader(shader);
         GL2D.drawSprite(rect, sprite);
     }
 
@@ -121,7 +96,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void box(Rect rect) {
-        if (!prepared) logger.err("Please prepare Marble before rendering");
+        marble.ensureShader(shader);
         sprite(rect, sprBox);
     }
 
@@ -132,7 +107,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void boxSpecialLight(Rect rect) {
-        if (!prepared) logger.err("Please prepare Marble before rendering");
+        marble.ensureShader(shader);
         sprite(rect, sprBoxSpecialLight);
     }
 
@@ -143,7 +118,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void boxSpecialDark(Rect rect) {
-        if (!prepared) logger.err("Please prepare Marble before rendering");
+        marble.ensureShader(shader);
         sprite(rect, sprBoxSpecialDark);
     }
 
@@ -154,7 +129,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void button(Rect rect) {
-        if (!prepared) logger.err("Please prepare Marble before rendering");
+        marble.ensureShader(shader);
         sprite(rect, sprButton);
     }
 
@@ -165,7 +140,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void buttonHover(Rect rect) {
-        if (!prepared) logger.err("Please prepare Marble before rendering");
+        marble.ensureShader(shader);
         sprite(rect, sprButtonHover);
     }
 
@@ -176,7 +151,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void buttonSpecial(Rect rect) {
-        if (!prepared) logger.err("Please prepare Marble before rendering");
+        marble.ensureShader(shader);
         sprite(rect, sprButtonSpecial);
     }
 
@@ -187,7 +162,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void window(Rect rect) {
-        if (!prepared) logger.err("Please prepare Marble before rendering");
+        marble.ensureShader(shader);
         sprite(rect, sprWindow);
     }
 

@@ -36,6 +36,7 @@ public class UIStage extends RenderStage {
         for (Layer l : stack.stack) {
             l.ensureRender(frameData.marble, r);
         }
+        frameData.marble.postRenderReset();
     }
 
     @Override

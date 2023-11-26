@@ -32,12 +32,8 @@ public class MainMenuScreen extends Layer {
                 null,
                 null);
         if (otherRenderer == null) otherRenderer = marble.getMarbleIM(marble.font("Inter", 24), null, null);
-        titleRenderer.prepare();
         titleRenderer.label("Tappy Bird", (r.width / 2) - ((float) titleRenderer.getFont().getStringWidth("Tappy Bird") / 2) - 23, 20);
-        titleRenderer.unprepare();
 
-        otherRenderer.prepare();
         otherRenderer.label("Press SPACE to jump", (r.width / 2) - ((float) otherRenderer.getFont().getStringWidth("Press SPACE to jump") / 2) - 23, 124);
-        otherRenderer.unprepare();
     }
 }

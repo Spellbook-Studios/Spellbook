@@ -33,12 +33,8 @@ public class DeathScreen extends Layer {
                 null,
                 null);
         if (otherRenderer == null) otherRenderer = marble.getMarbleIM(marble.font("Inter", 24), null, null);
-        titleRenderer.prepare();
         titleRenderer.label("You Died", (r.width / 2) - ((float) titleRenderer.getFont().getStringWidth("You Died") / 2), 20);
-        titleRenderer.unprepare();
 
-        otherRenderer.prepare();
         otherRenderer.label("Press SPACE to restart", (r.width / 2) - ((float) otherRenderer.getFont().getStringWidth("Press SPACE to restart") / 2), 124);
-        otherRenderer.unprepare();
     }
 }

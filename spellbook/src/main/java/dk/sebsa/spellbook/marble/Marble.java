@@ -6,6 +6,7 @@ import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.EngineCleanupEvent;
 import dk.sebsa.spellbook.core.events.EngineFirstFrameEvent;
 import dk.sebsa.spellbook.core.events.EventListener;
+import dk.sebsa.spellbook.opengl.GL2D;
 import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.opengl.SpriteSheet;
 import dk.sebsa.spellbook.util.ThreeKeyHashMap;
@@ -41,8 +42,9 @@ public class Marble implements Module {
         Identifier shd = shader != null ? shader : new Identifier("spellbook", "shaders/SpellbookUI.glsl");
 
         return rendererHashMap.getPut(font, sht.toString(), shd.toString(), () ->
-                new MarbleIMRenderer(font, (SpriteSheet) AssetManager.getAssetS(sht), (GLSLShaderProgram) AssetManager.getAssetS(shd)));
+                new MarbleIMRenderer(this, font, (SpriteSheet) AssetManager.getAssetS(sht), (GLSLShaderProgram) AssetManager.getAssetS(shd)));
     }
+
 
     @EventListener
     public void engineCleanup(EngineCleanupEvent e) {
@@ -117,5 +119,26 @@ public class Marble implements Module {
         String name = fontType.getLocation().location();
 
         return fontMap.getPut(name, (int) size, java.awt.Font.PLAIN, () -> new Font(fontType.getFont().deriveFont(size)));
+    }
+
+    private GLSLShaderProgram preparedShader = null;
+
+    /**
+     * This unprepares GL2D, unbinds the shader and should be called after rendering with MarbleIMRenderer
+     */
+    public void postRenderReset() {
+        if (preparedShader != null) {
+            GL2D.unprepare();
+            preparedShader = null;
+        }
+    }
+
+    /**
+     * Ensures GL2D is prepared with a specific shader
+     *
+     * @param shader The shader to check against and bind if not already bound
+     */
+    public void ensureShader(GLSLShaderProgram shader) {
+        if (!java.util.Objects.equals(preparedShader, shader)) preparedShader = GL2D.prepare(shader);
     }
 }

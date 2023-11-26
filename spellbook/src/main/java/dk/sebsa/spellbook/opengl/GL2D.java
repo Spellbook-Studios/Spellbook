@@ -89,8 +89,9 @@ public class GL2D {
      * Prepares GL2D for rendering
      *
      * @param shader The shader to prepare for
+     * @return The now prepared shader
      */
-    public static void prepare(GLSLShaderProgram shader) {
+    public static GLSLShaderProgram prepare(GLSLShaderProgram shader) {
         if (!shader.initFor2D) prepareShader(shader);
 
         // Disable 3d
@@ -103,6 +104,7 @@ public class GL2D {
         defaultShader.setUniform("projection", ortho);
         changeColor(Color.white);
         guiMesh.bind();
+        return shader;
     }
 
     /**

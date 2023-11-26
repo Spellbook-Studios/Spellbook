@@ -38,11 +38,9 @@ public class TestLayer extends Layer {
     @Override
     public void render(Marble marbleI, Rect r) {
         if (marble == null) marble = marbleI.getMarbleIM(null, null, null);
-        marble.prepare();
         marble.box(new Rect(0, 100, 100, 100));
         marble.boxSpecialLight(new Rect(0, 100, 50, 50));
         marble.boxSpecialDark(new Rect(50, 100, 50, 50));
         marble.label("Hello World!", 0, 0);
-        marble.unprepare();
     }
 }

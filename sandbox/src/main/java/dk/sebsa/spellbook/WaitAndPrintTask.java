@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook;
 
 import dk.sebsa.spellbook.core.threading.Task;
+import lombok.CustomLog;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -10,6 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author sebs
  * @since 1.0.0
  */
+@CustomLog
 public class WaitAndPrintTask extends Task {
     private final String out;
 
@@ -29,6 +31,6 @@ public class WaitAndPrintTask extends Task {
     public void execute() throws InterruptedException {
         Thread.sleep((long) (ThreadLocalRandom.current().nextFloat() * 10 * 1000));
 
-        System.out.println(out);
+        log.log(out);
     }
 }
