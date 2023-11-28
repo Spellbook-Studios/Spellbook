@@ -10,6 +10,7 @@ import dk.sebsa.spellbook.imgui.ImGUILayer;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
+import dk.sebsa.spellbook.saves.SaveDataUtils;
 import dk.sebsa.spellbook.util.Random;
 import imgui.ImGui;
 import imgui.flag.ImGuiTableFlags;
@@ -124,6 +125,14 @@ public class DebugLayer extends ImGUILayer {
 
         if (ImGui.begin("Player")) {
             ImGui.text(Sandbox.player.transform.getGlobalPosition().toString());
+            ImGui.end();
+        }
+
+        if (ImGui.begin("SaveData test")) {
+            ImGui.text(String.valueOf(SaveDataUtils.getIntOrDefault(new Identifier("sandbox-data", "test"), 11)));
+            ImGui.text(String.valueOf(SaveDataUtils.getFloatOrDefault(new Identifier("sandbox-data", "test"), 11.44f)));
+            ImGui.text(String.valueOf(SaveDataUtils.getBoolOrDefault(new Identifier("sandbox-data", "test"), true)));
+            ImGui.text(String.valueOf(SaveDataUtils.getStringOrDefault(new Identifier("sandbox-data", "test"), "I love cows")));
             ImGui.end();
         }
     }

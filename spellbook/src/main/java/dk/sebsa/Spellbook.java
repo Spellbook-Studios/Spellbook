@@ -16,6 +16,7 @@ import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.OpenGLModule;
 import dk.sebsa.spellbook.phys.Newton2D;
+import dk.sebsa.spellbook.saves.SaveDataUtils;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
@@ -115,7 +116,7 @@ public class Spellbook {
                     logConfig = FileUtils.loadFile(new AssetLocation("spellbook/loggers/main.xml", AssetLocation.LocationTypes.Jar));
                 else
                     logConfig = FileUtils.loadFile(new AssetLocation("spellbook/loggers/main_colors.xml", AssetLocation.LocationTypes.Jar));
-                
+
                 LogFormatter format = new FormatBuilder().buildFromFile(logConfig);
 
                 // Create logger with storage logic if needed
@@ -274,6 +275,7 @@ public class Spellbook {
 
         // Cleanup leaked assets
         moduleCore.getAssetManager().engineCleanup(logger);
+        SaveDataUtils.saveData();
 
         // TaskManager force shutdown
         if (capabilities.shutdownTasksAwaitMillis >= 0) {
