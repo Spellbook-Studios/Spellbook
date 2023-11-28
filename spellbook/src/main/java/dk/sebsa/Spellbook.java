@@ -44,7 +44,7 @@ public class Spellbook {
     /**
      * The version of Spellbook as denoted in the gradle module
      */
-    public static final String SPELLBOOK_VERSION = "1.0.0a-SNAPSHOT";
+    public static final String SPELLBOOK_VERSION = "1.0.0-SNAPSHOT";
     /**
      * Weather the capabilities.debug is true
      */
