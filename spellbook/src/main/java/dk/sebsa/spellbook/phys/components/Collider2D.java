@@ -2,7 +2,6 @@ package dk.sebsa.spellbook.phys.components;
 
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.ecs.Component;
-import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Vector2f;
 import lombok.Getter;
 
@@ -12,9 +11,12 @@ import lombok.Getter;
  * @author sebs
  * @since 1.0.0
  */
-public abstract class Collider2D implements Component {
-    @Getter
-    protected Entity entity;
+public abstract class Collider2D extends Component {
+    /**
+     * If true, the collider will only register collision but without pushing against the collider
+     */
+    public boolean isTrigger = false;
+    
     /**
      * Where the colliders is anchored to the entity
      * 0.5f 0.5f: the middle of the collider resides on the entities pos
@@ -26,11 +28,6 @@ public abstract class Collider2D implements Component {
      */
     @Getter
     private Vector2f center;
-
-    @Override
-    public void onEnable(Entity entity) {
-        this.entity = entity;
-    }
 
     private void calcCenter() {
         center.set(entity.transform.getGlobalPosition().x, entity.transform.getGlobalPosition().y);

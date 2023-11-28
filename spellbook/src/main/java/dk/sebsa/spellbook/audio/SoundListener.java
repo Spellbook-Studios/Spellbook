@@ -2,17 +2,17 @@ package dk.sebsa.spellbook.audio;
 
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.ecs.Component;
-import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Vector3f;
 
 import static org.lwjgl.openal.AL10.*;
 
 /**
  * Hears audio
+ *
  * @author sebs
  * @since 1.0.0
  */
-public class SoundListener implements Component {
+public class SoundListener extends Component {
     /**
      * A soundlistener placed at 0,0,0
      */
@@ -30,6 +30,7 @@ public class SoundListener implements Component {
 
     /**
      * Sets the speed of the sound listener
+     *
      * @param speed The speed in each cardinal direction
      */
     public void setSpeed(Vector3f speed) {
@@ -38,6 +39,7 @@ public class SoundListener implements Component {
 
     /**
      * Sets the current position of the sound listener
+     *
      * @param position The current position of the sound listener
      */
     public void setPosition(Vector3f position) {
@@ -46,6 +48,7 @@ public class SoundListener implements Component {
 
     /**
      * Sets the orientation of this soundlistener
+     *
      * @param at Direction this is looking at
      * @param up Direction upwards from listener
      *           <a href="https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/chapter22/listener_at_up.png">...</a>
@@ -62,13 +65,9 @@ public class SoundListener implements Component {
     }
 
     // COMPONENT
-    private Entity entity;
-
-    @Override
-    public void onEnable(Entity entity) {
-        this.entity = entity;
+    public void onEnable() {
         setPosition(entity.transform.getGlobalPosition());
-        setSpeed(new Vector3f(0,0,0));
+        setSpeed(new Vector3f(0, 0, 0));
     }
 
     @Override

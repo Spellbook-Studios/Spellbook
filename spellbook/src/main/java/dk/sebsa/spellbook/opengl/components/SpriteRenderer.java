@@ -4,7 +4,6 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
-import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.opengl.GL2D;
@@ -20,9 +19,7 @@ import lombok.CustomLog;
  * @since 1.0.0
  */
 @CustomLog
-public class SpriteRenderer implements Component {
-    private Entity entity;
-
+public class SpriteRenderer extends Component {
     /**
      * The sprite that this spriterender renders
      */
@@ -49,7 +46,7 @@ public class SpriteRenderer implements Component {
      * Higher is render later, and therefore appear to be on top
      * Layer must be between 0 and SpellbookCapabilities.maxSpriteLayers-1;
      */
-    public int layer = 0;
+    public int layer = Spellbook.instance.getCapabilities().spriteMaxLayer > 1 ? 1 : 0;
 
     /**
      * A spriterenderer without a set sprite
@@ -83,9 +80,7 @@ public class SpriteRenderer implements Component {
         shader.setUniform("pixelScale", sprite.getOffset().width, sprite.getOffset().height);
     }
 
-    @Override
-    public void onEnable(Entity e) {
-        this.entity = e;
+    public void onEnable() {
         this.sprite = (Sprite) AssetManager.getAssetS(identifier);
         if (sprite == null) {
             sprite = GL2D.missingSprite;

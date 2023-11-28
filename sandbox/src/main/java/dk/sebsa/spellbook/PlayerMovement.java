@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook;
 
 import dk.sebsa.spellbook.ecs.Component;
-import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.math.Vector3f;
@@ -10,14 +9,7 @@ import org.lwjgl.glfw.GLFW;
 /**
  * @author sebs
  */
-public class PlayerMovement implements Component {
-    private Entity entity;
-
-    @Override
-    public void onEnable(Entity e) {
-        this.entity = e;
-    }
-
+public class PlayerMovement extends Component {
     private final Vector3f deltaMovement = new Vector3f();
     public final float speed = 300f;
 

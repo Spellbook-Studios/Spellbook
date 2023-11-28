@@ -8,32 +8,28 @@ import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.util.Random;
 
-public class PipesManager implements Component {
-
-    private float timerMax = 2.5f;
+public class PipesManager extends Component {
+    private static final float TIMER_MAX = 2.5f;
     private float timer = 0;
-    private Entity e;
-
-    @Override
-    public void onEnable(Entity entity) {
-        e = entity;
-    }
 
     @Override
     public void update(FrameData frameData) {
         if (timer <= 0) {
-            spawnPipe();
-            timer = timerMax;
+            int o = Random.getInt(0, 275);
+            spawnPipe(o - 370, new Identifier("tappy", "pipe.spr"));
+            spawnPipe(o + 120, new Identifier("tappy", "pipe_flipped.spr"));
+            timer = TIMER_MAX;
         }
         timer -= Time.getDeltaTime();
     }
 
-    public void spawnPipe() {
-        var pipe = new Entity(e);
-        SpriteRenderer sr = new SpriteRenderer(new Identifier("tappy", "pipe.spr"));
-        sr.scale = 0.2f;
+    public void spawnPipe(int offset, Identifier sprite) {
+        var pipe = new Entity(entity);
+        SpriteRenderer sr = new SpriteRenderer(sprite);
+        sr.scale = 0.6f;
         pipe.addComponent(sr);
-        pipe.addComponent(new PipeComponent());
-        pipe.transform.setPosition(500, Random.getInt(-125, 125), 0);
+        PipeComponent component = new PipeComponent(sr);
+        pipe.addComponent(component);
+        pipe.transform.setPosition(500, offset, 0);
     }
 }

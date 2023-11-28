@@ -4,7 +4,6 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
-import dk.sebsa.spellbook.ecs.Entity;
 
 /**
  * Plays sound from the position of an entity
@@ -12,7 +11,7 @@ import dk.sebsa.spellbook.ecs.Entity;
  * @author sebs
  * @since 1.0.0
  */
-public class SoundPlayer implements Component {
+public class SoundPlayer extends Component {
     /**
      * Weather the sound is played from the position of the soundsource
      */
@@ -42,8 +41,7 @@ public class SoundPlayer implements Component {
         this.identifier = identifier;
     }
 
-    @Override
-    public void onEnable(Entity entity) {
+    public void onEnable() {
         sound = (Sound) AssetManager.getAssetS(identifier);
         if (sound != null) {
             source = new SoundSource(loop, relative);

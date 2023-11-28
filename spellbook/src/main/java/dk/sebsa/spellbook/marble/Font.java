@@ -18,7 +18,7 @@ import static org.lwjgl.opengl.GL11.*;
  * A font capable of rendering text
  *
  * @author sebs
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class Font {
     private BufferedImage bufferedImage;
@@ -139,7 +139,7 @@ public class Font {
      * @param size  The proportional size of the glyph
      * @param scale The size of the glyph in pixels
      * @author sebs
-     * @since 0.0.1
+     * @since 1.0.0
      */
     public record Glyph(Vector2f pos, Vector2f size, Vector2f scale) {
     }

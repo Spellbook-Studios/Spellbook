@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.ecs;
 
 import dk.sebsa.spellbook.FrameData;
+import lombok.Getter;
 
 /**
  * Represents a reusable functionality that can be applied to entities
@@ -8,26 +9,28 @@ import dk.sebsa.spellbook.FrameData;
  * @author sebs
  * @since 1.0.0
  */
-public interface Component {
+public abstract class Component {
     /**
      * Weather the component is enabled, i.e. the logic should be run
      */
-    boolean enabled = true;
+    public boolean enabled = false;
+    @Getter
+    protected Entity entity;
 
     /**
      * Called when the component is attached to the entity
      * And when enabled after being disabled
-     *
-     * @param entity Entity, should be stored by the component
      */
-    void onEnable(Entity entity);
+    public void onEnable() {
+
+    }
 
     /**
      * Called once a frame during EventTypes.engineFrameProcess
      *
      * @param frameData Data from current frame. Contains input etc.
      */
-    default void update(FrameData frameData) {
+    public void update(FrameData frameData) {
     }
 
     /**
@@ -35,20 +38,20 @@ public interface Component {
      *
      * @param frameData Data from current frame. Contains input etc.
      */
-    default void lateUpdate(FrameData frameData) {
+    public void lateUpdate(FrameData frameData) {
     }
 
     /**
      * Called once a frame during EventTypes.engineRender
      */
-    default void render() {
+    public void render() {
     }
 
     /**
      * Called once a component is removed from an entity
      * And when disabled
      */
-    default void onDisable() {
+    public void onDisable() {
     }
 
     /**
@@ -57,8 +60,11 @@ public interface Component {
      *
      * @param e The entity to attach to
      */
-    default void init(Entity e) {
-        if (!e.components.contains(this)) e.components.add(this);
-        onEnable(e);
+    public void init(Entity e) {
+        this.entity = e;
+        if (!entity.components.contains(this)) entity.components.add(this);
+        onEnable();
+
+        enabled = true;
     }
 }

@@ -30,16 +30,18 @@ public class CircleCollider2D extends Collider2D {
 
         float distanceSq = Math.abs(Mathf.sqDistance(circle1, circle2));
         if (distanceSq < (radius + collider.radius) * (radius + collider.radius)) {
-            float x = (circle1.x + circle2.x) / 2;
-            float y = (circle1.y + circle2.y) / 2;
-            float dist = (float) Math.sqrt(distanceSq);
+            if (!isTrigger && !collider.isTrigger) {
+                float x = (circle1.x + circle2.x) / 2;
+                float y = (circle1.y + circle2.y) / 2;
+                float dist = (float) Math.sqrt(distanceSq);
 
-            circle1.x = x + radius * (circle1.x - circle2.x) / dist;
-            circle1.y = y + radius * (circle1.y - circle2.y) / dist;
-            circle2.x = x + collider.radius * (circle2.x - circle1.x) / dist;
-            circle2.y = y + collider.radius * (circle2.y - circle1.y) / dist;
+                circle1.x = x + radius * (circle1.x - circle2.x) / dist;
+                circle1.y = y + radius * (circle1.y - circle2.y) / dist;
+                circle2.x = x + collider.radius * (circle2.x - circle1.x) / dist;
+                circle2.y = y + collider.radius * (circle2.y - circle1.y) / dist;
 
-            collider.entity.transform.setPosition(circle2.x, circle2.y, 0);
+                collider.entity.transform.setPosition(circle2.x, circle2.y, 0);
+            }
             onCollide(collider);
             collider.onCollide(this);
         }

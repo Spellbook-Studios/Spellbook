@@ -7,6 +7,8 @@ import dk.sebsa.spellbook.phys.components.Collider2D;
 public class ObstacleComponent extends BoxCollider2D {
     @Override
     public void onCollide(Collider2D other) {
-        Tappy.instance.death();
+        if (other.getEntity().tag.equals("player")) {
+            Tappy.instance.death();
+        }
     }
 }

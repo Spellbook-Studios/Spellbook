@@ -48,14 +48,16 @@ public class BoxCollider2D extends Collider2D {
 
         if (getWorldPositionRect().getOverlap(colliderRect, intersect)) {
             // Pushes the collider out
-            if (intersect.width < intersect.height) {
-                if (colliderRect.x < intersect.x)
-                    collider.getEntity().transform.move(new Vector3f(-intersect.width, 0, 0));
-                else collider.getEntity().transform.move(new Vector3f(intersect.width, 0, 0));
-            } else {
-                if (colliderRect.y > intersect.y)
-                    collider.getEntity().transform.move(new Vector3f(0, intersect.height, 0));
-                else collider.getEntity().transform.move(new Vector3f(0, -intersect.height, 0));
+            if (!isTrigger && !collider.isTrigger) {
+                if (intersect.width < intersect.height) {
+                    if (colliderRect.x < intersect.x)
+                        collider.getEntity().transform.move(new Vector3f(-intersect.width, 0, 0));
+                    else collider.getEntity().transform.move(new Vector3f(intersect.width, 0, 0));
+                } else {
+                    if (colliderRect.y > intersect.y)
+                        collider.getEntity().transform.move(new Vector3f(0, intersect.height, 0));
+                    else collider.getEntity().transform.move(new Vector3f(0, -intersect.height, 0));
+                }
             }
             onCollide(collider);
             collider.onCollide(this);

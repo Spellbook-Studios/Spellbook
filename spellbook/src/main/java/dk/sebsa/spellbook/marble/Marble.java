@@ -16,7 +16,7 @@ import lombok.CustomLog;
  * UI and UX module for Spellbook
  *
  * @author sebs
- * @since 0.0.1a
+ * @since 1.0.0
  */
 @CustomLog
 public class Marble implements Module {

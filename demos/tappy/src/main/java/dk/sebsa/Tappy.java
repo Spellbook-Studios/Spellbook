@@ -1,5 +1,6 @@
 package dk.sebsa;
 
+import dk.sebsa.components.BGManager;
 import dk.sebsa.components.ObstacleComponent;
 import dk.sebsa.components.PipesManager;
 import dk.sebsa.components.TappyController;
@@ -9,7 +10,6 @@ import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
 import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.events.*;
-import dk.sebsa.spellbook.debug.DebugRenderStage;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
@@ -39,6 +39,7 @@ public class Tappy implements Application {
 
     @EventListener
     public void engineCreateFirstScene(EngineCreateFirstSceneEvent e) {
+        Time.timeScale = 0;
         var cam = new Camera(ECS.ROOT);
 
         // Add Tappy
@@ -46,6 +47,7 @@ public class Tappy implements Application {
         SpriteRenderer sp = new SpriteRenderer(new Identifier("tappy", "tappy.spr"));
         tappy.addComponent(sp);
         sp.scale = 3f;
+        tappy.tag = "player";
 
         // Add floor
         var floor = new Entity(ECS.ROOT);
@@ -60,12 +62,15 @@ public class Tappy implements Application {
         var cellingCollider = new BoxCollider2D();
         cellingCollider.size.set(960, 48);
         celling.addComponent(cellingCollider);
+
+        // Background
+        var bg = new Entity(ECS.ROOT);
+        bg.addComponent(new BGManager());
     }
 
     @EventListener
     public void engineBuildRenderPipeline(EngineBuildRenderPipelineEvent e) {
         e.builder.appendStage(new SpriteStage(e));
-        e.builder.appendStage(new DebugRenderStage(e));
         e.appendUIStage();
     }
 

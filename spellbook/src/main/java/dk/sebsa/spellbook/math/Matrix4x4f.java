@@ -22,7 +22,11 @@ public class Matrix4x4f {
     }
 
     /**
-     * Sets the matrix
+     * ets the matrix to the identity matrix
+     * <p>
+     * The identity matrix is a square matrix with ones on the main diagonal
+     * and zeros elsewhere. This function sets the matrix to the following:
+     * <p>
      * 1 0 0 0
      * 0 1 0 0
      * 0 0 1 0
@@ -65,12 +69,12 @@ public class Matrix4x4f {
     /**
      * Creates an orthographic matrix for rendering
      *
-     * @param left   ??
-     * @param right  ??
-     * @param bottom ??
-     * @param top    ??
-     * @param near   ??
-     * @param far    ??
+     * @param left   The left coordinate of the orthographic view
+     * @param right  The right coordinate of the orthographic view
+     * @param bottom The bottom coordinate of the orthographic view
+     * @param top    The top coordinate of the orthographic view
+     * @param near   The near clipping plane of the orthographic view
+     * @param far    The far clipping plane of the orthographic view
      * @return The new matrix
      */
     public static Matrix4x4f ortho(float left, float right, float bottom, float top, float near, float far) {

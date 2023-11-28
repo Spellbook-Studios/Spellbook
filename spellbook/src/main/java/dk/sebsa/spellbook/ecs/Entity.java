@@ -31,7 +31,7 @@ public class Entity {
     /**
      * For easy grouping of entities
      */
-    public final String tag;
+    public String tag;
 
     @Getter
     private final String id = UUID.randomUUID().toString();
