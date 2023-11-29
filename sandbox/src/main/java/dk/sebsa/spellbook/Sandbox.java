@@ -83,7 +83,7 @@ public class Sandbox implements Application {
 
     @EventListener
     public void engineBuildLayerStack(EngineBuildLayerStackEvent e) {
-        debugLayer = new DebugLayer();
+        debugLayer = new DebugLayer(this);
 
         e.builder.appendLayer(new TestLayer(debugLayer))
                 .appendLayer(debugLayer);

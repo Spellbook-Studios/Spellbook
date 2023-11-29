@@ -3,17 +3,20 @@ package dk.sebsa.spellbook;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.audio.SoundPlayer;
+import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.threading.TaskGroup;
+import dk.sebsa.spellbook.data.DataStore;
+import dk.sebsa.spellbook.data.DataStoreManager;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.imgui.ImGUILayer;
 import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
-import dk.sebsa.spellbook.saves.SaveDataUtils;
 import dk.sebsa.spellbook.util.Random;
 import imgui.ImGui;
 import imgui.flag.ImGuiTableFlags;
+import imgui.type.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,12 @@ import java.util.List;
 public class DebugLayer extends ImGUILayer {
     public List<TaskGroup> groups = new ArrayList<>();
     public Entity thousandObjectRoot;
+
+    private DataStore data;
+
+    public DebugLayer(Application application) {
+        data = DataStoreManager.getFileStore(application, new Identifier("sandbox", "test-data"));
+    }
 
     @Override
     protected void drawImGUI() {
@@ -129,13 +138,32 @@ public class DebugLayer extends ImGUILayer {
         }
 
         if (ImGui.begin("SaveData test")) {
-            ImGui.text(String.valueOf(SaveDataUtils.getIntOrDefault(new Identifier("sandbox-data", "test"), 11)));
-            ImGui.text(String.valueOf(SaveDataUtils.getFloatOrDefault(new Identifier("sandbox-data", "test"), 11.44f)));
-            ImGui.text(String.valueOf(SaveDataUtils.getBoolOrDefault(new Identifier("sandbox-data", "test"), true)));
-            ImGui.text(String.valueOf(SaveDataUtils.getStringOrDefault(new Identifier("sandbox-data", "test"), "I love cows")));
+            ImGui.text(String.valueOf(data.getOrDefaultInt(new Identifier("test-data", "int"), 11)));
+            ImGui.sameLine();
+            ImGui.inputInt("I", imInt);
+            ImGui.sameLine();
+            if (ImGui.button("StoreI")) {
+                data.storeInt(new Identifier("test-data", "int"), imInt.get());
+            }
+
+            // Float
+            ImGui.text(String.valueOf(data.getOrDefaultFloat(new Identifier("test-data", "float"), 6.9f)));
+            ImGui.sameLine();
+            ImGui.inputFloat("F", imFloat);
+            ImGui.sameLine();
+            if (ImGui.button("StoreF")) {
+                data.storeFloat(new Identifier("test-data", "float"), imFloat.get());
+            }
+
             ImGui.end();
         }
     }
+
+    private ImInt imInt = new ImInt();
+    private ImFloat imFloat = new ImFloat();
+    private ImDouble imDouble = new ImDouble();
+    private ImString imString = new ImString();
+    private ImBoolean imBool = new ImBoolean();
 
     @Override
     protected boolean disableDefaultWindows() {

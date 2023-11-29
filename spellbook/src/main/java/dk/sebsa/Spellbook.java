@@ -10,13 +10,13 @@ import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.core.threading.*;
+import dk.sebsa.spellbook.data.DataStoreManager;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.opengl.OpenGLModule;
 import dk.sebsa.spellbook.phys.Newton2D;
-import dk.sebsa.spellbook.saves.SaveDataUtils;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
@@ -275,7 +275,7 @@ public class Spellbook {
 
         // Cleanup leaked assets
         moduleCore.getAssetManager().engineCleanup(logger);
-        SaveDataUtils.saveData();
+        DataStoreManager.flushData();
 
         // TaskManager force shutdown
         if (capabilities.shutdownTasksAwaitMillis >= 0) {

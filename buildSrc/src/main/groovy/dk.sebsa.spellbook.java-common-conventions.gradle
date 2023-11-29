@@ -72,9 +72,8 @@ dependencies {
     implementation "io.github.spair:imgui-java-lwjgl3:$imguiVersion"
     implementation "io.github.spair:imgui-java-$lwjglNatives:$imguiVersion"
 
-    // Other
-    // https://mvnrepository.com/artifact/net.harawata/appdirs
-    implementation 'net.harawata:appdirs:1.2.2'
+    // https://mvnrepository.com/artifact/net.java.dev.jna/jna-platform
+    implementation 'net.java.dev.jna:jna-platform:5.13.0'
 }
 
 def targetJavaVersion = 21
