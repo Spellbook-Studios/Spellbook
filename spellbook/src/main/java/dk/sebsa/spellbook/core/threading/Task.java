@@ -21,6 +21,8 @@ public abstract class Task implements Runnable {
 
     /**
      * Executes the task
+     *
+     * @throws InterruptedException if the thread is interrupted
      */
     public abstract void execute() throws InterruptedException;
 

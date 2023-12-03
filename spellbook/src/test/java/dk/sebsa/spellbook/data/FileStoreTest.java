@@ -6,7 +6,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +15,7 @@ class FileStoreTest {
 
     @Test
     void testInt() throws IOException, ClassNotFoundException {
-        FileStore store = new FileStore(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        FileStore store = new FileStore();
         assertEquals(518, store.getOrDefaultInt(new Identifier("test", "1"), 518));
         assertEquals(518, store.getOrDefaultInt(new Identifier("test", "1"), -4));
         assertEquals(518, store.getInt(new Identifier("test", "1")));
@@ -34,7 +33,7 @@ class FileStoreTest {
 
     @Test
     void testBool() throws IOException, ClassNotFoundException {
-        FileStore store = new FileStore(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        FileStore store = new FileStore();
         assertTrue(store.getOrDefaultBool(new Identifier("test", "1"), true));
         assertTrue(store.getOrDefaultBool(new Identifier("test", "1"), false));
         assertTrue(store.getBool(new Identifier("test", "1")));
@@ -52,7 +51,7 @@ class FileStoreTest {
 
     @Test
     void testFloat() throws IOException, ClassNotFoundException {
-        FileStore store = new FileStore(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        FileStore store = new FileStore();
         assertEquals(6.9f, store.getOrDefaultFloat(new Identifier("test", "1"), 6.9f));
         assertEquals(6.9f, store.getOrDefaultFloat(new Identifier("test", "1"), -4));
         assertEquals(6.9f, store.getFloat(new Identifier("test", "1")));
@@ -70,7 +69,7 @@ class FileStoreTest {
 
     @Test
     void testDouble() throws IOException, ClassNotFoundException {
-        FileStore store = new FileStore(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        FileStore store = new FileStore();
         assertEquals(6.9d, store.getOrDefaultDouble(new Identifier("test", "1"), 6.9d));
         assertEquals(6.9d, store.getOrDefaultDouble(new Identifier("test", "1"), -4));
         assertEquals(6.9d, store.getDouble(new Identifier("test", "1")));
@@ -84,5 +83,23 @@ class FileStoreTest {
         assertEquals(6.9d, store2.getOrDefaultDouble(new Identifier("test", "1"), -4));
         assertEquals(6.9d, store2.getDouble(new Identifier("test", "1")));
         assertEquals(420.42d, store2.getDouble(new Identifier("test", "2")));
+    }
+
+    @Test
+    void testString() throws IOException, ClassNotFoundException {
+        FileStore store = new FileStore();
+        assertEquals("HELLO", store.getOrDefaultString(new Identifier("test", "1"), "HELLO"));
+        assertEquals("HELLO", store.getOrDefaultString(new Identifier("test", "1"), "WORLD?"));
+        assertEquals("HELLO", store.getString(new Identifier("test", "1")));
+
+        store.storeString(new Identifier("test", "2"), "WORLD!");
+        assertEquals("WORLD!", store.getString(new Identifier("test", "2")));
+
+        // Test saving data to file
+        FileStore.toFile(new File(tempDir, "test-string.data"), store);
+        DataStore store2 = FileStore.fromFile(new File(tempDir, "test-string.data"));
+        assertEquals("HELLO", store2.getOrDefaultString(new Identifier("test", "1"), "WORLD?"));
+        assertEquals("HELLO", store2.getString(new Identifier("test", "1")));
+        assertEquals("WORLD!", store2.getString(new Identifier("test", "2")));
     }
 }

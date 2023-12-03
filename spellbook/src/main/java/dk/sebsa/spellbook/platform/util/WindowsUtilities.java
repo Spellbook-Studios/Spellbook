@@ -23,7 +23,7 @@ public class WindowsUtilities {
          * Located under C:\Users\<usr>\AppData\Local
          * This data is not shared across multiple pc's
          */
-        LOCAL_APPDATA;
+        LOCAL_APPDATA
     }
 
     /**
@@ -54,8 +54,6 @@ public class WindowsUtilities {
         return switch (folderId) {
             case APPDATA -> KnownFolders.FOLDERID_RoamingAppData;
             case LOCAL_APPDATA -> KnownFolders.FOLDERID_LocalAppData;
-            default -> throw new PlatformException(
-                    "Unknown folder ID " + folderId + " was specified.");
         };
     }
 
@@ -63,8 +61,6 @@ public class WindowsUtilities {
         return switch (folderId) {
             case APPDATA -> ShlObj.CSIDL_APPDATA;
             case LOCAL_APPDATA -> ShlObj.CSIDL_LOCAL_APPDATA;
-            default -> throw new PlatformException(
-                    "Unknown folder ID " + folderId + " was specified.");
         };
     }
 }

@@ -25,7 +25,7 @@ public class DebugLayer extends ImGUILayer {
     public List<TaskGroup> groups = new ArrayList<>();
     public Entity thousandObjectRoot;
 
-    private DataStore data;
+    private final DataStore data;
 
     public DebugLayer(Application application) {
         data = DataStoreManager.getFileStore(application, new Identifier("sandbox", "test-data"));

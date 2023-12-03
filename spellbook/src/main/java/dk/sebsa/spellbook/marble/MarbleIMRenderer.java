@@ -36,6 +36,7 @@ public class MarbleIMRenderer {
     private final Marble marble;
 
     /**
+     * @param marble      Marble instance
      * @param font        Font to use
      * @param spriteSheet Spritesheet to use
      * @param shader      Shade to use

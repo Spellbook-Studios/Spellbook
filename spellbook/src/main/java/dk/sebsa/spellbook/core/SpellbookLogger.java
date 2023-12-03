@@ -24,8 +24,6 @@ public class SpellbookLogger implements Logger {
      */
     public SpellbookLogger(LogFormatter formatterIn, SpellbookCapabilities caps) {
         this.formatter = (FormatterImpl) formatterIn; // This cast will always work :D
-
-        if (caps.logDisableASCIIEscapeCharacters) return;
     }
 
     protected void print(String s) {

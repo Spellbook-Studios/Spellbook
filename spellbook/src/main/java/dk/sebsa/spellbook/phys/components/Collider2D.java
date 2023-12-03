@@ -16,7 +16,7 @@ public abstract class Collider2D extends Component {
      * If true, the collider will only register collision but without pushing against the collider
      */
     public boolean isTrigger = false;
-    
+
     /**
      * Where the colliders is anchored to the entity
      * 0.5f 0.5f: the middle of the collider resides on the entities pos
@@ -46,6 +46,11 @@ public abstract class Collider2D extends Component {
         } else frameData.newton2DSolids.add(this);
     }
 
+    /**
+     * Is called when the collider collides with another collider
+     *
+     * @param other The collider this collider collided with
+     */
     public void onCollide(Collider2D other) {
         // NOT IMPLEMENTED BY DEFAULT
     }

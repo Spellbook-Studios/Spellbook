@@ -5,6 +5,12 @@ import dk.sebsa.spellbook.util.FileUtils;
 import lombok.CustomLog;
 import lombok.Getter;
 
+/**
+ * A base for creating fonts
+ *
+ * @author sebs
+ * @since 1.0.0
+ */
 @CustomLog
 @Getter
 public class FontType extends Asset {

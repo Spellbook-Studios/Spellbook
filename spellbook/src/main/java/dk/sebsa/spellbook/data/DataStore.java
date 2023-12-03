@@ -44,6 +44,14 @@ public interface DataStore {
     double getDouble(Identifier identifier);
 
     /**
+     * Gets the string stored at the identifier provided
+     *
+     * @param identifier The identifier for the data
+     * @return A string
+     */
+    String getString(Identifier identifier);
+
+    /**
      * Tried to deserialize the object stored at the identifier using the class as the schema
      *
      * @param identifier The identifier for the data
@@ -94,6 +102,16 @@ public interface DataStore {
     double getOrDefaultDouble(Identifier identifier, double def);
 
     /**
+     * Gets the string stored at the identifier provided, or def if none was found
+     * In case that no string was found at the provided location def will be put there instead
+     *
+     * @param identifier The identifier for the data
+     * @param def        Default value for when no other value was stored
+     * @return A string
+     */
+    String getOrDefaultString(Identifier identifier, String def);
+
+    /**
      * Gets the object stored at the identifier provided, or def if none was found
      * In case that no object was found at the provided location the object the supplier returns will be put there instead
      * In case the object was found it will be deserialized using the schema provided
@@ -136,6 +154,14 @@ public interface DataStore {
      * @param d          A double
      */
     void storeDouble(Identifier identifier, double d);
+
+    /**
+     * Store a string at the provided identifier
+     *
+     * @param identifier The identifier for the data
+     * @param s          A string
+     */
+    void storeString(Identifier identifier, String s);
 
     /**
      * Store an object at the provided identifier

@@ -36,10 +36,10 @@ public class DataStoreManager {
                 return FileStore.fromFile(new File(f));
             } catch (IOException e) {
                 logger.err("IOException whilst parsing DataStore file: " + logger.stackTrace(e));
-                return new FileStore(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+                return new FileStore();
             } catch (ClassNotFoundException e) {
                 logger.err("ClassNotFoundException whilst parsing DataStore file: " + logger.stackTrace(e));
-                return new FileStore(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+                return new FileStore();
             }
         });
     }

@@ -11,6 +11,13 @@ import dk.sebsa.spellbook.platform.util.WindowsPathUtils;
  * @since 1.0.0
  */
 public abstract class PathUtils {
+    /**
+     * Gets the Users Local(as in not roaming) data directory
+     *
+     * @param appname   The name of the application
+     * @param namespace Namespace files will be founder under folder with this name
+     * @return The path to the directory
+     */
     public abstract String getUserLocalDataDir(String appname, String namespace);
 
     protected String home() {
