@@ -30,14 +30,38 @@ public class GamePad {
     @Getter
     private GLFWGamepadState rawState;
 
-    public Vector2f axisRight = new Vector2f();
+    /**
+     * Right joystick position
+     */
+    public final Vector2f axisRight = new Vector2f();
+    /**
+     * Left joystick position
+     */
     public final Vector2f axisLeft = new Vector2f();
+    /**
+     * Weather the A button is pressed
+     */
     public boolean buttonA;
+    /**
+     * Weather the B button is pressed
+     */
     public boolean buttonB;
+    /**
+     * Weather the X button is pressed
+     */
     public boolean buttonX;
+    /**
+     * Weather the Y button is pressed
+     */
     public boolean buttonY;
 
+    /**
+     * The deadzone for the right joystick
+     */
     public float deadZoneRight = 0.1f;
+    /**
+     * The deadzone for the left joystick
+     */
     public float deadZoneLeft = 0.1f;
 
     /**

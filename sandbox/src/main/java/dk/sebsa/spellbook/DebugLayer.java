@@ -3,7 +3,10 @@ package dk.sebsa.spellbook;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.audio.SoundPlayer;
+import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.threading.TaskGroup;
+import dk.sebsa.spellbook.data.DataStore;
+import dk.sebsa.spellbook.data.DataStoreManager;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.imgui.ImGUILayer;
@@ -13,6 +16,8 @@ import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 import dk.sebsa.spellbook.util.Random;
 import imgui.ImGui;
 import imgui.flag.ImGuiTableFlags;
+import imgui.type.ImFloat;
+import imgui.type.ImString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +25,13 @@ import java.util.List;
 public class DebugLayer extends ImGUILayer {
     public List<TaskGroup> groups = new ArrayList<>();
     public Entity thousandObjectRoot;
+
+    private final DataStore data;
+
+    public DebugLayer(Application application) {
+        data = DataStoreManager.getFileStore(application, new Identifier("sandbox", "test-data"));
+        testObject = data.getOrDefaultObject(new Identifier("test-data", "obj"), () -> new TestData("test"));
+    }
 
     @Override
     protected void drawImGUI() {
@@ -126,7 +138,32 @@ public class DebugLayer extends ImGUILayer {
             ImGui.text(Sandbox.player.transform.getGlobalPosition().toString());
             ImGui.end();
         }
+
+        if (ImGui.begin("SaveData test")) {
+            ImGui.text(testObject.s);
+            ImGui.sameLine();
+            ImGui.inputText("S", imString);
+            ImGui.sameLine();
+            if (ImGui.button("StoreS")) {
+                data.storeObject(new Identifier("test-data", "obj"), testObject.setS(imString.get()));
+            }
+
+            // Float
+            ImGui.text(String.valueOf(data.getOrDefaultFloat(new Identifier("test-data", "float"), 6.9f)));
+            ImGui.sameLine();
+            ImGui.inputFloat("F", imFloat);
+            ImGui.sameLine();
+            if (ImGui.button("StoreF")) {
+                data.storeFloat(new Identifier("test-data", "float"), imFloat.get());
+            }
+
+            ImGui.end();
+        }
     }
+
+    private TestData testObject;
+    private final ImFloat imFloat = new ImFloat();
+    private final ImString imString = new ImString();
 
     @Override
     protected boolean disableDefaultWindows() {

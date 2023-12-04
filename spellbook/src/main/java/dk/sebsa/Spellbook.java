@@ -10,6 +10,7 @@ import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.*;
 import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.core.threading.*;
+import dk.sebsa.spellbook.data.DataStoreManager;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.marble.Marble;
@@ -115,7 +116,7 @@ public class Spellbook {
                     logConfig = FileUtils.loadFile(new AssetLocation("spellbook/loggers/main.xml", AssetLocation.LocationTypes.Jar));
                 else
                     logConfig = FileUtils.loadFile(new AssetLocation("spellbook/loggers/main_colors.xml", AssetLocation.LocationTypes.Jar));
-                
+
                 LogFormatter format = new FormatBuilder().buildFromFile(logConfig);
 
                 // Create logger with storage logic if needed
@@ -274,6 +275,7 @@ public class Spellbook {
 
         // Cleanup leaked assets
         moduleCore.getAssetManager().engineCleanup(logger);
+        DataStoreManager.flushData();
 
         // TaskManager force shutdown
         if (capabilities.shutdownTasksAwaitMillis >= 0) {
