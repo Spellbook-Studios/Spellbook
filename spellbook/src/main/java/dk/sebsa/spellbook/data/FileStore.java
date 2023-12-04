@@ -2,7 +2,6 @@ package dk.sebsa.spellbook.data;
 
 import dk.sebsa.spellbook.asset.Identifier;
 import lombok.CustomLog;
-import lombok.RequiredArgsConstructor;
 
 import java.io.*;
 import java.util.HashMap;
@@ -15,22 +14,24 @@ import java.util.function.Supplier;
  * @author sebs
  * @since 1.0.0
  */
-@RequiredArgsConstructor
 @CustomLog
 public class FileStore implements DataStore, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    final Map<String, Integer> integers;
-    final Map<String, Float> floats;
-    final Map<String, Double> doubles;
-    final Map<String, Boolean> booleans;
-    final Map<String, String> strings;
+    private final Map<String, Integer> integers;
+    private final Map<String, Float> floats;
+    private final Map<String, Double> doubles;
+    private final Map<String, Boolean> booleans;
+    private final Map<String, String> strings;
+    private final Map<String, Object> objects;
 
-    /**
-     * Creates a totally empty filestore
-     */
     public FileStore() {
-        this(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this.integers = new HashMap<>();
+        this.floats = new HashMap<>();
+        this.doubles = new HashMap<>();
+        this.booleans = new HashMap<>();
+        this.strings = new HashMap<>();
+        this.objects = new HashMap<>();
     }
 
     /**
@@ -97,8 +98,8 @@ public class FileStore implements DataStore, Serializable {
     }
 
     @Override
-    public void getObject(Identifier identifier, Class<?> schema) {
-
+    public <T extends Serializable> T getObject(Identifier identifier) {
+        return (T) objects.get(identifier.toString());
     }
 
     @Override
@@ -127,8 +128,8 @@ public class FileStore implements DataStore, Serializable {
     }
 
     @Override
-    public void getOrDefaultObject(Identifier identifier, Supplier<Object> def, Class<?> schema) {
-
+    public <T extends Serializable> T getOrDefaultObject(Identifier identifier, Supplier<Object> def) {
+        return (T) objects.computeIfAbsent(identifier.toString(), (i) -> def.get());
     }
 
     @Override
@@ -158,6 +159,6 @@ public class FileStore implements DataStore, Serializable {
 
     @Override
     public void storeObject(Identifier identifier, Object o) {
-
+        objects.put(identifier.toString(), o);
     }
 }

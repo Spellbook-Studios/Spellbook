@@ -2,6 +2,7 @@ package dk.sebsa.spellbook.data;
 
 import dk.sebsa.spellbook.asset.Identifier;
 
+import java.io.Serializable;
 import java.util.function.Supplier;
 
 /**
@@ -52,13 +53,12 @@ public interface DataStore {
     String getString(Identifier identifier);
 
     /**
-     * Tried to deserialize the object stored at the identifier using the class as the schema
+     * Gets the object stored at the identifier provided
      *
      * @param identifier The identifier for the data
-     * @param schema     The serializable class that of the object stored at the identifier
-     * @return An object of the class schema
+     * @return An object
      */
-    void getObject(Identifier identifier, Class<?> schema);
+    <T extends Serializable> T getObject(Identifier identifier);
 
 
     /**
@@ -114,14 +114,12 @@ public interface DataStore {
     /**
      * Gets the object stored at the identifier provided, or def if none was found
      * In case that no object was found at the provided location the object the supplier returns will be put there instead
-     * In case the object was found it will be deserialized using the schema provided
      *
      * @param identifier The identifier for the data
      * @param def        Default value for when no other value was stored
-     * @param schema     The object will be deserialized with this schema
      * @return A boolean
      */
-    void getOrDefaultObject(Identifier identifier, Supplier<Object> def, Class<?> schema);
+    <T extends Serializable> T getOrDefaultObject(Identifier identifier, Supplier<Object> def);
 
     /**
      * Store an int at the provided identifier

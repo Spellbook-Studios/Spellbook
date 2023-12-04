@@ -102,4 +102,26 @@ class FileStoreTest {
         assertEquals("HELLO", store2.getString(new Identifier("test", "1")));
         assertEquals("WORLD!", store2.getString(new Identifier("test", "2")));
     }
+
+    @Test
+    void testObject() throws IOException, ClassNotFoundException {
+        TestData data = new TestData("HELLO", 24.5f);
+        TestData data1 = new TestData("WORLD?", 420.69f);
+        TestData data2 = new TestData("WORLD!", 2.5f);
+
+        FileStore store = new FileStore();
+        assertEquals(data, store.getOrDefaultObject(new Identifier("test", "1"), () -> data));
+        assertEquals(data, store.getOrDefaultObject(new Identifier("test", "1"), () -> data1));
+        assertEquals(data, store.getObject(new Identifier("test", "1")));
+
+        store.storeObject(new Identifier("test", "2"), data2);
+        assertEquals(data2, store.getObject(new Identifier("test", "2")));
+
+        // Test saving data to file
+        FileStore.toFile(new File(tempDir, "test-object.data"), store);
+        DataStore store2 = FileStore.fromFile(new File(tempDir, "test-object.data"));
+        assertEquals(data, store2.getOrDefaultObject(new Identifier("test", "1"), () -> data1));
+        assertEquals(data, store2.getObject(new Identifier("test", "1")));
+        assertEquals(data2, store2.getObject(new Identifier("test", "2")));
+    }
 }

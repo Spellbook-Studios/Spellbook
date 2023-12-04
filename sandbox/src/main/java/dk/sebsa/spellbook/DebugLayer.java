@@ -16,7 +16,8 @@ import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 import dk.sebsa.spellbook.util.Random;
 import imgui.ImGui;
 import imgui.flag.ImGuiTableFlags;
-import imgui.type.*;
+import imgui.type.ImFloat;
+import imgui.type.ImString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class DebugLayer extends ImGUILayer {
 
     public DebugLayer(Application application) {
         data = DataStoreManager.getFileStore(application, new Identifier("sandbox", "test-data"));
+        testObject = data.getOrDefaultObject(new Identifier("test-data", "obj"), () -> new TestData("test"));
     }
 
     @Override
@@ -138,12 +140,12 @@ public class DebugLayer extends ImGUILayer {
         }
 
         if (ImGui.begin("SaveData test")) {
-            ImGui.text(String.valueOf(data.getOrDefaultInt(new Identifier("test-data", "int"), 11)));
+            ImGui.text(testObject.s);
             ImGui.sameLine();
-            ImGui.inputInt("I", imInt);
+            ImGui.inputText("S", imString);
             ImGui.sameLine();
-            if (ImGui.button("StoreI")) {
-                data.storeInt(new Identifier("test-data", "int"), imInt.get());
+            if (ImGui.button("StoreS")) {
+                data.storeObject(new Identifier("test-data", "obj"), testObject.setS(imString.get()));
             }
 
             // Float
@@ -159,11 +161,9 @@ public class DebugLayer extends ImGUILayer {
         }
     }
 
-    private ImInt imInt = new ImInt();
-    private ImFloat imFloat = new ImFloat();
-    private ImDouble imDouble = new ImDouble();
-    private ImString imString = new ImString();
-    private ImBoolean imBool = new ImBoolean();
+    private TestData testObject;
+    private final ImFloat imFloat = new ImFloat();
+    private final ImString imString = new ImString();
 
     @Override
     protected boolean disableDefaultWindows() {
