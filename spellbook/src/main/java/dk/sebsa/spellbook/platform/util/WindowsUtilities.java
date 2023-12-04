@@ -15,12 +15,12 @@ public class WindowsUtilities {
      */
     public enum FolderId {
         /**
-         * Located under C:\Users\<usr>\AppData\Roaming
+         * Located under C:\Users\USERNAME\AppData\Roaming
          * This data is shared between the user's pc's
          */
         APPDATA,
         /**
-         * Located under C:\Users\<usr>\AppData\Local
+         * Located under C:\Users\USERNAME\AppData\Local
          * This data is not shared across multiple pc's
          */
         LOCAL_APPDATA

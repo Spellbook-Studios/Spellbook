@@ -56,6 +56,7 @@ public interface DataStore {
      * Gets the object stored at the identifier provided
      *
      * @param identifier The identifier for the data
+     * @param <T>        The type of the object you are trying to read, this object must be serializable
      * @return An object
      */
     <T extends Serializable> T getObject(Identifier identifier);
@@ -117,6 +118,7 @@ public interface DataStore {
      *
      * @param identifier The identifier for the data
      * @param def        Default value for when no other value was stored
+     * @param <T>        The type of the object you are trying to read, this object must be serializable
      * @return A boolean
      */
     <T extends Serializable> T getOrDefaultObject(Identifier identifier, Supplier<Object> def);

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * Load, Read & Change, Store data to a file
+ * Loads, Reads, Updates and Stores data to and from a file
  *
  * @author sebs
  * @since 1.0.0
@@ -25,6 +25,9 @@ public class FileStore implements DataStore, Serializable {
     private final Map<String, String> strings;
     private final Map<String, Object> objects;
 
+    /**
+     * Creates a filestore with no stored data
+     */
     public FileStore() {
         this.integers = new HashMap<>();
         this.floats = new HashMap<>();
