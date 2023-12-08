@@ -89,3 +89,9 @@ tasks.withType(JavaCompile).configureEach {
         it.options.release = targetJavaVersion
     }
 }
+
+compileJava {
+    sourceCompatibility = '1.21'
+    targetCompatibility = '1.21'
+    options.release = targetJavaVersion;
+}
