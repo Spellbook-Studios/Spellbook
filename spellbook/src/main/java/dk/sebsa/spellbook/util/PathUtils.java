@@ -4,6 +4,8 @@ import dk.sebsa.spellbook.platform.util.MacOSXPathUtils;
 import dk.sebsa.spellbook.platform.util.UnixPathUtils;
 import dk.sebsa.spellbook.platform.util.WindowsPathUtils;
 
+import java.io.File;
+
 /**
  * Platform abstract function for getting paths to spercific kinds of directories
  *
@@ -25,7 +27,7 @@ public abstract class PathUtils {
     }
 
     protected String buildPath(String... elems) {
-        String separator = System.getProperty("file.separator");
+        String separator = File.pathSeparator;
         StringBuilder buffer = new StringBuilder();
         String lastElem = null;
         for (String elem : elems) {

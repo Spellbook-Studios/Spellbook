@@ -12,6 +12,9 @@ import dk.sebsa.spellbook.opengl.SpriteSheet;
 import dk.sebsa.spellbook.util.ThreeKeyHashMap;
 import lombok.CustomLog;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * UI and UX module for Spellbook
  *
@@ -27,6 +30,7 @@ public class Marble implements Module {
 
     private Font defaultFont;
     private static final ThreeKeyHashMap<Font, String, String, MarbleIMRenderer> rendererHashMap = new ThreeKeyHashMap<>();
+    private static final Map<String, FontType> fontTypes = new HashMap<>();
 
     /**
      * Gets the MarbleIMRender with the terms specified
@@ -56,6 +60,10 @@ public class Marble implements Module {
         // Destroy Fonts
         for (Font f : fontMap.getValues()) {
             f.getTexture().destroy();
+        }
+
+        for (FontType f : fontTypes.values()) {
+            f.unreference();
         }
     }
 
@@ -109,16 +117,15 @@ public class Marble implements Module {
     }
 
     /**
-     * Loads a font from a TTF file (or from the cache) and derives its size
+     * Loads a font from a TTF asset file (or from the cache) and derives its size
      *
-     * @param fontType The font asset to load from
+     * @param fontType The identifier of the font asset to load from
      * @param size     The point size of the Font
      * @return the new font
      */
-    public Font font(FontType fontType, float size) {
-        String name = fontType.getLocation().location();
-
-        return fontMap.getPut(name, (int) size, java.awt.Font.PLAIN, () -> new Font(fontType.getFont().deriveFont(size)));
+    public Font font(Identifier fontType, float size) {
+        return fontMap.getPut(fontType.getPath(), (int) size, java.awt.Font.PLAIN, () ->
+                new Font(fontTypes.computeIfAbsent(fontType.getPath(), (f) -> (FontType) AssetManager.getAssetS(fontType)).getFont().deriveFont(size)));
     }
 
     private GLSLShaderProgram preparedShader = null;
