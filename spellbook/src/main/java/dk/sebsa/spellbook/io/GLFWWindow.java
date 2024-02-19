@@ -93,6 +93,12 @@ public class GLFWWindow {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
+        // OSX Support
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
         logger.log("Create window: ", this);
 
         // Create the window
@@ -182,7 +188,7 @@ public class GLFWWindow {
     public void update() {
         if (isFullscreen != actuallyFullscreen) {
             actuallyFullscreen = isFullscreen;
-            logger.log("Changed fullscren to: " + isFullscreen);
+            logger.log("Changed fullscreen to: " + isFullscreen);
 
             isDirty = true;
             if (isFullscreen) {
