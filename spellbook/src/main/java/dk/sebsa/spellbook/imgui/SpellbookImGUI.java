@@ -1,11 +1,13 @@
 package dk.sebsa.spellbook.imgui;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.EngineFrameEarly;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.io.GLFWWindow;
+import dk.sebsa.spellbook.graphics.opengl.tasks.GLImGuiInit;
 import imgui.ImGui;
 import imgui.gl3.ImGuiImplGl3;
 import lombok.CustomLog;
@@ -48,9 +50,9 @@ public class SpellbookImGUI implements Module {
         // Create OpenGL and GLFW implementations
         implGLFW = new SpellbookImGUIGLFWImpl();
         implGLFW.init(e.moduleCore.getWindow().getId());
-        implGl3 = new ImGuiImplGl3();
-        implGl3.init("#version 150");
         window = e.moduleCore.getWindow();
+        implGl3 = new ImGuiImplGl3();
+        Spellbook.instance.getRenderer().queueTask(new GLImGuiInit(implGl3));
 
         // Init ImGUI
         ImGui.init();

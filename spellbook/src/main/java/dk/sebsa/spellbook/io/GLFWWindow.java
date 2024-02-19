@@ -1,6 +1,7 @@
 package dk.sebsa.spellbook.io;
 
 import dk.sebsa.Spellbook;
+import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
@@ -154,30 +155,8 @@ public class GLFWWindow {
         glfwWindowHint(GLFW_STENCIL_BITS, 4);
         glfwWindowHint(GLFW_SAMPLES, 4);
 
-        logger.log("Init OpenGL support");
-        // Init OpenGL
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the GLCapabilities instance and makes the OpenGL
-        // bindings available for use.
-        GL.createCapabilities();
-
-        logger.log("Setup GL functionality");
-        // Enable transparency
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        // Culling
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-
         // Show the window
         glfwShowWindow(id);
-
-        // Get graphics card
-        Spellbook.graphicsCard = glGetString(GL_RENDER) + " " + glGetString(GL_VENDOR);
-        logger.log("Graphics Card: " + Spellbook.graphicsCard);
     }
 
     private int oldW, oldH;

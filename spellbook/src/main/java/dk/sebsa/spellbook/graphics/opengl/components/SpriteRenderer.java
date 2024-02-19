@@ -1,14 +1,14 @@
-package dk.sebsa.spellbook.opengl.components;
+package dk.sebsa.spellbook.graphics.opengl.components;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
+import dk.sebsa.spellbook.graphics.opengl.GL2D;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
-import dk.sebsa.spellbook.opengl.GL2D;
-import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
-import dk.sebsa.spellbook.opengl.Sprite;
+import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
+import dk.sebsa.spellbook.graphics.opengl.Sprite;
 import lombok.CustomLog;
 
 /**

@@ -6,7 +6,7 @@ import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
-import dk.sebsa.spellbook.io.KeyPressedEvent;
+import dk.sebsa.spellbook.io.events.KeyPressedEvent;
 import dk.sebsa.spellbook.marble.FontType;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.marble.MarbleIMRenderer;

@@ -1,13 +1,13 @@
-package dk.sebsa.spellbook.opengl;
+package dk.sebsa.spellbook.graphics.opengl;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.ecs.Camera;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
-import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import lombok.CustomLog;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL30;

@@ -12,10 +12,12 @@ import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.core.threading.*;
 import dk.sebsa.spellbook.data.DataStoreManager;
 import dk.sebsa.spellbook.ecs.ECS;
+import dk.sebsa.spellbook.graphics.Renderer;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Time;
-import dk.sebsa.spellbook.opengl.OpenGLModule;
+import dk.sebsa.spellbook.graphics.opengl.OpenGLRenderer;
+import dk.sebsa.spellbook.graphics.RenderModule;
 import dk.sebsa.spellbook.phys.Newton2D;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
@@ -70,6 +72,8 @@ public class Spellbook {
     private final Application application;
     @Getter
     private ITaskManager taskManager;
+    @Getter
+    private Renderer renderer;
 
     /**
      * The FRAME_DATA for the current frame
@@ -214,12 +218,19 @@ public class Spellbook {
 
         // Register Non Core Modules
         if (capabilities.ecs) registerModule(new ECS());
-        if (capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl))
-            registerModule(new OpenGLModule());
-        if (DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
         if (capabilities.audio) registerModule(new OpenALModule());
         if (capabilities.newton2D) registerModule(new Newton2D());
 
+        // Rendering modules
+        if (capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl))
+            renderer = new OpenGLRenderer();
+
+        if(renderer != null) registerModule(new RenderModule(renderer));
+
+        // ImGui module (AFTER RENDER OR ELSE FUCUP)
+        if (DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
+
+        // UI
         marbleModule = new Marble();
         registerModule(marbleModule);
 
@@ -245,8 +256,11 @@ public class Spellbook {
 
             // Process input and prepare for frame
             FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer, marbleModule, taskManager);
+            System.out.println("FRAME");
             eventBus.engine(new EngineFrameEarly(FRAME_DATA));
+            System.out.println("FRAME");
             Time.procsessFrame();
+            System.out.println("FRAME");
 
             // Main frame, handle events
             eventBus.engine(new EngineFrameProcess(FRAME_DATA));

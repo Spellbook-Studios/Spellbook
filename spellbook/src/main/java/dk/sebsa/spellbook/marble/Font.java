@@ -2,8 +2,8 @@ package dk.sebsa.spellbook.marble;
 
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Vector2f;
-import dk.sebsa.spellbook.opengl.Material;
-import dk.sebsa.spellbook.opengl.Texture;
+import dk.sebsa.spellbook.graphics.opengl.Material;
+import dk.sebsa.spellbook.graphics.opengl.Texture;
 import lombok.Getter;
 
 import java.awt.*;

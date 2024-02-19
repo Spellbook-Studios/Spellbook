@@ -1,4 +1,4 @@
-package dk.sebsa.spellbook.io;
+package dk.sebsa.spellbook.io.events;
 
 import dk.sebsa.spellbook.core.events.UserEvent;
 import lombok.RequiredArgsConstructor;

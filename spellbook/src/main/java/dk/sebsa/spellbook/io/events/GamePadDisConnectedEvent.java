@@ -1,6 +1,7 @@
-package dk.sebsa.spellbook.io;
+package dk.sebsa.spellbook.io.events;
 
 import dk.sebsa.spellbook.core.events.Event;
+import dk.sebsa.spellbook.io.GamePad;
 import lombok.RequiredArgsConstructor;
 
 /**

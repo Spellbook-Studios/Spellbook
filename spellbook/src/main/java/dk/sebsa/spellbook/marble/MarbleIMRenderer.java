@@ -1,10 +1,10 @@
 package dk.sebsa.spellbook.marble;
 
 import dk.sebsa.spellbook.math.Rect;
-import dk.sebsa.spellbook.opengl.GL2D;
-import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
-import dk.sebsa.spellbook.opengl.Sprite;
-import dk.sebsa.spellbook.opengl.SpriteSheet;
+import dk.sebsa.spellbook.graphics.opengl.GL2D;
+import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
+import dk.sebsa.spellbook.graphics.opengl.Sprite;
+import dk.sebsa.spellbook.graphics.opengl.SpriteSheet;
 import lombok.CustomLog;
 import lombok.Getter;
 import lombok.Setter;

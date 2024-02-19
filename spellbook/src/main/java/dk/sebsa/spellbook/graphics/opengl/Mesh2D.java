@@ -1,4 +1,4 @@
-package dk.sebsa.spellbook.opengl;
+package dk.sebsa.spellbook.graphics.opengl;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;

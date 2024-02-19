@@ -1,4 +1,4 @@
-package dk.sebsa.spellbook.opengl;
+package dk.sebsa.spellbook.graphics.opengl;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;

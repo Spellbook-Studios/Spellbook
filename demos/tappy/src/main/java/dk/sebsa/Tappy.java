@@ -15,8 +15,8 @@ import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Time;
-import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
-import dk.sebsa.spellbook.opengl.stages.SpriteStage;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
 
 import java.io.File;

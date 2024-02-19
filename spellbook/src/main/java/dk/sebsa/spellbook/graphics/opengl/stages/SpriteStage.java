@@ -1,11 +1,11 @@
-package dk.sebsa.spellbook.opengl.stages;
+package dk.sebsa.spellbook.graphics.opengl.stages;
 
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.ecs.Camera;
+import dk.sebsa.spellbook.graphics.opengl.RenderStage;
+import dk.sebsa.spellbook.graphics.opengl.Sprite2D;
 import dk.sebsa.spellbook.math.Rect;
-import dk.sebsa.spellbook.opengl.RenderStage;
-import dk.sebsa.spellbook.opengl.Sprite2D;
 
 /**
  * A stage that renders all SpriteRenderer components

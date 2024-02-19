@@ -4,6 +4,7 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.audio.Sound;
+import dk.sebsa.spellbook.graphics.opengl.*;
 import dk.sebsa.spellbook.marble.FontType;
 import dk.sebsa.spellbook.opengl.*;
 

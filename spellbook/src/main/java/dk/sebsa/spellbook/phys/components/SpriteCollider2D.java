@@ -1,6 +1,6 @@
 package dk.sebsa.spellbook.phys.components;
 
-import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 
 /**
  * A boxcollider that follows the size and scale of a spriterenderer

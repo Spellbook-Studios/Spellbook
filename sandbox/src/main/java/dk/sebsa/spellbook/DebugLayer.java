@@ -10,7 +10,7 @@ import dk.sebsa.spellbook.data.DataStoreManager;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.imgui.ImGUILayer;
-import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 import dk.sebsa.spellbook.util.Random;

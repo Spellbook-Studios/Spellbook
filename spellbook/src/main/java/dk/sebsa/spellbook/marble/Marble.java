@@ -6,9 +6,9 @@ import dk.sebsa.spellbook.core.Module;
 import dk.sebsa.spellbook.core.events.EngineCleanupEvent;
 import dk.sebsa.spellbook.core.events.EngineFirstFrameEvent;
 import dk.sebsa.spellbook.core.events.EventListener;
-import dk.sebsa.spellbook.opengl.GL2D;
-import dk.sebsa.spellbook.opengl.GLSLShaderProgram;
-import dk.sebsa.spellbook.opengl.SpriteSheet;
+import dk.sebsa.spellbook.graphics.opengl.GL2D;
+import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
+import dk.sebsa.spellbook.graphics.opengl.SpriteSheet;
 import dk.sebsa.spellbook.util.ThreeKeyHashMap;
 import lombok.CustomLog;
 

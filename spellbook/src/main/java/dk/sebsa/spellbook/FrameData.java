@@ -6,8 +6,8 @@ import dk.sebsa.spellbook.core.threading.TaskGroup;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.marble.Marble;
-import dk.sebsa.spellbook.opengl.Sprite;
-import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.Sprite;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.phys.components.Collider2D;
 import lombok.Getter;
 
