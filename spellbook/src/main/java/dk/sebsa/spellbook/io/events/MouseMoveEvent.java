@@ -20,15 +20,6 @@ public class MouseMoveEvent extends UserEvent {
      */
     public final float mouseY;
 
-    /**
-     * The X offset from the X position of the mouse last frame
-     */
-    public final float offsetX;
-    /**
-     * The Y offset from the Y position of the mouse last frame
-     */
-    public final float offsetY;
-
     @Override
     public EventType eventType() {
         return EventType.ioMouseMove;

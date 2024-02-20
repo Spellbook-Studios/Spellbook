@@ -4,6 +4,7 @@ import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 
@@ -77,7 +78,7 @@ public class FBO {
     public void unBind() {
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, 0);
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        glViewport(0, 0, window.getWidth(), window.getHeight());
+        glViewport(0, 0, (int) window.rect.width, (int) window.rect.height);
     }
 
     private int createTextureAttachment() {

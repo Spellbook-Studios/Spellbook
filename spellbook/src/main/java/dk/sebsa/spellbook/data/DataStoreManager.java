@@ -35,7 +35,7 @@ public class DataStoreManager {
             try {
                 return FileStore.fromFile(new File(f));
             } catch (IOException e) {
-                logger.err("IOException whilst parsing DataStore file: " + logger.stackTrace(e));
+                logger.err("IOException whilst parsing DataStore file (" + f + "): " + logger.stackTrace(e));
                 return new FileStore();
             } catch (ClassNotFoundException e) {
                 logger.err("ClassNotFoundException whilst parsing DataStore file: " + logger.stackTrace(e));

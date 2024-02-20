@@ -41,8 +41,8 @@ public class SpellbookImGUIGLFWImpl {
     private boolean glfwHasMonitorWorkArea;
 
     // For application window properties
-    private int winWidth;
-    private int winHeight;
+    private float winWidth;
+    private float winHeight;
 
 
     // Empty array to fill ImGuiIO.NavInputs with zeroes
@@ -132,10 +132,10 @@ public class SpellbookImGUIGLFWImpl {
     public void newFrame(GLFWWindow window) {
         final ImGuiIO io = ImGui.getIO();
 
-        winWidth = window.getWidth();
-        winHeight = window.getHeight();
+        winWidth = window.winRect.width;
+        winHeight = window.winRect.height;
         io.setDisplaySize((float) winWidth, (float) winHeight);
-        io.setDisplayFramebufferScale(1, 1);
+        io.setDisplayFramebufferScale(window.getFrameBufferScale().x, window.getFrameBufferScale().y);
         
         if (wantUpdateMonitors) {
             updateMonitors();

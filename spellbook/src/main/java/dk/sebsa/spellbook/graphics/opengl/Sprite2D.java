@@ -49,6 +49,7 @@ public class Sprite2D {
             shader.createUniform("anchor");
             shader.createUniform("offset");
             shader.createUniform("projectionViewMatrix");
+            shader.createUniform("sampler");
 
             shader.createUniform("matColor");
         } catch (Exception ex) {

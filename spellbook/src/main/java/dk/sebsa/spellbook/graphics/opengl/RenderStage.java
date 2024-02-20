@@ -41,7 +41,7 @@ public abstract class RenderStage {
 
     private void updateFBO() {
         if(fbo != null) fbo.destroy();
-        fbo = new FBO(window.getWidth(), window.getHeight(), window);
+        fbo = new FBO((int) window.rect.width, (int) window.rect.height, window);
         fbo.bindFrameBuffer();
         glEnable(GL_DEPTH_TEST);
         fbo.unBind();

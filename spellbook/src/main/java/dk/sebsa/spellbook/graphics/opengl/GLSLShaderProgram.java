@@ -35,6 +35,10 @@ public class GLSLShaderProgram extends Asset {
 
     @Override
     public void load() {
+        loadShader();
+    }
+
+    private void loadShader() {
         logger.log("Creating shader program");
         programId = glCreateProgram();
         if (programId == 0) {
@@ -59,6 +63,7 @@ public class GLSLShaderProgram extends Asset {
         logger.log("Linking shaders");
         link();
         logger.log("Shader done!");
+
     }
 
     /**
@@ -104,21 +109,27 @@ public class GLSLShaderProgram extends Asset {
             glDetachShader(programId, fragmentShaderId);
         }
 
-        glValidateProgram(programId);
-        if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
-            logger.warn("Warning validating Shader code: " + glGetProgramInfoLog(programId, 1024));
-        }
+        //glValidateProgram(programId);
+        //if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
+        //    logger.warn("Warning validating Shader code: " + glGetProgramInfoLog(programId, 1024));
+        //}
     }
 
+    /**
+     * Destroys the shader
+     */
     @Override
     public void destroy() {
+        Spellbook.instance.getRenderer().queue(this::destroyShader);
+    }
+
+    private void destroyShader() {
         unbind(); // Make sure that no shader is bound
         if (programId != 0) {
             logger.log("Destroying shader");
             glDeleteProgram(programId);
         }
     }
-
     // Shade use code
 
     /**

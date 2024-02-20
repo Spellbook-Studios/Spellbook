@@ -4,13 +4,14 @@ import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import lombok.CustomLog;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @CustomLog
 public class RenderingThread implements Runnable {
-    private final AtomicBoolean stop = new AtomicBoolean(false);
-    private final List<GraphTask> taskQueue = Collections.synchronizedList(new LinkedList<>());
-    
+    public final AtomicBoolean stop = new AtomicBoolean(false);
+    protected final List<GraphTask> taskQueue = Collections.synchronizedList(new LinkedList<>());
+
     @Override
     public void run() {
         logger.log("Graphics Thread MainLoop");

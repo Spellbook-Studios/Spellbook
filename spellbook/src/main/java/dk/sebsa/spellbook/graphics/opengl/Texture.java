@@ -2,19 +2,11 @@ package dk.sebsa.spellbook.graphics.opengl;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
-import dk.sebsa.spellbook.asset.loading.AssetLocation;
-import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
-import org.lwjgl.BufferUtils;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.glGenerateMipmap;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 
@@ -25,17 +17,14 @@ import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
  * @since 1.0.0
  */
 public class Texture extends Asset {
+    @Getter
     private int id;
     @Getter
     private float width, height;
 
-
+    @Override
     public void load() {
-        try {
-            set(loadTexture(location));
-        } catch (IOException e) {
-            Spellbook.instance.error("Failed to load texutre, IOException: " + location, false);
-        }
+        Spellbook.instance.getRenderer().queue(() -> Spellbook.instance.getRenderer().loadTexture(this, location));
     }
 
     /**
@@ -51,78 +40,29 @@ public class Texture extends Asset {
         return this;
     }
 
-    /**
-     * Loads a texture from a file
-     *
-     * @param location the location of the texture file
-     * @return The information about this OpenGL texture
-     */
-    private TextureInfo loadTexture(AssetLocation location) throws IOException {
-        ByteBuffer data;
-
-        IntBuffer widthBuffer = BufferUtils.createIntBuffer(1);
-        IntBuffer heightBuffer = BufferUtils.createIntBuffer(1);
-        IntBuffer channelsBuffer = BufferUtils.createIntBuffer(1);
-
-        InputStream is = FileUtils.loadFile(location);
-
-        // Load texture from stream
-        byte[] bytes = new byte[8000];
-        int curByte;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        while ((curByte = is.read(bytes)) != -1) {
-            bos.write(bytes, 0, curByte);
-        }
-        is.close();
-
-        bytes = bos.toByteArray();
-        ByteBuffer buffer = BufferUtils.createByteBuffer(bytes.length);
-        buffer.put(bytes).flip();
-        data = stbi_load_from_memory(buffer, widthBuffer, heightBuffer, channelsBuffer, 4);
-
-
-        // Create the OpenGL texture
-        int textureId = glGenTextures();
-        glBindTexture(GL_TEXTURE_2D, textureId); // Lets us work with the texture
-
-        // Tell OpenGL how to unpack the RGBA bytes. Each component is 1 byte size
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-        // Upload the texture data
-        int width = widthBuffer.get();
-        int height = heightBuffer.get();
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-                GL_RGBA, GL_UNSIGNED_BYTE, data);
-        // Generate Mip Map
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        assert data != null;
-        stbi_image_free(data);
-
-        return new TextureInfo(width, height, textureId);
-    }
-
     @Override
     public void destroy() {
-        glDeleteTextures(id);
+        Spellbook.instance.getRenderer().queue(() -> Spellbook.instance.getRenderer().destroy(this));
     }
 
     /**
+     * Must be called from the rendering thread
      * Bind the texture to GL_TEXTURE_2D
+     *
+     * @param activeTextureUnit int 0-31 representing the texture unit to bind to
      */
-    public void bind() {
-        glBindTexture(GL_TEXTURE_2D, id);
+    public void bind(int activeTextureUnit) {
+        Spellbook.instance.getRenderer().bindTexture(this, activeTextureUnit);
     }
 
     /**
+     * Must be called from the rendering thread
      * Unbinds the GL_TEXTURE_2D
+     *
+     * @param activeTextureUnit int 0-31 representing the texture unit to bind to
      */
-    public void unbind() {
-        glBindTexture(GL_TEXTURE_2D, 0);
+    public void unbind(int activeTextureUnit) {
+        Spellbook.instance.getRenderer().unbindTexture(activeTextureUnit);
     }
 
     /**
@@ -132,6 +72,5 @@ public class Texture extends Asset {
      * @param height    The height of the texture
      * @param textureId The OpenGL texture id
      */
-    public record TextureInfo(int width, int height, int textureId) {
-    }
+    public record TextureInfo(int width, int height, int textureId) { }
 }

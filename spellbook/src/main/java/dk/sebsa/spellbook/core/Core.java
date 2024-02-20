@@ -123,7 +123,6 @@ public class Core implements Module, EventHandler {
 
     @EventListener
     public void engineFrameDone(EngineFrameDone e) {
-        window.endFrame();
         input.endFrame();
     }
 

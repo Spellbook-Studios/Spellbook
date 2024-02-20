@@ -1,14 +1,15 @@
 package dk.sebsa.spellbook.io;
 
+import com.sun.jna.platform.win32.GL;
 import dk.sebsa.Spellbook;
 import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.math.Rect;
+import dk.sebsa.spellbook.math.Vector2f;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.IntBuffer;
@@ -36,18 +37,18 @@ public class GLFWWindow {
     private String windowTitle;
     private final boolean vsync = false;
 
-    // Info vars
-    @Getter
-    private int width, height;
+    private int wWidth, wHeight;
     @Getter
     private boolean minimized = false;
+    @Getter
+    private Vector2f frameBufferScale;
 
     /**
      * Denotes weather the window has been "modified" within the last frame
      * Modified in the sense that the window has been moved or resized.
      */
     @Getter
-    private boolean isDirty;
+    private boolean isDirty = true;
     @Getter
     private boolean isFullscreen; // Can be set by the user but is first set on the next frame
     private boolean actuallyFullscreen; // Weather the window is currently in fullscreen
@@ -55,7 +56,11 @@ public class GLFWWindow {
     private final int[] posY = new int[1]; // The position of the window on the screen
 
     /**
-     * A rect representing the window, with pos always equal to 0,0
+     * A rect representing the window, within GLFW window coordinate space
+     */
+    public final Rect winRect = new Rect();
+    /**
+     * A rect representing the windows framebuffer
      */
     public final Rect rect = new Rect();
 
@@ -66,11 +71,8 @@ public class GLFWWindow {
      */
     public GLFWWindow(String windowTitle, int width, int height) {
         this.windowTitle = windowTitle;
-        this.width = width;
-        this.height = height;
-        this.isDirty = true;
-
-        rect.set(0, 0, width, height);
+        this.wWidth = width;
+        this.wHeight = height;
     }
 
     /**
@@ -103,9 +105,20 @@ public class GLFWWindow {
         logger.log("Create window: ", this);
 
         // Create the window
-        id = glfwCreateWindow(width, height, windowTitle, NULL, NULL);
+        id = glfwCreateWindow(wWidth, wHeight, windowTitle, NULL, NULL);
         if (id == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
+
+        // Get FrameBuffer size
+        try (MemoryStack stack = stackPush()) {
+            IntBuffer pWidth = stack.mallocInt(1); // int*
+            IntBuffer pHeight = stack.mallocInt(1); // int*
+            glfwGetFramebufferSize(this.id, pWidth, pHeight);
+            rect.set(0, 0, pWidth.get(0), pHeight.get(0));
+        } frameBufferScale = calculateWindowFramebufferScaling();
+
+        logger.log("Window rect", rect);
+        logger.log("Window Framebuffer to Window scale = " + frameBufferScale);
 
         logger.log("Setup resize callback");
         // you can read above ^^, but this is called whenever the window is resized by
@@ -113,39 +126,28 @@ public class GLFWWindow {
         glfwSetFramebufferSizeCallback(id, (window, w, h) -> {
             isDirty = true;
 
-            this.width = w;
-            this.height = h;
-            rect.set(0, 0, width, height);
+            setFramebufferAndWindowSize(); // This is done so we both have the window and the framebuffer size.
 
             logger.log("Windows resized", this);
             Spellbook.instance.getEventBus().engine(new WindowResizedEvent(rect));
 
             minimized = w == 0 && h == 0;
-
-            glViewport(0, 0, w, h);
         });
 
-        logger.log("Push the first frame..");
-        try (MemoryStack stack = stackPush()) {
-            IntBuffer pWidth = stack.mallocInt(1); // int*
-            IntBuffer pHeight = stack.mallocInt(1); // int*
+        logger.log("Center window");
+        setFramebufferAndWindowSize();
+        // Get the resolution of the primary monitor
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-            // Get the window size passed to glfwCreateWindow
-            glfwGetWindowSize(id, pWidth, pHeight);
-
-            // Get the resolution of the primary monitor
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            // Center the window
-            if (vidmode != null) {
-                glfwSetWindowPos(
-                        id,
-                        (vidmode.width() - pWidth.get(0)) / 2,
-                        (vidmode.height() - pHeight.get(0)) / 2);
-            } else {
-                logger.warn("glfwGetVideoMode returned null");
-            }
-        } // the stack frame is popped automatically
+        // Center the window
+        if (vidmode != null) {
+            glfwSetWindowPos(
+                    id,
+                    (int) ((vidmode.width() - winRect.width) / 2),
+                    (int) (vidmode.height() - winRect.height) / 2);
+        } else {
+            logger.warn("glfwGetVideoMode returned null");
+        }
 
         logger.log("Finalizing window setup");
         glfwMakeContextCurrent(id); // Makes it so glfw knows that the window we are working with is this
@@ -159,7 +161,7 @@ public class GLFWWindow {
         glfwShowWindow(id);
     }
 
-    private int oldW, oldH;
+    private float oldW, oldH;
 
     /**
      * Tells the window to process frame events
@@ -171,8 +173,8 @@ public class GLFWWindow {
 
             isDirty = true;
             if (isFullscreen) {
-                oldW = width;
-                oldH = height;
+                oldW = rect.width;
+                oldH = rect.height;
                 GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
                 if (videoMode == null) {
                     logger.err("glfwGetVideoMode returned null");
@@ -184,7 +186,26 @@ public class GLFWWindow {
                     glfwSwapInterval(vsync ? 1 : 0);
                 }
             } else
-                glfwSetWindowMonitor(id, 0, posX[0], posY[0], oldW, oldH, GLFW_DONT_CARE);
+                glfwSetWindowMonitor(id, 0, posX[0], posY[0], (int) oldW, (int) oldH, GLFW_DONT_CARE);
+        }
+    }
+
+    protected Vector2f calculateWindowFramebufferScaling() {
+        setFramebufferAndWindowSize();
+        return new Vector2f(rect.width / winRect.width, rect.height / winRect.height);
+    }
+
+    protected void setFramebufferAndWindowSize() {
+        try (MemoryStack stack = stackPush()) {
+            IntBuffer pWidth = stack.mallocInt(1); // int*
+            IntBuffer pHeight = stack.mallocInt(1); // int*
+            IntBuffer pFWidth = stack.mallocInt(1); // int*
+            IntBuffer pFHeight = stack.mallocInt(1); // int*
+
+            // Get the window size passed to glfwCreateWindow
+            glfwGetWindowSize(id, pWidth, pHeight);
+            glfwGetFramebufferSize(id, pFWidth, pFHeight);
+            rect.set(0,0,pFWidth.get(0), pFHeight.get(0)); winRect.set(0,0,pWidth.get(0),pHeight.get(0));
         }
     }
 

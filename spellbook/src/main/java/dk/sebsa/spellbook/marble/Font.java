@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.marble;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.graphics.opengl.Material;
@@ -22,6 +23,7 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Font {
     private BufferedImage bufferedImage;
+    @Getter
     private final java.awt.Font baseFont;
     private Vector2f imageSize;
     private FontMetrics fontMetrics;
@@ -43,7 +45,8 @@ public class Font {
      * @return The width
      */
     public int getStringWidth(String s) {
-        return fontMetrics.stringWidth(s);
+        // return fontMetrics.stringWidth(s); //TODO: FIX FONTS
+        return 0;
     }
 
     /**
@@ -53,24 +56,29 @@ public class Font {
      */
     public Font(java.awt.Font baseFont) {
         this.baseFont = baseFont;
-        generateFont();
+        Spellbook.instance.getRenderer().queue(() -> Spellbook.instance.getRenderer().generateFont(this));
     }
 
-    private void generateFont() {
-        GraphicsConfiguration graphCon = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+    /**
+     * Requires OpenGL Context!
+     * Generates the Font
+     */
+    public void generateFont() {
+        // TODO: REDO FONT
+        /*GraphicsConfiguration graphCon = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
         Graphics2D graphics = graphCon.createCompatibleImage(1, 1, Transparency.TRANSLUCENT).createGraphics();
         graphics.setFont(baseFont);
 
         fontMetrics = graphics.getFontMetrics();
         fontMaxHeight = (float) (fontMetrics.getHeight());
-        fontCharHeight = (float) (fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent());
+        fontCharHeight = (float) (fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent());*/
         imageSize = new Vector2f(2048, 2048);
-        bufferedImage = graphics.getDeviceConfiguration().createCompatibleImage((int) imageSize.x, (int) imageSize.y, Transparency.TRANSLUCENT);
+        //bufferedImage = graphics.getDeviceConfiguration().createCompatibleImage((int) imageSize.x, (int) imageSize.y, Transparency.TRANSLUCENT);
 
         int textureId = glGenTextures();
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, textureId);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) imageSize.x, (int) imageSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, generateImage());
+        //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) imageSize.x, (int) imageSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, generateImage());
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

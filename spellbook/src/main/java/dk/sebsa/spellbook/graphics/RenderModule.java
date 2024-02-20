@@ -16,18 +16,18 @@ public class RenderModule implements Module {
 
     @EventListener
     public void engineLoad(EngineLoadEvent e) {
-        renderer.rendererSetup(e);
+        renderer.queue(() -> renderer.setup(e));
     }
 
     @EventListener
     public void engineRender(EngineRenderEvent e) {
-        renderer.rendererRenderFrame(e);
+        renderer.queue(() -> renderer.renderFrame(e));
     }
 
     @Override
     public void cleanup() {
         logger.log("Cleaning up renderer: " + renderer.getClass().getName());
-        renderer.rendererCleanup();
+        renderer.queue(renderer::cleanup);
     }
 
     @Override

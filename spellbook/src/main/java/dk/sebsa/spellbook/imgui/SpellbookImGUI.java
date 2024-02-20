@@ -7,9 +7,7 @@ import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EventBus;
 import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.io.GLFWWindow;
-import dk.sebsa.spellbook.graphics.opengl.tasks.GLImGuiInit;
 import imgui.ImGui;
-import imgui.gl3.ImGuiImplGl3;
 import lombok.CustomLog;
 import lombok.Getter;
 
@@ -24,7 +22,7 @@ import lombok.Getter;
 @CustomLog
 public class SpellbookImGUI implements Module {
     @Getter
-    private ImGuiImplGl3 implGl3;
+    private SpellbookImGuiImplGl3 implGl3;
     @Getter
     private SpellbookImGUIGLFWImpl implGLFW;
     @Getter
@@ -51,8 +49,8 @@ public class SpellbookImGUI implements Module {
         implGLFW = new SpellbookImGUIGLFWImpl();
         implGLFW.init(e.moduleCore.getWindow().getId());
         window = e.moduleCore.getWindow();
-        implGl3 = new ImGuiImplGl3();
-        Spellbook.instance.getRenderer().queueTask(new GLImGuiInit(implGl3));
+        implGl3 = new SpellbookImGuiImplGl3();
+        Spellbook.instance.getRenderer().queue(() -> implGl3.init("#version 150"));
 
         // Init ImGUI
         ImGui.init();
@@ -62,7 +60,7 @@ public class SpellbookImGUI implements Module {
     @Override
     public void cleanup() {
         logger.log("ImGUI cleanup");
-        implGl3.dispose();
+        Spellbook.instance.getRenderer().queue(() -> implGl3.dispose());
         ImGui.destroyContext();
     }
 

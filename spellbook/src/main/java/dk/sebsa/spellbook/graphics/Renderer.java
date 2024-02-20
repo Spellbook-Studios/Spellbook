@@ -1,8 +1,11 @@
 package dk.sebsa.spellbook.graphics;
 
+import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EngineRenderEvent;
 import dk.sebsa.spellbook.core.events.EventListener;
+import dk.sebsa.spellbook.graphics.opengl.Texture;
+import dk.sebsa.spellbook.marble.Font;
 import lombok.CustomLog;
 
 import java.util.concurrent.Callable;
@@ -18,44 +21,44 @@ public abstract class Renderer {
         Thread.ofPlatform().name("Rendering").factory().newThread(renderThread).start();
     }
 
-    public void queueTask(GraphTask g) {
-        renderThread.queue(g);
+    public boolean frameDone() { return renderThread.taskQueue.isEmpty(); }
+    public void waitForDone() {
+        while(!frameDone()) {
+            frameDone();
+        }
     }
 
-    protected void rendererSetup(EngineLoadEvent e) { queueTask(new GraphTask() {
-        @Override
-        public String name() {
-            return "Renderer<Setup>";
-        }
+    private void queue(GraphTask g) {
+        renderThread.queue(g);
+    }
+    public void queue(Runnable r) {
+        queue(new GraphTask() {
+            @Override
+            public String name() {
+                return "Renderer<Anon>";
+            }
 
-        @Override
-        public void execute() throws InterruptedException {
-            setup(e);
-        }
-    }); } protected abstract void setup(EngineLoadEvent e);
+            @Override
+            public void execute() throws InterruptedException {
+                r.run();
+            }
+        });
+    }
+
+    public abstract void loadTexture(Texture t, AssetLocation l);
+    public abstract void bindTexture(Texture t, int textureUnit);
+    public abstract void unbindTexture(int textureUnit);
+
+    public abstract void generateFont(Font f);
+
+    public abstract void destroy(Texture texture);
 
 
-    protected void rendererRenderFrame(EngineRenderEvent e) { queueTask(new GraphTask() {
-        @Override
-        public String name() {
-            return "Renderer<RenderFrame>";
-        }
-
-        @Override
-        public void execute() throws InterruptedException {
-            renderFrame(e);
-        }
-    }); } protected abstract void renderFrame(EngineRenderEvent e);
-
-    protected void rendererCleanup() { queueTask(new GraphTask() {
-        @Override
-        public String name() {
-            return "Renderer<Cleanup>";
-        }
-
-        @Override
-        public void execute() throws InterruptedException {
-            cleanup();
-        }
-    }); } protected abstract void cleanup();
+    protected abstract void setup(EngineLoadEvent e);
+    protected abstract void renderFrame(EngineRenderEvent e);
+    protected void cleanup() {
+        destroy();
+        renderThread.startCleanup();
+    }
+    protected abstract void destroy();
 }

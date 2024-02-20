@@ -1,9 +1,13 @@
 package dk.sebsa.spellbook.graphics.opengl.stages;
 
 import dk.sebsa.spellbook.FrameData;
+import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.ecs.Camera;
+import dk.sebsa.spellbook.graphics.opengl.GL2D;
 import dk.sebsa.spellbook.graphics.opengl.RenderStage;
+import dk.sebsa.spellbook.graphics.opengl.Sprite;
 import dk.sebsa.spellbook.graphics.opengl.Sprite2D;
 import dk.sebsa.spellbook.math.Rect;
 

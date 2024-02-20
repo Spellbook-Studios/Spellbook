@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 
 in vec2 position;
 in vec2 textureCords;
@@ -25,7 +25,7 @@ void main()
     uvCoords = (textureCords * offset.zw) + offset.xy;
 }
 // SPELLBOOK END VERTEX SHADER //
-#version 330
+#version 330 core
 uniform sampler2D sampler;
 
 in vec4 color;

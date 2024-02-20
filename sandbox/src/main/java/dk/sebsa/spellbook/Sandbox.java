@@ -97,7 +97,7 @@ public class Sandbox implements Application {
         player.name = "Player";
         SpriteRenderer spriteRenderer = new SpriteRenderer(new Identifier("sandbox", "32.spr"));
 
-        spriteRenderer.scale = 2;
+        spriteRenderer.scale = 200;
         spriteRenderer.layer = 1;
 
         player.addComponent(spriteRenderer);

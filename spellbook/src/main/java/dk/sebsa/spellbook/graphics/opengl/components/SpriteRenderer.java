@@ -11,6 +11,8 @@ import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.graphics.opengl.Sprite;
 import lombok.CustomLog;
 
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+
 /**
  * Handles the rendering of a sprite
  * This is meant to represent a sprite to be rendered

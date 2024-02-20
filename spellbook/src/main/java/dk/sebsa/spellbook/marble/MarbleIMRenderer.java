@@ -66,17 +66,18 @@ public class MarbleIMRenderer {
      */
     public void label(String text, float x, float y) {
         marble.ensureShader(shader);
-        Map<Byte, Font.Glyph> chars = font.getCharTable();
-        byte[] c = text.getBytes(StandardCharsets.ISO_8859_1);
-        float tempX = x;
+        //Map<Byte, Font.Glyph> chars = font.getCharTable();
+        //byte[] c = text.getBytes(StandardCharsets.ISO_8859_1);
+        //float tempX = x;
 
-        for (byte value : c) {
-            Font.Glyph glyph = chars.get(value);
+        //for (byte value : c) {
+            //Font.Glyph glyph = chars.get(value);
 
-            GL2D.drawTextureWithTextCords(font.getMaterial(), new Rect(tempX, y, glyph.scale().x, glyph.scale().y), new Rect(glyph.pos().x, glyph.pos().y, glyph.size().x, glyph.size().y));
+            // TODO: REDO FONT
+            //GL2D.drawTextureWithTextCords(font.getMaterial(), new Rect(tempX, y, glyph.scale().x, glyph.scale().y), new Rect(glyph.pos().x, glyph.pos().y, glyph.size().x, glyph.size().y));
 
-            tempX += glyph.scale().x;
-        }
+            //tempX += glyph.scale().x;
+        //}
     }
 
     /**

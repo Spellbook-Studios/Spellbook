@@ -107,6 +107,7 @@ public class Spellbook {
     }
 
     private Spellbook(Application app, SpellbookCapabilities caps) {
+        System.setProperty("java.awt.headless", "true");
         application = app;
         capabilities = caps;
         DEBUG = caps.spellbookDebug;
@@ -256,11 +257,8 @@ public class Spellbook {
 
             // Process input and prepare for frame
             FRAME_DATA = new FrameData(moduleCore.getInput(), capabilities.spriteMaxLayer, marbleModule, taskManager);
-            System.out.println("FRAME");
             eventBus.engine(new EngineFrameEarly(FRAME_DATA));
-            System.out.println("FRAME");
             Time.procsessFrame();
-            System.out.println("FRAME");
 
             // Main frame, handle events
             eventBus.engine(new EngineFrameProcess(FRAME_DATA));
@@ -269,6 +267,7 @@ public class Spellbook {
             eventBus.engine(new EngineRenderEvent(FRAME_DATA, moduleCore.getWindow()));
 
             // Cleanup Frame (Mostly just GLFWWindow)
+            renderer.waitForDone();
             eventBus.engine(new EngineFrameDone(FRAME_DATA));
         }
 

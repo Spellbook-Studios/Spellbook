@@ -11,6 +11,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 /**
  * A renderer for rendering 2D sprites
@@ -48,6 +50,7 @@ public class GL2D {
         logger.log("GL2D loaded");
 
         missingSprite = (Sprite) AssetManager.getAssetS(new Identifier("spellbook", "missing.spr"));
+        ortho = Matrix4x4f.ortho(0, window.rect.width, window.rect.height, 0, -1, 1);
     }
 
     /**
@@ -64,6 +67,7 @@ public class GL2D {
             shaderProgram.createUniform("screenPos");
             shaderProgram.createUniform("color");
             shaderProgram.createUniform("useColor");
+            shaderProgram.createUniform("sampler");
         } catch (Exception e) {
             logger.warn("Failed to create shader uniforms", "This might still work, if the error is from the uniforms already having been created");
             logger.stackTrace(e);
@@ -97,7 +101,7 @@ public class GL2D {
         // Disable 3d
         glDisable(GL_DEPTH_TEST);
 
-        if (window.isDirty()) ortho = Matrix4x4f.ortho(0, window.getWidth(), window.getHeight(), 0, -1, 1);
+        if (window.isDirty()) ortho = Matrix4x4f.ortho(0, window.rect.width, window.rect.height, 0, -1, 1);
 
         // Render preparation
         defaultShader.bind();
@@ -161,17 +165,18 @@ public class GL2D {
 
         // Draw
         changeColor(mat.getColor());
-        if (mat.getTexture() != null) mat.getTexture().bind();
-        else missingSprite.getMaterial().getTexture().bind();
-        // TODO: else { noTexture.bind(); u.set(0,0,1,1); }
+        if (mat.getTexture() != null) mat.getTexture().bind(0);
+        else missingSprite.getMaterial().getTexture().bind(0);
+
+        defaultShader.setUniform("sampler", 0);
         defaultShader.setUniform("useColor", mat.isTextured() ? 0 : 1);
         defaultShader.setUniform("offset", u.x, u.y, u.width, u.height);
         defaultShader.setUniform("pixelScale", r.width, r.height);
         defaultShader.setUniform("screenPos", r.x, r.y);
 
         GL20.glDrawArrays(GL30.GL_TRIANGLES, 0, 6);
-        if (mat.getTexture() != null) mat.getTexture().unbind();
-        else missingSprite.getMaterial().getTexture().unbind();
+        if (mat.getTexture() != null) mat.getTexture().unbind(0);
+        else missingSprite.getMaterial().getTexture().unbind(0);
     }
 
     private static final Rect rect1 = new Rect();   // This one is used for multiple things
