@@ -183,3 +183,4 @@ local.properties
 imgui.ini
 .actions
 .project
+.DS_Store
