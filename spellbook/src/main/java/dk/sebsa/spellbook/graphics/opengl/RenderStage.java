@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.graphics.opengl;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
@@ -58,7 +59,7 @@ public abstract class RenderStage {
         fbo.bindFrameBuffer();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        draw(window.rect, frameData);
+        draw(Spellbook.instance.getCapabilities().renderResolution, frameData);
 
         fbo.unBind();
         return fbo;

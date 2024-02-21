@@ -22,7 +22,7 @@ void main()
 
     vec4 worldPosition = vec4((position - anchor) * (pixelScale * objectScale), 0, 1) * transformMatrix;
     gl_Position = projectionViewMatrix * worldPosition;
-    uvCoords = (textureCords * offset.zw) + offset.xy;
+    uvCoords = (vec2(textureCords.x, 1.0 - textureCords.y) * offset.zw) + offset.xy;
 }
 // SPELLBOOK END VERTEX SHADER //
 #version 330 core

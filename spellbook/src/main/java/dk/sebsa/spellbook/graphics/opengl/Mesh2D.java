@@ -25,8 +25,12 @@ public class Mesh2D {
             1, 0, 0, 0, 0, 1
     };
     private static final float[] uv = new float[] {
-            0, 0, 1, 0, 1, 1,
-            1, 1, 0, 1, 0, 0
+            0, 1,  // Vertex 1: (u=0, v=1)
+            1, 1,  // Vertex 2: (u=1, v=1)
+            1, 0,  // Vertex 3: (u=1, v=0)
+            1, 0,  // Vertex 4: (u=1, v=0)
+            0, 0,  // Vertex 5: (u=0, v=0)
+            0, 1   // Vertex 6: (u=0, v=1)
     };
 
     private static Mesh2D quad;

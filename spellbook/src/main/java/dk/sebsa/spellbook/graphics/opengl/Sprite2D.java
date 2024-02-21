@@ -76,8 +76,8 @@ public class Sprite2D {
         Matrix4f projection = new Matrix4f().ortho(-halfW, halfW, halfH, -halfH, -1, 1);
 
         // Bind
-        mainMesh.bind();
         shader.bind();
+        mainMesh.bind();
         shader.setUniform("projectionViewMatrix", projection.mul(Camera.activeCamera.getViewMatrix()));
 
         for (int i = 0; i < frameData.getRenderSprite().length; i++) {
@@ -96,8 +96,8 @@ public class Sprite2D {
         }
 
         // Restore
-        shader.unbind();
         mainMesh.unbind();
+        shader.unbind();
         glEnable(GL_DEPTH_TEST);
     }
 

@@ -11,8 +11,6 @@ import lombok.Getter;
 import java.io.IOException;
 import java.util.List;
 
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-
 /**
  * The surface of model, something which can be rendered
  */
@@ -78,7 +76,7 @@ public class Material extends Asset {
     /**
      * Binds the material to a shader, and binds the texture if it is textured
      *
-     * @param shader A shader with uniforms ["matColor"]
+     * @param shader A shader with uniforms ["matColor", "sampler"]
      */
     public void bind(GLSLShaderProgram shader) {
         shader.setUniform("matColor", color);
