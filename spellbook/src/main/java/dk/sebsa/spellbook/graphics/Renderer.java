@@ -33,7 +33,8 @@ public abstract class Renderer {
     }
 
     private void queue(GraphTask g) {
-        renderThread.queue(g);
+        if(Thread.currentThread() == thread) g.run();
+        else renderThread.queue(g);
     }
     public void queue(Runnable r) {
         queue(new GraphTask() {
