@@ -141,7 +141,11 @@ public class Spellbook {
         // Log important debug info
         logger.log("Running Spellbook: " + SPELLBOOK_VERSION);
         logger.log(capabilities);
-        logger.log(app);
+        logger.log("Application{" +
+                    "name=" + app.name() +
+                    ", author=" + app.author() +
+                    ", version=" + app.version() +
+                    '}');
         Mana.logSystemInfo(logger);
 
         // The guts of Spellbook
