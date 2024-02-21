@@ -8,5 +8,8 @@ plugins {
     id 'application'
 }
 
-if(project.ext.os == OperatingSystem.MAC_OS)
-    applicationDefaultJvmArgs = ["-XstartOnFirstThread"]
+if(project.ext.os == OperatingSystem.MAC_OS) {
+    application {
+        applicationDefaultJvmArgs = ["-XstartOnFirstThread"]
+    }
+}
