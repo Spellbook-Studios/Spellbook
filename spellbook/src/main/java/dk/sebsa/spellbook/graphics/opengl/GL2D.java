@@ -3,16 +3,23 @@ package dk.sebsa.spellbook.graphics.opengl;
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.io.GLFWWindow;
+import dk.sebsa.spellbook.marble.Font;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.stb.STBTTAlignedQuad;
+import org.lwjgl.stb.STBTTFontinfo;
+import org.lwjgl.system.MemoryStack;
+
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.stb.STBTruetype.*;
+import static org.lwjgl.system.MemoryStack.stackPush;
 
 /**
  * A renderer for rendering 2D sprites
@@ -98,7 +105,7 @@ public class GL2D {
     public static GLSLShaderProgram prepare(GLSLShaderProgram shader) {
         if (!shader.initFor2D) prepareShader(shader);
 
-        // Disable 3d
+        // Gl status
         glDisable(GL_DEPTH_TEST);
 
         if (window.isDirty()) ortho = Matrix4x4f.ortho(0, window.rect.width, window.rect.height, 0, -1, 1);
@@ -130,6 +137,70 @@ public class GL2D {
      */
     public static void drawTextureWithTextCords(Material mat, Rect drawRect) {
         drawTextureWithTextCords(mat, drawRect, Rect.UV, guiMesh);
+    }
+
+    /**
+     * Draws text
+     *
+     * @param text      Text to draw
+     * @param drawRect Where to draw
+     */
+    public static void drawText(String text, Color c, Font font, Rect drawRect) {
+        // Generate the rect that we can draw within
+        window.rect.getIntersection(r2.set(drawRect.x, drawRect.y, drawRect.width, drawRect.height), r);
+
+        // Set Color and Textre
+        changeColor(c);
+        font.getMaterial().getTexture().bind(0);
+        defaultShader.setUniform("sampler", 0);
+        defaultShader.setUniform("useColor", 2);
+
+        float scale = stbtt_ScaleForPixelHeight(font.getFontType().getInfo(), font.getFontSize()); // Fontscale
+        float lineHeight = (font.getAscent() - font.getDescent() + font.getLineGap()) * scale;
+
+        try (MemoryStack stack = stackPush()) {
+            IntBuffer pCodePoint = stack.mallocInt(1); // Pointer to the char codepoint (*int)
+            FloatBuffer x = stack.floats(0.0f); // Current x pos
+            FloatBuffer y = stack.floats(0.0f); // Current y pos
+
+            STBTTAlignedQuad q = STBTTAlignedQuad.malloc(stack);
+            float lineY = drawRect.y;
+
+            for (int i = 0, to = text.length(); i < to; ) { // For all charaters
+                i += Font.getCP(text, to, i, pCodePoint);
+                int cp = pCodePoint.get(0); // The charater codepoint
+
+                // newline and other weird charaters
+                if (cp == '\n') {
+                    y.put(0, lineY = y.get(0) + lineHeight * 0.5f);
+                    x.put(0, 0.0f);
+                } else if (cp < 32) continue;
+
+                // Render the charater
+                float cpX = x.get(0); // Current x pos (before the current char is rendered)
+                stbtt_GetBakedQuad(font.getCdata(), Font.BITMAP_W, Font.BITMAP_H, cp - 32, x, y, q, true);
+
+                if (font.isKerningEnabled() && i < to) {
+                    Font.getCP(text, to, i, pCodePoint);
+                    x.put(0, x.get(0) + stbtt_GetCodepointKernAdvance(font.getFontType().getInfo(), cp, pCodePoint.get(0)) * scale);
+                }
+
+                float
+                        x0 = q.x0(),
+                        x1 = Math.min(q.x1(), r.width),
+                        y0 = q.y0(),
+                        y1 = Math.min(q.y1(), r.height);
+
+                defaultShader.setUniform("offset", q.s0(), q.t0(), q.s1()-q.s0(), q.t1()-q.t0());
+                defaultShader.setUniform("pixelScale", x1-x0,y1-y0);
+                defaultShader.setUniform("screenPos", x0, (lineY+lineHeight)+y0);
+
+                GL20.glDrawArrays(GL30.GL_TRIANGLES, 0, 6);
+            }
+        }
+
+        // Unbind texture
+        font.getMaterial().getTexture().unbind(0);
     }
 
     /**

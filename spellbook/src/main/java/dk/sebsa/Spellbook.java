@@ -106,8 +106,11 @@ public class Spellbook {
         }
     }
 
-    private Spellbook(Application app, SpellbookCapabilities caps) {
+    static { // Ensure that awt is headless, for OSX support
         System.setProperty("java.awt.headless", "true");
+    }
+
+    private Spellbook(Application app, SpellbookCapabilities caps) {
         application = app;
         capabilities = caps;
         DEBUG = caps.spellbookDebug;
@@ -284,6 +287,15 @@ public class Spellbook {
         for (Module m : modules) {
             logger.log("Module - " + m.name());
             m.cleanup();
+        }
+
+        // Wait for the render to shut down
+        logger.log("Awaiting renderershutdown shutdown");
+        if (!renderer.awaitFinish(1, TimeUnit.SECONDS)) {
+            logger.log("Didn't shutdown :( Forcing it...");
+            renderer.interruptThread();
+        } else {
+            logger.log("... done");
         }
 
         // Cleanup leaked assets

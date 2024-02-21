@@ -130,7 +130,6 @@ public class GLSLShaderProgram extends Asset {
             glDeleteProgram(programId);
         }
     }
-    // Shade use code
 
     /**
      * Sets the current program used by OpenGL to be this shaderProgram

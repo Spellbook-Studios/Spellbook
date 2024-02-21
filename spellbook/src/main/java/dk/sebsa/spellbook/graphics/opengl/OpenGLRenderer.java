@@ -7,6 +7,7 @@ import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EngineRenderEvent;
 import dk.sebsa.spellbook.marble.Font;
+import dk.sebsa.spellbook.marble.FontType;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
@@ -23,12 +24,13 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL20.GL_SHADING_LANGUAGE_VERSION;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
+import static org.lwjgl.opengl.GL32.*;
 import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
@@ -67,8 +69,31 @@ public class OpenGLRenderer extends Renderer {
     }
 
     @Override
+    public void generateFontType(FontType fontType) {
+        try {
+            fontType.loadSTBTTFontInfo();
+        } catch (IOException e) {
+            Spellbook.instance.error("IOException when generating fonttype " + fontType.getLocation(), false);
+        }
+    }
+
+    @Override
     public void generateFont(Font f) {
-        f.generateFont();
+        ByteBuffer bitmap = f.genBitMap(Font.BITMAP_W,Font.BITMAP_H);
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        int texID = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, texID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, Font.BITMAP_W, Font.BITMAP_H, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        f.generateFont(new Texture.TextureInfo(Font.BITMAP_W, Font.BITMAP_H, texID));
     }
 
     @Override
@@ -174,6 +199,25 @@ public class OpenGLRenderer extends Renderer {
         if (capRender2D) {
             Sprite2D.init(e);
         }
+
+        // Debug info
+        logger.log("OpenGL version: " + glGetString(GL_VERSION));
+        logger.trace("OpenGL renderer: " + glGetString(GL_RENDERER));
+        logger.trace("OpenGL shading language version: " + glGetString(GL_SHADING_LANGUAGE_VERSION));
+        int[] context_profile = new int[1];
+        glGetIntegerv(GL_CONTEXT_PROFILE_MASK, context_profile);
+        if(context_profile[0] == GL_CONTEXT_CORE_PROFILE_BIT) {
+            logger.trace("GL_CONTEXT_PROFILE_MASK: GL_CONTEXT_CORE_PROFILE_BIT ");
+        }
+        if(context_profile[0] == GL_CONTEXT_COMPATIBILITY_PROFILE_BIT) {
+            logger.trace("GL_CONTEXT_PROFILE_MASK: GL_CONTEXT_COMPATIBILITY_PROFILE_BIT");
+        }
+        logger.trace("GL_CONTEXT_PROFILE_MASK: " + context_profile[0]);
+
+        int window_major_version = glfwGetWindowAttrib(e.moduleCore.getWindow().getId(), GLFW_CONTEXT_VERSION_MAJOR);
+        int window_minor_version = glfwGetWindowAttrib(e.moduleCore.getWindow().getId(), GLFW_CONTEXT_VERSION_MINOR);
+
+        logger.trace("Window context version: " + window_major_version + "." + window_minor_version);
     }
 
     @Override

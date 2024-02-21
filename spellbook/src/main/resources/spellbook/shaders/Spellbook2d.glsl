@@ -34,6 +34,9 @@ void main()
 {
     if(useColor == 1) {
         fragColor = color;
+    } else if (useColor == 2) { // For text
+        vec4 sampled = vec4(1.0, 1.0, 1.0, texture(sampler, uvCoords).r);
+        fragColor = color * sampled;
     } else {
         fragColor = color * texture(sampler, uvCoords);
     }

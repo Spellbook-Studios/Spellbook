@@ -41,6 +41,6 @@ public class TestLayer extends Layer {
         marble.box(new Rect(0, 100, 100, 100));
         marble.boxSpecialLight(new Rect(0, 100, 50, 50));
         marble.boxSpecialDark(new Rect(50, 100, 50, 50));
-        marble.label("Hello World!", 0, 0);
+        marble.label("Hello World!\nLife sure is fun, right?\nSphinx", new Rect(0,0,500,1000));
     }
 }

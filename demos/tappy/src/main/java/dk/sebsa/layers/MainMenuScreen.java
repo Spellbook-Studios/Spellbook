@@ -28,12 +28,12 @@ public class MainMenuScreen extends Layer {
     @Override
     protected void render(Marble marble, Rect r) {
         if (titleRenderer == null) titleRenderer = marble.getMarbleIM(
-                marble.font((FontType) AssetManager.getAssetS(new Identifier("tappy", "SAOWelcomeTT-Bold.ttf")), 82),
+                marble.font(new Identifier("tappy", "SAOWelcomeTT-Bold.ttf"), 82),
                 null,
                 null);
-        if (otherRenderer == null) otherRenderer = marble.getMarbleIM(marble.font("Inter", 24), null, null);
-        titleRenderer.label("Tappy Bird", (r.width / 2) - ((float) titleRenderer.getFont().getStringWidth("Tappy Bird") / 2) - 23, 20);
+        if (otherRenderer == null) otherRenderer = marble.getMarbleIM(marble.font(new Identifier("spellbook", "fonts/Inter.ttf"), 24), null, null);
+        titleRenderer.labelCenterH("Tappy Bird", new Rect(0,20,r.width,124));
 
-        otherRenderer.label("Press SPACE to jump", (r.width / 2) - ((float) otherRenderer.getFont().getStringWidth("Press SPACE to jump") / 2) - 23, 124);
+        otherRenderer.labelCenterH("Press SPACE to jump", new Rect(0,124,r.width,242));
     }
 }

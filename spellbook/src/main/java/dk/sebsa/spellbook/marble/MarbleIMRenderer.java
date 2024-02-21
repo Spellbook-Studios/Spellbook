@@ -1,5 +1,6 @@
 package dk.sebsa.spellbook.marble;
 
+import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.graphics.opengl.GL2D;
 import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
@@ -61,23 +62,22 @@ public class MarbleIMRenderer {
      * Renders a text label, using the current font
      *
      * @param text Text to render
-     * @param x    GUI Position X
-     * @param y    GUI Position Y
+     * @param r    Rect to render within
      */
-    public void label(String text, float x, float y) {
+    public void label(String text, Rect r) {
         marble.ensureShader(shader);
-        //Map<Byte, Font.Glyph> chars = font.getCharTable();
-        //byte[] c = text.getBytes(StandardCharsets.ISO_8859_1);
-        //float tempX = x;
+        GL2D.drawText(text, Color.white, font, r);
+    }
 
-        //for (byte value : c) {
-            //Font.Glyph glyph = chars.get(value);
-
-            // TODO: REDO FONT
-            //GL2D.drawTextureWithTextCords(font.getMaterial(), new Rect(tempX, y, glyph.scale().x, glyph.scale().y), new Rect(glyph.pos().x, glyph.pos().y, glyph.size().x, glyph.size().y));
-
-            //tempX += glyph.scale().x;
-        //}
+    /**
+     * Renders a text label, using the current font, where the text is centered horizontally
+     *
+     * @param text Text to render
+     * @param r    Rect to render within
+     */
+    public void labelCenterH(String text, Rect r) {
+        marble.ensureShader(shader);
+        GL2D.drawText(text, Color.white, font, r);
     }
 
     /**
@@ -183,5 +183,9 @@ public class MarbleIMRenderer {
                 ", spriteSheet=" + spriteSheet +
                 ", shader=" + shader +
                 '}';
+    }
+
+    public float getStringWidth(String text) {
+        return font.getStringWidth(text);
     }
 }
