@@ -113,12 +113,24 @@ public class GL2D {
      * @return The now prepared shader
      */
     public static GLSLShaderProgram prepare(GLSLShaderProgram shader) {
+        return prepare(shader, window.rect);
+    }
+
+
+    /**
+     * Prepares GL2D for rendering
+     *
+     * @param shader The shader to prepare for
+     * @param resolution THe resolution to render for
+     * @return The now prepared shader
+     */
+    public static GLSLShaderProgram prepare(GLSLShaderProgram shader, Rect resolution) {
         if (!shader.initFor2D) prepareShader(shader);
 
         // Gl status
         glDisable(GL_DEPTH_TEST);
 
-        if (window.isDirty()) ortho = Matrix4x4f.ortho(0, window.rect.width, window.rect.height, 0, -1, 1);
+        if (window.isDirty()) ortho = Matrix4x4f.ortho(0, resolution.width, resolution.height, 0, -1, 1);
 
         // Render preparation
         defaultShader.bind();
@@ -172,8 +184,8 @@ public class GL2D {
 
         try (MemoryStack stack = stackPush()) {
             IntBuffer pCodePoint = stack.mallocInt(1); // Pointer to the char codepoint (*int)
-            FloatBuffer x = stack.floats(0.0f); // Current x pos
-            FloatBuffer y = stack.floats(0.0f); // Current y pos
+            FloatBuffer x = stack.floats(r.x); // Current x pos
+            FloatBuffer y = stack.floats(r.y); // Current y pos
 
             STBTTAlignedQuad q = STBTTAlignedQuad.malloc(stack);
             float lineY = drawRect.y;
@@ -184,7 +196,7 @@ public class GL2D {
 
                 // newline and other weird charaters
                 if (cp == '\n') {
-                    y.put(0, lineY = y.get(0) + lineHeight * 0.5f);
+                    y.put(0, lineY = y.get(0) + lineHeight);
                     x.put(0, 0.0f);
                 } else if (cp < 32) continue;
 
@@ -199,13 +211,13 @@ public class GL2D {
 
                 float
                         x0 = q.x0(),
-                        x1 = Math.min(q.x1(), r.width),
+                        x1 = Math.min(q.x1(), r.x+r.width),
                         y0 = q.y0(),
-                        y1 = Math.min(q.y1(), r.height);
+                        y1 = Math.min(q.y1(), r.y+r.height);
 
                 defaultShader.setUniform("offset", q.s0(), q.t0(), q.s1()-q.s0(), q.t1()-q.t0());
                 defaultShader.setUniform("pixelScale", x1-x0,y1-y0);
-                defaultShader.setUniform("screenPos", x0, (lineY+lineHeight)+y0);
+                defaultShader.setUniform("screenPos", x0, (lineHeight)+y0);
 
                 glDrawArrays(GL_TRIANGLES, 0, 6);
             }
