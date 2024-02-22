@@ -12,7 +12,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import static org.lwjgl.stb.STBTruetype.*;
+import static org.lwjgl.stb.STBTruetype.stbtt_GetFontVMetrics;
+import static org.lwjgl.stb.STBTruetype.stbtt_InitFont;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
 /**
@@ -25,7 +26,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 @Getter
 public class FontType extends Asset {
     private STBTTFontinfo info;
-    public ByteBuffer ttf;
+    private ByteBuffer ttf;
 
     @Getter
     private int ascent;
@@ -39,6 +40,10 @@ public class FontType extends Asset {
         Spellbook.instance.getRenderer().generateFontType(this);
     }
 
+    /**
+     * Loads the TTF file and gets the basic font info
+     * @throws IOException If the file failed to be read
+     */
     public void loadSTBTTFontInfo() throws IOException {
         ttf = FileUtils.isToBB(FileUtils.loadFile(location), 512 * 1024);
         info = STBTTFontinfo.create();

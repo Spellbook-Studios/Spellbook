@@ -5,7 +5,6 @@ import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.graphics.opengl.Material;
 import dk.sebsa.spellbook.graphics.opengl.Texture;
 import dk.sebsa.spellbook.math.Color;
-import dk.sebsa.spellbook.math.Vector2f;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.BufferUtils;
@@ -14,7 +13,6 @@ import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.HashMap;
 
 import static org.lwjgl.stb.STBTruetype.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -27,9 +25,14 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  */
 @Getter
 public class Font {
-    public static int BITMAP_W = 1024;
-    public static int BITMAP_H = 1024;
-    private final HashMap<Byte, Glyph> charTable = new HashMap<>();
+    /**
+     * The BITMAP width used when rendering font textures
+     */
+    public static int BITMAP_W = 512;
+    /**
+     * The BITMAP height used when rendering font textures
+     */
+    public static int BITMAP_H = 512;
     private final FontType fontType;
     private final int fontSize;
     private Texture texture;
@@ -41,6 +44,11 @@ public class Font {
     @Setter
     private boolean kerningEnabled = true;
 
+    /**
+     * Creates a font from a TTF FontType and with a specified font height
+     * @param fontType The FontType to derive this font from
+     * @param fontSize The font height
+     */
     public Font(Identifier fontType, int fontSize) {
         this.fontType = (FontType) AssetManager.getAssetS(fontType);
         this.fontSize = fontSize;
@@ -68,16 +76,22 @@ public class Font {
         return 1;
     }
 
-    public ByteBuffer genBitMap(int BITMAP_W, int BITMAP_H) {
+    /**
+     * Generates the bitmap for the font
+     *
+     * @return Bitmap bytes
+     */
+    public ByteBuffer genBitMap() {
         STBTTBakedChar.Buffer cd = STBTTBakedChar.malloc(1024);
         ByteBuffer bitmap = BufferUtils.createByteBuffer(BITMAP_W * BITMAP_H);
-        stbtt_BakeFontBitmap(fontType.ttf, fontSize, bitmap, BITMAP_W, BITMAP_H, 32, cd);
+        stbtt_BakeFontBitmap(fontType.getTtf(), fontSize, bitmap, BITMAP_W, BITMAP_H, 32, cd);
         cdata = cd;
         return bitmap;
     }
 
     /**
-     * Generates the Font
+     * Notes the textureInfo, creates the material
+     * @param textureInfo Including the texture id
      */
     public void generateFont(Texture.TextureInfo textureInfo) {
         texture = new Texture().set(textureInfo);
@@ -87,6 +101,11 @@ public class Font {
         lineGap = fontType.getLineGap();
     }
 
+    /**
+     * <b>Calculates</b> the width of a specified string using this font
+     * @param text A string to "render"
+     * @return The width of the string in pixels
+     */
     public float getStringWidth(String text) {
         int width = 0;
         int to = text.length();
@@ -114,21 +133,12 @@ public class Font {
         return width * stbtt_ScaleForPixelHeight(getFontType().getInfo(), fontSize);
     }
 
+    /**
+     * Cleans up resources used by this font
+     */
     public void destroy() {
         texture.destroy();
         cdata.free();
         fontType.unreference();
-    }
-
-    /**
-     * Represents a single glyph that can be rendered
-     *
-     * @param pos   The position of the glyph in texture coordinates
-     * @param size  The proportional size of the glyph
-     * @param scale The size of the glyph in pixels
-     * @author sebs
-     * @since 1.0.0
-     */
-    public record Glyph(Vector2f pos, Vector2f size, Vector2f scale) {
     }
 }

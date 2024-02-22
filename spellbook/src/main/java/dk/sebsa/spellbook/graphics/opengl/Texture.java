@@ -10,10 +10,9 @@ import lombok.Getter;
  * @author sebs
  * @since 1.0.0
  */
+@Getter
 public class Texture extends Asset {
-    @Getter
     private int id;
-    @Getter
     private float width, height;
 
     @Override

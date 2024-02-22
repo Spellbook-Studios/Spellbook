@@ -6,13 +6,13 @@ import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EngineRenderEvent;
+import dk.sebsa.spellbook.graphics.Renderer;
+import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
+import dk.sebsa.spellbook.graphics.opengl.stages.UIStage;
 import dk.sebsa.spellbook.marble.Font;
 import dk.sebsa.spellbook.marble.FontType;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
-import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
-import dk.sebsa.spellbook.graphics.opengl.stages.UIStage;
-import dk.sebsa.spellbook.graphics.Renderer;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.CustomLog;
 import org.lwjgl.BufferUtils;
@@ -25,11 +25,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL20.GL_SHADING_LANGUAGE_VERSION;
-import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import static org.lwjgl.opengl.GL32.*;
 import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
@@ -43,6 +38,7 @@ import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
  */
 @CustomLog
 public class OpenGLRenderer extends Renderer {
+    private static final Rect invertedUV = new Rect(0, 0, 1, -1);
     private Color clearColor;
     private RenderPipeline pipeline;
     private boolean capRender2D;
@@ -79,7 +75,7 @@ public class OpenGLRenderer extends Renderer {
 
     @Override
     public void generateFont(Font f) {
-        ByteBuffer bitmap = f.genBitMap(Font.BITMAP_W,Font.BITMAP_H);
+        ByteBuffer bitmap = f.genBitMap();
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         int texID = glGenTextures();
@@ -230,7 +226,6 @@ public class OpenGLRenderer extends Renderer {
         }
     }
 
-    private static final Rect invertedUV = new Rect(0, 0, 1, -1);
     @Override
     public void renderFrame(EngineRenderEvent e) {
         glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);

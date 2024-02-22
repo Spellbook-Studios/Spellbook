@@ -25,13 +25,13 @@ import static org.lwjgl.opengl.GL20.*;
  */
 @CustomLog
 public class GLSLShaderProgram extends Asset {
-    private int programId;
-    private int vertexShaderId, fragmentShaderId;
     private final Map<String, Integer> uniforms = new HashMap<>();
     /**
      * Weather the shader has been prepared by GL2D
      */
     public boolean initFor2D = false;
+    private int programId;
+    private int vertexShaderId, fragmentShaderId;
 
     @Override
     public void load() {
@@ -108,11 +108,6 @@ public class GLSLShaderProgram extends Asset {
         if (fragmentShaderId != 0) {
             glDetachShader(programId, fragmentShaderId);
         }
-
-        //glValidateProgram(programId);
-        //if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
-        //    logger.warn("Warning validating Shader code: " + glGetProgramInfoLog(programId, 1024));
-        //}
     }
 
     /**

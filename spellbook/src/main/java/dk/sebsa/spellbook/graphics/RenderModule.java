@@ -6,10 +6,19 @@ import dk.sebsa.spellbook.core.events.EngineRenderEvent;
 import dk.sebsa.spellbook.core.events.EventListener;
 import lombok.CustomLog;
 
+/**
+ * Handles all rendering using the provided renderer
+ *
+ * @author sebs
+ * @since 1.0.0
+ */
 @CustomLog
 public class RenderModule implements Module {
     private final Renderer renderer;
 
+    /**
+     * @param renderer The renderer to use for rendering
+     */
     public RenderModule(Renderer renderer) {
         this.renderer = renderer;
     }

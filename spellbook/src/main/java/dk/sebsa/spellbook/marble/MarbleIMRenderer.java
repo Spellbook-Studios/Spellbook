@@ -181,6 +181,12 @@ public class MarbleIMRenderer {
                 '}';
     }
 
+    /**
+     * Calculates the width of the string rendered using the current font
+     *
+     * @param text The text to "render"
+     * @return The width of text in pixels
+     */
     public float getStringWidth(String text) {
         return font.getStringWidth(text);
     }

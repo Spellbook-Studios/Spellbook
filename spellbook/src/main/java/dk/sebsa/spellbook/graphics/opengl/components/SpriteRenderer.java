@@ -5,13 +5,11 @@ import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.graphics.opengl.GL2D;
-import dk.sebsa.spellbook.math.Rect;
-import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.graphics.opengl.Sprite;
+import dk.sebsa.spellbook.math.Rect;
+import dk.sebsa.spellbook.math.Vector2f;
 import lombok.CustomLog;
-
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 
 /**
  * Handles the rendering of a sprite
@@ -23,21 +21,19 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 @CustomLog
 public class SpriteRenderer extends Component {
     /**
-     * The sprite that this spriterender renders
-     */
-    public Sprite sprite;
-
-    /**
-     * The identifier of the sprite
-     */
-    public Identifier identifier = new Identifier("spellbook", "missing.spr");
-
-    /**
      * Where to place the sprite upon the entity
      * (0.5f, 0.5f) places the middle of the sprite directly on the position
      * (0f, 0f) places the top-left corner of the sprite on the position
      */
     public final Vector2f anchor = new Vector2f(0.5f, 0.5f);
+    /**
+     * The sprite that this spriterender renders
+     */
+    public Sprite sprite;
+    /**
+     * The identifier of the sprite
+     */
+    public Identifier identifier = new Identifier("spellbook", "missing.spr");
     /**
      * PENDING!!!!!!!!!!!
      */

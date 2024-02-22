@@ -129,7 +129,7 @@ public class GLFWInput {
         cursorCallback = new GLFWCursorPosCallback() {
             public void invoke(long window, double xpos, double ypos) {
                 // Save mouse position
-                mousePos.set((float) xpos /** glfwWindow.getFrameBufferScale().x*/, (float) ypos /** glfwWindow.getFrameBufferScale().y*/);
+                mousePos.set((float) xpos, (float) ypos);
 
                 // Create Event
                 MouseMoveEvent e = new MouseMoveEvent(mousePos.x, mousePos.y); eventBus.user(e);

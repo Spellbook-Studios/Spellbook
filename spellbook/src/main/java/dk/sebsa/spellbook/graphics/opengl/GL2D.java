@@ -153,7 +153,9 @@ public class GL2D {
      * Draws text
      *
      * @param text      Text to draw
-     * @param drawRect Where to draw
+     * @param c         The desired color of the text
+     * @param font      Font to render with
+     * @param drawRect  Where to draw
      */
     public static void drawText(String text, Color c, Font font, Rect drawRect) {
         // Generate the rect that we can draw within
