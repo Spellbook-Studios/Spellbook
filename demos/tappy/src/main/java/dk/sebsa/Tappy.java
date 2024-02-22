@@ -55,7 +55,7 @@ public class Tappy implements Application {
 
         // Add floor
         var floor = new Entity(ECS.ROOT);
-        floor.transform.setPosition(0, -250, 0);
+        floor.transform.setPosition(0, -265, 0);
         var collider = new ObstacleComponent();
         collider.size.set(960, 48);
         floor.addComponent(collider);
