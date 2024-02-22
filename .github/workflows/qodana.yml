@@ -22,4 +22,3 @@ jobs:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
         with:
           args: --baseline,qodana.sarif.json
-          push-fixes: pull-request
