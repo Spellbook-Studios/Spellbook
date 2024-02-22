@@ -1,9 +1,10 @@
 package dk.sebsa.components;
 
 import dk.sebsa.spellbook.FrameData;
+import dk.sebsa.spellbook.audio.SoundPlayer;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.math.Vector3f;
-import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.phys.components.Collider2D;
 import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 import org.lwjgl.glfw.GLFW;
@@ -26,8 +27,10 @@ public class TappyController extends SpriteCollider2D {
 
     @Override
     public void update(FrameData frameData) {
-        if (frameData.input.isKeyPressed(GLFW.GLFW_KEY_SPACE) || frameData.input.gamePads[0].buttonX)
+        if (frameData.input.isKeyPressed(GLFW.GLFW_KEY_SPACE) || frameData.input.gamePads[0].buttonX) {
+            getEntity().getComponent(SoundPlayer.class).start();
             velocity = JUMP_ENERGY;
+        }
         else if (velocity <= 0)
             velocity = Math.max(velocity - ((VELOCITY_DROPFF * (-velocity + 0.1f)) * Time.getDeltaTime())
                     , -1);

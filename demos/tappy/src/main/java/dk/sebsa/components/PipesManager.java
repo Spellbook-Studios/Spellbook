@@ -4,8 +4,8 @@ import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
-import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.util.Random;
 
 public class PipesManager extends Component {

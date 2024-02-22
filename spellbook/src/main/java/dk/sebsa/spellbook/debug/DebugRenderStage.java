@@ -29,7 +29,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 1.0.0
  */
 public class DebugRenderStage extends RenderStage {
-    private static final float CIRCLE_DETAIL = 32;
+    private static final int CIRCLE_DETAIL = 32;
     private final float[] testPos = {
             0.0f, 0.0f,
             10, 0.0f,
@@ -38,6 +38,7 @@ public class DebugRenderStage extends RenderStage {
     };
     private final DebugVAO linesVAO = new DebugVAO(testPos, 2);
     private final DebugVAO pointsVAO = new DebugVAO(testPos, 2);
+    private final DebugVAO circleVao = new DebugVAO(testPos, 2);
     private final GLSLShaderProgram shader;
 
     /**
@@ -80,34 +81,25 @@ public class DebugRenderStage extends RenderStage {
         shader.unbind();
     }
 
-    private void drawCircle(Vector2f point, float radius) {
-        glBegin(GL_LINE_LOOP);
-        for (int i = 0; i < CIRCLE_DETAIL; i++) {
-            float z = i / CIRCLE_DETAIL * 360;
-            float x = radius * (float) Math.cos(Math.toRadians(z));
-            float y = radius * (float) Math.sin(Math.toRadians(z));
-
-            glVertex2f(x + point.x, y + point.y);
-        }
-        glEnd();
-    }
-
     private void drawColliders(FrameData frameData) {
         HashSet<Rect> rects = new HashSet<>();
         HashSet<Vector2f> points = new HashSet<>();
+        HashSet<Circle> circles = new HashSet<>();
         shader.setUniform("mode", DebugRenderMode.ModeWorldCamera.value);
         shader.setUniform("color", Color.yellow);
 
         for (Collider2D collider2D : frameData.newton2DSolids) {
-            if (collider2D instanceof BoxCollider2D) rects.add(((BoxCollider2D) collider2D).getWorldPositionRect());
-            else if (collider2D instanceof CircleCollider2D) {
-                drawCircle(collider2D.getCenter(), ((CircleCollider2D) collider2D).radius);
-            }
+            if (collider2D instanceof BoxCollider2D)
+                rects.add(((BoxCollider2D) collider2D).getWorldPositionRect());
+            if (collider2D instanceof CircleCollider2D)
+                circles.add(new Circle(collider2D.getCenter(), ((CircleCollider2D) collider2D).radius));
+
 
             points.add(collider2D.getCenter());
         }
 
         drawRectList(rects);
+        drawCircleList(circles);
         shader.setUniform("color", Color.red);
         drawPointList(points);
     }
@@ -163,6 +155,22 @@ public class DebugRenderStage extends RenderStage {
         pointsVAO.draw(GL_POINTS);
     }
 
+    private void drawCircleList(Set<Circle> circles) {
+        float[] vertices = new float[CIRCLE_DETAIL * 2];
+        for(Circle c : circles) {
+            for (int i = 0; i < CIRCLE_DETAIL; i++) {
+                float z = (float) i / CIRCLE_DETAIL * 360;
+                float x = c.radius * (float) Math.cos(Math.toRadians(z));
+                float y = c.radius * (float) Math.sin(Math.toRadians(z));
+
+                vertices[i * 2] = c.pos.x + x;
+                vertices[i * 2 + 1] = c.pos.y + y;
+            }
+            circleVao.put(vertices);
+            circleVao.draw(GL_LINE_LOOP);
+        }
+    }
+
     @Override
     protected void destroy() {
         shader.unreference();
@@ -182,4 +190,6 @@ public class DebugRenderStage extends RenderStage {
         }
 
     }
+
+    private record Circle(Vector2f pos, float radius) {}
 }
