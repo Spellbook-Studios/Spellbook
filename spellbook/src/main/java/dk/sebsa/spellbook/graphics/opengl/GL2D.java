@@ -188,7 +188,6 @@ public class GL2D {
             FloatBuffer y = stack.floats(r.y); // Current y pos
 
             STBTTAlignedQuad q = STBTTAlignedQuad.malloc(stack);
-            float lineY = drawRect.y;
 
             for (int i = 0, to = text.length(); i < to; ) { // For all charaters
                 i += Font.getCP(text, to, i, pCodePoint);
@@ -196,12 +195,11 @@ public class GL2D {
 
                 // newline and other weird charaters
                 if (cp == '\n') {
-                    y.put(0, lineY = y.get(0) + lineHeight);
+                    y.put(0, y.get(0) + lineHeight);
                     x.put(0, 0.0f);
                 } else if (cp < 32) continue;
 
                 // Render the charater
-                float cpX = x.get(0); // Current x pos (before the current char is rendered)
                 stbtt_GetBakedQuad(font.getCdata(), Font.BITMAP_W, Font.BITMAP_H, cp - 32, x, y, q, true);
 
                 if (font.isKerningEnabled() && i < to) {

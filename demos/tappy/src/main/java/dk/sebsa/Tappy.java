@@ -8,15 +8,17 @@ import dk.sebsa.layers.DeathScreen;
 import dk.sebsa.layers.MainMenuScreen;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
+import dk.sebsa.spellbook.audio.SoundListener;
+import dk.sebsa.spellbook.audio.SoundPlayer;
 import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
-import dk.sebsa.spellbook.math.Color;
-import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
+import dk.sebsa.spellbook.math.Color;
+import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
 
 import java.io.File;
@@ -46,6 +48,8 @@ public class Tappy implements Application {
         this.tappy = new Entity(ECS.ROOT);
         SpriteRenderer sp = new SpriteRenderer(new Identifier("tappy", "tappy.spr"));
         tappy.addComponent(sp);
+        tappy.addComponent(new SoundListener());
+        tappy.addComponent(new SoundPlayer(new Identifier("tappy", "jump.ogg")));
         sp.scale = 3f;
         tappy.tag = "player";
 
@@ -55,6 +59,7 @@ public class Tappy implements Application {
         var collider = new ObstacleComponent();
         collider.size.set(960, 48);
         floor.addComponent(collider);
+        floor.addComponent(new SoundPlayer(new Identifier("tappy", "death.ogg")));
 
         // Add celling
         var celling = new Entity(ECS.ROOT);
@@ -101,6 +106,7 @@ public class Tappy implements Application {
 
     public void start() {
         tappy.addComponent(new TappyController(tappy.getComponent(SpriteRenderer.class)));
+        tappy.getComponent(SoundPlayer.class).start();
         tappy.transform.setPosition(0, -20, 0);
         mainMenuScreen.enabled = false;
         deathScreen.enabled = false;
