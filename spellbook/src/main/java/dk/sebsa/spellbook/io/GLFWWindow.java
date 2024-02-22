@@ -1,8 +1,6 @@
 package dk.sebsa.spellbook.io;
 
-import com.sun.jna.platform.win32.GL;
 import dk.sebsa.Spellbook;
-import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
@@ -15,7 +13,7 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -28,21 +26,30 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 @CustomLog
 public class GLFWWindow {
     /**
+     * A rect representing the window, within GLFW window coordinate space
+     */
+    public final Rect winRect = new Rect();
+    /**
+     * A rect representing the windows framebuffer
+     */
+    public final Rect rect = new Rect();
+    private final boolean vsync = false;
+
+    private final int wWidth;
+    private final int wHeight;
+    private final int[] posX = new int[1]; // The position of the window on the screen
+    private final int[] posY = new int[1]; // The position of the window on the screen
+    /**
      * The id as given by OpenGl
      */
     @Getter
     private long id;
-
     // "User" vars
     private String windowTitle;
-    private final boolean vsync = false;
-
-    private int wWidth, wHeight;
     @Getter
     private boolean minimized = false;
     @Getter
     private Vector2f frameBufferScale;
-
     /**
      * Denotes weather the window has been "modified" within the last frame
      * Modified in the sense that the window has been moved or resized.
@@ -52,17 +59,7 @@ public class GLFWWindow {
     @Getter
     private boolean isFullscreen; // Can be set by the user but is first set on the next frame
     private boolean actuallyFullscreen; // Weather the window is currently in fullscreen
-    private final int[] posX = new int[1]; // The position of the window on the screen
-    private final int[] posY = new int[1]; // The position of the window on the screen
-
-    /**
-     * A rect representing the window, within GLFW window coordinate space
-     */
-    public final Rect winRect = new Rect();
-    /**
-     * A rect representing the windows framebuffer
-     */
-    public final Rect rect = new Rect();
+    private float oldW, oldH;
 
     /**
      * @param windowTitle The title of the window
@@ -161,8 +158,6 @@ public class GLFWWindow {
         glfwShowWindow(id);
     }
 
-    private float oldW, oldH;
-
     /**
      * Tells the window to process frame events
      */
@@ -251,6 +246,26 @@ public class GLFWWindow {
     }
 
     /**
+     * Sets the current fullscreen Status
+     * If set the window will reflect the changes on the next frame
+     *
+     * @param fullscreen The new fullscreen status
+     */
+    public void fullscreen(boolean fullscreen) {
+        this.isFullscreen = fullscreen;
+    }
+
+    /**
+     * Changes the window title
+     *
+     * @param title The new title
+     */
+    public void setWindowTitle(String title) {
+        glfwSetWindowTitle(id, title);
+        windowTitle = title;
+    }
+
+    /**
      * Event thrown if the window is resized in anyway
      */
     public static class WindowResizedEvent extends Event {
@@ -272,25 +287,5 @@ public class GLFWWindow {
         public EventType eventType() {
             return EventType.windowResized;
         }
-    }
-
-    /**
-     * Sets the current fullscreen Status
-     * If set the window will reflect the changes on the next frame
-     *
-     * @param fullscreen The new fullscreen status
-     */
-    public void fullscreen(boolean fullscreen) {
-        this.isFullscreen = fullscreen;
-    }
-
-    /**
-     * Changes the window title
-     *
-     * @param title The new title
-     */
-    public void setWindowTitle(String title) {
-        glfwSetWindowTitle(id, title);
-        windowTitle = title;
     }
 }

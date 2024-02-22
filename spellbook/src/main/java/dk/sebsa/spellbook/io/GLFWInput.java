@@ -17,6 +17,26 @@ import org.lwjgl.glfw.*;
  */
 @CustomLog
 public class GLFWInput {
+    /**
+     * All 16 gamepads
+     * They are all instantiated at program start, and are assigned to controller when they connect and disconnect
+     */
+    public final GamePad[] gamePads = new GamePad[16];
+    /**
+     * -- GETTER --
+     * The mouse position on screen
+     */
+    @Getter
+    private final Vector2f mousePos = new Vector2f(0, 0);
+    private final GLFWWindow glfwWindow;
+    // Callbacks
+    private final GLFWMouseButtonCallback mouseButtonCallback;
+    private final GLFWKeyCallback keyCallback;
+    private final GLFWJoystickCallback joystickCallback;
+    private final GLFWCursorPosCallback cursorCallback;
+    private final GLFWScrollCallback scrollCallback;
+    private final GLFWCharCallback charCallback; // For text input
+    private final EventBus eventBus;
     // Input Data
     private byte[] keys;
     private byte[] keysPressed;
@@ -30,55 +50,12 @@ public class GLFWInput {
      */
     @Getter
     private double scrollX;
-
     /**
      * -- GETTER --
      * The vertical scroll value, this is equal to all scroll offsets of entire program lifetime
      */
     @Getter
     private double scrollY;
-
-    /**
-     * -- GETTER --
-     * The mouse position on screen
-     */
-    @Getter
-    private final Vector2f mousePos = new Vector2f(0, 0);
-
-    private final GLFWWindow glfwWindow;
-
-    // Callbacks
-    private final GLFWMouseButtonCallback mouseButtonCallback;
-    private final GLFWKeyCallback keyCallback;
-    private final GLFWJoystickCallback joystickCallback;
-    private final GLFWCursorPosCallback cursorCallback;
-    private final GLFWScrollCallback scrollCallback;
-    private final GLFWCharCallback charCallback; // For text input
-
-    /**
-     * All 16 gamepads
-     * They are all instantiated at program start, and are assigned to controller when they connect and disconnect
-     */
-    public final GamePad[] gamePads = new GamePad[16];
-    private final EventBus eventBus;
-
-    private void connectGamePad(int jid) {
-        if (!GLFW.glfwJoystickPresent(jid)) return; // Returns if this is not a connected gamepad
-
-        gamePads[jid].setController();
-        logger.log("GamePad connected: " + gamePads[jid].toString());
-
-        eventBus.engine(new GamePadConnectedEvent(gamePads[jid]));
-    }
-
-    private void disconnectGamePad(int jid) {
-        if (!gamePads[jid].isConnected()) return; // Returns if this pad was never connected
-
-        logger.log("GamePad Disconnected: " + gamePads[jid].toString());
-        gamePads[jid].setController();
-
-        eventBus.engine(new GamePadDisConnectedEvent(gamePads[jid]));
-    }
 
     /**
      * @param e      The event used for loading loggers
@@ -155,7 +132,7 @@ public class GLFWInput {
                 mousePos.set((float) xpos /** glfwWindow.getFrameBufferScale().x*/, (float) ypos /** glfwWindow.getFrameBufferScale().y*/);
 
                 // Create Event
-                MouseMoveEvent e = new MouseMoveEvent((float) mousePos.x, (float) mousePos.y); eventBus.user(e);
+                MouseMoveEvent e = new MouseMoveEvent(mousePos.x, mousePos.y); eventBus.user(e);
             }
         };
 
@@ -168,6 +145,24 @@ public class GLFWInput {
                 scrollY += offsety;
             }
         };
+    }
+
+    private void connectGamePad(int jid) {
+        if (!GLFW.glfwJoystickPresent(jid)) return; // Returns if this is not a connected gamepad
+
+        gamePads[jid].setController();
+        logger.log("GamePad connected: " + gamePads[jid].toString());
+
+        eventBus.engine(new GamePadConnectedEvent(gamePads[jid]));
+    }
+
+    private void disconnectGamePad(int jid) {
+        if (!gamePads[jid].isConnected()) return; // Returns if this pad was never connected
+
+        logger.log("GamePad Disconnected: " + gamePads[jid].toString());
+        gamePads[jid].setController();
+
+        eventBus.engine(new GamePadDisConnectedEvent(gamePads[jid]));
     }
 
     /**

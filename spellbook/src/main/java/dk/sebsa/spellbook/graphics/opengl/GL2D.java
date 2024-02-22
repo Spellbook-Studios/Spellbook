@@ -8,10 +8,7 @@ import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.stb.STBTTAlignedQuad;
-import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
@@ -29,16 +26,29 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  */
 @CustomLog
 public class GL2D {
-    private static GLFWWindow window;
-    private static GLSLShaderProgram defaultShader;
-    private static Mesh2D guiMesh;
-    private static Matrix4x4f ortho;
-    private static Color currentColor;
+    private static final Rect u = new Rect(0, 0, 0, 0);
+    private static final Rect r = new Rect(0, 0, 0, 0);
+    private static final Rect r2 = new Rect(0, 0, 0, 0);
+    private static final Rect rect1 = new Rect();   // This one is used for multiple things
+    private static final Rect rect2 = new Rect();   // This one is used for multiple things
+    private static final Rect tr = new Rect();
+    private static final Rect tru = new Rect();
+    private static final Rect ti = new Rect();
+    private static final Rect tu = new Rect();
+    private static final Rect bl = new Rect();
+    private static final Rect blu = new Rect();
+    private static final Rect l = new Rect();
+    private static final Rect lu = new Rect();
     /**
      * The missingSprite sprite from Spellbook internal assets
      * In rendering, it can be used when there is an absence of other textures
      */
     public static Sprite missingSprite;
+    private static GLFWWindow window;
+    private static GLSLShaderProgram defaultShader;
+    private static Mesh2D guiMesh;
+    private static Matrix4x4f ortho;
+    private static Color currentColor;
 
     /**
      * Initializes the renderer, done once pr program
@@ -195,7 +205,7 @@ public class GL2D {
                 defaultShader.setUniform("pixelScale", x1-x0,y1-y0);
                 defaultShader.setUniform("screenPos", x0, (lineY+lineHeight)+y0);
 
-                GL20.glDrawArrays(GL30.GL_TRIANGLES, 0, 6);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
             }
         }
 
@@ -213,10 +223,6 @@ public class GL2D {
     public static void drawTextureWithTextCords(Material mat, Rect drawRect, Rect uvRect) {
         drawTextureWithTextCords(mat, drawRect, uvRect, guiMesh);
     }
-
-    private static final Rect u = new Rect(0, 0, 0, 0);
-    private static final Rect r = new Rect(0, 0, 0, 0);
-    private static final Rect r2 = new Rect(0, 0, 0, 0);
 
     /**
      * Draws a texture with texture coordinates
@@ -245,21 +251,10 @@ public class GL2D {
         defaultShader.setUniform("pixelScale", r.width, r.height);
         defaultShader.setUniform("screenPos", r.x, r.y);
 
-        GL20.glDrawArrays(GL30.GL_TRIANGLES, 0, 6);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
         if (mat.getTexture() != null) mat.getTexture().unbind(0);
         else missingSprite.getMaterial().getTexture().unbind(0);
     }
-
-    private static final Rect rect1 = new Rect();   // This one is used for multiple things
-    private static final Rect rect2 = new Rect();   // This one is used for multiple things
-    private static final Rect tr = new Rect();
-    private static final Rect tru = new Rect();
-    private static final Rect ti = new Rect();
-    private static final Rect tu = new Rect();
-    private static final Rect bl = new Rect();
-    private static final Rect blu = new Rect();
-    private static final Rect l = new Rect();
-    private static final Rect lu = new Rect();
 
     /**
      * Renders a sprite to the screen

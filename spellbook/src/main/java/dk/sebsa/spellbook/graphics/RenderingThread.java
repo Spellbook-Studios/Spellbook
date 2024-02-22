@@ -1,10 +1,10 @@
 package dk.sebsa.spellbook.graphics;
 
-import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import lombok.CustomLog;
 
-import java.util.*;
-import java.util.concurrent.CountDownLatch;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @CustomLog

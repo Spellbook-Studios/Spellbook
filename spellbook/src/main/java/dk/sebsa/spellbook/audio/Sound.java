@@ -5,7 +5,6 @@ import dk.sebsa.spellbook.asset.Asset;
 import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
-import org.lwjgl.openal.AL11;
 import org.lwjgl.stb.STBVorbisInfo;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
@@ -31,7 +30,7 @@ public class Sound extends Asset {
 
     @Override
     public void load() {
-        soundBufferId = AL11.alGenBuffers();
+        soundBufferId = alGenBuffers();
 
         // Load vorbis file in PCM format
         try (STBVorbisInfo info = STBVorbisInfo.malloc()) {
@@ -44,7 +43,7 @@ public class Sound extends Asset {
 
     @Override
     public void destroy() {
-        AL11.alDeleteBuffers(soundBufferId);
+        alDeleteBuffers(soundBufferId);
     }
 
     private ShortBuffer readVorbis(AssetLocation file, STBVorbisInfo info) throws IOException {

@@ -1,17 +1,14 @@
 package dk.sebsa.spellbook.marble;
 
-import dk.sebsa.spellbook.math.Color;
-import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.graphics.opengl.GL2D;
 import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.graphics.opengl.Sprite;
 import dk.sebsa.spellbook.graphics.opengl.SpriteSheet;
+import dk.sebsa.spellbook.math.Color;
+import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 /**
  * Renders UI components from a set SpriteSheet, with a specific font and a specific shader
@@ -21,12 +18,8 @@ import java.util.Map;
  */
 @CustomLog
 public class MarbleIMRenderer {
-    @Getter
-    @Setter
-    private Font font;
     private final SpriteSheet spriteSheet;
     private final GLSLShaderProgram shader;
-
     private final Sprite sprBox;
     private final Sprite sprBoxSpecialLight;
     private final Sprite sprBoxSpecialDark;
@@ -35,6 +28,9 @@ public class MarbleIMRenderer {
     private final Sprite sprButtonSpecial;
     private final Sprite sprWindow;
     private final Marble marble;
+    @Getter
+    @Setter
+    private Font font;
 
     /**
      * @param marble      Marble instance

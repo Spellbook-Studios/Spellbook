@@ -10,7 +10,6 @@ import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL30;
 
 import java.util.Collection;
 import java.util.Map;
@@ -88,7 +87,7 @@ public class Sprite2D {
                 for (SpriteRenderer sr : layer.get(s)) {
                     // Render
                     sr.setUniforms(shader);
-                    GL30.glDrawArrays(GL_TRIANGLES, 0, 6);
+                    glDrawArrays(GL_TRIANGLES, 0, 6);
                 }
 
                 s.getMaterial().unbind();

@@ -3,13 +3,11 @@ package dk.sebsa.spellbook.graphics;
 import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EngineRenderEvent;
-import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.graphics.opengl.Texture;
 import dk.sebsa.spellbook.marble.Font;
 import dk.sebsa.spellbook.marble.FontType;
 import lombok.CustomLog;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 @CustomLog

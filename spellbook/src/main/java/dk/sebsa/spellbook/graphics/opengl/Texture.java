@@ -4,12 +4,6 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Asset;
 import lombok.Getter;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.stb.STBImage.stbi_image_free;
-import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
-
 /**
  * Representation of a texutere, this includes as assets but also ones created dynamically (e.g. fbos)
  *

@@ -2,15 +2,14 @@ package dk.sebsa.spellbook.marble;
 
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
-import dk.sebsa.spellbook.math.Color;
-import dk.sebsa.spellbook.math.Vector2f;
 import dk.sebsa.spellbook.graphics.opengl.Material;
 import dk.sebsa.spellbook.graphics.opengl.Texture;
+import dk.sebsa.spellbook.math.Color;
+import dk.sebsa.spellbook.math.Vector2f;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBTTBakedChar;
-import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
@@ -18,7 +17,6 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 
 import static org.lwjgl.stb.STBTruetype.*;
-import static org.lwjgl.stb.STBTruetype.stbtt_ScaleForPixelHeight;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
 /**
@@ -29,23 +27,45 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  */
 @Getter
 public class Font {
+    public static int BITMAP_W = 1024;
+    public static int BITMAP_H = 1024;
     private final HashMap<Byte, Glyph> charTable = new HashMap<>();
+    private final FontType fontType;
+    private final int fontSize;
     private Texture texture;
     private Material material;
-    private FontType fontType;
-    private int fontSize;
     private STBTTBakedChar.Buffer cdata;
     private int ascent;
     private int descent;
     private int lineGap;
-
-
-    public static int BITMAP_W = 1024;
-    public static int BITMAP_H = 1024;
+    @Setter
+    private boolean kerningEnabled = true;
 
     public Font(Identifier fontType, int fontSize) {
         this.fontType = (FontType) AssetManager.getAssetS(fontType);
         this.fontSize = fontSize;
+    }
+
+    /**
+     * Gets the codepoint for a charater in a string
+     *
+     * @param text The text to get chars form
+     * @param to   The length of the text
+     * @param i    The index of the char
+     * @param cpOut The codepoint of the char at i or the codepoiont(i,i+1)
+     * @return How much to advance i (mostly 1, but might be 2 if combined charater are used)
+     */
+    public static int getCP(String text, int to, int i, IntBuffer cpOut) {
+        char c1 = text.charAt(i);
+        if (Character.isHighSurrogate(c1) && i + 1 < to) {
+            char c2 = text.charAt(i + 1);
+            if (Character.isLowSurrogate(c2)) {
+                cpOut.put(0, Character.toCodePoint(c1, c2));
+                return 2;
+            }
+        }
+        cpOut.put(0, c1);
+        return 1;
     }
 
     public ByteBuffer genBitMap(int BITMAP_W, int BITMAP_H) {
@@ -66,9 +86,6 @@ public class Font {
         descent = fontType.getDescent();
         lineGap = fontType.getLineGap();
     }
-
-    @Setter
-    private boolean kerningEnabled = true;
 
     public float getStringWidth(String text) {
         int width = 0;
@@ -95,28 +112,6 @@ public class Font {
         }
 
         return width * stbtt_ScaleForPixelHeight(getFontType().getInfo(), fontSize);
-    }
-
-    /**
-     * Gets the codepoint for a charater in a string
-     *
-     * @param text The text to get chars form
-     * @param to   The length of the text
-     * @param i    The index of the char
-     * @param cpOut The codepoint of the char at i or the codepoiont(i,i+1)
-     * @return How much to advance i (mostly 1, but might be 2 if combined charater are used)
-     */
-    public static int getCP(String text, int to, int i, IntBuffer cpOut) {
-        char c1 = text.charAt(i);
-        if (Character.isHighSurrogate(c1) && i + 1 < to) {
-            char c2 = text.charAt(i + 1);
-            if (Character.isLowSurrogate(c2)) {
-                cpOut.put(0, Character.toCodePoint(c1, c2));
-                return 2;
-            }
-        }
-        cpOut.put(0, c1);
-        return 1;
     }
 
     public void destroy() {

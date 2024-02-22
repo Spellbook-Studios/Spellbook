@@ -5,17 +5,16 @@ import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.ecs.Camera;
+import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
+import dk.sebsa.spellbook.graphics.opengl.RenderStage;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
-import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
-import dk.sebsa.spellbook.graphics.opengl.RenderStage;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
 import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.Collider2D;
 import lombok.Getter;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,6 +29,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 1.0.0
  */
 public class DebugRenderStage extends RenderStage {
+    private static final float CIRCLE_DETAIL = 32;
     private final float[] testPos = {
             0.0f, 0.0f,
             10, 0.0f,
@@ -38,20 +38,6 @@ public class DebugRenderStage extends RenderStage {
     };
     private final DebugVAO linesVAO = new DebugVAO(testPos, 2);
     private final DebugVAO pointsVAO = new DebugVAO(testPos, 2);
-
-    @Getter
-    enum DebugRenderMode {
-        ModeScreenSpace(1),
-        ModeWorldCamera(2);
-
-        private final int value;
-
-        DebugRenderMode(int value) {
-            this.value = value;
-        }
-
-    }
-
     private final GLSLShaderProgram shader;
 
     /**
@@ -94,10 +80,8 @@ public class DebugRenderStage extends RenderStage {
         shader.unbind();
     }
 
-    private static final float CIRCLE_DETAIL = 32;
-
     private void drawCircle(Vector2f point, float radius) {
-        GL11.glBegin(GL_LINE_LOOP);
+        glBegin(GL_LINE_LOOP);
         for (int i = 0; i < CIRCLE_DETAIL; i++) {
             float z = i / CIRCLE_DETAIL * 360;
             float x = radius * (float) Math.cos(Math.toRadians(z));
@@ -105,7 +89,7 @@ public class DebugRenderStage extends RenderStage {
 
             glVertex2f(x + point.x, y + point.y);
         }
-        GL11.glEnd();
+        glEnd();
     }
 
     private void drawColliders(FrameData frameData) {
@@ -184,5 +168,18 @@ public class DebugRenderStage extends RenderStage {
         shader.unreference();
         linesVAO.destroy();
         pointsVAO.destroy();
+    }
+
+    @Getter
+    enum DebugRenderMode {
+        ModeScreenSpace(1),
+        ModeWorldCamera(2);
+
+        private final int value;
+
+        DebugRenderMode(int value) {
+            this.value = value;
+        }
+
     }
 }
