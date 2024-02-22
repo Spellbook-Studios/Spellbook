@@ -2,8 +2,8 @@ package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.core.Core;
-import dk.sebsa.spellbook.opengl.RenderPipeline;
-import dk.sebsa.spellbook.opengl.stages.UIStage;
+import dk.sebsa.spellbook.graphics.opengl.RenderPipeline;
+import dk.sebsa.spellbook.graphics.opengl.stages.UIStage;
 import lombok.RequiredArgsConstructor;
 
 /**

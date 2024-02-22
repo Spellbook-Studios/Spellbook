@@ -3,6 +3,7 @@ package dk.sebsa.spellbook.io;
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.events.EngineInitEvent;
 import dk.sebsa.spellbook.core.events.EventBus;
+import dk.sebsa.spellbook.io.events.*;
 import dk.sebsa.spellbook.math.Vector2f;
 import lombok.CustomLog;
 import lombok.Getter;
@@ -16,6 +17,26 @@ import org.lwjgl.glfw.*;
  */
 @CustomLog
 public class GLFWInput {
+    /**
+     * All 16 gamepads
+     * They are all instantiated at program start, and are assigned to controller when they connect and disconnect
+     */
+    public final GamePad[] gamePads = new GamePad[16];
+    /**
+     * -- GETTER --
+     * The mouse position on screen
+     */
+    @Getter
+    private final Vector2f mousePos = new Vector2f(0, 0);
+    private final GLFWWindow glfwWindow;
+    // Callbacks
+    private final GLFWMouseButtonCallback mouseButtonCallback;
+    private final GLFWKeyCallback keyCallback;
+    private final GLFWJoystickCallback joystickCallback;
+    private final GLFWCursorPosCallback cursorCallback;
+    private final GLFWScrollCallback scrollCallback;
+    private final GLFWCharCallback charCallback; // For text input
+    private final EventBus eventBus;
     // Input Data
     private byte[] keys;
     private byte[] keysPressed;
@@ -29,7 +50,6 @@ public class GLFWInput {
      */
     @Getter
     private double scrollX;
-
     /**
      * -- GETTER --
      * The vertical scroll value, this is equal to all scroll offsets of entire program lifetime
@@ -38,53 +58,11 @@ public class GLFWInput {
     private double scrollY;
 
     /**
-     * -- GETTER --
-     * The mouse position on screen
-     */
-    @Getter
-    private final Vector2f mousePos = new Vector2f(0, 0);
-
-    private final GLFWWindow window;
-
-    // Callbacks
-    private final GLFWMouseButtonCallback mouseButtonCallback;
-    private final GLFWKeyCallback keyCallback;
-    private final GLFWJoystickCallback joystickCallback;
-    private final GLFWCursorPosCallback cursorCallback;
-    private final GLFWScrollCallback scrollCallback;
-    private final GLFWCharCallback charCallback; // For text input
-
-    /**
-     * All 16 gamepads
-     * They are all instantiated at program start, and are assigned to controller when they connect and disconnect
-     */
-    public final GamePad[] gamePads = new GamePad[16];
-    private final EventBus eventBus;
-
-    private void connectGamePad(int jid) {
-        if (!GLFW.glfwJoystickPresent(jid)) return; // Returns if this is not a connected gamepad
-
-        gamePads[jid].setController();
-        logger.log("GamePad connected: " + gamePads[jid].toString());
-
-        eventBus.engine(new GamePadConnectedEvent(gamePads[jid]));
-    }
-
-    private void disconnectGamePad(int jid) {
-        if (!gamePads[jid].isConnected()) return; // Returns if this pad was never connected
-
-        logger.log("GamePad Disconnected: " + gamePads[jid].toString());
-        gamePads[jid].setController();
-
-        eventBus.engine(new GamePadDisConnectedEvent(gamePads[jid]));
-    }
-
-    /**
      * @param e      The event used for loading loggers
      * @param window The window to bind to
      */
     public GLFWInput(EngineInitEvent e, GLFWWindow window) {
-        this.window = window;
+        this.glfwWindow = window;
         this.eventBus = Spellbook.instance.getEventBus();
         resetInputData(true);
 
@@ -150,13 +128,11 @@ public class GLFWInput {
 
         cursorCallback = new GLFWCursorPosCallback() {
             public void invoke(long window, double xpos, double ypos) {
-                // Create Event
-                MouseMoveEvent e = new MouseMoveEvent((float) xpos, (float) ypos,
-                        mousePos.x - ((float) xpos), mousePos.y - ((float) ypos));
-                eventBus.user(e);
-
                 // Save mouse position
                 mousePos.set((float) xpos, (float) ypos);
+
+                // Create Event
+                MouseMoveEvent e = new MouseMoveEvent(mousePos.x, mousePos.y); eventBus.user(e);
             }
         };
 
@@ -171,17 +147,35 @@ public class GLFWInput {
         };
     }
 
+    private void connectGamePad(int jid) {
+        if (!GLFW.glfwJoystickPresent(jid)) return; // Returns if this is not a connected gamepad
+
+        gamePads[jid].setController();
+        logger.log("GamePad connected: " + gamePads[jid].toString());
+
+        eventBus.engine(new GamePadConnectedEvent(gamePads[jid]));
+    }
+
+    private void disconnectGamePad(int jid) {
+        if (!gamePads[jid].isConnected()) return; // Returns if this pad was never connected
+
+        logger.log("GamePad Disconnected: " + gamePads[jid].toString());
+        gamePads[jid].setController();
+
+        eventBus.engine(new GamePadDisConnectedEvent(gamePads[jid]));
+    }
+
     /**
      * Sets callbacks to glfwWindow
      */
     public void addCallbacks() {
         logger.log("Setting input callbacks");
         // Set callbacks
-        GLFW.glfwSetKeyCallback(window.getId(), keyCallback);
-        GLFW.glfwSetCursorPosCallback(window.getId(), cursorCallback);
-        GLFW.glfwSetScrollCallback(window.getId(), scrollCallback);
-        GLFW.glfwSetMouseButtonCallback(window.getId(), mouseButtonCallback);
-        GLFW.glfwSetCharCallback(window.getId(), charCallback);
+        GLFW.glfwSetKeyCallback(glfwWindow.getId(), keyCallback);
+        GLFW.glfwSetCursorPosCallback(glfwWindow.getId(), cursorCallback);
+        GLFW.glfwSetScrollCallback(glfwWindow.getId(), scrollCallback);
+        GLFW.glfwSetMouseButtonCallback(glfwWindow.getId(), mouseButtonCallback);
+        GLFW.glfwSetCharCallback(glfwWindow.getId(), charCallback);
         GLFW.glfwSetJoystickCallback(joystickCallback);
     }
 

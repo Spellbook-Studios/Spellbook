@@ -9,8 +9,8 @@ import dk.sebsa.spellbook.data.DataStore;
 import dk.sebsa.spellbook.data.DataStoreManager;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.imgui.ImGUILayer;
-import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.phys.components.CircleCollider2D;
 import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 import dk.sebsa.spellbook.util.Random;
@@ -23,11 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DebugLayer extends ImGUILayer {
+    private final DataStore data;
+    private final TestData testObject;
+    private final ImFloat imFloat = new ImFloat();
+    private final ImString imString = new ImString();
     public List<TaskGroup> groups = new ArrayList<>();
     public Entity thousandObjectRoot;
-
-    private final DataStore data;
-
     public DebugLayer(Application application) {
         data = DataStoreManager.getFileStore(application, new Identifier("sandbox", "test-data"));
         testObject = data.getOrDefaultObject(new Identifier("test-data", "obj"), () -> new TestData("test"));
@@ -160,10 +161,6 @@ public class DebugLayer extends ImGUILayer {
             ImGui.end();
         }
     }
-
-    private TestData testObject;
-    private final ImFloat imFloat = new ImFloat();
-    private final ImString imString = new ImString();
 
     @Override
     protected boolean disableDefaultWindows() {

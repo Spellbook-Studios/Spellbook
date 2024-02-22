@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.math.Time;
-import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 
 public class BGManager extends Component {
     public static final float BGSCALE = 0.5f;

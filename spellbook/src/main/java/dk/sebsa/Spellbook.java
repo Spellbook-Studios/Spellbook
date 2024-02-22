@@ -12,10 +12,12 @@ import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.core.threading.*;
 import dk.sebsa.spellbook.data.DataStoreManager;
 import dk.sebsa.spellbook.ecs.ECS;
+import dk.sebsa.spellbook.graphics.Renderer;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Time;
-import dk.sebsa.spellbook.opengl.OpenGLModule;
+import dk.sebsa.spellbook.graphics.opengl.OpenGLRenderer;
+import dk.sebsa.spellbook.graphics.RenderModule;
 import dk.sebsa.spellbook.phys.Newton2D;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
@@ -70,6 +72,8 @@ public class Spellbook {
     private final Application application;
     @Getter
     private ITaskManager taskManager;
+    @Getter
+    private Renderer renderer;
 
     /**
      * The FRAME_DATA for the current frame
@@ -100,6 +104,10 @@ public class Spellbook {
         else {
             new Spellbook(app, caps);
         }
+    }
+
+    static { // Ensure that awt is headless, for OSX support
+        System.setProperty("java.awt.headless", "true");
     }
 
     private Spellbook(Application app, SpellbookCapabilities caps) {
@@ -133,7 +141,11 @@ public class Spellbook {
         // Log important debug info
         logger.log("Running Spellbook: " + SPELLBOOK_VERSION);
         logger.log(capabilities);
-        logger.log(app);
+        logger.log("Application{" +
+                    "name=" + app.name() +
+                    ", author=" + app.author() +
+                    ", version=" + app.version() +
+                    '}');
         Mana.logSystemInfo(logger);
 
         // The guts of Spellbook
@@ -214,12 +226,19 @@ public class Spellbook {
 
         // Register Non Core Modules
         if (capabilities.ecs) registerModule(new ECS());
-        if (capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl))
-            registerModule(new OpenGLModule());
-        if (DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
         if (capabilities.audio) registerModule(new OpenALModule());
         if (capabilities.newton2D) registerModule(new Newton2D());
 
+        // Rendering modules
+        if (capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl))
+            renderer = new OpenGLRenderer();
+
+        if(renderer != null) registerModule(new RenderModule(renderer));
+
+        // ImGui module (AFTER RENDER OR ELSE FUCUP)
+        if (DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());
+
+        // UI
         marbleModule = new Marble();
         registerModule(marbleModule);
 
@@ -255,6 +274,7 @@ public class Spellbook {
             eventBus.engine(new EngineRenderEvent(FRAME_DATA, moduleCore.getWindow()));
 
             // Cleanup Frame (Mostly just GLFWWindow)
+            renderer.waitForDone();
             eventBus.engine(new EngineFrameDone(FRAME_DATA));
         }
 
@@ -271,6 +291,15 @@ public class Spellbook {
         for (Module m : modules) {
             logger.log("Module - " + m.name());
             m.cleanup();
+        }
+
+        // Wait for the render to shut down
+        logger.log("Awaiting renderershutdown shutdown");
+        if (!renderer.awaitFinish(1, TimeUnit.SECONDS)) {
+            logger.log("Didn't shutdown :( Forcing it...");
+            renderer.interruptThread();
+        } else {
+            logger.log("... done");
         }
 
         // Cleanup leaked assets

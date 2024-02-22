@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class Time {
     // Constant
     /**
-     * One second in nano seconds
+     * One second in nanoseconds
      */
     public static final long SECOND_NANO = 1000000000L;
 

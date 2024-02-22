@@ -4,7 +4,7 @@ import dk.sebsa.Tappy;
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.math.Vector3f;
-import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.phys.components.Collider2D;
 import dk.sebsa.spellbook.phys.components.SpriteCollider2D;
 

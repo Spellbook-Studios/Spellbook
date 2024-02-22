@@ -1,8 +1,8 @@
 package dk.sebsa.spellbook.core.events;
 
 import dk.sebsa.spellbook.io.GLFWWindow;
-import dk.sebsa.spellbook.io.GamePadConnectedEvent;
-import dk.sebsa.spellbook.io.GamePadDisConnectedEvent;
+import dk.sebsa.spellbook.io.events.GamePadConnectedEvent;
+import dk.sebsa.spellbook.io.events.GamePadDisConnectedEvent;
 
 /**
  * Has functions for all engine events

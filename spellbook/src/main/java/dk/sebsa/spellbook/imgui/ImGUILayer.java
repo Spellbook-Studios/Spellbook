@@ -4,7 +4,7 @@ import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
-import dk.sebsa.spellbook.io.*;
+import dk.sebsa.spellbook.io.events.*;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Time;

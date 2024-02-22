@@ -6,7 +6,7 @@ import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
 import dk.sebsa.spellbook.io.GLFWWindow;
-import dk.sebsa.spellbook.io.KeyPressedEvent;
+import dk.sebsa.spellbook.io.events.KeyPressedEvent;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.marble.MarbleIMRenderer;
 import dk.sebsa.spellbook.math.Rect;
@@ -41,6 +41,6 @@ public class TestLayer extends Layer {
         marble.box(new Rect(0, 100, 100, 100));
         marble.boxSpecialLight(new Rect(0, 100, 50, 50));
         marble.boxSpecialDark(new Rect(50, 100, 50, 50));
-        marble.label("Hello World!", 0, 0);
+        marble.label("Hello World!\nLife sure is fun, right?\nSphinx", new Rect(0,0,500,1000));
     }
 }

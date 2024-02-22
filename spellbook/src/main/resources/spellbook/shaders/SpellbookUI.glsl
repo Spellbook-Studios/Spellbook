@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 
 in vec2 position;
 in vec2 textureCords;
@@ -20,7 +20,7 @@ void main()
 }
 // SPELLBOOK END VERTEX SHADER //
 
-#version 330
+#version 330 core
 
 uniform sampler2D sampler;
 uniform vec4 color;

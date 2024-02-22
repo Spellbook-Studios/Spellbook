@@ -27,7 +27,7 @@ test {
 }
 
 // GET VERSION
-Matcher m = Pattern.compile("SPELLBOOK_VERSION = \"(.*?)\"").matcher(rootProject.file('spellbook/src/main/java/dk/sebsa/Spellbook.java').text.trim());
+Matcher m = Pattern.compile("SPELLBOOK_VERSION = \"(.*?)\"").matcher(rootProject.file('spellbook/src/main/java/dk/sebsa/Spellbook.java').text.trim())
 m.find()
 version = m.group(1)
 group = 'dk.sebsa'

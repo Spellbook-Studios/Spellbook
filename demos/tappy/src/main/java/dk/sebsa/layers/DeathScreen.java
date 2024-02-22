@@ -6,7 +6,7 @@ import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.core.events.Layer;
 import dk.sebsa.spellbook.core.events.UserEvent;
-import dk.sebsa.spellbook.io.KeyPressedEvent;
+import dk.sebsa.spellbook.io.events.KeyPressedEvent;
 import dk.sebsa.spellbook.marble.FontType;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.marble.MarbleIMRenderer;
@@ -29,12 +29,12 @@ public class DeathScreen extends Layer {
     @Override
     protected void render(Marble marble, Rect r) {
         if (titleRenderer == null) titleRenderer = marble.getMarbleIM(
-                marble.font((FontType) AssetManager.getAssetS(new Identifier("tappy", "SAOWelcomeTT-Bold.ttf")), 82),
+                marble.font(new Identifier("tappy", "SAOWelcomeTT-Bold.ttf"), 82),
                 null,
                 null);
-        if (otherRenderer == null) otherRenderer = marble.getMarbleIM(marble.font("Inter", 24), null, null);
-        titleRenderer.label("You Died", (r.width / 2) - ((float) titleRenderer.getFont().getStringWidth("You Died") / 2), 20);
+        if (otherRenderer == null) otherRenderer = marble.getMarbleIM(marble.font(new Identifier("spellbook", "fonts/Inter.ttf"), 24), null, null);
+        titleRenderer.label("You Died", new Rect(0,20,r.width,124));
 
-        otherRenderer.label("Press SPACE to restart", (r.width / 2) - ((float) otherRenderer.getFont().getStringWidth("Press SPACE to restart") / 2), 124);
+        otherRenderer.label("Press SPACE to restart", new Rect(0,124,r.width,242));
     }
 }

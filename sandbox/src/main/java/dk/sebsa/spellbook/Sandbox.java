@@ -17,10 +17,10 @@ import dk.sebsa.spellbook.debug.DebugRenderStage;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.io.GamePad;
-import dk.sebsa.spellbook.io.GamePadConnectedEvent;
-import dk.sebsa.spellbook.io.GamePadDisConnectedEvent;
-import dk.sebsa.spellbook.opengl.components.SpriteRenderer;
-import dk.sebsa.spellbook.opengl.stages.SpriteStage;
+import dk.sebsa.spellbook.io.events.GamePadConnectedEvent;
+import dk.sebsa.spellbook.io.events.GamePadDisConnectedEvent;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
 
 import java.io.File;
 

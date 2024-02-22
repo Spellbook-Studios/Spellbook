@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 
 layout (location=0) in vec3 position;
 uniform int mode;
@@ -18,7 +18,7 @@ void main() {
 }
 
 // SPELLBOOK END VERTEX SHADER //
-#version 330
+#version 330 core
 
 uniform vec4 color;
 out vec4 fragColor;

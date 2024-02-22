@@ -5,7 +5,7 @@ import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.math.Color;
-import dk.sebsa.spellbook.opengl.stages.SpriteStage;
+import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
 
 import java.io.File;
 
