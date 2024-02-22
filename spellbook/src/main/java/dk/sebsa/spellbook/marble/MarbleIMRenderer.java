@@ -28,6 +28,7 @@ public class MarbleIMRenderer {
     private final Sprite sprButtonSpecial;
     private final Sprite sprWindow;
     private final Marble marble;
+    private final Rect rr = new Rect();
     @Getter
     @Setter
     private Font font;
@@ -73,7 +74,7 @@ public class MarbleIMRenderer {
      */
     public void labelCenterH(String text, Rect r) {
         marble.ensureShader(shader);
-        GL2D.drawText(text, Color.white, font, r);
+        GL2D.drawText(text, Color.white, font, rr.set(r.width - (getStringWidth(text) * 0.5f), r.y, r.width, r.height));
     }
 
     /**

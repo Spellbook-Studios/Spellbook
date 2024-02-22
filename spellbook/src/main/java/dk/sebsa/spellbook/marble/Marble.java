@@ -21,13 +21,16 @@ import lombok.CustomLog;
  */
 @CustomLog
 public class Marble implements Module {
+    private static final ThreeKeyHashMap<Font, String, String, MarbleIMRenderer> rendererHashMap = new ThreeKeyHashMap<>();
+    /* FONTS STUFF */
+    private static final ThreeKeyHashMap<String, Integer, Integer, Font> fontMap = new ThreeKeyHashMap<>();
+    private Font defaultFont;
+    private GLSLShaderProgram preparedShader = null;
+
     @EventListener
     public void engineFirstFrame(EngineFirstFrameEvent e) {
         defaultFont = font(new Identifier("spellbook", "fonts/Inter.ttf"), 48);
     }
-
-    private Font defaultFont;
-    private static final ThreeKeyHashMap<Font, String, String, MarbleIMRenderer> rendererHashMap = new ThreeKeyHashMap<>();
 
     /**
      * Gets the MarbleIMRender with the terms specified
@@ -45,7 +48,6 @@ public class Marble implements Module {
         return rendererHashMap.getPut(font, sht.toString(), shd.toString(), () ->
                 new MarbleIMRenderer(this, font, (SpriteSheet) AssetManager.getAssetS(sht), (GLSLShaderProgram) AssetManager.getAssetS(shd)));
     }
-
 
     @EventListener
     public void engineCleanup(EngineCleanupEvent e) {
@@ -72,9 +74,6 @@ public class Marble implements Module {
         return "UI<Marble>";
     }
 
-    /* FONTS STUFF */
-    private static final ThreeKeyHashMap<String, Integer, Integer, Font> fontMap = new ThreeKeyHashMap<>();
-
     /**
      * Loads a font from a TTF file (or from the cache) and derives its size
      *
@@ -89,8 +88,6 @@ public class Marble implements Module {
             return f;
         });
     }
-
-    private GLSLShaderProgram preparedShader = null;
 
     /**
      * This unprepares GL2D, unbinds the shader and should be called after rendering with MarbleIMRenderer
