@@ -1,3 +1,4 @@
+*Wanna try, [check the wiki](https://spellbook-studios.gitbook.io/spellbook/)*<br/>
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
 ![GitHub](https://img.shields.io/github/license/Spellbook-Studios/Spellbook?style=for-the-badge)
 ![Maven metadata URL](https://img.shields.io/maven-metadata/v?label=SNAPSHOT&metadataUrl=https://maven.sebsa.dk/snapshots/dk/sebsa/spellbook/maven-metadata.xml&style=for-the-badge)
