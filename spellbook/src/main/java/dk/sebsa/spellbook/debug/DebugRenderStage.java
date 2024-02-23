@@ -58,7 +58,7 @@ public class DebugRenderStage extends RenderStage {
         renderer.end();
     }
 
-    public void searchColliders(FrameData frameData) {
+    private void searchColliders(FrameData frameData) {
         rects.clear(); points.clear(); circles.clear();
         for (Collider2D collider2D : frameData.newton2DSolids) {
             if (collider2D instanceof BoxCollider2D)
