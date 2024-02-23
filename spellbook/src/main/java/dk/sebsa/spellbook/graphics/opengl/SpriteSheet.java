@@ -69,6 +69,7 @@ public class SpriteSheet extends Asset {
 
     /**
      * Gets a sprite from the spritesheet
+     * You don't need to manually unreference the sprites, they are destroyed together with the sheet
      *
      * @param name Name of the sprite
      * @return The sprite with the name specified, or null if non-existent

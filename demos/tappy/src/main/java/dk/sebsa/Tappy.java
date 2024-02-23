@@ -42,7 +42,7 @@ public class Tappy implements Application {
     @EventListener
     public void engineCreateFirstScene(EngineCreateFirstSceneEvent e) {
         Time.timeScale = 0;
-        var cam = new Camera(ECS.ROOT);
+        new Camera(ECS.ROOT); // Cam is automatically main cam and doesnt need to move
 
         // Add Tappy
         this.tappy = new Entity(ECS.ROOT);

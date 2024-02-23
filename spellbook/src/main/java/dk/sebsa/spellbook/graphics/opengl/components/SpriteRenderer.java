@@ -7,9 +7,11 @@ import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.graphics.opengl.GL2D;
 import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.graphics.opengl.Sprite;
+import dk.sebsa.spellbook.graphics.opengl.SpriteSheet;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
 import lombok.CustomLog;
+import lombok.Getter;
 
 /**
  * Handles the rendering of a sprite
@@ -27,10 +29,6 @@ public class SpriteRenderer extends Component {
      */
     public final Vector2f anchor = new Vector2f(0.5f, 0.5f);
     /**
-     * The sprite that this spriterender renders
-     */
-    public Sprite sprite;
-    /**
      * The identifier of the sprite
      */
     public Identifier identifier = new Identifier("spellbook", "missing.spr");
@@ -38,27 +36,31 @@ public class SpriteRenderer extends Component {
      * PENDING!!!!!!!!!!!
      */
     public float scale = 1.0f;
-
     /**
      * The layer to render to
      * Higher is render later, and therefore appear to be on top
      * Layer must be between 0 and SpellbookCapabilities.maxSpriteLayers-1;
      */
     public int layer = Spellbook.instance.getCapabilities().spriteMaxLayer > 1 ? 1 : 0;
+    @Getter
+    private Sprite sprite;
+    private SpriteSheet spriteSheet;
+    private String spriteSheetSprite;
 
     /**
-     * A spriterenderer without a set sprite
-     * Set the sprite with this.sprite = ??
-     */
-    public SpriteRenderer() {
-
-    }
-
-    /***
      * @param identifier Identifier of a sprite
      */
     public SpriteRenderer(Identifier identifier) {
         this.identifier = identifier;
+    }
+
+    /**
+     * @param spritesheet Identifier of a spritesheet
+     * @param sprite      The name of the sprite
+     */
+    public SpriteRenderer(Identifier spritesheet, String sprite) {
+        this.identifier = spritesheet;
+        this.spriteSheetSprite = sprite;
     }
 
     /**
@@ -79,7 +81,12 @@ public class SpriteRenderer extends Component {
     }
 
     public void onEnable() {
-        this.sprite = (Sprite) AssetManager.getAssetS(identifier);
+        if(spriteSheetSprite != null) { // If this sprite is set using a spritesheet
+            this.spriteSheet = (SpriteSheet) AssetManager.getAssetS(identifier);
+            this.sprite = spriteSheet.spr(spriteSheetSprite);
+        } else // If it is just a sprite
+            this.sprite = (Sprite) AssetManager.getAssetS(identifier);
+
         if (sprite == null) {
             sprite = GL2D.missingSprite;
             logger.warn("SpriteRender sprite reference is null");
@@ -93,6 +100,10 @@ public class SpriteRenderer extends Component {
 
     @Override
     public void onDisable() {
-        if (sprite != null && sprite != GL2D.missingSprite) sprite.unreference();
+        if(spriteSheetSprite != null) {
+            spriteSheet.unreference(); sprite = null; spriteSheet = null;
+        } else if (sprite != null && sprite != GL2D.missingSprite) {
+            sprite.unreference(); sprite = null;
+        }
     }
 }

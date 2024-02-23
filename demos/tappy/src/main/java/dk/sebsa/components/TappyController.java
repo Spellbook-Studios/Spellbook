@@ -19,7 +19,6 @@ public class TappyController extends SpriteCollider2D {
         super(renderer);
     }
 
-
     @Override
     public void onCollide(Collider2D other) {
         velocity = 0;

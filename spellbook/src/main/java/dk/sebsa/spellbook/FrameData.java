@@ -4,10 +4,10 @@ import dk.sebsa.spellbook.core.threading.ITaskManager;
 import dk.sebsa.spellbook.core.threading.Task;
 import dk.sebsa.spellbook.core.threading.TaskGroup;
 import dk.sebsa.spellbook.ecs.Component;
-import dk.sebsa.spellbook.io.GLFWInput;
-import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.graphics.opengl.Sprite;
 import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.io.GLFWInput;
+import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.phys.components.Collider2D;
 import lombok.Getter;
 
@@ -22,12 +22,6 @@ import java.util.function.Consumer;
  */
 public class FrameData {
     /**
-     * Spriterenderers that has requested rendering
-     * Sorted in sprites to make it easier on the renderer
-     */
-    @Getter
-    private final Map<Sprite, Collection<SpriteRenderer>>[] renderSprite;
-    /**
      * Reference to the GLFWInput from the current window
      */
     public final GLFWInput input;
@@ -35,7 +29,25 @@ public class FrameData {
      * The marble UI module instance
      */
     public final Marble marble;
+    /**
+     * List of colliders in the Newton2D system that has not moved this frame
+     */
+    public final HashSet<Collider2D> newton2DSolids = new HashSet<>();
+    /**
+     * List of colliders in the Newton2D system that has moved this frame
+     */
+    public final HashSet<Collider2D> newton2DMovers = new HashSet<>();
+    /**
+     * Spriterenderers that has requested rendering
+     * Sorted in sprites to make it easier on the renderer
+     */
+    @Getter
+    private final Map<Sprite, Collection<SpriteRenderer>>[] renderSprite;
     private final ITaskManager taskManager;
+    /**
+     * Components under ECS.ROOT
+     */
+    public List<Component> components;
 
     /**
      * @param input                 The input. Used from Component.update
@@ -62,28 +74,12 @@ public class FrameData {
      * @param s SpriteRenderer to render
      */
     public void addRenderSprite(SpriteRenderer s) {
-        renderSprite[s.layer].computeIfAbsent(s.sprite, sprite -> new HashSet<>()).add(s);
+        renderSprite[s.layer].computeIfAbsent(s.getSprite(), sprite -> new HashSet<>()).add(s);
     }
-
-    /**
-     * Components under ECS.ROOT
-     */
-    public List<Component> components;
-
-    /**
-     * List of colliders in the Newton2D system that has not moved this frame
-     */
-    public final HashSet<Collider2D> newton2DSolids = new HashSet<>();
-
-    /**
-     * List of colliders in the Newton2D system that has moved this frame
-     */
-    public final HashSet<Collider2D> newton2DMovers = new HashSet<>();
 
     // Task Utility Functions
     // TODO: The first functions are for the dynamic task group
     // Last three are just wrappers around the taskmanager
-
 
     /**
      * Runs a task

@@ -8,5 +8,5 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'dk.sebsa.MoreWindows'
+    mainClass = 'dk.sebsa.Marco'
 }

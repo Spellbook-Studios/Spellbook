@@ -12,6 +12,6 @@ public class SpriteCollider2D extends BoxCollider2D {
      * @param renderer The renderer to scale to
      */
     public SpriteCollider2D(SpriteRenderer renderer) {
-        size.set(renderer.sprite.getOffset().getSize().mul(renderer.scale));
+        size.set(renderer.getSprite().getOffset().getSize().mul(renderer.scale));
     }
 }
