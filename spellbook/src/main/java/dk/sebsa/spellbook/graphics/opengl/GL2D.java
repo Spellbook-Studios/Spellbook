@@ -2,7 +2,7 @@ package dk.sebsa.spellbook.graphics.opengl;
 
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
-import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.renderer.GL2DRenderer;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.marble.Font;
 import dk.sebsa.spellbook.math.Color;
@@ -49,8 +49,8 @@ public class GL2D {
     public static Sprite missingSprite;
     private static GLFWWindow window;
     private static Matrix4f ortho;
-    private static GLSpriteRenderer textRenderer;
-    private static GLSpriteRenderer spriteRenderer;
+    private static GL2DRenderer textRenderer;
+    private static GL2DRenderer renderer;
     @Getter
     private static boolean isPrepared;
 
@@ -66,15 +66,15 @@ public class GL2D {
         missingSprite = (Sprite) AssetManager.getAssetS(new Identifier("spellbook", "missing.spr"));
         ortho = new Matrix4f().ortho(0, window.rect.width, window.rect.height, 0,-1, 1);
 
-        textRenderer = new GLSpriteRenderer(new Identifier("spellbook", "shaders/SpellbookText.glsl"));
-        spriteRenderer = new GLSpriteRenderer(new Identifier("spellbook", "shaders/Spellbook2d.glsl"));
+        textRenderer = new GL2DRenderer(new Identifier("spellbook", "shaders/SpellbookText.glsl"));
+        renderer = new GL2DRenderer(new Identifier("spellbook", "shaders/Spellbook2d.glsl"));
     }
 
     /**
      * Prepares GL2D for rendering
      * @return Returns the prepared renderer
      */
-    public static GLSpriteRenderer prepare() {
+    public static GL2DRenderer prepare() {
         return prepare(window.rect);
     }
 
@@ -85,22 +85,22 @@ public class GL2D {
      * @param resolution THe resolution to render for
      * @return Returns the prepared renderer
      */
-    public static GLSpriteRenderer prepare(Rect resolution) {
+    public static GL2DRenderer prepare(Rect resolution) {
         // Gl status
         glDisable(GL_DEPTH_TEST);
 
         if (window.isDirty()) ortho = new Matrix4f().ortho(0, resolution.width, resolution.height, 0,-1, 1);
-        spriteRenderer.begin(ortho);
+        renderer.begin(ortho);
 
         isPrepared = true;
-        return spriteRenderer;
+        return renderer;
     }
 
     /**
      * Unbinds assets used for rendering with GL2D
      */
     public static void unprepare() {
-        spriteRenderer.end();
+        renderer.end();
         isPrepared = false;
     }
 
@@ -126,7 +126,7 @@ public class GL2D {
         if (mat.getTexture() != null) material = mat;
         else material = missingSprite.getMaterial();
 
-        spriteRenderer.setMaterial(material);
+        renderer.setMaterial(material);
         drawTextureWithTextCords(drawRect, uvRect);
     }
 
@@ -136,7 +136,7 @@ public class GL2D {
         float x = uvRect.x + (((r.x - drawRect.x) / drawRect.width) * uvRect.width);
         float y = uvRect.y + (((r.y - drawRect.y) / drawRect.height) * uvRect.height);
         u.set(x, y, (r.width / drawRect.width) * uvRect.width, (r.height / drawRect.height) * uvRect.height);
-        spriteRenderer.drawQuad(r,u);
+        renderer.drawQuad(r,u);
     }
 
     /**
@@ -147,7 +147,7 @@ public class GL2D {
      */
     public static void drawSprite(Rect r, Sprite e) {
         if (e == null) e = missingSprite;
-        spriteRenderer.setMaterial(e.getMaterial());
+        renderer.setMaterial(e.getMaterial());
         //Cache a short variable for the texture, just so we only have to type a character anytime we use it
         Rect uv = e.getUV();
 
@@ -206,7 +206,7 @@ public class GL2D {
      * @param drawRect  Where to draw
      */
     public static void drawText(String text, Color c, Font font, Rect drawRect) {
-        if(isPrepared) spriteRenderer.end();
+        if(isPrepared) renderer.end();
         window.rect.getIntersection(r2.set(drawRect.x, drawRect.y, drawRect.width, drawRect.height), r);
         textRenderer.begin(ortho);
         textRenderer.setMaterial(font.getMaterial().setColor(c));
@@ -253,7 +253,7 @@ public class GL2D {
         }
 
         textRenderer.end();
-        if(isPrepared) spriteRenderer.begin(ortho);
+        if(isPrepared) renderer.begin(ortho);
     }
 
     /**
@@ -262,6 +262,6 @@ public class GL2D {
     public static void cleanup() {
         missingSprite.unreference();
         textRenderer.destroy();
-        spriteRenderer.destroy();
+        renderer.destroy();
     }
 }
