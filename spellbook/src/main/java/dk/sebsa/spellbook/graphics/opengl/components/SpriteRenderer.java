@@ -75,7 +75,9 @@ public class SpriteRenderer extends Component {
      * @param renderer Batchrenderer to render with
      */
     public void draw(GLSpriteRenderer renderer) {
+        if(sprite==null) onEnable();
         Rect uvRect = sprite.getUV();
+
         Vector3f pos = entity.transform.getGlobalPosition();
         Vector2f size = new Vector2f(sprite.getOffset().width, sprite.getOffset().height);
 
@@ -86,6 +88,7 @@ public class SpriteRenderer extends Component {
     }
 
     public void onEnable() {
+        if(sprite != null) return;
         if(spriteSheetSprite != null) { // If this sprite is set using a spritesheet
             this.spriteSheet = (SpriteSheet) AssetManager.getAssetS(identifier);
             this.sprite = spriteSheet.spr(spriteSheetSprite);
@@ -100,7 +103,8 @@ public class SpriteRenderer extends Component {
 
     @Override
     public void render() {
-        Spellbook.FRAME_DATA.addRenderSprite(this);
+        if(sprite != null)
+            Spellbook.FRAME_DATA.addRenderSprite(this);
     }
 
     @Override
