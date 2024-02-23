@@ -73,7 +73,6 @@ public class MarbleIMRenderer {
      * @param r    Rect to render within
      */
     public void labelCenterH(String text, Rect r) {
-        marble.ensureShader(shader);
         GL2D.drawText(text, Color.white, font, rr.set(r.width - (getStringWidth(text) * 0.5f), r.y, r.width, r.height));
     }
 

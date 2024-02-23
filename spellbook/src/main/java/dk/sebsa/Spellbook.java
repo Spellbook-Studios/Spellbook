@@ -12,12 +12,12 @@ import dk.sebsa.spellbook.core.events.*;
 import dk.sebsa.spellbook.core.threading.*;
 import dk.sebsa.spellbook.data.DataStoreManager;
 import dk.sebsa.spellbook.ecs.ECS;
-import dk.sebsa.spellbook.graphics.Renderer;
+import dk.sebsa.spellbook.graphics.RenderAPI;
+import dk.sebsa.spellbook.graphics.RenderModule;
+import dk.sebsa.spellbook.graphics.opengl.OpenGL;
 import dk.sebsa.spellbook.imgui.SpellbookImGUI;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.math.Time;
-import dk.sebsa.spellbook.graphics.opengl.OpenGLRenderer;
-import dk.sebsa.spellbook.graphics.RenderModule;
 import dk.sebsa.spellbook.phys.Newton2D;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.Getter;
@@ -39,76 +39,59 @@ import java.util.function.Consumer;
  */
 public class Spellbook {
     /**
-     * The one and only instance of the Spellbook engine
-     */
-    public static Spellbook instance;
-
-    // Spellbook Settings and Consts
-    /**
      * The version of Spellbook as denoted in the gradle module
      */
     public static final String SPELLBOOK_VERSION = "1.0.0-SNAPSHOT";
-    /**
-     * Weather the capabilities.debug is true
-     */
-    public final boolean DEBUG;
 
-    // Sys info
+    // Spellbook Settings and Consts
+    /**
+     * The one and only instance of the Spellbook engine
+     */
+    public static Spellbook instance;
     /**
      * The graphics card that is used by OpenGL
      */
     public static String graphicsCard = "Toaster"; // Set at runtime
 
-    // Runtime stuff
-    @Getter
-    private static Logger logger;
-    @Getter
-    private final SpellbookCapabilities capabilities;
-    @Getter
-    private EventBus eventBus;
-    @Getter
-    private final List<Module> modules = new ArrayList<>();
-    private Core moduleCore;
-    private final Application application;
-    @Getter
-    private ITaskManager taskManager;
-    @Getter
-    private Renderer renderer;
-
+    // Sys info
     /**
      * The FRAME_DATA for the current frame
      */
     public static FrameData FRAME_DATA;
-    private Marble marbleModule;
-
     /**
-     * Loads and initializes a module
-     *
-     * @param m Module to load
+     * Count of the warning logs that has occurred in this programs lifetime
      */
-    public void registerModule(Module m) {
-        logger.log("Module - " + m.name());
-        modules.add(m);
-        m.init(eventBus);
-    }
-
+    public static int warnCount;
     /**
-     * Create a new Spellbook instance
-     *
-     * @param app  Starts the application
-     * @param caps The new spellbook instance uses these capabilities
+     * Count of the error logs that has occurred in this programs lifetime
      */
-    public static void start(Application app, SpellbookCapabilities caps) {
-        if (instance != null)
-            throw new RuntimeException("Having multiple applications is not supported yet.");
-        else {
-            new Spellbook(app, caps);
-        }
-    }
+    public static int errorCount;
+    // Runtime stuff
+    @Getter
+    private static Logger logger;
 
     static { // Ensure that awt is headless, for OSX support
         System.setProperty("java.awt.headless", "true");
     }
+
+    /**
+     * Weather the capabilities.debug is true
+     */
+    public final boolean DEBUG;
+    @Getter
+    private final SpellbookCapabilities capabilities;
+    @Getter
+    private final List<Module> modules = new ArrayList<>();
+    private final Application application;
+    @Getter
+    private EventBus eventBus;
+    private Core moduleCore;
+    @Getter
+    private ITaskManager taskManager;
+    @Getter
+    private RenderAPI renderer;
+    private Marble marbleModule;
+    private boolean shutdown;
 
     private Spellbook(Application app, SpellbookCapabilities caps) {
         application = app;
@@ -121,9 +104,9 @@ public class Spellbook {
             try {
                 InputStream logConfig;
                 if (caps.logDisableASCIIEscapeCharacters)
-                    logConfig = FileUtils.loadFile(new AssetLocation("spellbook/loggers/main.xml", AssetLocation.LocationTypes.Jar));
+                    logConfig = FileUtils.loadFile(new AssetLocation("spellbook/debug/loggers/main.xml", AssetLocation.LocationTypes.Jar));
                 else
-                    logConfig = FileUtils.loadFile(new AssetLocation("spellbook/loggers/main_colors.xml", AssetLocation.LocationTypes.Jar));
+                    logConfig = FileUtils.loadFile(new AssetLocation("spellbook/debug/loggers/main_colors.xml", AssetLocation.LocationTypes.Jar));
 
                 LogFormatter format = new FormatBuilder().buildFromFile(logConfig);
 
@@ -164,6 +147,31 @@ public class Spellbook {
         logger.log("Goodbye World!");
         logger.log("(Program Lifetime: " + (Time.getTime() * 0.001f) / 60 + " minutes)");
         logger.close();
+    }
+
+    /**
+     * Create a new Spellbook instance
+     *
+     * @param app  Starts the application
+     * @param caps The new spellbook instance uses these capabilities
+     */
+    public static void start(Application app, SpellbookCapabilities caps) {
+        if (instance != null)
+            throw new RuntimeException("Having multiple applications is not supported yet.");
+        else {
+            new Spellbook(app, caps);
+        }
+    }
+
+    /**
+     * Loads and initializes a module
+     *
+     * @param m Module to load
+     */
+    public void registerModule(Module m) {
+        logger.log("Module - " + m.name());
+        modules.add(m);
+        m.init(eventBus);
     }
 
     private void init() {
@@ -231,7 +239,7 @@ public class Spellbook {
 
         // Rendering modules
         if (capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl))
-            renderer = new OpenGLRenderer();
+            renderer = new OpenGL();
 
         if(renderer != null) registerModule(new RenderModule(renderer));
 
@@ -317,17 +325,6 @@ public class Spellbook {
             }
         }
     }
-
-    private boolean shutdown;
-
-    /**
-     * Count of the warning logs that has occurred in this programs lifetime
-     */
-    public static int warnCount;
-    /**
-     * Count of the error logs that has occurred in this programs lifetime
-     */
-    public static int errorCount;
 
     /**
      * Use this to report errors even when you don't have a logger

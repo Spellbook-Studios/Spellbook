@@ -1,4 +1,4 @@
-package dk.sebsa.spellbook.graphics.opengl.stages;
+package dk.sebsa.spellbook.graphics.stages;
 
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.core.events.Layer;

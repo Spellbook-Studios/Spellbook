@@ -6,13 +6,12 @@ import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EngineRenderEvent;
-import dk.sebsa.spellbook.graphics.Renderer;
-import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
-import dk.sebsa.spellbook.graphics.opengl.stages.UIStage;
+import dk.sebsa.spellbook.graphics.RenderAPI;
+import dk.sebsa.spellbook.graphics.stages.SpriteStage;
+import dk.sebsa.spellbook.graphics.stages.UIStage;
 import dk.sebsa.spellbook.marble.Font;
 import dk.sebsa.spellbook.marble.FontType;
 import dk.sebsa.spellbook.math.Color;
-import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.util.FileUtils;
 import lombok.CustomLog;
 import org.lwjgl.BufferUtils;
@@ -37,8 +36,7 @@ import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
  * @since 1.0.0
  */
 @CustomLog
-public class OpenGLRenderer extends Renderer {
-    private static final Rect invertedUV = new Rect(0, 0, 1, -1);
+public class OpenGL extends RenderAPI {
     private Color clearColor;
     private RenderPipeline pipeline;
     private boolean capRender2D;

@@ -22,7 +22,7 @@ void main()
 
 #version 330 core
 
-uniform sampler2D sampler;
+uniform sampler2D texSampler;
 uniform vec4 color;
 uniform int useColor;
 
@@ -35,6 +35,6 @@ void main()
     if(useColor == 1) {
         fragColor = color;
     } else {
-        fragColor = color * texture(sampler, uvCoords);
+        fragColor = color * texture(texSampler, uvCoords);
     }
 }

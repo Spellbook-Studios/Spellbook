@@ -241,4 +241,46 @@ public class GLSLShaderProgram extends Asset {
     public void setUniform(String uniformName, Vector3f v) {
         glUniform3f(uniforms.get(uniformName), v.x, v.y, v.z);
     }
+
+    /**
+     * Gets the location of an attribute variable with specified name.
+     *
+     * @param name Attribute name
+     * @return Location of the attribute
+     */
+    public int getAttributeLocation(CharSequence name) {
+        return glGetAttribLocation(programId, name);
+    }
+
+    /**
+     * Enables a vertex attribute.
+     *
+     * @param location Location of the vertex attribute
+     */
+    public void enableVertexAttribute(int location) {
+        glEnableVertexAttribArray(location);
+    }
+
+    /**
+     * Disables a vertex attribute.
+     *
+     * @param location Location of the vertex attribute
+     */
+    public void disableVertexAttribute(int location) {
+        glDisableVertexAttribArray(location);
+    }
+
+    /**
+     * Sets the vertex attribute pointer.
+     *
+     * @param location Location of the vertex attribute
+     * @param size     Number of values per vertex
+     * @param stride   Offset between consecutive generic vertex attributes in
+     *                 bytes
+     * @param offset   Offset of the first component of the first generic vertex
+     *                 attribute in bytes
+     */
+    public void pointVertexAttribute(int location, int size, int stride, int offset) {
+        glVertexAttribPointer(location, size, GL_FLOAT, false, stride, offset);
+    }
 }

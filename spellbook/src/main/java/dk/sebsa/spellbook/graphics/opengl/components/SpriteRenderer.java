@@ -5,11 +5,12 @@ import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.graphics.opengl.GL2D;
-import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.graphics.opengl.Sprite;
 import dk.sebsa.spellbook.graphics.opengl.SpriteSheet;
+import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteRenderer;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
+import dk.sebsa.spellbook.math.Vector3f;
 import lombok.CustomLog;
 import lombok.Getter;
 
@@ -48,6 +49,11 @@ public class SpriteRenderer extends Component {
     private String spriteSheetSprite;
 
     /**
+     * SpriteRenderer with the default sprite
+     */
+    public SpriteRenderer() {}
+
+    /**
      * @param identifier Identifier of a sprite
      */
     public SpriteRenderer(Identifier identifier) {
@@ -64,20 +70,19 @@ public class SpriteRenderer extends Component {
     }
 
     /**
-     * Sets a shaders uniforms with the values of this SpriteRenderer
+     * Renders itself using a BatchRenderer
      *
-     * @param shader A shader that is prepared for sprite rendering by Sprite2D
+     * @param renderer Batchrenderer to render with
      */
-    public void setUniforms(GLSLShaderProgram shader) {
-        shader.setUniform("objectScale", scale, scale);
-        shader.setUniform("anchor", anchor);
-
-        shader.setUniform("transformMatrix", entity.transform.getMatrix2D());
-
-        // UV Stuff
+    public void draw(GLSpriteRenderer renderer) {
         Rect uvRect = sprite.getUV();
-        shader.setUniform("offset", uvRect.x, uvRect.y, uvRect.width, uvRect.height);
-        shader.setUniform("pixelScale", sprite.getOffset().width, sprite.getOffset().height);
+        Vector3f pos = entity.transform.getGlobalPosition();
+        Vector2f size = new Vector2f(sprite.getOffset().width, sprite.getOffset().height);
+
+        renderer.drawQuad(
+                new Rect(new Vector2f(pos.x,pos.y).sub(size.mul(anchor).mul(scale)),
+                        size.mul(scale)),
+                uvRect);
     }
 
     public void onEnable() {

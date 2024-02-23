@@ -17,7 +17,6 @@ void main()
 }
 
 // SPELLBOOK END VERTEX SHADER //
-
 #version 330 core
 
 in vec2 uvCoords;
@@ -27,8 +26,6 @@ out vec4 fragColor;
 uniform sampler2D texSampler;
 uniform vec4 matColor;
 
-void main()
-{
-    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(texSampler, uvCoords).r);
-    fragColor = matColor * sampled;
+void main() {
+    fragColor = matColor * texture(texSampler, vec2(uvCoords.x, 1.0-uvCoords.y));
 }

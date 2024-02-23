@@ -17,11 +17,11 @@ import java.util.concurrent.TimeUnit;
  * @since 1.0.0
  */
 @CustomLog
-public abstract class Renderer {
+public abstract class RenderAPI {
     private final RenderingThread renderThread;
     private final Thread thread;
 
-    protected Renderer() {
+    protected RenderAPI() {
         logger.log("HI! Rendering will be done by ME! (" + this.getClass().getName() + ")");
         logger.log("Creating RenderingThread");
         renderThread = new RenderingThread();

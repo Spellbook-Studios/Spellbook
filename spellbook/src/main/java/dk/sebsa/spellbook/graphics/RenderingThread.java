@@ -24,7 +24,11 @@ public class RenderingThread implements Runnable {
 
         while(!stop.get()) {
             while(!taskQueue.isEmpty()) {
-                taskQueue.removeFirst().run();
+                try {
+                    taskQueue.removeFirst().run();
+                } catch (Exception e) {
+                    logger.err("Exception in renderingthread", logger.stackTrace(e));
+                }
             }
         }
     }

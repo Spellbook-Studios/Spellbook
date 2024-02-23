@@ -2,12 +2,13 @@ package dk.sebsa.spellbook.graphics.opengl;
 
 import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
+import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteRenderer;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.marble.Font;
 import dk.sebsa.spellbook.math.Color;
-import dk.sebsa.spellbook.math.Matrix4x4f;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
+import org.joml.Matrix4f;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
 
@@ -47,8 +48,9 @@ public class GL2D {
     private static GLFWWindow window;
     private static GLSLShaderProgram defaultShader;
     private static Mesh2D guiMesh;
-    private static Matrix4x4f ortho;
+    private static Matrix4f ortho;
     private static Color currentColor;
+    private static GLSpriteRenderer textRenderer;
 
     /**
      * Initializes the renderer, done once pr program
@@ -67,7 +69,9 @@ public class GL2D {
         logger.log("GL2D loaded");
 
         missingSprite = (Sprite) AssetManager.getAssetS(new Identifier("spellbook", "missing.spr"));
-        ortho = Matrix4x4f.ortho(0, window.rect.width, window.rect.height, 0, -1, 1);
+        ortho = new Matrix4f().ortho(0, window.rect.width, window.rect.height, 0,-1, 1);
+
+        textRenderer = new GLSpriteRenderer(new Identifier("spellbook", "shaders/SpellbookText.glsl"));
     }
 
     /**
@@ -84,7 +88,7 @@ public class GL2D {
             shaderProgram.createUniform("screenPos");
             shaderProgram.createUniform("color");
             shaderProgram.createUniform("useColor");
-            shaderProgram.createUniform("sampler");
+            shaderProgram.createUniform("texSampler");
         } catch (Exception e) {
             logger.warn("Failed to create shader uniforms", "This might still work, if the error is from the uniforms already having been created");
             logger.stackTrace(e);
@@ -130,7 +134,7 @@ public class GL2D {
         // Gl status
         glDisable(GL_DEPTH_TEST);
 
-        if (window.isDirty()) ortho = Matrix4x4f.ortho(0, resolution.width, resolution.height, 0, -1, 1);
+        if (window.isDirty()) ortho = new Matrix4f().ortho(0, resolution.width, resolution.height, 0,-1, 1);
 
         // Render preparation
         defaultShader.bind();
@@ -170,14 +174,9 @@ public class GL2D {
      * @param drawRect  Where to draw
      */
     public static void drawText(String text, Color c, Font font, Rect drawRect) {
-        // Generate the rect that we can draw within
         window.rect.getIntersection(r2.set(drawRect.x, drawRect.y, drawRect.width, drawRect.height), r);
-
-        // Set Color and Textre
-        changeColor(c);
-        font.getMaterial().getTexture().bind(0);
-        defaultShader.setUniform("sampler", 0);
-        defaultShader.setUniform("useColor", 2);
+        textRenderer.begin(ortho);
+        textRenderer.setMaterial(font.getMaterial().setColor(c));
 
         float scale = stbtt_ScaleForPixelHeight(font.getFontType().getInfo(), font.getFontSize()); // Fontscale
         float lineHeight = (font.getAscent() - font.getDescent() + font.getLineGap()) * scale;
@@ -185,6 +184,7 @@ public class GL2D {
         try (MemoryStack stack = stackPush()) {
             IntBuffer pCodePoint = stack.mallocInt(1); // Pointer to the char codepoint (*int)
             FloatBuffer x = stack.floats(r.x); // Current x pos
+            //noinspection,SuspiciousNameCombination
             FloatBuffer y = stack.floats(r.y); // Current y pos
 
             STBTTAlignedQuad q = STBTTAlignedQuad.malloc(stack);
@@ -209,20 +209,17 @@ public class GL2D {
 
                 float
                         x0 = q.x0(),
-                        x1 = Math.min(q.x1(), r.x+r.width),
+                        x1 = q.x1(),
                         y0 = q.y0(),
-                        y1 = Math.min(q.y1(), r.y+r.height);
+                        y1 = q.y1();
 
-                defaultShader.setUniform("offset", q.s0(), q.t0(), q.s1()-q.s0(), q.t1()-q.t0());
-                defaultShader.setUniform("pixelScale", x1-x0,y1-y0);
-                defaultShader.setUniform("screenPos", x0, (lineHeight)+y0);
-
-                glDrawArrays(GL_TRIANGLES, 0, 6);
+                // Fix warping maybe check pre commit
+                r.getIntersection(r2.set(x0,(lineHeight)+y0, x1-x0, y1-y0), rect1);
+                textRenderer.drawQuad(rect1, new Rect(q.s0(), q.t0(), q.s1()-q.s0(), q.t1()-q.t0()));
             }
         }
 
-        // Unbind texture
-        font.getMaterial().getTexture().unbind(0);
+        textRenderer.end();
     }
 
     /**
@@ -257,7 +254,7 @@ public class GL2D {
         if (mat.getTexture() != null) mat.getTexture().bind(0);
         else missingSprite.getMaterial().getTexture().bind(0);
 
-        defaultShader.setUniform("sampler", 0);
+        defaultShader.setUniform("texSampler", 0);
         defaultShader.setUniform("useColor", mat.isTextured() ? 0 : 1);
         defaultShader.setUniform("offset", u.x, u.y, u.width, u.height);
         defaultShader.setUniform("pixelScale", r.width, r.height);
@@ -332,5 +329,6 @@ public class GL2D {
         guiMesh.destroy();
         defaultShader.unreference();
         missingSprite.unreference();
+        textRenderer.destroy();
     }
 }

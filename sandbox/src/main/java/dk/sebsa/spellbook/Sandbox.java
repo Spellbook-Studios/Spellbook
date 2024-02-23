@@ -16,17 +16,19 @@ import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.debug.DebugRenderStage;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.Entity;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.graphics.stages.SpriteStage;
 import dk.sebsa.spellbook.io.GamePad;
 import dk.sebsa.spellbook.io.events.GamePadConnectedEvent;
 import dk.sebsa.spellbook.io.events.GamePadDisConnectedEvent;
-import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
-import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
 
 import java.io.File;
 
 public class Sandbox implements Application {
-    public DebugLayer debugLayer;
+    public static Entity player;
+    public static GamePad gamePad;
     private static boolean isDebug = false;
+    public DebugLayer debugLayer;
 
     public static void main(String[] args) {
         // Parse args
@@ -72,7 +74,6 @@ public class Sandbox implements Application {
         return "1.0b";
     }
 
-
     @EventListener
     public void engineBuildRenderPipeline(EngineBuildRenderPipelineEvent e) {
         e.builder.appendStage(new SpriteStage(e));
@@ -89,8 +90,6 @@ public class Sandbox implements Application {
                 .appendLayer(debugLayer);
     }
 
-    public static Entity player;
-
     @EventListener
     public void engineCreateFirstScene(EngineCreateFirstSceneEvent e) {
         player = new Camera(e.ROOT);
@@ -104,8 +103,6 @@ public class Sandbox implements Application {
         player.addComponent(new PlayerMovement());
         player.addComponent(new SoundListener());
     }
-
-    public static GamePad gamePad;
 
     @EventListener
     public void gamePadConnected(GamePadConnectedEvent e) {
