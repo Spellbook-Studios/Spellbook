@@ -2,24 +2,30 @@ package dk.sebsa;
 
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
 import dk.sebsa.spellbook.core.Application;
-import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
-import dk.sebsa.spellbook.core.events.EventListener;
-import dk.sebsa.spellbook.math.Color;
+import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.ecs.Camera;
+import dk.sebsa.spellbook.ecs.ECS;
+import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
+import dk.sebsa.spellbook.math.Color;
 
 import java.io.File;
 
-public class MoreWindows implements Application {
-    public static MoreWindows instance;
+public class Marco implements Application {
+    public static Marco instance;
 
     public static void main(String[] args) {
-        instance = new MoreWindows();
+        instance = new Marco();
 
         Spellbook.start(instance, SpellbookCapabilities.builder()
                 .spellbookDebug(true)
                 .logDisableASCIIEscapeCharacters(false)
-                .clearColor(Color.azure)
-                .build().addAssetProvider(new FolderAssetProvider(new File("assets/"), "mw")));
+                .clearColor(Color.red)
+                .build().addAssetProvider(new FolderAssetProvider(new File("assets/"), "marco")));
+    }
+    @EventListener
+    public void engineCreateFirstScene(EngineCreateFirstSceneEvent e) {
+        new Camera(ECS.ROOT); // Cam is automatically main cam
     }
 
     @EventListener
@@ -30,7 +36,7 @@ public class MoreWindows implements Application {
 
     @Override
     public String name() {
-        return "MoreWindows";
+        return "Marco";
     }
 
     @Override

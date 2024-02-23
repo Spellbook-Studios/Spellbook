@@ -76,13 +76,13 @@ public class Material extends Asset {
     /**
      * Binds the material to a shader, and binds the texture if it is textured
      *
-     * @param shader A shader with uniforms ["matColor", "sampler"]
+     * @param shader A shader with uniforms ["matColor", "texSampler"]
      */
     public void bind(GLSLShaderProgram shader) {
         shader.setUniform("matColor", color);
         if (isTextured) {
             texture.bind(0);
-            shader.setUniform("sampler", 0);
+            shader.setUniform("texSampler", 0);
         }
     }
 
@@ -115,5 +115,16 @@ public class Material extends Asset {
     @Override
     public void destroy() {
         if (texture != null) texture.unreference();
+    }
+
+    /**
+     * Sets the color of this material
+     *
+     * @param c New color
+     * @return this
+     */
+    public Material setColor(Color c) {
+        this.color = c;
+        return  this;
     }
 }

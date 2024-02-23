@@ -16,7 +16,7 @@ import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
 import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
-import dk.sebsa.spellbook.graphics.opengl.stages.SpriteStage;
+import dk.sebsa.spellbook.graphics.stages.SpriteStage;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.phys.components.BoxCollider2D;
@@ -42,7 +42,7 @@ public class Tappy implements Application {
     @EventListener
     public void engineCreateFirstScene(EngineCreateFirstSceneEvent e) {
         Time.timeScale = 0;
-        var cam = new Camera(ECS.ROOT);
+        new Camera(ECS.ROOT); // Cam is automatically main cam and doesnt need to move
 
         // Add Tappy
         this.tappy = new Entity(ECS.ROOT);
@@ -55,7 +55,7 @@ public class Tappy implements Application {
 
         // Add floor
         var floor = new Entity(ECS.ROOT);
-        floor.transform.setPosition(0, -250, 0);
+        floor.transform.setPosition(0, -265, 0);
         var collider = new ObstacleComponent();
         collider.size.set(960, 48);
         floor.addComponent(collider);

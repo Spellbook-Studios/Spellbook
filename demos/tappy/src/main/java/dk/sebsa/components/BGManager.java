@@ -4,8 +4,8 @@ import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.ecs.Entity;
-import dk.sebsa.spellbook.math.Time;
 import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.math.Time;
 
 public class BGManager extends Component {
     public static final float BGSCALE = 0.5f;
@@ -35,6 +35,16 @@ public class BGManager extends Component {
         bg.transform.setPosition(x, 130, 0);
         spr.anchor.set(0.5f, 0.5f);
         spr.layer = 0;
+        spr.scale = 0.5f;
+
+        // Floor
+        bg = new Entity(entity);
+        spr = new SpriteRenderer(new Identifier("tappy", "floor.spr"));
+        bg.addComponent(spr);
+        bg.addComponent(new BGComponent());
+        bg.transform.setPosition(x, -265, 0);
+        spr.anchor.set(0.5f, 0.5f);
+        spr.layer = 2;
         spr.scale = 0.5f;
     }
 }

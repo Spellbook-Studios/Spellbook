@@ -20,13 +20,14 @@ import java.util.List;
  * @since 1.0.0
  */
 public class Sprite extends Asset {
+    private final Rect uv = new Rect(0, 0, 1, 1);
+    private final Rect paddingUV = new Rect(0, 0, 0, 0);
     @Getter
     private Rect offset;
     @Getter
     private Rect padding;
     @Getter
     private Material material;
-
     // Might exist if loaded with texture and not material directly
     private Texture texture;
 
@@ -44,7 +45,7 @@ public class Sprite extends Asset {
     }
 
     /**
-     * Normal sprite constructor used by assetreference.java
+     * Normal sprite constructor used by AssetReference.java
      */
     public Sprite() {
     }
@@ -75,8 +76,6 @@ public class Sprite extends Asset {
         if (texture != null) texture.unreference();
     }
 
-    private final Rect uv = new Rect(0, 0, 0, 0);
-
     /**
      * @return The uv map of the sprite
      */
@@ -88,8 +87,6 @@ public class Sprite extends Asset {
         float h = material.getTexture().getHeight();
         return uv.set(offset.x / w, offset.y / h, offset.width / w, offset.height / h);
     }
-
-    private final Rect paddingUV = new Rect(0, 0, 0, 0);
 
     /**
      * @return Returns the padding UV map

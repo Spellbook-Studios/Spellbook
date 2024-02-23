@@ -1,20 +1,16 @@
 package dk.sebsa.spellbook.graphics.opengl;
 
-import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
-import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteRenderer;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
-import org.joml.Matrix4f;
 
 import java.util.Collection;
 import java.util.Map;
-
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Renders 2d sprites
@@ -25,7 +21,7 @@ import static org.lwjgl.opengl.GL11.*;
 @CustomLog
 public class Sprite2D {
     private static Mesh2D mainMesh;
-    private static GLSLShaderProgram shader;
+    private static GLSpriteRenderer renderer;
 
     /**
      * Inits the renderer
@@ -36,24 +32,7 @@ public class Sprite2D {
         if (mainMesh != null) return;
 
         mainMesh = Mesh2D.getRenderMesh();
-
-        // Get shader
-        shader = (GLSLShaderProgram) e.assetManager.getAsset(new Identifier("spellbook", "shaders/Sprite2D.glsl"));
-
-        // Prepare shader
-        try {
-            shader.createUniform("transformMatrix");
-            shader.createUniform("pixelScale");
-            shader.createUniform("objectScale");
-            shader.createUniform("anchor");
-            shader.createUniform("offset");
-            shader.createUniform("projectionViewMatrix");
-            shader.createUniform("sampler");
-
-            shader.createUniform("matColor");
-        } catch (Exception ex) {
-            Spellbook.instance.error(logger.stackTrace(ex), true);
-        }
+        renderer = new GLSpriteRenderer(new Identifier("spellbook", "shaders/SpellbookSprite.glsl"));
     }
 
     /**
@@ -64,46 +43,26 @@ public class Sprite2D {
      * @param frameData The spriterenders to render
      */
     public static void renderSprites(GLFWWindow window, Rect r, FrameData frameData) {
-        glDisable(GL_DEPTH_TEST);
-
-        // Projection matrix
-        float w = r.width;
-        float h = r.height;
-        float halfW = w * 0.5f;
-        float halfH = h * 0.5f;
-
-        Matrix4f projection = new Matrix4f().ortho(-halfW, halfW, halfH, -halfH, -1, 1);
-
-        // Bind
-        shader.bind();
-        mainMesh.bind();
-        shader.setUniform("projectionViewMatrix", projection.mul(Camera.activeCamera.getViewMatrix()));
+        renderer.begin(r);
 
         for (int i = 0; i < frameData.getRenderSprite().length; i++) {
             Map<Sprite, Collection<SpriteRenderer>> layer = frameData.getRenderSprite()[i];
             for (Sprite s : layer.keySet()) {
-                s.getMaterial().bind(shader);
+                renderer.setMaterial(s.getMaterial());
 
                 for (SpriteRenderer sr : layer.get(s)) {
-                    // Render
-                    sr.setUniforms(shader);
-                    glDrawArrays(GL_TRIANGLES, 0, 6);
+                    sr.draw(renderer);
                 }
-
-                s.getMaterial().unbind();
             }
         }
 
-        // Restore
-        mainMesh.unbind();
-        shader.unbind();
-        glEnable(GL_DEPTH_TEST);
+        renderer.end();
     }
 
     /**
      * Cleanup assets used by Sprite2D
      */
     public static void destroy() {
-        shader.unreference();
+        renderer.destroy();
     }
 }

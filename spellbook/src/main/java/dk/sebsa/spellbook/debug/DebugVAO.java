@@ -13,9 +13,9 @@ import static org.lwjgl.opengl.GL42.*;
  */
 public class DebugVAO {
     private final int vertexSize;
-    private int amount;
     private final int vboVertexID;
     private final int vaoID;
+    private int amount;
 
     /**
      * @param vertices Verticies
@@ -72,6 +72,22 @@ public class DebugVAO {
 
         glDisableVertexAttribArray(0);
         glBindVertexArray(0);
+    }
+
+    /**
+     * Binds the VAO and enables attributes
+     */
+    public void bind() {
+        glBindVertexArray(vaoID);
+        glEnableVertexAttribArray(0);
+    }
+
+    /**
+     * Binds the VAO and enables attributes
+     */
+    public void unbind() {
+        glBindVertexArray(vaoID);
+        glEnableVertexAttribArray(0);
     }
 
     /**

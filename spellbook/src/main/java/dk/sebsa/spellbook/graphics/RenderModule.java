@@ -14,12 +14,12 @@ import lombok.CustomLog;
  */
 @CustomLog
 public class RenderModule implements Module {
-    private final Renderer renderer;
+    private final RenderAPI renderer;
 
     /**
      * @param renderer The renderer to use for rendering
      */
-    public RenderModule(Renderer renderer) {
+    public RenderModule(RenderAPI renderer) {
         this.renderer = renderer;
     }
 

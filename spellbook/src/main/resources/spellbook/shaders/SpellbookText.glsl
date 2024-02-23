@@ -1,36 +1,34 @@
 #version 330 core
 
-in vec2 position;
-in vec2 textureCords;
+layout (location=0) in vec2 position;
+layout (location=1) in vec2 texcoord;
 
-out vec4 color;
 out vec2 uvCoords;
 
-uniform mat4 projection;
-
-uniform vec4 offset;
-
-uniform vec2 pixelScale;
-uniform vec2 screenPos;
+uniform mat4 mProj;
+uniform mat4 mView;
 
 void main()
 {
-    gl_Position = projection * vec4((position * pixelScale) + screenPos, 0, 1.0);
-    uvCoords = (textureCords * offset.zw) + offset.xy;
+    uvCoords = texcoord;
+
+    vec4 pos = vec4(position, 0.0, 1.0);
+    gl_Position = mProj * mView * pos;
 }
+
 // SPELLBOOK END VERTEX SHADER //
 
 #version 330 core
-
-uniform sampler2D sampler;
-uniform vec4 color;
 
 in vec2 uvCoords;
 
 out vec4 fragColor;
 
+uniform sampler2D texSampler;
+uniform vec4 matColor;
+
 void main()
 {
-    float c = texture(sampler, uvCoords).a;
-    fragColor = vec4(c * color.r, c * color.g, c * color.b, 1.0);
+    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(texSampler, uvCoords).r);
+    fragColor = matColor * sampled;
 }

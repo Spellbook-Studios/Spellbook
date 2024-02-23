@@ -3,7 +3,7 @@ package dk.sebsa.spellbook.core.events;
 import dk.sebsa.SpellbookCapabilities;
 import dk.sebsa.spellbook.core.Core;
 import dk.sebsa.spellbook.graphics.opengl.RenderPipeline;
-import dk.sebsa.spellbook.graphics.opengl.stages.UIStage;
+import dk.sebsa.spellbook.graphics.stages.UIStage;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -15,16 +15,10 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class EngineBuildRenderPipelineEvent extends Event {
-    @Override
-    public EventType eventType() {
-        return EventType.engineBuildRenderPipeline;
-    }
-
     /**
      * The builder, add stages and modify the pipeline as needed
      */
     public final RenderPipeline.RenderPipelineBuilder builder = new RenderPipeline.RenderPipelineBuilder();
-
     /**
      * The Core module
      */
@@ -33,6 +27,11 @@ public class EngineBuildRenderPipelineEvent extends Event {
      * Spellbook capabilities
      */
     public final SpellbookCapabilities capabilities;
+
+    @Override
+    public EventType eventType() {
+        return EventType.engineBuildRenderPipeline;
+    }
 
     /**
      * adds a UIStage to the builder
