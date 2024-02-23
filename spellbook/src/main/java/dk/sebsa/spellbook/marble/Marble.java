@@ -8,9 +8,9 @@ import dk.sebsa.spellbook.core.events.EngineCleanupEvent;
 import dk.sebsa.spellbook.core.events.EngineFirstFrameEvent;
 import dk.sebsa.spellbook.core.events.EventListener;
 import dk.sebsa.spellbook.graphics.opengl.GL2D;
-import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.graphics.opengl.SpriteSheet;
 import dk.sebsa.spellbook.util.ThreeKeyHashMap;
+import dk.sebsa.spellbook.util.TwoKeyHashMap;
 import lombok.CustomLog;
 
 /**
@@ -21,11 +21,10 @@ import lombok.CustomLog;
  */
 @CustomLog
 public class Marble implements Module {
-    private static final ThreeKeyHashMap<Font, String, String, MarbleIMRenderer> rendererHashMap = new ThreeKeyHashMap<>();
+    private static final TwoKeyHashMap<Font, String, MarbleIMRenderer> rendererHashMap = new TwoKeyHashMap<>();
     /* FONTS STUFF */
     private static final ThreeKeyHashMap<String, Integer, Integer, Font> fontMap = new ThreeKeyHashMap<>();
     private Font defaultFont;
-    private GLSLShaderProgram preparedShader = null;
 
     @EventListener
     public void engineFirstFrame(EngineFirstFrameEvent e) {
@@ -37,16 +36,14 @@ public class Marble implements Module {
      *
      * @param f           The font of the renderer or null. If null the defualt font will be used (Inter, Plain, 16)
      * @param spriteSheet Identifier of the spritesheet of the renderer, or null. If null Blackstone will be used
-     * @param shader      Identifier of the shader, or null. If null the default GUI shader will be used
      * @return The renderer that matches the parameters
      */
-    public MarbleIMRenderer getMarbleIM(Font f, Identifier spriteSheet, Identifier shader) {
+    public MarbleIMRenderer getMarbleIM(Font f, Identifier spriteSheet) {
         Font font = f != null ? f : defaultFont;
         Identifier sht = spriteSheet != null ? spriteSheet : new Identifier("spellbook", "marble/Blackstone.sht");
-        Identifier shd = shader != null ? shader : new Identifier("spellbook", "shaders/SpellbookUI.glsl");
 
-        return rendererHashMap.getPut(font, sht.toString(), shd.toString(), () ->
-                new MarbleIMRenderer(this, font, (SpriteSheet) AssetManager.getAssetS(sht), (GLSLShaderProgram) AssetManager.getAssetS(shd)));
+        return rendererHashMap.getPut(font, sht.toString(), () ->
+                new MarbleIMRenderer(this, font, (SpriteSheet) AssetManager.getAssetS(sht)));
     }
 
     @EventListener
@@ -90,21 +87,16 @@ public class Marble implements Module {
     }
 
     /**
-     * This unprepares GL2D, unbinds the shader and should be called after rendering with MarbleIMRenderer
+     * This unprepares GL2D
      */
     public void postRenderReset() {
-        if (preparedShader != null) {
-            GL2D.unprepare();
-            preparedShader = null;
-        }
+        if (GL2D.isPrepared()) GL2D.unprepare();
     }
 
     /**
-     * Ensures GL2D is prepared with a specific shader
-     *
-     * @param shader The shader to check against and bind if not already bound
+     * Ensures GL2D is prepared
      */
-    public void ensureShader(GLSLShaderProgram shader) {
-        if (!java.util.Objects.equals(preparedShader, shader)) preparedShader = GL2D.prepare(shader);
+    public void ensurePrepared() {
+        if (!GL2D.isPrepared()) GL2D.prepare();
     }
 }

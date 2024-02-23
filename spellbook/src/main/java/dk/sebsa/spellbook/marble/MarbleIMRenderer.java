@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.marble;
 
 import dk.sebsa.spellbook.graphics.opengl.GL2D;
-import dk.sebsa.spellbook.graphics.opengl.GLSLShaderProgram;
 import dk.sebsa.spellbook.graphics.opengl.Sprite;
 import dk.sebsa.spellbook.graphics.opengl.SpriteSheet;
 import dk.sebsa.spellbook.math.Color;
@@ -19,7 +18,6 @@ import lombok.Setter;
 @CustomLog
 public class MarbleIMRenderer {
     private final SpriteSheet spriteSheet;
-    private final GLSLShaderProgram shader;
     private final Sprite sprBox;
     private final Sprite sprBoxSpecialLight;
     private final Sprite sprBoxSpecialDark;
@@ -37,12 +35,10 @@ public class MarbleIMRenderer {
      * @param marble      Marble instance
      * @param font        Font to use
      * @param spriteSheet Spritesheet to use
-     * @param shader      Shade to use
      */
-    public MarbleIMRenderer(Marble marble, Font font, SpriteSheet spriteSheet, GLSLShaderProgram shader) {
+    public MarbleIMRenderer(Marble marble, Font font, SpriteSheet spriteSheet) {
         this.marble = marble;
         this.spriteSheet = spriteSheet;
-        this.shader = shader;
         this.font = font;
 
         // Get sprites
@@ -62,7 +58,7 @@ public class MarbleIMRenderer {
      * @param r    Rect to render within
      */
     public void label(String text, Rect r) {
-        marble.ensureShader(shader);
+        marble.ensurePrepared();
         GL2D.drawText(text, Color.white, font, r);
     }
 
@@ -83,7 +79,7 @@ public class MarbleIMRenderer {
      * @param sprite The sprite to render
      */
     public void sprite(Rect rect, Sprite sprite) {
-        marble.ensureShader(shader);
+        marble.ensurePrepared();
         GL2D.drawSprite(rect, sprite);
     }
 
@@ -94,7 +90,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void box(Rect rect) {
-        marble.ensureShader(shader);
+        marble.ensurePrepared();
         sprite(rect, sprBox);
     }
 
@@ -105,7 +101,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void boxSpecialLight(Rect rect) {
-        marble.ensureShader(shader);
+        marble.ensurePrepared();
         sprite(rect, sprBoxSpecialLight);
     }
 
@@ -116,7 +112,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void boxSpecialDark(Rect rect) {
-        marble.ensureShader(shader);
+        marble.ensurePrepared();
         sprite(rect, sprBoxSpecialDark);
     }
 
@@ -127,7 +123,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void button(Rect rect) {
-        marble.ensureShader(shader);
+        marble.ensurePrepared();
         sprite(rect, sprButton);
     }
 
@@ -138,7 +134,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void buttonHover(Rect rect) {
-        marble.ensureShader(shader);
+        marble.ensurePrepared();
         sprite(rect, sprButtonHover);
     }
 
@@ -149,7 +145,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void buttonSpecial(Rect rect) {
-        marble.ensureShader(shader);
+        marble.ensurePrepared();
         sprite(rect, sprButtonSpecial);
     }
 
@@ -160,7 +156,7 @@ public class MarbleIMRenderer {
      * @param rect The rect to draw to
      */
     public void window(Rect rect) {
-        marble.ensureShader(shader);
+        marble.ensurePrepared();
         sprite(rect, sprWindow);
     }
 
@@ -168,7 +164,6 @@ public class MarbleIMRenderer {
      * Unreferences / Deletes any assets used by the render
      */
     public void destroy() {
-        shader.unreference();
         spriteSheet.unreference();
     }
 
@@ -177,7 +172,6 @@ public class MarbleIMRenderer {
         return "MarbleIMRenderer{" +
                 "currFont=" + font +
                 ", spriteSheet=" + spriteSheet +
-                ", shader=" + shader +
                 '}';
     }
 

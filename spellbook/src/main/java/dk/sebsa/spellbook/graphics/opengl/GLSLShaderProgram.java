@@ -26,10 +26,6 @@ import static org.lwjgl.opengl.GL20.*;
 @CustomLog
 public class GLSLShaderProgram extends Asset {
     private final Map<String, Integer> uniforms = new HashMap<>();
-    /**
-     * Weather the shader has been prepared by GL2D
-     */
-    public boolean initFor2D = false;
     private int programId;
     private int vertexShaderId, fragmentShaderId;
 

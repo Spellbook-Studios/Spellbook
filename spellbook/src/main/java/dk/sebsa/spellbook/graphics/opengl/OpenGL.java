@@ -1,7 +1,6 @@
 package dk.sebsa.spellbook.graphics.opengl;
 
 import dk.sebsa.Spellbook;
-import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
@@ -187,7 +186,7 @@ public class OpenGL extends RenderAPI {
         pipeline = builder.build();
 
         // Init GL2D and Sprite2D
-        GL2D.init(e.moduleCore.getWindow(), (GLSLShaderProgram) e.assetManager.getAsset(new Identifier("spellbook", "shaders/Spellbook2d.glsl")));
+        GL2D.init(e.moduleCore.getWindow());
 
         capRender2D = e.capabilities.render2D;
         if (capRender2D) {

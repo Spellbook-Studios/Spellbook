@@ -8,6 +8,7 @@ import dk.sebsa.spellbook.marble.Font;
 import dk.sebsa.spellbook.math.Color;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
+import lombok.Getter;
 import org.joml.Matrix4f;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
@@ -15,7 +16,8 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.stb.STBTruetype.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
@@ -46,113 +48,60 @@ public class GL2D {
      */
     public static Sprite missingSprite;
     private static GLFWWindow window;
-    private static GLSLShaderProgram defaultShader;
-    private static Mesh2D guiMesh;
     private static Matrix4f ortho;
-    private static Color currentColor;
     private static GLSpriteRenderer textRenderer;
+    private static GLSpriteRenderer spriteRenderer;
+    @Getter
+    private static boolean isPrepared;
 
     /**
      * Initializes the renderer, done once pr program
      *
      * @param w The window in which it will render
-     * @param s The default 2d shader
      */
-    public static void init(GLFWWindow w, GLSLShaderProgram s) {
+    public static void init(GLFWWindow w) {
         logger.log("Initializing GL2D");
-
         window = w;
-        defaultShader = s;
-
-        guiMesh = Mesh2D.getQuad();
-        prepareShader(defaultShader);
-        logger.log("GL2D loaded");
 
         missingSprite = (Sprite) AssetManager.getAssetS(new Identifier("spellbook", "missing.spr"));
         ortho = new Matrix4f().ortho(0, window.rect.width, window.rect.height, 0,-1, 1);
 
         textRenderer = new GLSpriteRenderer(new Identifier("spellbook", "shaders/SpellbookText.glsl"));
-    }
-
-    /**
-     * Prepares a shader for 2d rendering
-     *
-     * @param shaderProgram The shader to prepare
-     */
-    public static void prepareShader(GLSLShaderProgram shaderProgram) {
-        logger.log("Prepare shader for 2D rendering " + shaderProgram.getLocation().identifier());
-        try {
-            shaderProgram.createUniform("projection");
-            shaderProgram.createUniform("offset");
-            shaderProgram.createUniform("pixelScale");
-            shaderProgram.createUniform("screenPos");
-            shaderProgram.createUniform("color");
-            shaderProgram.createUniform("useColor");
-            shaderProgram.createUniform("texSampler");
-        } catch (Exception e) {
-            logger.warn("Failed to create shader uniforms", "This might still work, if the error is from the uniforms already having been created");
-            logger.stackTrace(e);
-        }
-        shaderProgram.initFor2D = true;
-    }
-
-    private static void changeColor(Color c) {
-        if (c == currentColor) return;
-        defaultShader.setUniform("color", c);
-        currentColor = c;
+        spriteRenderer = new GLSpriteRenderer(new Identifier("spellbook", "shaders/Spellbook2d.glsl"));
     }
 
     /**
      * Prepares GL2D for rendering
-     * Uses the default shader(Spellbook2d.glsl)
+     * @return Returns the prepared renderer
      */
-    public static void prepare() {
-        prepare(defaultShader);
-    }
-
-    /**
-     * Prepares GL2D for rendering
-     *
-     * @param shader The shader to prepare for
-     * @return The now prepared shader
-     */
-    public static GLSLShaderProgram prepare(GLSLShaderProgram shader) {
-        return prepare(shader, window.rect);
+    public static GLSpriteRenderer prepare() {
+        return prepare(window.rect);
     }
 
 
     /**
      * Prepares GL2D for rendering
      *
-     * @param shader The shader to prepare for
      * @param resolution THe resolution to render for
-     * @return The now prepared shader
+     * @return Returns the prepared renderer
      */
-    public static GLSLShaderProgram prepare(GLSLShaderProgram shader, Rect resolution) {
-        if (!shader.initFor2D) prepareShader(shader);
-
+    public static GLSpriteRenderer prepare(Rect resolution) {
         // Gl status
         glDisable(GL_DEPTH_TEST);
 
         if (window.isDirty()) ortho = new Matrix4f().ortho(0, resolution.width, resolution.height, 0,-1, 1);
+        spriteRenderer.begin(ortho);
 
-        // Render preparation
-        defaultShader.bind();
-        defaultShader.setUniform("projection", ortho);
-        changeColor(Color.white);
-        guiMesh.bind();
-        return shader;
+        isPrepared = true;
+        return spriteRenderer;
     }
 
     /**
      * Unbinds assets used for rendering with GL2D
      */
     public static void unprepare() {
-        // Enable 3d
-        glEnable(GL_DEPTH_TEST);
-
-        defaultShader.unbind();
-        guiMesh.unbind();
+        spriteRenderer.end();
+        isPrepared = false;
     }
 
     /**
@@ -162,7 +111,90 @@ public class GL2D {
      * @param drawRect Where to draw
      */
     public static void drawTextureWithTextCords(Material mat, Rect drawRect) {
-        drawTextureWithTextCords(mat, drawRect, Rect.UV, guiMesh);
+        drawTextureWithTextCords(mat, drawRect, Rect.UV);
+    }
+
+    /**
+     * Draws a texture with texture coordinates
+     *
+     * @param mat      Material to draw
+     * @param drawRect Where to draw
+     * @param uvRect   Texture coords
+     */
+    public static void drawTextureWithTextCords(Material mat, Rect drawRect, Rect uvRect) {
+        Material material;
+        if (mat.getTexture() != null) material = mat;
+        else material = missingSprite.getMaterial();
+
+        spriteRenderer.setMaterial(material);
+        drawTextureWithTextCords(drawRect, uvRect);
+    }
+
+    private static void drawTextureWithTextCords(Rect drawRect, Rect uvRect) {
+        window.rect.getIntersection(r2.set(drawRect.x, drawRect.y, drawRect.width, drawRect.height), r);
+        // uvreact
+        float x = uvRect.x + (((r.x - drawRect.x) / drawRect.width) * uvRect.width);
+        float y = uvRect.y + (((r.y - drawRect.y) / drawRect.height) * uvRect.height);
+        u.set(x, y, (r.width / drawRect.width) * uvRect.width, (r.height / drawRect.height) * uvRect.height);
+        spriteRenderer.drawQuad(r,u);
+    }
+
+    /**
+     * Renders a sprite to the screen
+     *
+     * @param r Dimension and position of the sprite
+     * @param e The sprite (if null a missing texutre sprite will be renderd)
+     */
+    public static void drawSprite(Rect r, Sprite e) {
+        if (e == null) e = missingSprite;
+        spriteRenderer.setMaterial(e.getMaterial());
+        //Cache a short variable for the texture, just so we only have to type a character anytime we use it
+        Rect uv = e.getUV();
+
+        //Get the top left corner of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(r.x, r.y, e.getPadding().x, e.getPadding().y);   // TL
+        rect2.set(uv.x, uv.y, e.getPaddingUV().x, e.getPaddingUV().y); // TLU
+        drawTextureWithTextCords(rect1, rect2);
+
+        //Get the top right corner of the box using corresponding padding values and draw it using a texture drawing method
+        tr.set((r.x + r.width) - e.getPadding().width, r.y, e.getPadding().width, e.getPadding().y);    // TR
+        tru.set((uv.x + uv.width) - e.getPaddingUV().width, uv.y, e.getPaddingUV().width, e.getPaddingUV().y); // TRU
+        drawTextureWithTextCords(tr, tru);
+
+        //Get the bottom left corner of the box using corresponding padding values and draw it using a texture drawing method
+        bl.set(r.x, (r.y + r.height) - e.getPadding().height, e.getPadding().x, e.getPadding().height); // BL
+        blu.set(uv.x, (uv.y + uv.height) - e.getPaddingUV().height, e.getPaddingUV().x, e.getPaddingUV().height); //BLU
+        drawTextureWithTextCords(bl, blu);
+
+        //Get the bottom right corner of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(tr.x, bl.y, e.getPadding().width, e.getPadding().height); // BR
+        rect2.set(tru.x, blu.y, e.getPaddingUV().width, e.getPaddingUV().height); // BRU
+        drawTextureWithTextCords(rect1, rect2);
+
+        //Get the left side of the box using corresponding padding values and draw it using a texture drawing method
+        l.set(r.x, r.y + e.getPadding().y, e.getPadding().x, r.height - (e.getPadding().y + e.getPadding().height)); // L
+        lu.set(uv.x, uv.y + e.getPaddingUV().y, e.getPaddingUV().x, uv.height - (e.getPaddingUV().y + e.getPaddingUV().height)); //LU
+        drawTextureWithTextCords(l, lu);
+
+        //Get the right side of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(tr.x, r.y + e.getPadding().y, e.getPadding().width, l.height); // RI
+        rect2.set(tru.x, lu.y, e.getPaddingUV().width, lu.height); // RU
+        drawTextureWithTextCords(rect1, rect2);
+
+        //Get the top of the box using corresponding padding values and draw it using a texture drawing method
+        ti.set(r.x + e.getPadding().x, r.y, r.width - (e.getPadding().x + e.getPadding().width), e.getPadding().y); // TI
+        tu.set(uv.x + e.getPaddingUV().x, uv.y, uv.width - (e.getPaddingUV().x + e.getPaddingUV().width), e.getPaddingUV().y); // TU
+        drawTextureWithTextCords(ti, tu);
+
+        //Get the bottom of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(ti.x, bl.y, ti.width, e.getPadding().height); // B
+        rect2.set(tu.x, blu.y, tu.width, e.getPaddingUV().height); // BU
+        drawTextureWithTextCords(rect1, rect2);
+
+        //Get the center of the box using corresponding padding values and draw it using a texture drawing method
+        rect1.set(ti.x, l.y, ti.width, l.height); // C
+        rect2.set(tu.x, lu.y, tu.width, lu.height); // CU
+        drawTextureWithTextCords(rect1, rect2);
     }
 
     /**
@@ -174,6 +206,7 @@ public class GL2D {
      * @param drawRect  Where to draw
      */
     public static void drawText(String text, Color c, Font font, Rect drawRect) {
+        if(isPrepared) spriteRenderer.end();
         window.rect.getIntersection(r2.set(drawRect.x, drawRect.y, drawRect.width, drawRect.height), r);
         textRenderer.begin(ortho);
         textRenderer.setMaterial(font.getMaterial().setColor(c));
@@ -220,115 +253,15 @@ public class GL2D {
         }
 
         textRenderer.end();
+        if(isPrepared) spriteRenderer.begin(ortho);
     }
 
     /**
-     * Draws a texture with texture coordinates
-     *
-     * @param mat      Material to draw
-     * @param drawRect Where to draw
-     * @param uvRect   Texture coords
-     */
-    public static void drawTextureWithTextCords(Material mat, Rect drawRect, Rect uvRect) {
-        drawTextureWithTextCords(mat, drawRect, uvRect, guiMesh);
-    }
-
-    /**
-     * Draws a texture with texture coordinates
-     *
-     * @param mat      Material to draw
-     * @param drawRect Where to draw
-     * @param uvRect   Texture coords
-     * @param mesh     Mesh to draw to
-     */
-    public static void drawTextureWithTextCords(Material mat, Rect drawRect, Rect uvRect, Mesh2D mesh) {
-        window.rect.getIntersection(r2.set(drawRect.x, drawRect.y, drawRect.width, drawRect.height), r);
-
-        // uvreact
-        float x = uvRect.x + (((r.x - drawRect.x) / drawRect.width) * uvRect.width);
-        float y = uvRect.y + (((r.y - drawRect.y) / drawRect.height) * uvRect.height);
-        u.set(x, y, (r.width / drawRect.width) * uvRect.width, (r.height / drawRect.height) * uvRect.height);
-
-        // Draw
-        changeColor(mat.getColor());
-        if (mat.getTexture() != null) mat.getTexture().bind(0);
-        else missingSprite.getMaterial().getTexture().bind(0);
-
-        defaultShader.setUniform("texSampler", 0);
-        defaultShader.setUniform("useColor", mat.isTextured() ? 0 : 1);
-        defaultShader.setUniform("offset", u.x, u.y, u.width, u.height);
-        defaultShader.setUniform("pixelScale", r.width, r.height);
-        defaultShader.setUniform("screenPos", r.x, r.y);
-
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        if (mat.getTexture() != null) mat.getTexture().unbind(0);
-        else missingSprite.getMaterial().getTexture().unbind(0);
-    }
-
-    /**
-     * Renders a sprite to the screen
-     *
-     * @param r Dimension and position of the sprite
-     * @param e The sprite (if null a missing texutre sprite will be renderd)
-     */
-    public static void drawSprite(Rect r, Sprite e) {
-        if (e == null) e = missingSprite;
-        //Cache a short variable for the texture, just so we only have to type a character anytime we use it
-        Rect uv = e.getUV();
-
-        //Get the top left corner of the box using corresponding padding values and draw it using a texture drawing method
-        rect1.set(r.x, r.y, e.getPadding().x, e.getPadding().y);   // TL
-        rect2.set(uv.x, uv.y, e.getPaddingUV().x, e.getPaddingUV().y); // TLU
-        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
-
-        //Get the top right corner of the box using corresponding padding values and draw it using a texture drawing method
-        tr.set((r.x + r.width) - e.getPadding().width, r.y, e.getPadding().width, e.getPadding().y);    // TR
-        tru.set((uv.x + uv.width) - e.getPaddingUV().width, uv.y, e.getPaddingUV().width, e.getPaddingUV().y); // TRU
-        drawTextureWithTextCords(e.getMaterial(), tr, tru);
-
-        //Get the bottom left corner of the box using corresponding padding values and draw it using a texture drawing method
-        bl.set(r.x, (r.y + r.height) - e.getPadding().height, e.getPadding().x, e.getPadding().height); // BL
-        blu.set(uv.x, (uv.y + uv.height) - e.getPaddingUV().height, e.getPaddingUV().x, e.getPaddingUV().height); //BLU
-        drawTextureWithTextCords(e.getMaterial(), bl, blu);
-
-        //Get the bottom right corner of the box using corresponding padding values and draw it using a texture drawing method
-        rect1.set(tr.x, bl.y, e.getPadding().width, e.getPadding().height); // BR
-        rect2.set(tru.x, blu.y, e.getPaddingUV().width, e.getPaddingUV().height); // BRU
-        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
-
-        //Get the left side of the box using corresponding padding values and draw it using a texture drawing method
-        l.set(r.x, r.y + e.getPadding().y, e.getPadding().x, r.height - (e.getPadding().y + e.getPadding().height)); // L
-        lu.set(uv.x, uv.y + e.getPaddingUV().y, e.getPaddingUV().x, uv.height - (e.getPaddingUV().y + e.getPaddingUV().height)); //LU
-        drawTextureWithTextCords(e.getMaterial(), l, lu);
-
-        //Get the right side of the box using corresponding padding values and draw it using a texture drawing method
-        rect1.set(tr.x, r.y + e.getPadding().y, e.getPadding().width, l.height); // RI
-        rect2.set(tru.x, lu.y, e.getPaddingUV().width, lu.height); // RU
-        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
-
-        //Get the top of the box using corresponding padding values and draw it using a texture drawing method
-        ti.set(r.x + e.getPadding().x, r.y, r.width - (e.getPadding().x + e.getPadding().width), e.getPadding().y); // TI
-        tu.set(uv.x + e.getPaddingUV().x, uv.y, uv.width - (e.getPaddingUV().x + e.getPaddingUV().width), e.getPaddingUV().y); // TU
-        drawTextureWithTextCords(e.getMaterial(), ti, tu);
-
-        //Get the bottom of the box using corresponding padding values and draw it using a texture drawing method
-        rect1.set(ti.x, bl.y, ti.width, e.getPadding().height); // B
-        rect2.set(tu.x, blu.y, tu.width, e.getPaddingUV().height); // BU
-        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
-
-        //Get the center of the box using corresponding padding values and draw it using a texture drawing method
-        rect1.set(ti.x, l.y, ti.width, l.height); // C
-        rect2.set(tu.x, lu.y, tu.width, lu.height); // CU
-        drawTextureWithTextCords(e.getMaterial(), rect1, rect2);
-    }
-
-    /**
-     * Unreferences assets uses by GL2d
+     * Unreferences assets uses by GL2D
      */
     public static void cleanup() {
-        guiMesh.destroy();
-        defaultShader.unreference();
         missingSprite.unreference();
         textRenderer.destroy();
+        spriteRenderer.destroy();
     }
 }
