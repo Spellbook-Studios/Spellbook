@@ -6,14 +6,13 @@ layout (location=1) in vec2 texcoord;
 out vec2 uvCoords;
 
 uniform mat4 mProj;
-uniform mat4 mView;
 
 void main()
 {
     uvCoords = texcoord;
 
     vec4 pos = vec4(position, 0.0, 1.0);
-    gl_Position = mProj * mView * pos;
+    gl_Position = mProj * pos;
 }
 
 // SPELLBOOK END VERTEX SHADER //
