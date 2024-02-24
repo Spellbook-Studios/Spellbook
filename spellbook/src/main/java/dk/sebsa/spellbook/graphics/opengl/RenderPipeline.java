@@ -49,7 +49,7 @@ public class RenderPipeline {
         for (RenderStage stage : renderStages) {
             try {
                 stage.render(e.frameData);
-            } catch (Exception ex) {
+            } catch (Exception | Error ex) {
                 Spellbook.instance.error("Render stage: " + stage.getName() + ", failed to run. Error: " + ex.getMessage() + "\nStacktrace: " + logger.stackTrace(ex), false);
             }
         }

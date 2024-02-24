@@ -69,7 +69,7 @@ public class ClassLogger implements Logger {
      * @param e The exception
      * @return The stacktrace of the exception
      */
-    public String stackTrace(Exception e) {
+    public String stackTrace(Throwable e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
