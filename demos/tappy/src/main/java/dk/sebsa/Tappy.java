@@ -6,6 +6,7 @@ import dk.sebsa.components.PipesManager;
 import dk.sebsa.components.TappyController;
 import dk.sebsa.layers.DeathScreen;
 import dk.sebsa.layers.MainMenuScreen;
+import dk.sebsa.layers.ScoreOverlay;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.asset.loading.FolderAssetProvider;
 import dk.sebsa.spellbook.audio.SoundListener;
@@ -26,8 +27,9 @@ import java.io.File;
 public class Tappy implements Application {
     public static Tappy instance;
     private Entity tappy;
-    private Layer mainMenuScreen, deathScreen;
+    private Layer mainMenuScreen, deathScreen, scoreOverlay;
     private Entity pipes;
+    public int points = 0;
 
     public static void main(String[] args) {
         instance = new Tappy();
@@ -52,6 +54,7 @@ public class Tappy implements Application {
         tappy.addComponent(new SoundPlayer(new Identifier("tappy", "jump.ogg")));
         sp.scale = 3f;
         tappy.tag = "player";
+        tappy.name = "Tappy";
 
         // Add floor
         var floor = new Entity(ECS.ROOT);
@@ -84,9 +87,12 @@ public class Tappy implements Application {
         mainMenuScreen = new MainMenuScreen();
         deathScreen = new DeathScreen();
         deathScreen.enabled = false;
+        scoreOverlay = new ScoreOverlay();
+        scoreOverlay.enabled = false;
 
         e.builder.appendLayer(mainMenuScreen)
-                .appendLayer(deathScreen);
+                .appendLayer(deathScreen)
+                .appendLayer(scoreOverlay);
     }
 
     @Override
@@ -110,11 +116,13 @@ public class Tappy implements Application {
         tappy.transform.setPosition(0, -20, 0);
         mainMenuScreen.enabled = false;
         deathScreen.enabled = false;
-
+        scoreOverlay.enabled = true;
+        
         if (pipes != null) pipes.delete();
         pipes = new Entity(ECS.ROOT);
         pipes.addComponent(new PipesManager());
         Time.timeScale = 1;
+        points = 0;
     }
 
     public void death() {

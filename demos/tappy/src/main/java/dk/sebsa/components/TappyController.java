@@ -21,7 +21,8 @@ public class TappyController extends SpriteCollider2D {
 
     @Override
     public void onCollide(Collider2D other) {
-        velocity = 0;
+        if (!other.getEntity().tag.equals("point"))
+            velocity = 0;
     }
 
     @Override
@@ -29,8 +30,7 @@ public class TappyController extends SpriteCollider2D {
         if (frameData.input.isKeyPressed(GLFW.GLFW_KEY_SPACE) || frameData.input.gamePads[0].buttonX) {
             getEntity().getComponent(SoundPlayer.class).start();
             velocity = JUMP_ENERGY;
-        }
-        else if (velocity <= 0)
+        } else if (velocity <= 0)
             velocity = Math.max(velocity - ((VELOCITY_DROPFF * (-velocity + 0.1f)) * Time.getDeltaTime())
                     , -1);
         else
