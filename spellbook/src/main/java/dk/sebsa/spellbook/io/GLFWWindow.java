@@ -112,7 +112,8 @@ public class GLFWWindow {
             IntBuffer pHeight = stack.mallocInt(1); // int*
             glfwGetFramebufferSize(this.id, pWidth, pHeight);
             rect.set(0, 0, pWidth.get(0), pHeight.get(0));
-        } frameBufferScale = calculateWindowFramebufferScaling();
+        }
+        frameBufferScale = calculateWindowFramebufferScaling();
 
         logger.log("Window rect", rect);
         logger.log("Window Framebuffer to Window scale = " + frameBufferScale);
@@ -156,6 +157,7 @@ public class GLFWWindow {
 
         // Show the window
         glfwShowWindow(id);
+        glfwMakeContextCurrent(NULL);
     }
 
     /**
@@ -200,7 +202,8 @@ public class GLFWWindow {
             // Get the window size passed to glfwCreateWindow
             glfwGetWindowSize(id, pWidth, pHeight);
             glfwGetFramebufferSize(id, pFWidth, pFHeight);
-            rect.set(0,0,pFWidth.get(0), pFHeight.get(0)); winRect.set(0,0,pWidth.get(0),pHeight.get(0));
+            rect.set(0, 0, pFWidth.get(0), pFHeight.get(0));
+            winRect.set(0, 0, pWidth.get(0), pHeight.get(0));
         }
     }
 
