@@ -25,10 +25,10 @@ import static org.lwjgl.opengl.GL20.*;
 public class GL2DRenderer {
     @Getter
     protected final GLSLShaderProgram shader;
+    protected final FloatBuffer vertices;
     private final VBO vbo;
-    private final FloatBuffer vertices;
     private final VAO vao;
-    private int numVertices = 0;
+    protected int numVertices = 0;
 
     /**
      * A GLBatchRenderer using the provided shader
