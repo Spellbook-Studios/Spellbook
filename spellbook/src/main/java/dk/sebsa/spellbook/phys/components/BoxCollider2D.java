@@ -14,12 +14,15 @@ import lombok.Getter;
  * @since 1.0.0
  */
 public class BoxCollider2D extends Collider2D {
+    private static final Rect intersect = new Rect(), colliderRect = new Rect();
     /**
      * The size of the collider
      */
     public final Vector2f size = new Vector2f(100, 100);
     @Getter
     private Rect worldPositionRect;
+    private float innerCircle;
+    private float outerCircle;
 
     @Override
     public void lateUpdate(FrameData frameData) {
@@ -39,8 +42,6 @@ public class BoxCollider2D extends Collider2D {
         innerCircle = size.min() / 2.0f;
         outerCircle = sqr(sq(size.x) + sq(size.y));
     }
-
-    private static final Rect intersect = new Rect(), colliderRect = new Rect();
 
     @Override
     public void collides(BoxCollider2D collider) {
@@ -71,9 +72,6 @@ public class BoxCollider2D extends Collider2D {
     private float sqr(float i) {
         return (float) Math.sqrt(i);
     }
-
-    private float innerCircle;
-    private float outerCircle;
 
     @Override
     public void collides(CircleCollider2D collider) {

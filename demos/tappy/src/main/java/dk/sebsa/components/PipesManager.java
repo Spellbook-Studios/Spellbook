@@ -18,6 +18,7 @@ public class PipesManager extends Component {
             int o = Random.getInt(0, 275);
             spawnPipe(o - 370, new Identifier("tappy", "pipe.spr"));
             spawnPipe(o + 120, new Identifier("tappy", "pipe_flipped.spr"));
+            spawnPoint(o - 125);
             timer = TIMER_MAX;
         }
         timer -= Time.getDeltaTime();
@@ -31,5 +32,13 @@ public class PipesManager extends Component {
         PipeComponent component = new PipeComponent(sr);
         pipe.addComponent(component);
         pipe.transform.setPosition(500, offset, 0);
+    }
+
+    public void spawnPoint(int offset) {
+        var point = new Entity(entity);
+        PointCollidor pc = new PointCollidor();
+        pc.size.set(75,120);
+        point.addComponent(pc);
+        point.transform.setPosition(500, offset, 0);
     }
 }

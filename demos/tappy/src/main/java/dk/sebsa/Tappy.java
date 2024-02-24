@@ -12,6 +12,7 @@ import dk.sebsa.spellbook.audio.SoundListener;
 import dk.sebsa.spellbook.audio.SoundPlayer;
 import dk.sebsa.spellbook.core.Application;
 import dk.sebsa.spellbook.core.events.*;
+import dk.sebsa.spellbook.debug.DebugRenderStage;
 import dk.sebsa.spellbook.ecs.Camera;
 import dk.sebsa.spellbook.ecs.ECS;
 import dk.sebsa.spellbook.ecs.Entity;
@@ -77,6 +78,7 @@ public class Tappy implements Application {
     public void engineBuildRenderPipeline(EngineBuildRenderPipelineEvent e) {
         e.builder.appendStage(new SpriteStage(e));
         e.appendUIStage();
+        e.builder.appendStage(new DebugRenderStage(e));
     }
 
     @EventListener
