@@ -7,10 +7,8 @@ import dk.sebsa.spellbook.ecs.Component;
 import dk.sebsa.spellbook.graphics.opengl.GL2D;
 import dk.sebsa.spellbook.graphics.opengl.Sprite;
 import dk.sebsa.spellbook.graphics.opengl.SpriteSheet;
-import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteRenderer;
-import dk.sebsa.spellbook.math.Rect;
+import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteEntityRenderer;
 import dk.sebsa.spellbook.math.Vector2f;
-import dk.sebsa.spellbook.math.Vector3f;
 import lombok.CustomLog;
 import lombok.Getter;
 
@@ -51,7 +49,8 @@ public class SpriteRenderer extends Component {
     /**
      * SpriteRenderer with the default sprite
      */
-    public SpriteRenderer() {}
+    public SpriteRenderer() {
+    }
 
     /**
      * @param identifier Identifier of a sprite
@@ -74,22 +73,15 @@ public class SpriteRenderer extends Component {
      *
      * @param renderer Batchrenderer to render with
      */
-    public void draw(GLSpriteRenderer renderer) {
-        if(sprite==null) onEnable();
-        Rect uvRect = sprite.getUV();
+    public void draw(GLSpriteEntityRenderer renderer) {
+        if (sprite == null) onEnable();
 
-        Vector3f pos = entity.transform.getGlobalPosition();
-        Vector2f size = new Vector2f(sprite.getOffset().width, sprite.getOffset().height);
-
-        renderer.drawQuad(
-                new Rect(new Vector2f(pos.x,pos.y).sub(size.mul(anchor).mul(scale)),
-                        size.mul(scale)),
-                uvRect);
+        renderer.drawSprite(this);
     }
 
     public void onEnable() {
-        if(sprite != null) return;
-        if(spriteSheetSprite != null) { // If this sprite is set using a spritesheet
+        if (sprite != null) return;
+        if (spriteSheetSprite != null) { // If this sprite is set using a spritesheet
             this.spriteSheet = (SpriteSheet) AssetManager.getAssetS(identifier);
             this.sprite = spriteSheet.spr(spriteSheetSprite);
         } else // If it is just a sprite
@@ -103,16 +95,19 @@ public class SpriteRenderer extends Component {
 
     @Override
     public void render() {
-        if(sprite != null)
+        if (sprite != null)
             Spellbook.FRAME_DATA.addRenderSprite(this);
     }
 
     @Override
     public void onDisable() {
-        if(spriteSheetSprite != null) {
-            spriteSheet.unreference(); sprite = null; spriteSheet = null;
+        if (spriteSheetSprite != null) {
+            spriteSheet.unreference();
+            sprite = null;
+            spriteSheet = null;
         } else if (sprite != null && sprite != GL2D.missingSprite) {
-            sprite.unreference(); sprite = null;
+            sprite.unreference();
+            sprite = null;
         }
     }
 }

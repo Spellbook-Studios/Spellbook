@@ -4,7 +4,7 @@ import dk.sebsa.spellbook.FrameData;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
-import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteRenderer;
+import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteEntityRenderer;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
@@ -21,7 +21,7 @@ import java.util.Map;
 @CustomLog
 public class Sprite2D {
     private static Mesh2D mainMesh;
-    private static GLSpriteRenderer renderer;
+    private static GLSpriteEntityRenderer renderer;
 
     /**
      * Inits the renderer
@@ -32,7 +32,7 @@ public class Sprite2D {
         if (mainMesh != null) return;
 
         mainMesh = Mesh2D.getRenderMesh();
-        renderer = new GLSpriteRenderer(new Identifier("spellbook", "shaders/SpellbookSprite.glsl"));
+        renderer = new GLSpriteEntityRenderer(new Identifier("spellbook", "shaders/SpellbookSprite.glsl"));
     }
 
     /**

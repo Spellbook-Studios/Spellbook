@@ -7,15 +7,16 @@ import org.joml.Matrix4f;
 
 /**
  * Renders 2D objects in batches
- * (Same as GL2DRender just with model matricies)
+ * (Same as GL2DRender just with view matricies)
  *
- * @since 1.0.0
  * @author sebs
+ * @since 1.0.0
  */
 public class GLSpriteRenderer extends GL2DRenderer {
     public GLSpriteRenderer(Identifier shaderI) {
         super(shaderI);
         shader.createUniform("mView");
+        shader.createUniform("mModel");
     }
 
     public void begin(Matrix4f mProj) {
