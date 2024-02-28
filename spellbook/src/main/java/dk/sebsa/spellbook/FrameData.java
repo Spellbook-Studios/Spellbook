@@ -4,11 +4,13 @@ import dk.sebsa.spellbook.core.threading.ITaskManager;
 import dk.sebsa.spellbook.core.threading.Task;
 import dk.sebsa.spellbook.core.threading.TaskGroup;
 import dk.sebsa.spellbook.ecs.Component;
+import dk.sebsa.spellbook.ecs.tiles.TileSet;
 import dk.sebsa.spellbook.graphics.opengl.Sprite;
 import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.io.GLFWInput;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.phys.components.Collider2D;
+import dk.sebsa.spellbook.util.IntGrid;
 import lombok.Getter;
 
 import java.util.*;
@@ -37,6 +39,10 @@ public class FrameData {
      * List of colliders in the Newton2D system that has moved this frame
      */
     public final HashSet<Collider2D> newton2DMovers = new HashSet<>();
+    /**
+     * LIst of tilegrids to render
+     */
+    public final HashSet<DrawTileGrid> drawTileGrids = new HashSet<>();
     /**
      * Spriterenderers that has requested rendering
      * Sorted in sprites to make it easier on the renderer
@@ -110,5 +116,24 @@ public class FrameData {
      */
     public Task runNotifyOnFinish(Task task, Consumer<Task> consumer) {
         return taskManager.runNotifyOnFinish(task, consumer);
+    }
+
+    /**
+     * Sets a tilegrid for rendering
+     *
+     * @param d Tilegrid to render
+     */
+    public void drawTileGrid(DrawTileGrid d) {
+        drawTileGrids.add(d);
+    }
+
+    /**
+     * A task to render a grid of tiles (see ecs/tiles/TileGrid)
+     *
+     * @param tiles The tiles to render
+     * @param grid  Each row and column pair must return an int equal to the texture index, or -1, which should indicate not rendering
+     * @param pos   Position to draw from
+     */
+    public record DrawTileGrid(TileSet tiles, IntGrid grid, dk.sebsa.spellbook.math.Vector2f pos) {
     }
 }

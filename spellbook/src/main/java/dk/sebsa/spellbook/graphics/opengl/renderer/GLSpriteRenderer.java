@@ -16,7 +16,6 @@ public class GLSpriteRenderer extends GL2DRenderer {
     public GLSpriteRenderer(Identifier shaderI) {
         super(shaderI);
         shader.createUniform("mView");
-        shader.createUniform("mModel");
     }
 
     public void begin(Matrix4f mProj) {

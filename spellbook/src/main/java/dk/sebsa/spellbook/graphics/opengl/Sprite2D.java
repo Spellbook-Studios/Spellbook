@@ -5,6 +5,7 @@ import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.graphics.opengl.components.SpriteRenderer;
 import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteEntityRenderer;
+import dk.sebsa.spellbook.graphics.opengl.renderer.GLSpriteRenderer;
 import dk.sebsa.spellbook.io.GLFWWindow;
 import dk.sebsa.spellbook.math.Rect;
 import lombok.CustomLog;
@@ -20,8 +21,10 @@ import java.util.Map;
  */
 @CustomLog
 public class Sprite2D {
+    private static final Rect r1 = new Rect();
     private static Mesh2D mainMesh;
     private static GLSpriteEntityRenderer renderer;
+    private static GLSpriteRenderer tileRenderer;
 
     /**
      * Inits the renderer
@@ -32,7 +35,8 @@ public class Sprite2D {
         if (mainMesh != null) return;
 
         mainMesh = Mesh2D.getRenderMesh();
-        renderer = new GLSpriteEntityRenderer(new Identifier("spellbook", "shaders/SpellbookSprite.glsl"));
+        renderer = new GLSpriteEntityRenderer(new Identifier("spellbook", "shaders/SpellbookSpriteEntity.glsl"));
+        tileRenderer = new GLSpriteRenderer(new Identifier("spellbook", "shaders/SpellbookSprite.glsl"));
     }
 
     /**
@@ -43,8 +47,27 @@ public class Sprite2D {
      * @param frameData The spriterenders to render
      */
     public static void renderSprites(GLFWWindow window, Rect r, FrameData frameData) {
-        renderer.begin(r);
+        tileRenderer.begin(r);
 
+        for (FrameData.DrawTileGrid d : frameData.drawTileGrids) {
+            var ints = d.grid();
+            var tiles = d.tiles();
+            tileRenderer.setMaterial(tiles.getMaterial());
+
+            for (int row = 0; row < ints.getRows(); row++) {
+                for (int col = 0; col < ints.getCols(); col++) {
+                    int i = ints.get(row, col);
+                    if (i < 0) continue;
+
+                    tileRenderer.drawQuad(
+                            r1.set(d.pos().add(col * tiles.getTileSize().x, row * tiles.getTileSize().y), tiles.getTileSize()),
+                            tiles.spr(i).getUV());
+                }
+            }
+        }
+        tileRenderer.end();
+
+        renderer.begin(r);
         for (int i = 0; i < frameData.getRenderSprite().length; i++) {
             Map<Sprite, Collection<SpriteRenderer>> layer = frameData.getRenderSprite()[i];
             for (Sprite s : layer.keySet()) {
@@ -64,5 +87,6 @@ public class Sprite2D {
      */
     public static void destroy() {
         renderer.destroy();
+        tileRenderer.destroy();
     }
 }

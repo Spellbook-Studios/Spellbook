@@ -53,13 +53,16 @@ public class DebugRenderStage extends RenderStage {
     @Override
     protected void draw(Rect r, FrameData frameData) {
         renderer.begin(r);
+        drawTileGrids(frameData);
         searchColliders(frameData);
         drawColliders();
         renderer.end();
     }
 
     private void searchColliders(FrameData frameData) {
-        rects.clear(); points.clear(); circles.clear();
+        rects.clear();
+        points.clear();
+        circles.clear();
         for (Collider2D collider2D : frameData.newton2DSolids) {
             if (collider2D instanceof BoxCollider2D)
                 rects.add(((BoxCollider2D) collider2D).getWorldPositionRect());
@@ -79,6 +82,31 @@ public class DebugRenderStage extends RenderStage {
         drawPointList(points);
     }
 
+    private void drawTileGrids(FrameData frameData) {
+        renderer.getShader().setUniform("mode", DebugRenderMode.ModeWorldCamera.value);
+        renderer.setMaterial(matYellow);
+        renderer.setMode(GL_LINES);
+
+        for (FrameData.DrawTileGrid d : frameData.drawTileGrids) {
+            var ints = d.grid();
+            var tiles = d.tiles();
+
+            for (int row = 0; row < ints.getRows(); row++) {
+                for (int col = 0; col < ints.getCols(); col++) {
+                    Vector2f c1 = d.pos().add(col * tiles.getTileSize().x, row * tiles.getTileSize().y),
+                            c2 = c1.add(tiles.getTileSize().x, 0),
+                            c3 = c2.add(0, tiles.getTileSize().y),
+                            c4 = c1.add(0, tiles.getTileSize().y);
+
+                    renderer.drawLine(c1, c2);
+                    renderer.drawLine(c2, c3);
+                    renderer.drawLine(c3, c4);
+                    renderer.drawLine(c4, c1);
+                }
+            }
+        }
+    }
+
     private void drawRectList(Set<Rect> rectSet) {
         renderer.setMaterial(matYellow);
         renderer.setMode(GL_LINES);
@@ -87,7 +115,7 @@ public class DebugRenderStage extends RenderStage {
             Vector2f c1 = new Vector2f(r.x, r.y),
                     c2 = new Vector2f(r.x + r.width, r.y),
                     c3 = new Vector2f(r.x + r.width, r.y - r.height),
-                    c4 = new Vector2f(r.x, r.y -r.height);
+                    c4 = new Vector2f(r.x, r.y - r.height);
 
             renderer.drawLine(c1, c2);
             renderer.drawLine(c2, c3);
@@ -107,7 +135,7 @@ public class DebugRenderStage extends RenderStage {
     private void drawCircleList(Set<Circle> circles) {
         renderer.setMaterial(matYellow);
         renderer.setMode(GL_LINE_LOOP);
-        for(Circle c : circles) {
+        for (Circle c : circles) {
             for (int i = 0; i < CIRCLE_DETAIL; i++) {
                 float z = (float) i / CIRCLE_DETAIL * 360;
                 float x = c.radius * (float) Math.cos(Math.toRadians(z));
@@ -138,5 +166,6 @@ public class DebugRenderStage extends RenderStage {
 
     }
 
-    private record Circle(Vector2f pos, float radius) {}
+    private record Circle(Vector2f pos, float radius) {
+    }
 }

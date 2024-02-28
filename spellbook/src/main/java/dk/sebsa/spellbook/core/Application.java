@@ -1,6 +1,8 @@
 package dk.sebsa.spellbook.core;
 
+import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.core.events.EventHandler;
+import dk.sebsa.spellbook.graphics.stages.SpriteStage;
 
 /**
  * A Spellbook Application
@@ -30,4 +32,10 @@ public interface Application extends EventHandler {
      * @return The version of the application
      */
     String version();
+
+    @Override
+    default void engineBuildRenderPipeline(EngineBuildRenderPipelineEvent e) {
+        e.builder.appendStage(new SpriteStage(e));
+        e.appendUIStage();
+    }
 }

@@ -6,6 +6,7 @@ import dk.sebsa.spellbook.asset.AssetManager;
 import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.util.FileUtils;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class SpriteSheet extends Asset {
+    @Getter
     private final List<Sprite> sprites = new ArrayList<>();
     private final Map<String, Sprite> spriteMap = new HashMap<>();
 

@@ -26,10 +26,10 @@ import java.io.File;
 
 public class Tappy implements Application {
     public static Tappy instance;
+    public int points = 0;
     private Entity tappy;
     private Layer mainMenuScreen, deathScreen, scoreOverlay;
     private Entity pipes;
-    public int points = 0;
 
     public static void main(String[] args) {
         instance = new Tappy();
@@ -117,7 +117,7 @@ public class Tappy implements Application {
         mainMenuScreen.enabled = false;
         deathScreen.enabled = false;
         scoreOverlay.enabled = true;
-        
+
         if (pipes != null) pipes.delete();
         pipes = new Entity(ECS.ROOT);
         pipes.addComponent(new PipesManager());
@@ -127,7 +127,7 @@ public class Tappy implements Application {
 
     public void death() {
         tappy.removeComponent(tappy.getComponent(TappyController.class));
-        deathScreen.enabled = true;
+        ((DeathScreen) deathScreen).enable();
         Time.timeScale = 0;
     }
 }

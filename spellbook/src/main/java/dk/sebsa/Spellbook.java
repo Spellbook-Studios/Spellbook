@@ -125,10 +125,10 @@ public class Spellbook {
         logger.log("Running Spellbook: " + SPELLBOOK_VERSION);
         logger.log(capabilities);
         logger.log("Application{" +
-                    "name=" + app.name() +
-                    ", author=" + app.author() +
-                    ", version=" + app.version() +
-                    '}');
+                "name=" + app.name() +
+                ", author=" + app.author() +
+                ", version=" + app.version() +
+                '}');
         Mana.logSystemInfo(logger);
 
         // The guts of Spellbook
@@ -241,7 +241,7 @@ public class Spellbook {
         if (capabilities.renderingProvider.equals(SpellbookCapabilities.Rendering.opengl))
             renderer = new OpenGL();
 
-        if(renderer != null) registerModule(new RenderModule(renderer));
+        if (renderer != null) registerModule(new RenderModule(renderer));
 
         // ImGui module (AFTER RENDER OR ELSE FUCUP)
         if (DEBUG && capabilities.debugIMGUI) registerModule(new SpellbookImGUI());

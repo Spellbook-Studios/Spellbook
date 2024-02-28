@@ -6,8 +6,6 @@ import dk.sebsa.spellbook.core.events.EngineBuildRenderPipelineEvent;
 import dk.sebsa.spellbook.core.events.EngineLoadEvent;
 import dk.sebsa.spellbook.core.events.EngineRenderEvent;
 import dk.sebsa.spellbook.graphics.RenderAPI;
-import dk.sebsa.spellbook.graphics.stages.SpriteStage;
-import dk.sebsa.spellbook.graphics.stages.UIStage;
 import dk.sebsa.spellbook.marble.Font;
 import dk.sebsa.spellbook.marble.FontType;
 import dk.sebsa.spellbook.math.Color;
@@ -180,9 +178,6 @@ public class OpenGL extends RenderAPI {
         var event = new EngineBuildRenderPipelineEvent(e.moduleCore, e.capabilities);
         var builder = ((EngineBuildRenderPipelineEvent) Spellbook.instance.getEventBus().engine(event)).builder;
 
-        // If the builder is empty it will add some default stuff
-        if (builder.isEmpty())
-            builder.appendStage(new SpriteStage(event)).appendStage(new UIStage(e.moduleCore.getWindow(), e.moduleCore.getStack()));
         pipeline = builder.build();
 
         // Init GL2D and Sprite2D
@@ -199,10 +194,10 @@ public class OpenGL extends RenderAPI {
         logger.trace("OpenGL shading language version: " + glGetString(GL_SHADING_LANGUAGE_VERSION));
         int[] context_profile = new int[1];
         glGetIntegerv(GL_CONTEXT_PROFILE_MASK, context_profile);
-        if(context_profile[0] == GL_CONTEXT_CORE_PROFILE_BIT) {
+        if (context_profile[0] == GL_CONTEXT_CORE_PROFILE_BIT) {
             logger.trace("GL_CONTEXT_PROFILE_MASK: GL_CONTEXT_CORE_PROFILE_BIT ");
         }
-        if(context_profile[0] == GL_CONTEXT_COMPATIBILITY_PROFILE_BIT) {
+        if (context_profile[0] == GL_CONTEXT_COMPATIBILITY_PROFILE_BIT) {
             logger.trace("GL_CONTEXT_PROFILE_MASK: GL_CONTEXT_COMPATIBILITY_PROFILE_BIT");
         }
         logger.trace("GL_CONTEXT_PROFILE_MASK: " + context_profile[0]);

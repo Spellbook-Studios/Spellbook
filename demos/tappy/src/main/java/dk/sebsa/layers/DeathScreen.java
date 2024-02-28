@@ -9,15 +9,23 @@ import dk.sebsa.spellbook.io.events.KeyPressedEvent;
 import dk.sebsa.spellbook.marble.Marble;
 import dk.sebsa.spellbook.marble.MarbleIMRenderer;
 import dk.sebsa.spellbook.math.Rect;
+import dk.sebsa.spellbook.math.Time;
 import org.lwjgl.glfw.GLFW;
 
 public class DeathScreen extends Layer {
+    private static final float MIN_DEATH_TIME = 0.17f * 1000f;
+    private long deathTime = 0;
     private MarbleIMRenderer titleRenderer;
     private MarbleIMRenderer otherRenderer;
-    private MarbleIMRenderer ui;
+
+    public void enable() {
+        this.deathTime = Time.getTime();
+        this.enabled = true;
+    }
 
     @Override
     protected void userEvent(UserEvent event) {
+        if ((Time.getTime() - deathTime) < MIN_DEATH_TIME) return;
         if (event.eventType().equals(Event.EventType.ioKeyPressed)) {
             if (((KeyPressedEvent) event).key == GLFW.GLFW_KEY_SPACE)
                 Tappy.instance.start();
