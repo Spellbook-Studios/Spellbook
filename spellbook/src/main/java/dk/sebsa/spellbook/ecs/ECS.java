@@ -18,18 +18,21 @@ public class ECS implements Module {
      */
     public static Scene ROOT = new Scene();
 
+    private static void noDirt(Entity e) {
+        for (Entity c : e.getChildren()) {
+            c.transform.cleanDirt();
+            noDirt(c);
+        }
+    }
+
     @Override
     public void cleanup() {
         ROOT.delete();
     }
 
     @EventListener
-    public void engineFrameEarly(EngineFrameEarly e) {
-        e.frameData.components = ROOT.getAllComponent();
-    }
-
-    @EventListener
     public void engineFrameProcess(EngineFrameProcess e) {
+        e.frameData.components = ROOT.getAllComponent();
         for (Component c : e.frameData.components) {
             c.update(e.frameData);
         }
@@ -39,13 +42,6 @@ public class ECS implements Module {
         }
 
         noDirt(ROOT);
-    }
-
-    private static void noDirt(Entity e) {
-        for (Entity c : e.getChildren()) {
-            c.transform.cleanDirt();
-            noDirt(c);
-        }
     }
 
     @EventListener
