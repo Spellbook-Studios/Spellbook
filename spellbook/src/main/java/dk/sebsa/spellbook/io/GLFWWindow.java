@@ -1,19 +1,30 @@
 package dk.sebsa.spellbook.io;
 
 import dk.sebsa.Spellbook;
+import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
+import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.core.events.Event;
 import dk.sebsa.spellbook.math.Rect;
 import dk.sebsa.spellbook.math.Vector2f;
+import dk.sebsa.spellbook.util.FileUtils;
 import lombok.CustomLog;
 import lombok.Getter;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -269,7 +280,63 @@ public class GLFWWindow {
     }
 
     /**
-     * Event thrown if the window is resized in anyway
+     * Changes the windows icon
+     *
+     * @param asset Identifier for a texture asset
+     */
+    public void setWindowIcon(Identifier asset) {
+        Icon i = loadIcon(AssetManager.getAssetLocationS(asset));
+        if (i == null) {
+            logger.err("Failed to set icon. Icon == null");
+            return;
+        }
+
+        try (MemoryStack stack = stackPush()) {
+            GLFWImage.Buffer gb = GLFWImage.malloc(1, stack);
+            GLFWImage iconGI = GLFWImage.malloc(stack).set(i.width, i.height, i.data);
+            gb.put(0, iconGI);
+            glfwSetWindowIcon(id, gb);
+        }
+    }
+
+    private Icon loadIcon(AssetLocation l) {
+        try {
+            InputStream is = FileUtils.loadFile(l);
+
+            try (MemoryStack stack = stackPush()) {
+                IntBuffer widthBuffer = stack.mallocInt(1);
+                IntBuffer heightBuffer = stack.mallocInt(1);
+                IntBuffer channelsBuffer = stack.mallocInt(1);
+
+                // Load texture from stream
+                byte[] bytes = new byte[8000];
+                int curByte;
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+                while ((curByte = is.read(bytes)) != -1) {
+                    bos.write(bytes, 0, curByte);
+                }
+                is.close();
+
+                bytes = bos.toByteArray();
+                ByteBuffer buffer = BufferUtils.createByteBuffer(bytes.length);
+                buffer.put(bytes).flip();
+                var data = stbi_load_from_memory(buffer, widthBuffer, heightBuffer, channelsBuffer, 4);
+                var width = widthBuffer.get();
+                var height = heightBuffer.get();
+                return new Icon(width, height, data);
+            }
+        } catch (IOException e) {
+            logger.err("Failed to load ico asset (" + l + ")", logger.stackTrace(e));
+            return null;
+        }
+    }
+
+    private record Icon(int width, int height, ByteBuffer data) {
+    }
+
+    /**
+     * Event thrown if the window is resized in any way
      */
     public static class WindowResizedEvent extends Event {
         /**

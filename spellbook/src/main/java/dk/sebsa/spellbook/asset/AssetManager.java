@@ -18,14 +18,34 @@ import java.util.Map;
  * @since 1.0.0
  **/
 public class AssetManager {
-    private final Map<String, Asset> assets = new HashMap<>();
     private static AssetManager instance;
+    private final Map<String, Asset> assets = new HashMap<>();
 
     /**
      * Creates and sets the instance of AssetManager
      */
     public AssetManager() {
         instance = this;
+    }
+
+    /**
+     * Gets an asset from the registry
+     *
+     * @param identifier An identifier representing the asset
+     * @return The asset
+     */
+    public static Asset getAssetS(Identifier identifier) {
+        return instance.getAsset(identifier);
+    }
+
+    /**
+     * Gets an assets location from the registry
+     *
+     * @param identifier An identifier representing the asset
+     * @return The assets location
+     */
+    public static AssetLocation getAssetLocationS(Identifier identifier) {
+        return instance.getAssetLocation(identifier);
     }
 
     private Asset makeAsset(String location) {
@@ -76,15 +96,14 @@ public class AssetManager {
         return assets.get(identifier.toString()).get();
     }
 
-
     /**
-     * Gets an asset from the registry
+     * Gets an assets location from the registry
      *
      * @param identifier An identifier representing the asset
-     * @return The asset
+     * @return The assets location
      */
-    public static Asset getAssetS(Identifier identifier) {
-        return instance.getAsset(identifier);
+    public AssetLocation getAssetLocation(Identifier identifier) {
+        return assets.get(identifier.toString()).getLocation();
     }
 
     /**

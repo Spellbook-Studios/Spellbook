@@ -2,6 +2,7 @@ package dk.sebsa.spellbook.core;
 
 import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.AssetManager;
+import dk.sebsa.spellbook.asset.Identifier;
 import dk.sebsa.spellbook.asset.loading.AssetLocation;
 import dk.sebsa.spellbook.asset.loading.AssetProvider;
 import dk.sebsa.spellbook.asset.loading.ClassPathAssetProvider;
@@ -86,6 +87,8 @@ public class Core implements Module, EventHandler {
         // Window & Input
         window.init();
         input.addCallbacks();
+
+        window.setWindowIcon(new Identifier("spellbook", "spellbook.png"));
     }
 
     @Override

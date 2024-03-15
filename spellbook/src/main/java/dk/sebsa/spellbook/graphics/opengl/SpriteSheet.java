@@ -55,8 +55,8 @@ public class SpriteSheet extends Asset {
 
     private void create() {
         if (offset != null && padding != null && s != null) {
-            sprites.add(0, new Sprite(offset, padding, material));
-            spriteMap.put(s, sprites.get(0));
+            sprites.addFirst(new Sprite(offset, padding, material));
+            spriteMap.put(s, sprites.getFirst());
 
             offset = null;
             s = null;
