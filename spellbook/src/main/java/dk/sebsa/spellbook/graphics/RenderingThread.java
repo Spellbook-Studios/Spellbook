@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class RenderingThread implements Runnable {
     protected final List<GraphTask> taskQueue = Collections.synchronizedList(new LinkedList<>());
     private final AtomicBoolean stop = new AtomicBoolean(false);
+    public final AtomicBoolean runningTask = new AtomicBoolean(false);
 
     @Override
     public void run() {
@@ -24,11 +25,15 @@ public class RenderingThread implements Runnable {
 
         while(!stop.get()) {
             while(!taskQueue.isEmpty()) {
+                runningTask.set(true);
+
                 try {
                     taskQueue.removeFirst().run();
                 } catch (Exception e) {
                     logger.err("Exception in renderingthread", logger.stackTrace(e));
                 }
+
+                runningTask.set(false);
             }
         }
     }

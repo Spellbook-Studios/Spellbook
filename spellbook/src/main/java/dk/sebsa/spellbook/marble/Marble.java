@@ -28,7 +28,7 @@ public class Marble implements Module {
 
     @EventListener
     public void engineFirstFrame(EngineFirstFrameEvent e) {
-        defaultFont = font(new Identifier("spellbook", "fonts/Inter.ttf"), 48);
+        defaultFont = font(new Identifier("spellbook", "fonts/Inter.ttf"), 16);
     }
 
     /**

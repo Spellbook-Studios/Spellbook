@@ -34,7 +34,7 @@ public abstract class RenderAPI {
      *
      * @return true if there are no more tasks for the renderer to handle, false otherwise
      */
-    public boolean frameDone() { return renderThread.taskQueue.isEmpty(); }
+    public boolean frameDone() { return renderThread.taskQueue.isEmpty() && !renderThread.runningTask.get(); }
 
     /**
      * Waits until the taskqueue is empty (frameDone() returns true)
