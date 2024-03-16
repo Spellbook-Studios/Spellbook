@@ -19,7 +19,8 @@ import org.lwjgl.glfw.*;
 public class GLFWInput {
     /**
      * All 16 gamepads
-     * They are all instantiated at program start, and are assigned to controller when they connect and disconnect
+     * They are all instantiated at program start, and are assigned to controller
+     * when they connect and disconnect
      */
     public final GamePad[] gamePads = new GamePad[16];
     /**
@@ -46,13 +47,15 @@ public class GLFWInput {
     private byte[] buttonsReleased;
     /**
      * -- GETTER --
-     * The horizontal scroll value, this is equal to all scroll offsets of entire program lifetime
+     * The horizontal scroll value, this is equal to all scroll offsets of entire
+     * program lifetime
      */
     @Getter
     private double scrollX;
     /**
      * -- GETTER --
-     * The vertical scroll value, this is equal to all scroll offsets of entire program lifetime
+     * The vertical scroll value, this is equal to all scroll offsets of entire
+     * program lifetime
      */
     @Getter
     private double scrollY;
@@ -91,7 +94,8 @@ public class GLFWInput {
             @Override
             public void invoke(int jid, int event) {
                 if (event == GLFW.GLFW_CONNECTED) {
-                    if (!GLFW.glfwJoystickIsGamepad(jid)) return;
+                    if (!GLFW.glfwJoystickIsGamepad(jid))
+                        return;
                     connectGamePad(jid);
                 } else if (event == GLFW.GLFW_DISCONNECTED) {
                     disconnectGamePad(jid);
@@ -132,7 +136,8 @@ public class GLFWInput {
                 mousePos.set((float) xpos, (float) ypos);
 
                 // Create Event
-                MouseMoveEvent e = new MouseMoveEvent(mousePos.x, mousePos.y); eventBus.user(e);
+                MouseMoveEvent e = new MouseMoveEvent(mousePos.x, mousePos.y);
+                eventBus.user(e);
             }
         };
 
@@ -148,7 +153,8 @@ public class GLFWInput {
     }
 
     private void connectGamePad(int jid) {
-        if (!GLFW.glfwJoystickPresent(jid)) return; // Returns if this is not a connected gamepad
+        if (!GLFW.glfwJoystickPresent(jid))
+            return; // Returns if this is not a connected gamepad
 
         gamePads[jid].setController();
         logger.log("GamePad connected: " + gamePads[jid].toString());
@@ -157,7 +163,8 @@ public class GLFWInput {
     }
 
     private void disconnectGamePad(int jid) {
-        if (!gamePads[jid].isConnected()) return; // Returns if this pad was never connected
+        if (!gamePads[jid].isConnected())
+            return; // Returns if this pad was never connected
 
         logger.log("GamePad Disconnected: " + gamePads[jid].toString());
         gamePads[jid].setController();
@@ -196,11 +203,13 @@ public class GLFWInput {
      * @param all Weather to reset data that should not be reset, only true at init
      */
     private void resetInputData(boolean all) {
-        if (all) keys = new byte[GLFW.GLFW_KEY_LAST];
+        if (all)
+            keys = new byte[GLFW.GLFW_KEY_LAST];
         keysPressed = new byte[GLFW.GLFW_KEY_LAST];
         keysReleased = new byte[GLFW.GLFW_KEY_LAST];
 
-        if (all) buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
+        if (all)
+            buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
         buttonsPressed = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
         buttonsReleased = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
     }
@@ -241,7 +250,8 @@ public class GLFWInput {
      * @return True if the key is pressed down
      */
     public boolean isKeyDown(int key) {
-        if (key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
+        if (key < 0 || key > GLFW.GLFW_KEY_LAST)
+            throw new IllegalArgumentException("Key not supported by GLFW");
         return keys[key] == 1;
     }
 
@@ -252,7 +262,8 @@ public class GLFWInput {
      * @return True if the key was just pressed
      */
     public boolean isKeyPressed(int key) {
-        if (key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
+        if (key < 0 || key > GLFW.GLFW_KEY_LAST)
+            throw new IllegalArgumentException("Key not supported by GLFW");
         return keysPressed[key] == 1;
     }
 
@@ -263,7 +274,8 @@ public class GLFWInput {
      * @return True if the key was just released
      */
     public boolean isKeyReleased(int key) {
-        if (key < 0 || key > GLFW.GLFW_KEY_LAST) throw new IllegalArgumentException("Key not supported by GLFW");
+        if (key < 0 || key > GLFW.GLFW_KEY_LAST)
+            throw new IllegalArgumentException("Key not supported by GLFW");
         return keysReleased[key] == 1;
     }
 
