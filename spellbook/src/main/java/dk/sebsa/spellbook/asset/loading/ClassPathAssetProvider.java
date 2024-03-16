@@ -112,7 +112,10 @@ public class ClassPathAssetProvider extends AssetProvider {
             while ((line = br.readLine()) != null) {
                 logger.log(line);
                 if (line.contains(".")) { // TODO: INSTALL ECLIPSE AND TEST / REIMPLEMENT AGAAAAIN
-                    assets.add(new AssetLocation(null, streams.get(0) + "/" + line, AssetLocation.LocationTypes.Jar));
+                    var name = streams.get(0) + "/" + line;
+                    if(name.startsWith(path)) name = name.split(path)[1];
+                    Identifier id = new Identifier(namespace, name);
+                    assets.add(new AssetLocation(id, streams.get(0) + "/" + line, AssetLocation.LocationTypes.Jar));
                 } else streams.add(streams.get(0) + "/" + line);
             }
 

@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Getter
 @CustomLog
-public class Core implements Module, EventHandler {
+public class Core implements Module {
     private GLFWWindow window;
     private GLFWInput input;
     private LayerStack stack;
@@ -67,7 +67,8 @@ public class Core implements Module, EventHandler {
             @Override
             public void execute() throws InterruptedException {
                 List<AssetLocation> assets = new ArrayList<>();
-
+                
+                logger.log("AssetProviders (" + e.capabilities.getAssetsProviders().size() + "):");
                 for (AssetProvider provider : e.capabilities.getAssetsProviders()) {
                     logger.log(" - Provider: " + provider.toString());
                     assets.addAll(provider.getAssets());

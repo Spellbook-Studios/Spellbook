@@ -30,6 +30,13 @@ public class Tappy implements Application {
     private Entity tappy;
     private Layer mainMenuScreen, deathScreen, scoreOverlay;
     private Entity pipes;
+    
+    private static File getAssetFolder() {
+        // Sometimes the CWD will be in the root project :(
+        File a = new File("assets/");
+        if (a.isDirectory()) return a;
+        return new File("demos/tappy/assets/");
+    }
 
     public static void main(String[] args) {
         instance = new Tappy();
@@ -38,7 +45,7 @@ public class Tappy implements Application {
                 .spellbookDebug(true)
                 .logDisableASCIIEscapeCharacters(false)
                 .clearColor(Color.azure)
-                .build().addAssetProvider(new FolderAssetProvider(new File("assets/"), "tappy")));
+                .build().addAssetProvider(new FolderAssetProvider(getAssetFolder(), "tappy")));
     }
 
     @EventListener

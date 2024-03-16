@@ -30,6 +30,13 @@ public class Sandbox implements Application {
     private static boolean isDebug = false;
     public DebugLayer debugLayer;
 
+    private static File getAssetFolder() {
+        // Sometimes when running in ide, the CWD will be at the root project instead of the actual program
+        File a = new File("assets/");
+        if(a.isDirectory()) return a;
+        return new File("sandbox/assets/");
+    }
+
     public static void main(String[] args) {
         // Parse args
         for (String arg : args)
@@ -46,7 +53,7 @@ public class Sandbox implements Application {
                     .logDisableASCIIEscapeCharacters(false)
                     .debugIMGUI(true)
                     .build()
-                    .addAssetProvider(new FolderAssetProvider(new File("assets/"), "sandbox"))
+                    .addAssetProvider(new FolderAssetProvider(getAssetFolder(), "sandbox"))
             );
             return;
         }
@@ -55,7 +62,7 @@ public class Sandbox implements Application {
                 .spellbookDebug(false)
                 .logStoreTarget("logs/latest.log")
                 .build()
-                .addAssetProvider(new FolderAssetProvider(new File("assets/"), "sandbox"))
+                .addAssetProvider(new FolderAssetProvider(getAssetFolder(), "sandbox"))
         );
     }
 
