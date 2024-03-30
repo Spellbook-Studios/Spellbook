@@ -1,6 +1,8 @@
+
 plugins {
-    id 'dk.sebsa.spellbook.java-application-conventions'
+    id "spellbook-gradle" version '1.0'
 }
+
 
 dependencies {
     implementation project(':spellbook')
