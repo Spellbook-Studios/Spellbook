@@ -8,6 +8,7 @@
 name: Gradle Plugin Build & Publish
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
