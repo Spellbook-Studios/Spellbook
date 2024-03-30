@@ -1,0 +1,39 @@
+plugins {
+    // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
+    id 'com.gradle.plugin-publish' version '1.2.1'
+}
+
+group = 'dk.sebsa'
+version = '1.0'
+
+gradlePlugin {
+    // Define the plugins
+    plugins {
+        spellbookGradle {
+            id = 'spellbook-gradle'
+            displayName = "Spellbook Gradle for Applications"
+            implementationClass = 'dk.sebsa.spellbook.ApplicationPlugin'
+        }
+
+        spellbookGradleLib {
+            id = 'spellbook-gradle-lib'
+            displayName = "Spellbook Gradle for Libraries"
+            implementationClass = 'dk.sebsa.spellbook.LibraryPlugin'
+        }
+    }
+}
+
+publishing {
+    repositories {
+        mavenLocal()
+        maven {
+            name = "Spellbook-Gradle-Repository"
+            url = "https://maven.sebsa.dk/gradle"
+
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+    }
+}

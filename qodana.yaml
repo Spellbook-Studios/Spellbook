@@ -13,6 +13,7 @@ exclude:
       - sandbox
       - demos
       - spellbook/build.gradle
+      - spellbook-gradle
 
 #Enable inspections
 include:

@@ -7,9 +7,9 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="$PROJECT_DIR$/buildSrc" name="buildSrc">
+              <build path="$PROJECT_DIR$/spellbook-gradle" name="spellbook-gradle">
                 <projects>
-                  <project path="$PROJECT_DIR$/buildSrc" />
+                  <project path="$PROJECT_DIR$/spellbook-gradle" />
                 </projects>
               </build>
             </builds>
@@ -20,12 +20,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/demos" />
             <option value="$PROJECT_DIR$/demos/marco" />
             <option value="$PROJECT_DIR$/demos/tappy" />
             <option value="$PROJECT_DIR$/sandbox" />
             <option value="$PROJECT_DIR$/spellbook" />
+            <option value="$PROJECT_DIR$/spellbook-gradle" />
           </set>
         </option>
       </GradleProjectSettings>
