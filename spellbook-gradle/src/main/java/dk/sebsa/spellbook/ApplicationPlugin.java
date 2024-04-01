@@ -13,13 +13,13 @@ public class ApplicationPlugin implements Plugin<Project> {
         // Application
         target.getPluginManager().apply("application");
         var application = (JavaApplication) target.getExtensions().findByName("application");
-        application.setApplicationDefaultJvmArgs(List.of("-XstartOnFirstThread"));
 
         // Common
         SpellbookExtension ext = target.getExtensions().create("spellbook", SpellbookExtension.class);
         target.afterEvaluate(project -> {
             DependencyManager.addRepositories(project);
             DependencyManager.addCommonDependencies(project, ext, ext.targetOs);
+            if (ext.targetOs.isMacOsX()) application.setApplicationDefaultJvmArgs(List.of("-XstartOnFirstThread"));
 
             JavaUtil.setJavaTarget(project, ext.targetJava);
         });

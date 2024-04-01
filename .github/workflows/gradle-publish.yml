@@ -10,6 +10,8 @@ name: Gradle Build & Publish
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - spellbook/**
 
 jobs:
   gradle-build-publish:

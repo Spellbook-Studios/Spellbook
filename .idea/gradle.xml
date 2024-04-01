@@ -23,6 +23,8 @@
             <option value="$PROJECT_DIR$/demos" />
             <option value="$PROJECT_DIR$/demos/marco" />
             <option value="$PROJECT_DIR$/demos/tappy" />
+            <option value="$PROJECT_DIR$/local" />
+            <option value="$PROJECT_DIR$/local/gui" />
             <option value="$PROJECT_DIR$/sandbox" />
             <option value="$PROJECT_DIR$/spellbook" />
             <option value="$PROJECT_DIR$/spellbook-gradle" />
