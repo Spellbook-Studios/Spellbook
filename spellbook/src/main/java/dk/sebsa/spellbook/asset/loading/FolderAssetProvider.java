@@ -1,8 +1,10 @@
 package dk.sebsa.spellbook.asset.loading;
 
+import dk.sebsa.Spellbook;
+import dk.sebsa.mana.Logger;
 import dk.sebsa.spellbook.asset.Identifier;
+import dk.sebsa.spellbook.core.ClassLogger;
 import dk.sebsa.spellbook.util.FileUtils;
-import lombok.CustomLog;
 import lombok.ToString;
 
 import java.io.File;
@@ -15,13 +17,13 @@ import java.util.List;
  * @author sebs
  * @since 1.0.0
  */
-@CustomLog
 @ToString
 public class FolderAssetProvider extends AssetProvider {
     @ToString.Include
     private final File folder;
     @ToString.Include
     private final String namespace;
+    private Logger logger;
 
     /**
      * @param folder    The folder to search files from (searches recursively)
@@ -34,8 +36,13 @@ public class FolderAssetProvider extends AssetProvider {
 
     @Override
     public List<AssetLocation> getAssets() {
+        logger = new ClassLogger(getClass(), Spellbook.getLogger()); // Yee, so when using @CustomLog, the mainlogger would be null since Spellbook is initialized when assetproviders are
         List<AssetLocation> assets = new ArrayList<>();
 
+        if (!folder.exists()) {
+            logger.warn("FolderAsssetProvider: Path does not exist: " + folder.getPath());
+            return assets;
+        }
         if (!folder.isDirectory()) {
             logger.warn("FolderAsssetProvider: Path is not a directory: " + folder.getPath());
             return assets;

@@ -1,7 +1,8 @@
 package dk.sebsa.spellbook.asset.loading;
 
+import dk.sebsa.Spellbook;
 import dk.sebsa.spellbook.asset.Identifier;
-import lombok.CustomLog;
+import dk.sebsa.spellbook.core.ClassLogger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,22 +23,13 @@ import java.util.jar.JarFile;
  * @author sebs
  * @since 1.0.0
  */
-@CustomLog
 public class ClassPathAssetProvider extends AssetProvider {
     private final Class<ClassPathAssetProvider> clazz = ClassPathAssetProvider.class;
     private final ClassLoader cl = clazz.getClassLoader();
-    private List<AssetLocation> assets;
     private final String namespace;
-
-    @Override
-    public String toString() {
-        return "ClassPathAssetProvider{" +
-                "namespace='" + namespace + '\'' +
-                ", path='" + path + '\'' +
-                '}';
-    }
-
     private final String path;
+    private List<AssetLocation> assets;
+    private ClassLogger logger;
 
     /**
      * @param namespace The namespace of the assets that are loaded
@@ -49,7 +41,16 @@ public class ClassPathAssetProvider extends AssetProvider {
     }
 
     @Override
+    public String toString() {
+        return "ClassPathAssetProvider{" +
+                "namespace='" + namespace + '\'' +
+                ", path='" + path + '\'' +
+                '}';
+    }
+
+    @Override
     public List<AssetLocation> getAssets() {
+        logger = new ClassLogger(getClass(), Spellbook.getLogger()); // Yee, so when using @CustomLog, the mainlogger would be null since Spellbook is initialized when assetproviders are
         assets = new ArrayList<>();
 
         URL dirUrl = cl.getResource("dk/sebsa/spellbook/asset");
@@ -113,7 +114,7 @@ public class ClassPathAssetProvider extends AssetProvider {
                 logger.log(line);
                 if (line.contains(".")) { // TODO: INSTALL ECLIPSE AND TEST / REIMPLEMENT AGAAAAIN
                     var name = streams.get(0) + "/" + line;
-                    if(name.startsWith(path)) name = name.split(path)[1];
+                    if (name.startsWith(path)) name = name.split(path)[1];
                     Identifier id = new Identifier(namespace, name);
                     assets.add(new AssetLocation(id, streams.get(0) + "/" + line, AssetLocation.LocationTypes.Jar));
                 } else streams.add(streams.get(0) + "/" + line);
