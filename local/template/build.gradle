@@ -1,0 +1,12 @@
+plugins {
+    id "spellbook-gradle" version '1.0'
+}
+
+dependencies {
+    implementation project(':spellbook')
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'dk.sebsa.Marco'
+}

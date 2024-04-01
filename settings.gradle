@@ -10,8 +10,14 @@ includeBuild('spellbook-gradle')
 include('sandbox', 'spellbook')
 
 // Demo projects
-new File("demos/").listFiles().each {
-    if (it.directory && new File(it, 'build.gradle').exists()) {
-        include ":demos:${it.name}"
-    }
+['demos', 'local'].forEach {
+    dir ->
+        {
+            new File("${dir}/").listFiles().each {
+                if (it.directory && new File(it, 'build.gradle').exists()) {
+                    if (it.name != "template")
+                        include ":${dir}:${it.name}"
+                }
+            }
+        }
 }
