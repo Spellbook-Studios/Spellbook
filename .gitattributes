@@ -4,4 +4,4 @@
 # These are explicitly windows files and should use crlf
 *.bat           text eol=crlf
 # Qodana
-qodana.sarif.json filter=lfs diff=lfs merge=lfs -text
+#qodana.sarif.json filter=lfs diff=lfs merge=lfs -text
