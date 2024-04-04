@@ -14,23 +14,25 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public abstract class RenderStage {
     /**
-     * Gets the name of this rendering stage
-     * @return The name of this rendering stage
-     */
-    public abstract String getName();
-    private boolean init = false;
-    protected FBO fbo;
-    /**
      * The main window that the stage draws to
      */
     protected final GLFWWindow window;
-
+    protected FBO fbo;
+    private boolean init = false;
+    
     /**
      * @param window Primary application window
      */
     public RenderStage(GLFWWindow window) {
         this.window = window;
     }
+
+    /**
+     * Gets the name of this rendering stage
+     *
+     * @return The name of this rendering stage
+     */
+    public abstract String getName();
 
     /**
      * Creates the FBO used for rendering
@@ -41,7 +43,7 @@ public abstract class RenderStage {
     }
 
     private void updateFBO() {
-        if(fbo != null) fbo.destroy();
+        if (fbo != null) fbo.destroy();
         fbo = new FBO((int) window.rect.width, (int) window.rect.height, window);
         fbo.bindFrameBuffer();
         glEnable(GL_DEPTH_TEST);
@@ -55,7 +57,7 @@ public abstract class RenderStage {
      * @return FBO with rendered content
      */
     protected FBO render(FrameData frameData) {
-        if(!init || window.isDirty()) init();
+        if (!init || window.isDirty()) init();
         fbo.bindFrameBuffer();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -85,6 +87,7 @@ public abstract class RenderStage {
      * This exits literraly beacuse of a bug
      * This allows a very specific stage to draw itself inverted
      * For more context read the giant ass motherfucker comment at the end of RenderPipeline.render(EngineRenderEvent e)
+     *
      * @param windowRect The rect of the window drawing to
      */
     public void renderFBO(Rect windowRect) {

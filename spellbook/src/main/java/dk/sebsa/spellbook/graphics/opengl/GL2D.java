@@ -64,7 +64,7 @@ public class GL2D {
         window = w;
 
         missingSprite = (Sprite) AssetManager.getAssetS(new Identifier("spellbook", "missing.spr"));
-        ortho = new Matrix4f().ortho(0, window.rect.width, window.rect.height, 0,-1, 1);
+        ortho = new Matrix4f().ortho(0, window.rect.width, window.rect.height, 0, -1, 1);
 
         textRenderer = new GL2DRenderer(new Identifier("spellbook", "shaders/SpellbookText.glsl"));
         renderer = new GL2DRenderer(new Identifier("spellbook", "shaders/Spellbook2d.glsl"));
@@ -72,6 +72,7 @@ public class GL2D {
 
     /**
      * Prepares GL2D for rendering
+     *
      * @return Returns the prepared renderer
      */
     public static GL2DRenderer prepare() {
@@ -89,7 +90,7 @@ public class GL2D {
         // Gl status
         glDisable(GL_DEPTH_TEST);
 
-        if (window.isDirty()) ortho = new Matrix4f().ortho(0, resolution.width, resolution.height, 0,-1, 1);
+        if (window.isDirty()) ortho = new Matrix4f().ortho(0, resolution.width, resolution.height, 0, -1, 1);
         renderer.begin(ortho);
 
         isPrepared = true;
@@ -136,7 +137,7 @@ public class GL2D {
         float x = uvRect.x + (((r.x - drawRect.x) / drawRect.width) * uvRect.width);
         float y = uvRect.y + (((r.y - drawRect.y) / drawRect.height) * uvRect.height);
         u.set(x, y, (r.width / drawRect.width) * uvRect.width, (r.height / drawRect.height) * uvRect.height);
-        renderer.drawQuad(r,u);
+        renderer.drawQuad(r, u);
     }
 
     /**
@@ -200,13 +201,13 @@ public class GL2D {
     /**
      * Draws text
      *
-     * @param text      Text to draw
-     * @param c         The desired color of the text
-     * @param font      Font to render with
-     * @param drawRect  Where to draw
+     * @param text     Text to draw
+     * @param c        The desired color of the text
+     * @param font     Font to render with
+     * @param drawRect Where to draw
      */
     public static void drawText(String text, Color c, Font font, Rect drawRect) {
-        if(isPrepared) renderer.end();
+        if (isPrepared) renderer.end();
         window.rect.getIntersection(r2.set(drawRect.x, drawRect.y, drawRect.width, drawRect.height), r);
         textRenderer.begin(ortho);
         textRenderer.setMaterial(font.getMaterial().setColor(c));
@@ -247,13 +248,13 @@ public class GL2D {
                         y1 = q.y1();
 
                 // Fix warping maybe check pre commit
-                r.getIntersection(r2.set(x0,(lineHeight)+y0, x1-x0, y1-y0), rect1);
-                textRenderer.drawQuad(rect1, new Rect(q.s0(), q.t0(), q.s1()-q.s0(), q.t1()-q.t0()));
+                r.getIntersection(r2.set(x0, (lineHeight) + y0, x1 - x0, y1 - y0), rect1);
+                textRenderer.drawQuad(rect1, new Rect(q.s0(), q.t0(), q.s1() - q.s0(), q.t1() - q.t0()));
             }
         }
 
         textRenderer.end();
-        if(isPrepared) renderer.begin(ortho);
+        if (isPrepared) renderer.begin(ortho);
     }
 
     /**

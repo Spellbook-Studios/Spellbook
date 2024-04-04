@@ -34,7 +34,7 @@ public class UIStage extends RenderStage {
     @Override
     protected void draw(Rect r, FrameData frameData) {
         for (Layer l : stack.stack) {
-            l.ensureRender(frameData.marble, r);
+            l.ensureRender(frameData.marble, window.rect);
         }
         frameData.marble.postRenderReset();
     }
